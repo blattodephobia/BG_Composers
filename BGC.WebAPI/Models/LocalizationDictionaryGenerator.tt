@@ -10,42 +10,35 @@
 <#@ output extension=".cs" #>
 using BGC.WebAPI.Models;
 
-<# WriteClassDataRecursively(typeof(LocalizationDictionary), 0); #>
+<# WriteClassDataRecursively(typeof(LocalizationDictionary)); #>
 <#+
+	static readonly string Indent = "    ";
 	string ToSentenceCase(string s)
 	{
 		string result = char.ToUpper(s[0]) + s.Substring(1);
 		return result;
 	}
 
-	void WriteIndented(string s, int indentLevel)
+	void WriteClassDataRecursively(Type declaringType)
 	{
-		this.Write(s.PadLeft(4 * indentLevel, ' '));
-	}
-
-	void WriteIndented(string s, int indentLevel, params object[] args)
-	{
-		this.Write(s.PadLeft(4 * indentLevel, ' '),  args);
-	}
-
-	void WriteClassDataRecursively(Type declaringType, int indentLevel)
-	{
-		this.WriteIndented("public partial class {0}\r\n{{\r\n", indentLevel, declaringType.Name);
+		this.Write("public partial class {0}\r\n{{\r\n", declaringType.Name);
+		this.PushIndent(Indent);
 		IEnumerable<FieldInfo> keyNameFields = declaringType.GetFields(BindingFlags.NonPublic | BindingFlags.Static).Where(fi => fi.FieldType == typeof(string));
 		foreach (FieldInfo field in keyNameFields)
 		{
-			this.WriteIndented("public LocalizedString {0} {{ get; private set; }}\r\n", indentLevel + 1, this.ToSentenceCase(field.Name));
+			this.Write("public LocalizedString {0} {{ get; private set; }}\r\n", this.ToSentenceCase(field.Name));
 		}
 
 		foreach (Type nestedType in declaringType.GetNestedTypes())
 		{
-			this.WriteIndented("public {0} {1} {{ get; private set; }}\r\n", indentLevel + 1, nestedType.Name, nestedType.Name.Substring(0, nestedType.Name.Length - "Localization".Length));
+			this.Write("public {0} {1} {{ get; private set; }}\r\n", nestedType.Name, nestedType.Name.Substring(0, nestedType.Name.Length - "Localization".Length));
 		}
 
 		foreach (Type nestedType in declaringType.GetNestedTypes())
 		{
-			WriteClassDataRecursively(nestedType, indentLevel + 1);
+			WriteClassDataRecursively(nestedType);
 		}
-		this.WriteIndented("}\r\n", indentLevel);
+		this.PopIndent();
+		this.Write("}\r\n");
 	}
 #>

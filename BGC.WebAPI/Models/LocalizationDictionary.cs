@@ -49,6 +49,7 @@ namespace BGC.WebAPI.Models
 				public class UsersLocalization
 				{
 					private static string ok;
+					private static string cancel;
 				}
 			}
 		}
