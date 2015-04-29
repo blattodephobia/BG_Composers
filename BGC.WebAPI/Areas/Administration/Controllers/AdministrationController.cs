@@ -16,5 +16,15 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             return View();
         }
 
+        public ActionResult Login()
+        {
+            return this.View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginViewModel model)
+        {
+            return new EmptyResult();
+        }
     }
 }

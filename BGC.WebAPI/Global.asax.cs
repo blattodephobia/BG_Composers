@@ -23,5 +23,17 @@ namespace BGC.WebAPI
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 		}
+
+        internal static bool Debugging
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
 	}
 }

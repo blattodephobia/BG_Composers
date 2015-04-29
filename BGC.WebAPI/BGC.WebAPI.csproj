@@ -187,6 +187,8 @@
       <DependentUpon>LocalizationDictionaryGenerator.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\LocalizedString.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -292,6 +294,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Administration\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

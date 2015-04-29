@@ -15,6 +15,5 @@ namespace BGC.WebAPI.Areas.Public.Controllers
         {
             return View();
         }
-
     }
 }
