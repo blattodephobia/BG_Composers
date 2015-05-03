@@ -1,12 +1,7 @@
-﻿using BGC.Data.Models;
+﻿using BGC.Core;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BGC.Data
 {

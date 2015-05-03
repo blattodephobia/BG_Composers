@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Data.Models
+namespace BGC.Core
 {
 	public class AspNetUserClaim : IdentityUserClaim<long>
 	{

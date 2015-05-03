@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Data.Models
+namespace BGC.Core
 {
-	public class AspNetUserRole : IdentityUserRole<long>
+	public class AspNetUserLogin : IdentityUserLogin<long>
 	{
 	}
 }

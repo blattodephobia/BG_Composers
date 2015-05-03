@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Data.Models
+namespace BGC.Core
 {
-	class Composer
-	{
-	}
+    public interface IUnitOfWork
+    {
+    }
 }

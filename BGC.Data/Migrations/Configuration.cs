@@ -1,13 +1,11 @@
+using BGC.Core;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.Data.Entity.Migrations;
+
 namespace BGC.Data.Migrations
 {
-	using BGC.Data.Models;
-	using Microsoft.AspNet.Identity;
-	using Microsoft.AspNet.Identity.EntityFramework;
-	using System;
-	using System.Data.Entity;
-	using System.Data.Entity.Migrations;
-	using System.Linq;
-
 	internal sealed class Configuration : DbMigrationsConfiguration<BGC.Data.ComposersDbContext>
 	{
 		protected override void Seed(BGC.Data.ComposersDbContext context)
