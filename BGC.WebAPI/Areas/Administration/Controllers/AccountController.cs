@@ -7,22 +7,24 @@ using System.Web.Mvc;
 
 namespace BGC.WebAPI.Areas.Administration.Controllers
 {
-    public class AdministrationController : AdministrationControllerBase
+	public partial class AccountController : AdministrationControllerBase
     {
-        public ActionResult Users()
+		public virtual ActionResult Users()
         {
 			LocalizationDictionary dict = new LocalizationDictionary();
 			string s = dict.AdministrationArea.Administration.Users.Ok;
             return View();
         }
 
-        public ActionResult Login()
+		[AllowAnonymous]
+		public virtual ActionResult Login(string returnUrl = "")
         {
-            return this.View();
+			return this.View();
         }
 
+		[AllowAnonymous]
         [HttpPost]
-        public ActionResult Login(LoginViewModel model)
+		public virtual ActionResult Login(LoginViewModel model)
         {
             return new EmptyResult();
         }

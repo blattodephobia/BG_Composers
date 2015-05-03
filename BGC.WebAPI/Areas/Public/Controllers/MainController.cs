@@ -6,12 +6,9 @@ using System.Web.Mvc;
 
 namespace BGC.WebAPI.Areas.Public.Controllers
 {
-    public class MainController : Controller
+	public partial class MainController : Controller
     {
-        //
-        // GET: /Public/Main/
-
-        public ActionResult Index()
+		public virtual ActionResult Index()
         {
             return View();
         }

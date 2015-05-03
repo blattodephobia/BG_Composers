@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Mvc;
 
 namespace BGC.WebAPI
 {
@@ -9,13 +10,7 @@ namespace BGC.WebAPI
 	{
 		public static void Register(HttpConfiguration config)
 		{
-			config.Routes.MapHttpRoute(
-				name: "Default",
-				routeTemplate: "{controller}/{action}",
-				defaults: new { area = "Public", controller = "Main", action = "Index" }
-			);
-
-            if (WebApiApplication.Debugging)
+            if (MVC.Debugging)
             {
                 config.EnableSystemDiagnosticsTracing();
             }

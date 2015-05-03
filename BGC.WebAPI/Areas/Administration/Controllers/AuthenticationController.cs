@@ -6,10 +6,10 @@ using System.Web.Mvc;
 
 namespace BGC.WebAPI.Areas.Administration.Controllers
 {
-    public class AuthenticationController : AdministrationControllerBase
+	public partial class AuthenticationController : AdministrationControllerBase
     {
 		[AllowAnonymous]
-        public ActionResult Login(string returnUrl = "")
+		public virtual ActionResult Login(string returnUrl = "")
         {
             return View();
         }

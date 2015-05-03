@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RouteDebug;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,24 +17,31 @@ namespace BGC.WebAPI
 	{
 		protected void Application_Start()
 		{
-			AreaRegistration.RegisterAllAreas();
-
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
+			AreaRegistration.RegisterAllAreas();
+
+			RegisterRouteDebugger();
 		}
 
-        internal static bool Debugging
-        {
-            get
-            {
-#if DEBUG
-                return true;
-#else
-                return false;
-#endif
-            }
-        }
+		private static void RegisterRouteDebugger()
+		{
+			using (RouteTable.Routes.GetReadLock())
+			{
+				bool foundDebugRoute = false;
+				foreach (Route route in RouteTable.Routes.OfType<Route>())
+				{
+					route.RouteHandler = new DebugRouteHandler();
+					if (route == DebugRoute.Singleton)
+						foundDebugRoute = true;
+				}
+				if (!foundDebugRoute)
+				{
+					RouteTable.Routes.Add(DebugRoute.Singleton);
+				}
+			}
+		}
 	}
 }
