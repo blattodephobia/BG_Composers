@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGC.WebAPI", "BGC.WebAPI\BGC.WebAPI.csproj", "{692E9131-A0B6-427B-9600-34BE6777700F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGC.Web", "BGC.Web\BGC.Web.csproj", "{692E9131-A0B6-427B-9600-34BE6777700F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGC.WebAPI.Tests", "BGC.WebAPI.Tests\BGC.WebAPI.Tests.csproj", "{D9A99FFF-C3D6-40AD-9D3B-5C68A76B83F9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGC.Web.Tests", "BGC.Web.Tests\BGC.Web.Tests.csproj", "{D9A99FFF-C3D6-40AD-9D3B-5C68A76B83F9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BGC.Data", "BGC.Data\BGC.Data.csproj", "{CE3C7A0C-BA3E-4FFC-80A3-2DC1C2FFEE7C}"
 EndProject

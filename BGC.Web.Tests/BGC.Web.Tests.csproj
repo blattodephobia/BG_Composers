@@ -123,9 +123,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BGC.WebAPI\BGC.WebAPI.csproj">
+    <ProjectReference Include="..\BGC.Web\BGC.Web.csproj">
       <Project>{692E9131-A0B6-427B-9600-34BE6777700F}</Project>
-      <Name>BGC.WebAPI</Name>
+      <Name>BGC.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
