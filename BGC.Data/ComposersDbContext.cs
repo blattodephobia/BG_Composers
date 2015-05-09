@@ -6,16 +6,16 @@ using System.Data.Entity;
 namespace BGC.Data
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
-	internal class ComposersDbContext : IdentityDbContext<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>, IUnitOfWork
+	internal class ComposersDbContext : IdentityDbContext<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>
 	{
 		public ComposersDbContext() : this("MySqlConnection")
 		{
+			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
 		}
 
 		public ComposersDbContext(string connectionStringName) :
 			base(connectionStringName)
 		{
-			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -31,11 +31,6 @@ namespace BGC.Data
 			// Max key size is 767 bytes and a string with length 256 in UTF-8 is at most 1024 bytes.
 			modelBuilder.Entity<AspNetRole>().Property(anr => anr.Name).HasMaxLength(64);
 			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
-		}
-
-		public IRepository<T> GetRepository<T>()
-		{
-			return new MySqlRepository<T>(this);
 		}
 	}
 }

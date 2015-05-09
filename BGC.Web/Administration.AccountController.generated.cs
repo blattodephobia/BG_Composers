@@ -105,9 +105,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Login = "Login";
             }
-            public readonly string Login = "~/Areas/Administration/Views/Account/Login.cshtml";
         }
     }
 

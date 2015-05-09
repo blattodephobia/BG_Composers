@@ -8,6 +8,5 @@ namespace BGC.Core
 {
     public interface IUnitOfWork
     {
-		IRepository<T> GetRepository<T>();
     }
 }

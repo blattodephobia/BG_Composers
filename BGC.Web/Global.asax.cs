@@ -1,8 +1,4 @@
-﻿using BGC.Core;
-using BGC.Data;
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Mvc;
-using RouteDebug;
+﻿using RouteDebug;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +23,7 @@ namespace BGC.WebAPI
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AreaRegistration.RegisterAllAreas();
 
-			// RegisterRouteDebugger();
+			RegisterRouteDebugger();
 		}
 
 		private static void RegisterRouteDebugger()
