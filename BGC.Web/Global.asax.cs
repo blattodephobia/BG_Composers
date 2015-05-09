@@ -23,7 +23,7 @@ namespace BGC.WebAPI
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AreaRegistration.RegisterAllAreas();
 
-			RegisterRouteDebugger();
+			// RegisterRouteDebugger();
 		}
 
 		private static void RegisterRouteDebugger()
