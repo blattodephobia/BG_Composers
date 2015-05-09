@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public interface IUnitOfWork
-    {
-		IRepository<T> GetRepository<T>();
-    }
+	public class IRepository<T>
+	{
+	}
 }
