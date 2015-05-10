@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    internal interface IUnitOfWork
-    {
-		IRepository<T> GetRepository<T>()
-			where T : class;
-    }
+	internal interface IRepository<T>
+		where T : class
+	{
+		IUnitOfWork UnitOfWork { get; }
+		IQueryable<T> All();
+	}
 }

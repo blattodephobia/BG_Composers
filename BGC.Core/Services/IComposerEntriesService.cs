@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core
+namespace BGC.Core.Services
 {
-    internal interface IUnitOfWork
-    {
-		IRepository<T> GetRepository<T>()
-			where T : class;
-    }
+	public interface IComposerEntriesService
+	{
+		IQueryable<Composer> GetAllEntries();
+	}
 }
