@@ -20,10 +20,15 @@ namespace BGC.Data
 			return this.DataSet;
 		}
 
-		public MySqlRepository(IUnitOfWork unitOfWork, DbSet<T> set)
+		public MySqlRepository(ComposersDbContext context)
 		{
-			this.UnitOfWork = unitOfWork;
-			this.DataSet = set;
+			this.UnitOfWork = context;
+			this.DataSet = context.Set<T>();
+		}
+
+		public void Dispose()
+		{
+			if (this.UnitOfWork != null) this.UnitOfWork.Dispose();
 		}
 	}
 }

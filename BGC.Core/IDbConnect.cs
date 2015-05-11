@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Services
+namespace BGC.Core
 {
-	internal abstract class ServiceBase
+	internal interface IDbConnect : IDisposable
 	{
-		protected ServiceBase()
-		{
-		}
+		IUnitOfWork UnitOfWork { get; }
 	}
 }

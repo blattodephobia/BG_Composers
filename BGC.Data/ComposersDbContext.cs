@@ -33,10 +33,10 @@ namespace BGC.Data
 			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
 		}
 
-		public IRepository<T> GetRepository<T>()
+		public void MarkUpdated<T>(T entity)
 			where T : class
 		{
-			return new MySqlRepository<T>(this, this.Set<T>());
+			this.Entry(entity).State = EntityState.Modified;
 		}
 	}
 }

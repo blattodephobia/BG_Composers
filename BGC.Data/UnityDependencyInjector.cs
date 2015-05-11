@@ -19,7 +19,13 @@ namespace BGC.Data
 
 		public void RegisterServices(IUnityContainer helper)
 		{
-			helper.RegisterType<IComposerEntriesService, ComposerEntriesService>();
+			helper.RegisterType<IComposerEntriesService, ComposerEntriesService>(new InjectionFactory(
+				container =>
+				{
+					ComposersDbContext context = new ComposersDbContext();
+					IRepository<Composer> repository = new MySqlRepository<Composer>(context);
+					return new ComposerEntriesService(repository);
+				}));
 		}
 	}
 }

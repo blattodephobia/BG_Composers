@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    internal interface IUnitOfWork
+    internal interface IUnitOfWork : IDisposable
     {
-		IRepository<T> GetRepository<T>()
+		void MarkUpdated<T>(T entity)
 			where T : class;
     }
 }

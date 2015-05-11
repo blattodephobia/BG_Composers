@@ -10,10 +10,9 @@ namespace BGC.Core.Services
 	{
 		public IRepository<Composer> Composers { get; private set; }
 
-		public ComposerEntriesService(IUnitOfWork unitOfWork) :
-			base(unitOfWork)
+		public ComposerEntriesService(IRepository<Composer> composers)
 		{
-			this.Composers = unitOfWork.GetRepository<Composer>();	
+			this.Composers = composers;
 		}
 
 		public IQueryable<Composer> GetAllEntries()
