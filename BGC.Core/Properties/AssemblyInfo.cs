@@ -36,3 +36,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("BGC.Data")]
+[assembly: InternalsVisibleTo("BGC.Core.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] // used for Moq compatibility
