@@ -34,24 +34,14 @@ namespace BGC.Core.Services
 				body: Expression.NewArrayInit
 				(
 					type: typeof(TPropertyType),
-					initializers: matchingProperties.Select(property => Expression.Property(Expression.Convert(parameter, propertyDeclaringType), property)) // (<parameter> as <propertyDeclaringType>).property
+					initializers: matchingProperties.Select(property =>
+					{
+						Expression typeConvert = Expression.Convert(parameter, propertyDeclaringType);
+						return Expression.Property(typeConvert, property); // ((<propertyDeclaringType>)<parameter>).property
+					})
 				)
 			);
 			return lambda.Compile();
-		}
-
-		private IEnumerable<IDbConnect> dbConnectedObjects;
-		protected IEnumerable<IDbConnect> DbConnectedObjects
-		{
-			get
-			{
-				if (this.dbConnectedObjects == null)
-				{
-					this.dbConnectedObjects = DbConnectMemberAccessors[this.GetType()].Invoke(this);
-				}
-
-				return this.dbConnectedObjects ?? Enumerable.Empty<IDbConnect>();
-			}
 		}
 
 		private IUnitOfWork commonUnitOfWork;
@@ -59,19 +49,19 @@ namespace BGC.Core.Services
 		{
 			get
 			{
-				try
+				if (this.commonUnitOfWork == null)
 				{
-					if (this.commonUnitOfWork == null)
+					IEnumerable<IDbConnect> dbConnectedObjects = DbConnectMemberAccessors[this.GetType()].Invoke(this) ?? Enumerable.Empty<IDbConnect>();
+					IEnumerable<IUnitOfWork> unitOfWorkInstances = dbConnectedObjects.Select(obj => obj.UnitOfWork);
+					if (!unitOfWorkInstances.Any()) throw new InvalidOperationException("There are no objects connected to a database.");
+
+					this.commonUnitOfWork = unitOfWorkInstances.Aggregate((prev, curr) =>
 					{
-						this.commonUnitOfWork = this.DbConnectedObjects.Distinct().Single().UnitOfWork;
-					}
-					return this.commonUnitOfWork;
+						if (object.ReferenceEquals(prev, curr)) return curr;
+						else throw new InvalidOperationException(string.Format("Database connected objects use more than one {0} instance", typeof(IUnitOfWork).Name));
+					});
 				}
-				catch (InvalidOperationException)
-				{
-					if (!this.DbConnectedObjects.Any()) throw new InvalidOperationException("There are no objects connected to a database.");
-					else throw new InvalidOperationException(string.Format("Database connectable objects are connected to different {0} instances", typeof(IUnitOfWork).Name));
-				}
+				return this.commonUnitOfWork;
 			}
 		}
 
@@ -81,7 +71,7 @@ namespace BGC.Core.Services
 			if (!DbConnectMemberAccessors.ContainsKey(currentType))
 			{
 				var lambda = GetPropertyValuesOfTypeAccessor<IDbConnect>(currentType);
-				//DbConnectMemberAccessors.Add(currentType, lambda);
+				DbConnectMemberAccessors.Add(currentType, lambda);
 			}
 		}
 	}
