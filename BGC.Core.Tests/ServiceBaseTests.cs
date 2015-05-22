@@ -116,12 +116,17 @@ namespace BGC.Core.Tests
 
 			internal class MockUnitOfWork : IUnitOfWork
 			{
-				public void MarkUpdated<T>(T entity) where T : class
+				public void Dispose()
 				{
 					throw new NotImplementedException();
 				}
 
-				public void Dispose()
+				public int SaveChanges()
+				{
+					throw new NotImplementedException();
+				}
+
+				public IRepository<T> GetRepository<T>() where T : class
 				{
 					throw new NotImplementedException();
 				}
@@ -129,11 +134,6 @@ namespace BGC.Core.Tests
 
 			internal class MockUnitOfWorkThrowsOnGetHashCode : IUnitOfWork
 			{
-				public void MarkUpdated<T>(T entity) where T : class
-				{
-					throw new NotImplementedException();
-				}
-
 				public void Dispose()
 				{
 					throw new NotImplementedException();
@@ -142,6 +142,16 @@ namespace BGC.Core.Tests
 				public override int GetHashCode()
 				{
 					throw new NotSupportedException("UnitOfWork equality should not depend on GetHashCode but rather than on the static objec.ReferenceEquals method");
+				}
+
+				public int SaveChanges()
+				{
+					throw new NotImplementedException();
+				}
+
+				public IRepository<T> GetRepository<T>() where T : class
+				{
+					throw new NotImplementedException();
 				}
 			}
 
