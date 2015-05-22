@@ -8,7 +8,8 @@ namespace BGC.Core
 {
     internal interface IUnitOfWork : IDisposable
     {
-		void MarkUpdated<T>(T entity)
+		int SaveChanges();
+		IRepository<T> GetRepository<T>()
 			where T : class;
     }
 }

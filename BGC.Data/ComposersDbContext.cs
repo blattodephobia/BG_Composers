@@ -10,22 +10,22 @@ namespace BGC.Data
 	{
 		public ComposersDbContext() : this("MySqlConnection")
 		{
-			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
 		}
 
 		public ComposersDbContext(string connectionStringName) :
 			base(connectionStringName)
 		{
+			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<AspNetUser>().HasKey(anu => anu.Id);
-			modelBuilder.Entity<AspNetRole>().HasKey(anr => anr.Id);
-			modelBuilder.Entity<AspNetUserLogin>().HasKey(anul => new { anul.UserId, anul.ProviderKey });
-			modelBuilder.Entity<AspNetUserRole>().HasKey(anur => new { anur.UserId, anur.RoleId });
-			modelBuilder.Entity<AspNetUserClaim>().HasKey(anuc => anuc.Id);
+			modelBuilder.Entity<AspNetUser>().HasKey(user => user.Id);
+			modelBuilder.Entity<AspNetRole>().HasKey(role => role.Id);
+			modelBuilder.Entity<AspNetUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
+			modelBuilder.Entity<AspNetUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
+			modelBuilder.Entity<AspNetUserClaim>().HasKey(userClaim => userClaim.Id);
 
 			// The Role's Name and the User's UserName lengths are reduced, because otherwise MySQL wouldn't allow indexing them;
 			// Max key size is 767 bytes and a string with length 256 in UTF-8 is at most 1024 bytes.
@@ -33,10 +33,10 @@ namespace BGC.Data
 			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
 		}
 
-		public void MarkUpdated<T>(T entity)
+		public IRepository<T> GetRepository<T>()
 			where T : class
 		{
-			this.Entry(entity).State = EntityState.Modified;
+			return new MySqlRepository<T>(this);
 		}
 	}
 }

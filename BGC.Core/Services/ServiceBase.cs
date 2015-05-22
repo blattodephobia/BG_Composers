@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core.Services
 {
-	internal abstract class ServiceBase
+	internal abstract class ServiceBase : IDisposable
 	{
 		private static Dictionary<Type, Func<object, IEnumerable<IDbConnect>>> DbConnectMemberAccessors = new Dictionary<Type, Func<object, IEnumerable<IDbConnect>>>();
 
@@ -73,6 +73,11 @@ namespace BGC.Core.Services
 				var lambda = GetPropertyValuesOfTypeAccessor<IDbConnect>(currentType);
 				DbConnectMemberAccessors.Add(currentType, lambda);
 			}
+		}
+
+		public void Dispose()
+		{
+			this.CommonUnitOfWork.Dispose();
 		}
 	}
 }
