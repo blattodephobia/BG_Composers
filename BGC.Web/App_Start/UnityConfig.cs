@@ -1,8 +1,16 @@
 using System;
+using System.Linq;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using BGC.Core;
 using BGC.Data;
+using BGC.WebAPI.Areas.Administration.Controllers;
+using BGC.Utilities;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
+using System.Web;
+using System.Reflection;
 
 namespace BGC.WebAPI.App_Start
 {
@@ -38,6 +46,25 @@ namespace BGC.WebAPI.App_Start
         {
 			DependencyRegistrationProvider.RegisterUnitOfWork(container);
 			DependencyRegistrationProvider.RegisterServices(container);
+			DependencyRegistrationProvider.RegisterIdentityStores(container);
+
+			container
+				.RegisterType<AdministrationControllerBase>()
+				.RegisterTypes(
+					types: AllClasses
+						   .FromAssemblies(typeof(AdministrationControllerBase).Assembly)
+						   .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
+					getInjectionMembers: (t) => new InjectionMember[]
+					{
+						new InjectionProperty(
+							Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
+							container.Resolve<UserManager<AspNetUser, long>>())
+					});
+
+			container.RegisterType<SignInManager<AspNetUser, long>>(new InjectionFactory(c =>
+			{
+				return new SignInManager<AspNetUser, long>(c.Resolve<UserManager<AspNetUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
+			}));
         }
     }
 }

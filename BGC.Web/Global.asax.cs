@@ -1,4 +1,5 @@
-﻿using RouteDebug;
+﻿using BGC.Utilities;
+using RouteDebug;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,23 @@ namespace BGC.WebAPI
 
 	public class WebApiApplication : System.Web.HttpApplication
 	{
+		public class TempDataKeys
+		{
+			public class AdministrationArea
+			{
+				public static readonly string LoginSuccessReturnUrl = Expressions.NameOf(() => TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+			}
+		}
+
+		public class ASF<T> : IComparable<T>
+		{
+			public int CompareTo(T other)
+			{
+				return 0;
+			}
+		}
+
+
 		protected void Application_Start()
 		{
 			WebApiConfig.Register(GlobalConfiguration.Configuration);

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BGC.Core;
+using BGC.Utilities;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,8 +9,22 @@ using System.Web.Mvc;
 
 namespace BGC.WebAPI.Areas.Administration.Controllers
 {
-	[Authorize(Roles="Administrator")]
+	[AdminAreaAuthorization(Roles = "Administrator")]
     public abstract class AdministrationControllerBase : Controller
     {
+		private UserManager<AspNetUser, long> userManager;
+		public UserManager<AspNetUser, long> UserManager
+		{
+			get
+			{
+				return this.userManager;
+			}
+
+			set
+			{
+				DebugCheck.IsTrue(this.userManager == null, () => new InvalidOperationException("User Manager cannot be set more than once"));
+				this.userManager = value;
+			}
+		}
     }
 }

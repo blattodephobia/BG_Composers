@@ -8,6 +8,8 @@ namespace BGC.WebAPI.Areas.Administration
 {
 	public class AdministrationAreaRegistration : AreaRegistration
 	{
+		public static readonly string UrlPrefixToken = "admin";
+
 		public override string AreaName
 		{
 			get { return MVC.AdministrationArea.Name; }
@@ -18,7 +20,7 @@ namespace BGC.WebAPI.Areas.Administration
 			context.Routes
 				.MapRoute(
 					name: "Administration",
-					url: "admin/{controller}/{action}",
+					url: string.Format("{0}/{{controller}}/{{action}}", UrlPrefixToken),
 					defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Users })
 				.DataTokens.Add("area", this.AreaName);
 		}

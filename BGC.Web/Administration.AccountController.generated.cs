@@ -75,26 +75,15 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         public class ActionNamesClass
         {
             public readonly string Users = "Users";
-            public readonly string Login = "Login";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string Users = "Users";
-            public const string Login = "Login";
         }
 
 
-        static readonly ActionParamsClass_Login s_params_Login = new ActionParamsClass_Login();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Login
-        {
-            public readonly string returnUrl = "returnUrl";
-            public readonly string model = "model";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -105,7 +94,9 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Users = "Users";
             }
+            public readonly string Users = "~/Areas/Administration/Views/Account/Users.cshtml";
         }
     }
 
@@ -122,30 +113,6 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Users);
             UsersOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string returnUrl);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Login(string returnUrl)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "returnUrl", returnUrl);
-            LoginOverride(callInfo, returnUrl);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.WebAPI.Models.LoginViewModel model);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.WebAPI.Models.LoginViewModel model)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            LoginOverride(callInfo, model);
             return callInfo;
         }
 

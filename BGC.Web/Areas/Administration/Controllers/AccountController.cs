@@ -11,22 +11,8 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
     {
 		public virtual ActionResult Users()
         {
-			LocalizationDictionary dict = new LocalizationDictionary();
-			string s = dict.AdministrationArea.Administration.Users.Ok;
             return View();
-        }
-
-		[AllowAnonymous]
-		public virtual ActionResult Login(string returnUrl = "")
-        {
-			return this.View();
-        }
-
-		[AllowAnonymous]
-        [HttpPost]
-		public virtual ActionResult Login(LoginViewModel model)
-        {
-            return new EmptyResult();
+			LocalizationDictionary dict = new LocalizationDictionary();
         }
     }
 }

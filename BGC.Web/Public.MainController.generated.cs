@@ -27,9 +27,6 @@ namespace BGC.WebAPI.Areas.Public.Controllers
     public partial class MainController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public MainController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected MainController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -94,7 +91,9 @@ namespace BGC.WebAPI.Areas.Public.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Index = "Index";
             }
+            public readonly string Index = "~/Areas/Public/Views/Main/Index.cshtml";
         }
     }
 
