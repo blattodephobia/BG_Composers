@@ -1,13 +1,21 @@
 ﻿using BGC.Core;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure.Annotations;
 
 namespace BGC.Data
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
 	internal class ComposersDbContext : IdentityDbContext<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>, IUnitOfWork
 	{
+		public DbSet<Composer> Composers { get; set; }
+
+		public DbSet<ComposerEntry> ComposerArticles { get; set; }
+
+		public DbSet<ComposerName> LocalizedComposerNames { get; set; }
+
 		public ComposersDbContext() : this("MySqlConnection")
 		{
 		}
@@ -31,6 +39,16 @@ namespace BGC.Data
 			// Max key size is 767 bytes and a string with length 256 in UTF-8 is at most 1024 bytes.
 			modelBuilder.Entity<AspNetRole>().Property(anr => anr.Name).HasMaxLength(64);
 			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
+
+			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
+				.HasMaxLength(32)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+			modelBuilder.Entity<ComposerName>().Property(name => name.CompleteName)
+				.HasMaxLength(128)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
+				.HasMaxLength(32)
+				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		public IRepository<T> GetRepository<T>()
@@ -40,3 +58,4 @@ namespace BGC.Data
 		}
 	}
 }
+

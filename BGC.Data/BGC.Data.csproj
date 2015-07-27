@@ -100,6 +100,14 @@
     <Compile Include="Migrations\201503181146205_Add_MustChangePassword_Option.Designer.cs">
       <DependentUpon>201503181146205_Add_MustChangePassword_Option.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201507271815516_ComposerEntities_Initial.cs" />
+    <Compile Include="Migrations\201507271815516_ComposerEntities_Initial.Designer.cs">
+      <DependentUpon>201507271815516_ComposerEntities_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.cs" />
+    <Compile Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.Designer.cs">
+      <DependentUpon>201507271922464_ComposerName_IndexAndMaxLength.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -115,6 +123,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201503181146205_Add_MustChangePassword_Option.resx">
       <DependentUpon>201503181146205_Add_MustChangePassword_Option.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507271815516_ComposerEntities_Initial.resx">
+      <DependentUpon>201507271815516_ComposerEntities_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.resx">
+      <DependentUpon>201507271922464_ComposerName_IndexAndMaxLength.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

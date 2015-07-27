@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class Composer
+	public class Composer : BgcEntity<long>
 	{
+		public virtual ICollection<ComposerName> LocalizedNames { get; set; }
+
+		public virtual ICollection<ComposerEntry> Articles { get; set; }
+
+		public Composer()
+		{
+			this.LocalizedNames = new HashSet<ComposerName>();
+		}
 	}
 }
