@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using System.Web;
 
-namespace BGC.WebAPI.Models
+namespace BGC.WebAPI
 {
-	public class LocalizationDictionary
+	public partial class LocalizationDictionary
 	{
-		private static readonly string LocalizationSuffix = "Localization";
+		[Localizable(false)]
+		public static readonly string LocalizationSuffix = "Localization";
 
 		private static void SetStaticFieldsRecursively(Type rootType)
 		{
@@ -42,21 +43,20 @@ namespace BGC.WebAPI.Models
 			SetStaticFieldsRecursively(rootClassType);
 		}
 
-		public class AdministrationAreaLocalization
+		public partial class AdministrationAreaLocalization
 		{
-			public class AdministrationLocalization
+			public partial class AdministrationLocalization
 			{
-				public class UsersLocalization
+				public partial class UsersLocalization
 				{
-					private static string ok;
-					private static string cancel;
 				}
 			}
 		}
 
-		public class GenericTextLocalization
+		public partial class GenericTextLocalization
 		{
-
+			private static string ok;
+			private static string cancel;
 		}
 	}
 }

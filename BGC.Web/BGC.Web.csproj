@@ -58,17 +58,28 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.0.0\lib\net45\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.0.0\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.CSharp.Desktop">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.CSharp.Desktop.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.CSharp.Workspaces">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.Workspaces.1.0.0\lib\net45\Microsoft.CodeAnalysis.CSharp.Workspaces.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeAnalysis.Desktop">
-      <HintPath>..\packages\Microsoft.CodeAnalysis.Common.1.0.0-rc1\lib\net45\Microsoft.CodeAnalysis.Desktop.dll</HintPath>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.VisualBasic.1.0.0\lib\net45\Microsoft.CodeAnalysis.VisualBasic.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.VisualBasic.Workspaces.1.0.0\lib\net45\Microsoft.CodeAnalysis.VisualBasic.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.0.0\lib\net45\Microsoft.CodeAnalysis.Workspaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeAnalysis.Workspaces.Desktop">
+      <HintPath>..\packages\Microsoft.CodeAnalysis.Workspaces.Common.1.0.0\lib\net45\Microsoft.CodeAnalysis.Workspaces.Desktop.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -120,13 +131,30 @@
       <HintPath>..\packages\routedebugger.2.1.4.0\lib\net40\RouteDebugger.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Collections.Immutable">
-      <HintPath>..\packages\System.Collections.Immutable.1.1.33-beta\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.AttributedModel">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Convention">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Convention.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Hosting">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Hosting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.Runtime">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Composition.TypedParts">
+      <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.TypedParts.dll</HintPath>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Reflection.Metadata">
-      <HintPath>..\packages\System.Reflection.Metadata.1.0.18-beta\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
+    <Reference Include="System.Reflection.Metadata, Version=1.0.21.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -258,13 +286,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\LocalizationDictionary.cs" />
-    <Compile Include="Models\LocalizationDictionaryGenerator.cs">
-      <AutoGen>True</AutoGen>
+    <Compile Include="Localization\LocalizationDictionary.cs" />
+    <Compile Include="Localization\LocalizationDictionary.generated.cs">
+      <DependentUpon>LocalizationDictionary.generated.tt</DependentUpon>
+      <SubType>Code</SubType>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LocalizationDictionaryGenerator.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
     </Compile>
-    <Compile Include="Models\LocalizedString.cs" />
+    <Compile Include="Localization\LocalizedString.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -337,11 +366,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Models\LocalizationDictionaryGenerator.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LocalizationDictionaryGenerator.cs</LastGenOutput>
-      <FormatOutput>False</FormatOutput>
-    </Content>
     <Content Include="Areas\Public\Views\Main\Index.cshtml" />
     <Content Include="Areas\Administration\Views\Web.config" />
     <Content Include="Areas\Public\Views\Web.config" />
@@ -351,6 +375,10 @@
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Localization\LocalizationDictionary.generated.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LocalizationDictionary.generated.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />

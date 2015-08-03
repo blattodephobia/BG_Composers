@@ -9,11 +9,11 @@ namespace BGC.Core
 {
 	public class ComposerName : BgcEntity<long>
 	{
-		private static Regex NamesExtractor = new Regex(@"[\w\-]+");
+		private static readonly char[] NamesSeparators = new char[] { ' ' };
 
 		private static List<string> ExtractNames(string value)
 		{
-			List<string> names = NamesExtractor.Matches(value).Cast<Match>().Select(m => m.Value).ToList();
+			List<string> names = new List<string>(value.Split(NamesSeparators, StringSplitOptions.RemoveEmptyEntries));
 			return names;
 		}
 
@@ -89,9 +89,9 @@ namespace BGC.Core
 			set
 			{
 				this.completeName = value;
-				string[] names = NamesExtractor.Matches(value).Cast<Match>().Select(m => m.Value).ToArray();
+				List<string> names = ExtractNames(value);
 				this.firstName = names[0];
-				if (names.Length > 1) this.lastName = names.Last();
+				if (names.Count > 1) this.lastName = names.Last();
 			}
 		}
 	}

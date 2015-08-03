@@ -11,8 +11,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
     {
 		public virtual ActionResult Users()
         {
-            return View();
-			LocalizationDictionary dict = new LocalizationDictionary();
+			return this.View();
         }
     }
 }

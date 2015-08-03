@@ -116,6 +116,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdministrationArea\AreaTests.cs" />
+    <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
+    <Compile Include="Mocks.cs" />
+    <Compile Include="Models\LocalizationDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -125,15 +129,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233e69-ff24-41d8-b779-9dd446202d8d}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BGC.Web\BGC.Web.csproj">
       <Project>{692E9131-A0B6-427B-9600-34BE6777700F}</Project>
       <Name>BGC.Web</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
