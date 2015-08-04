@@ -87,14 +87,14 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 				this.Namespaces.Any() ? "." : "",
 				this.ContainerClasses.Aggregate(new StringBuilder(""), (sb, curr) => sb.AppendFormat("{0}.", curr), sb => (sb.Length > 0 ? sb.Remove(sb.Length - 1, 1) : sb).ToString()),
 				this.ContainerClasses.Any() ? "." : "",
-				this.DeclaredType);
+				this.TypeName);
 		}
 
 		public IEnumerable<string> Namespaces { get; private set; }
 
 		public IEnumerable<string> ContainerClasses { get; private set; }
 
-		public string DeclaredType { get; private set; }
+		public string TypeName { get; private set; }
 
 		public IEnumerable<string> LocalizationKeyFields { get; private set; }
 
@@ -102,7 +102,7 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 
 		public LocalizationTypeDeclaration(ClassDeclarationSyntax localizationKeyClass, IEnumerable<FieldDeclarationSyntax> localizationKeyFields, IEnumerable<LocalizationTypeDeclaration> subTypes = null)
 		{
-			this.DeclaredType = localizationKeyClass.Identifier.Text;
+			this.TypeName = localizationKeyClass.Identifier.Text;
 
 			List<string> containerClasses = new List<string>();
 			List<string> namespaces = new List<string>();
@@ -190,7 +190,7 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 
 	static string NestedLocalizationTypePropertyName(LocalizationTypeDeclaration t)
 	{
-		return t.DeclaredType.Substring(0, t.DeclaredType.Length - LocalizationSuffix.Length);
+		return t.TypeName.Substring(0, t.TypeName.Length - LocalizationSuffix.Length);
 	}
 
 	void WriteClassDataRecursively(LocalizationTypeDeclaration declaringType, int initialIndentation)
@@ -200,7 +200,7 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 			this.PushIndent(Indent);
 		}
 		IEnumerable<LocalizationTypeDeclaration> nestedLocalizationTypes = declaringType.SubTypes;
-		this.Write("public partial class {0}\r\n{{\r\n", declaringType.DeclaredType);
+		this.Write("public partial class {0}\r\n{{\r\n", declaringType.TypeName);
 		
 		this.PushIndent(Indent);
 		IEnumerable<string> keyNameFields = declaringType.LocalizationKeyFields;
@@ -211,23 +211,23 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 
 		foreach (LocalizationTypeDeclaration nestedType in nestedLocalizationTypes)
 		{
-			this.Write("public {0} {1} {{ get; private set; }}\r\n", nestedType.DeclaredType, NestedLocalizationTypePropertyName(nestedType));
+			this.Write("public {0} {1} {{ get; private set; }}\r\n", nestedType.TypeName, NestedLocalizationTypePropertyName(nestedType));
 		}
 
-		this.Write("public {0}(IDictionary<string, string> {1})\r\n", declaringType.DeclaredType, LocalizationDictionaryParameterName);
+		this.Write("public {0}(IDictionary<string, string> {1})\r\n", declaringType.TypeName, LocalizationDictionaryParameterName);
 		this.Write("{\r\n");
 		this.PushIndent(Indent);
 		this.Write("this.{0} = {1};\r\n\r\n", LocalizationDictionaryPropertyName, LocalizationDictionaryParameterName);
 		foreach (LocalizationTypeDeclaration type in nestedLocalizationTypes)
 		{
 			string nestedTypePropertyName = NestedLocalizationTypePropertyName(type);
-			this.Write("this.{0} = new {1}(this.{2});\r\n", nestedTypePropertyName, type.DeclaredType, LocalizationDictionaryPropertyName);
+			this.Write("this.{0} = new {1}(this.{2});\r\n", nestedTypePropertyName, type.TypeName, LocalizationDictionaryPropertyName);
 		}
 
 		this.Write("\r\n");
 		foreach (string field in keyNameFields)
 		{
-			this.Write("this.{0} = new {1}({2}.{3}, this.{4});\r\n", ToSentenceCase(field), typeof(LocalizedString).Name, declaringType.DeclaredType, field, LocalizationDictionaryPropertyName);
+			this.Write("this.{0} = new {1}({2}.{3}, this.{4});\r\n", ToSentenceCase(field), typeof(LocalizedString).Name, declaringType.TypeName, field, LocalizationDictionaryPropertyName);
 		}
 
 		this.PopIndent();
