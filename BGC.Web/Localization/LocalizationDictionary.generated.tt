@@ -199,48 +199,54 @@ namespace <#= typeof(BGC.WebAPI.LocalizationDictionary).Namespace #>
 		{
 			this.PushIndent(Indent);
 		}
-		IEnumerable<LocalizationTypeDeclaration> nestedLocalizationTypes = declaringType.SubTypes;
+
 		this.Write("public partial class {0}\r\n{{\r\n", declaringType.TypeName);
-		
 		this.PushIndent(Indent);
+
+		IEnumerable<LocalizationTypeDeclaration> nestedLocalizationTypes = declaringType.SubTypes;
+		foreach (LocalizationTypeDeclaration nestedType in nestedLocalizationTypes)
+		{
+			WriteClassDataRecursively(nestedType, 0);
+		}
+
 		IEnumerable<string> keyNameFields = declaringType.LocalizationKeyFields;
 		foreach (string field in keyNameFields)
 		{
 			this.Write("public {0} {1} {{ get; private set; }}\r\n", typeof(LocalizedString).Name, ToSentenceCase(field));
 		}
-
+		
+		if (keyNameFields.Any() && nestedLocalizationTypes.Any()) this.Write("\r\n");
 		foreach (LocalizationTypeDeclaration nestedType in nestedLocalizationTypes)
 		{
 			this.Write("public {0} {1} {{ get; private set; }}\r\n", nestedType.TypeName, NestedLocalizationTypePropertyName(nestedType));
 		}
 
+		if (nestedLocalizationTypes.Any()) this.Write("\r\n");
 		this.Write("public {0}(IDictionary<string, string> {1})\r\n", declaringType.TypeName, LocalizationDictionaryParameterName);
 		this.Write("{\r\n");
 		this.PushIndent(Indent);
-		this.Write("this.{0} = {1};\r\n\r\n", LocalizationDictionaryPropertyName, LocalizationDictionaryParameterName);
+		this.Write("this.{0} = {1};\r\n", LocalizationDictionaryPropertyName, LocalizationDictionaryParameterName);
+		
+		if (nestedLocalizationTypes.Any()) this.Write("\r\n");
 		foreach (LocalizationTypeDeclaration type in nestedLocalizationTypes)
 		{
 			string nestedTypePropertyName = NestedLocalizationTypePropertyName(type);
 			this.Write("this.{0} = new {1}(this.{2});\r\n", nestedTypePropertyName, type.TypeName, LocalizationDictionaryPropertyName);
 		}
 
-		this.Write("\r\n");
+		if (nestedLocalizationTypes.Any() && keyNameFields.Any()) this.Write("\r\n");
 		foreach (string field in keyNameFields)
 		{
 			this.Write("this.{0} = new {1}({2}.{3}, this.{4});\r\n", ToSentenceCase(field), typeof(LocalizedString).Name, declaringType.TypeName, field, LocalizationDictionaryPropertyName);
 		}
 
 		this.PopIndent();
-		this.Write("}\r\n");
+		this.Write("}\r\n\r\n");
 
 		this.Write("private IDictionary<string, string> {0} {{ get; set; }}\r\n", LocalizationDictionaryPropertyName);
-
-		foreach (LocalizationTypeDeclaration nestedType in nestedLocalizationTypes)
-		{
-			WriteClassDataRecursively(nestedType, 0);
-		}
 		this.PopIndent();
 		this.Write("}\r\n");
+
 		for (int i = 0; i < initialIndentation; i++)
 		{
 			this.PopIndent();
