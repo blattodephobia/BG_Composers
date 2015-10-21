@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("BGC.Core")]
+[assembly: AssemblyTitle("BGC.Services")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BGC.Core")]
+[assembly: AssemblyProduct("BGC.Services")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4d48cd11-5007-411d-b026-9609bc290752")]
+[assembly: Guid("6d27524e-2a78-46e6-9e1a-821d55970400")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,8 +35,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly: InternalsVisibleTo("BGC.Data")]
-[assembly: InternalsVisibleTo("BGC.Services")]
 [assembly: InternalsVisibleTo("BGC.Services.Tests")]
-[assembly: InternalsVisibleTo("BGC.Core.Tests")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")] // used for Moq compatibility

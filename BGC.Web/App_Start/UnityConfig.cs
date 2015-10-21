@@ -27,7 +27,7 @@ namespace BGC.WebAPI.App_Start
             return container;
         });
 
-		private static IDependencyRegistration<IUnityContainer> DependencyRegistrationProvider = new UnityDependencyInjector();
+		private static IDependencyRegistration<IUnityContainer> DependencyRegistrationProvider = new DataLayerDependencyRegistration();
 
         /// <summary>
         /// Gets the configured Unity container.
@@ -44,9 +44,8 @@ namespace BGC.WebAPI.App_Start
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-			DependencyRegistrationProvider.RegisterUnitOfWork(container);
-			DependencyRegistrationProvider.RegisterServices(container);
-			DependencyRegistrationProvider.RegisterIdentityStores(container);
+			new BGC.Data.DataLayerDependencyRegistration().RegisterTypes(container);
+			new BGC.Core.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
 
 			container
 				.RegisterType<AdministrationControllerBase>()

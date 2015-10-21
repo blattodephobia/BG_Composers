@@ -13,26 +13,11 @@ using System.Threading.Tasks;
 
 namespace BGC.Data
 {
-	public class UnityDependencyInjector : IDependencyRegistration<IUnityContainer>
+	public class DataLayerDependencyRegistration : IDependencyRegistration<IUnityContainer>
 	{
-		public void RegisterUnitOfWork(IUnityContainer helper)
+		public void RegisterTypes(IUnityContainer helper)
 		{
 			helper.RegisterType<IUnitOfWork, ComposersDbContext>(new InjectionConstructor());
-		}
-
-		public void RegisterServices(IUnityContainer helper)
-		{
-			helper.RegisterType<IComposerEntriesService, ComposerEntriesService>(new InjectionFactory(
-				container =>
-				{
-					ComposersDbContext context = new ComposersDbContext();
-					IRepository<Composer> repository = new MySqlRepository<Composer>(context);
-					return new ComposerEntriesService(repository);
-				}));
-		}
-
-		public void RegisterIdentityStores(IUnityContainer helper)
-		{
 			helper.RegisterType<IUserStore<AspNetUser, long>, UserStore<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>>(
 				new InjectionFactory(container =>
 				{

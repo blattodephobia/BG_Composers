@@ -8,10 +8,6 @@ namespace BGC.Core
 {
 	public interface IDependencyRegistration<TInjectorObject>
 	{
-		void RegisterServices(TInjectorObject helper);
-
-		void RegisterUnitOfWork(TInjectorObject helper);
-
-		void RegisterIdentityStores(TInjectorObject helper);
+		void RegisterTypes(TInjectorObject helper);
 	}
 }

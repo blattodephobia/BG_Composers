@@ -15,19 +15,24 @@ namespace BGC.Core.Tests
 	[TestClass]
 	public class ServiceBaseTests
 	{
+		public class MockEntity
+		{
+
+		}
+
 		[TestClass]
 		public class GetPropertyValuesOfTypeAccessorTests
 		{
 			public class CustomNonEmptyService
 			{
-				internal IRepository<AspNetUser> MockRepo1 { get; set; }
-				internal IRepository<AspNetUser> MockRepo2 { get; set; }
+				internal IRepository<MockEntity> MockRepo1 { get; set; }
+				internal IRepository<MockEntity> MockRepo2 { get; set; }
 
 				public CustomNonEmptyService()
 				{
 					Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
-					Mock<IRepository<AspNetUser>> mockRepo1 = new Mock<IRepository<AspNetUser>>();
-					Mock<IRepository<AspNetUser>> mockRepo2 = new Mock<IRepository<AspNetUser>>();
+					Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+					Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
 					mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
 					mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
 					this.MockRepo1 = mockRepo1.Object;
@@ -36,15 +41,15 @@ namespace BGC.Core.Tests
 			}
 			public struct CustomNonEmptyStructService
 			{
-				internal IRepository<AspNetUser> MockRepo1 { get; set; }
-				internal IRepository<AspNetUser> MockRepo2 { get; set; }
+				internal IRepository<MockEntity> MockRepo1 { get; set; }
+				internal IRepository<MockEntity> MockRepo2 { get; set; }
 
 				public CustomNonEmptyStructService(bool dummy) :
 					this()
 				{
 					Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
-					Mock<IRepository<AspNetUser>> mockRepo1 = new Mock<IRepository<AspNetUser>>();
-					Mock<IRepository<AspNetUser>> mockRepo2 = new Mock<IRepository<AspNetUser>>();
+					Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+					Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
 					mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
 					mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
 					this.MockRepo1 = mockRepo1.Object;
@@ -70,14 +75,14 @@ namespace BGC.Core.Tests
 			[TestMethod]
 			public void ShouldReturnAllMatchingProperties()
 			{
-				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyService) } , new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
+				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
 				Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyService()).Count());
 			}
 
 			[TestMethod]
 			public void ShouldReturnAllMatchingPropertiesForValueTypes()
 			{
-				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyStructService) } , new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
+				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyStructService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
 				Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyStructService()).Count());
 			}
 
@@ -106,8 +111,8 @@ namespace BGC.Core.Tests
 
 			internal class CustomNonEmptyService : BasicServiceImplementation
 			{
-				internal IRepository<AspNetUser> MockRepo1 { get; set; }
-				internal IRepository<AspNetUser> MockRepo2 { get; set; }
+				internal IRepository<MockEntity> MockRepo1 { get; set; }
+				internal IRepository<MockEntity> MockRepo2 { get; set; }
 
 				public CustomNonEmptyService()
 				{
@@ -161,8 +166,8 @@ namespace BGC.Core.Tests
 			{
 				Mock<IUnitOfWork> unitOfWork1 = new Mock<IUnitOfWork>();
 				Mock<IUnitOfWork> unitOfWork2 = new Mock<IUnitOfWork>();
-				Mock<IRepository<AspNetUser>> mockRepo1 = new Mock<IRepository<AspNetUser>>();
-				Mock<IRepository<AspNetUser>> mockRepo2 = new Mock<IRepository<AspNetUser>>();
+				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
 				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(unitOfWork1.Object);
 				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(unitOfWork2.Object);
 				CustomNonEmptyService testObj = new CustomNonEmptyService()
@@ -185,8 +190,8 @@ namespace BGC.Core.Tests
 			public void ReturnsCorrectUnitOfWorkReference()
 			{
 				IUnitOfWork mockUnitOfWork = new MockUnitOfWork();
-				Mock<IRepository<AspNetUser>> mockRepo1 = new Mock<IRepository<AspNetUser>>();
-				Mock<IRepository<AspNetUser>> mockRepo2 = new Mock<IRepository<AspNetUser>>();
+				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
 				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
 				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
 				CustomNonEmptyService testObj = new CustomNonEmptyService()
@@ -202,8 +207,8 @@ namespace BGC.Core.Tests
 			public void ReturnsCorrectUnitOfWorkReferenceWithoutGetHashCode()
 			{
 				IUnitOfWork commonUnitOfWork = new MockUnitOfWorkThrowsOnGetHashCode();
-				Mock<IRepository<AspNetUser>> mockRepo1 = new Mock<IRepository<AspNetUser>>();
-				Mock<IRepository<AspNetUser>> mockRepo2 = new Mock<IRepository<AspNetUser>>();
+				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
 				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
 				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
 				CustomNonEmptyService testObj = new CustomNonEmptyService()

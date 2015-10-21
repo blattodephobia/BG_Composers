@@ -448,6 +448,10 @@
       <Project>{ce3c7a0c-ba3e-4ffc-80a3-2dc1c2ffee7c}</Project>
       <Name>BGC.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Services\BGC.Services.csproj">
+      <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
+      <Name>BGC.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
       <Project>{05233e69-ff24-41d8-b779-9dd446202d8d}</Project>
       <Name>BGC.Utilities</Name>
