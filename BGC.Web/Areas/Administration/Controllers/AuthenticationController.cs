@@ -31,7 +31,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
 		[HttpPost]
 		public virtual ActionResult Login(LoginViewModel model)
 		{
-			AspNetUser user = Task.Run(() => this.UserManager.FindByNameAsync(model.UserName)).Result;
+			AspNetUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
 			bool success = user != null && this.SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
 			if (success)
 			{

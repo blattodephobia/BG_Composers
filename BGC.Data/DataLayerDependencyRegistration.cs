@@ -17,6 +17,7 @@ namespace BGC.Data
 	{
 		public void RegisterTypes(IUnityContainer helper)
 		{
+            helper.RegisterType(typeof(IRepository<>), typeof(MySqlRepository<>));
 			helper.RegisterType<IUnitOfWork, ComposersDbContext>(new InjectionConstructor());
 			helper.RegisterType<IUserStore<AspNetUser, long>, UserStore<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>>(
 				new InjectionFactory(container =>

@@ -11,7 +11,7 @@ namespace BGC.Core.Services
 	{
 		public void RegisterTypes(IUnityContainer helper)
 		{
-			
+            helper.RegisterType<IComposerEntriesService, ComposerEntriesService>();
 		}
 	}
 }
