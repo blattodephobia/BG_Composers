@@ -9,7 +9,7 @@
     <ProjectGuid>{92D59B09-84DC-4938-B447-2DEDCC22B038}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BGC.Core.Services</RootNamespace>
+    <RootNamespace>BGC.Services</RootNamespace>
     <AssemblyName>BGC.Services</AssemblyName>
     <ProjectTypeGuids>{3D9AD99F-2412-4246-B90B-4EAA41C64699};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <StartArguments>/client:"WcfTestClient.exe"</StartArguments>

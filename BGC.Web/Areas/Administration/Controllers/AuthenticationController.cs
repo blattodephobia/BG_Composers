@@ -1,6 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
-using BGC.WebAPI.Models;
+using BGC.WebAPI.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;

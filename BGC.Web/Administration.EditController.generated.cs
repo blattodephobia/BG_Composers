@@ -24,10 +24,10 @@ using System.Web.Routing;
 using T4MVC;
 namespace BGC.WebAPI.Areas.Administration.Controllers
 {
-    public partial class AuthenticationController
+    public partial class EditController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected AuthenticationController(Dummy d) { }
+        protected EditController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -55,15 +55,21 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Add_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public AuthenticationController Actions { get { return MVC.AdministrationArea.Authentication; } }
+        public EditController Actions { get { return MVC.AdministrationArea.Edit; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "Administration";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Authentication";
+        public readonly string Name = "Edit";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "Authentication";
+        public const string NameConst = "Edit";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -71,23 +77,27 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string Login = "Login";
+            public readonly string List = "List";
+            public readonly string Add = "Add";
+            public readonly string Add_Post = nameof(Add);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string Login = "Login";
+            public const string List = "List";
+            public const string Add = "Add";
+            public const string Add_Post = nameof(Add);
         }
 
 
-        static readonly ActionParamsClass_Login s_params_Login = new ActionParamsClass_Login();
+        static readonly ActionParamsClass_Add_Post s_params_Add_Post = new ActionParamsClass_Add_Post();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
+        public ActionParamsClass_Add_Post Add_PostParams { get { return s_params_Add_Post; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Login
+        public class ActionParamsClass_Add_Post
         {
-            public readonly string model = "model";
+            public readonly string composer = "composer";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -99,37 +109,50 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Login = "Login";
+                public readonly string Add = "Add";
+                public readonly string List = "List";
             }
-            public readonly string Login = "~/Areas/Administration/Views/Authentication/Login.cshtml";
+            public readonly string Add = "~/Areas/Administration/Views/Edit/Add.cshtml";
+            public readonly string List = "~/Areas/Administration/Views/Edit/List.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_AuthenticationController : BGC.WebAPI.Areas.Administration.Controllers.AuthenticationController
+    public partial class T4MVC_EditController : BGC.WebAPI.Areas.Administration.Controllers.EditController
     {
-        public T4MVC_AuthenticationController() : base(Dummy.Instance) { }
+        public T4MVC_EditController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ListOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Login()
+        public override System.Web.Mvc.ActionResult List()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            LoginOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.List);
+            ListOverride(callInfo);
             return callInfo;
         }
 
         [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.WebAPI.ViewModels.LoginViewModel model);
+        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.WebAPI.ViewModels.LoginViewModel model)
+        public override System.Web.Mvc.ActionResult Add()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            LoginOverride(callInfo, model);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            AddOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.WebAPI.Areas.Administration.ViewModels.AddComposerViewModel composer);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Add_Post(BGC.WebAPI.Areas.Administration.ViewModels.AddComposerViewModel composer)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "composer", composer);
+            Add_PostOverride(callInfo, composer);
             return callInfo;
         }
 

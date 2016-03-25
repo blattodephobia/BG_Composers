@@ -12,5 +12,8 @@ namespace BGC.Core.Services
 	{
 		[OperationContract]
 		IQueryable<Composer> GetAllEntries();
+
+        [OperationContract]
+        void Add(Composer composer);
 	}
 }

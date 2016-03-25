@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "List";
+}
+@using BGC.Core;
+
+@model IEnumerable<Composer>
+
+<h2>List</h2>
+
+@foreach (Composer composer in this.Model)
+{
+    @(composer.LocalizedNames.FirstOrDefault(c => c.LocalizationCultureName == "bg-BG") ?? composer.LocalizedNames.First())
+}

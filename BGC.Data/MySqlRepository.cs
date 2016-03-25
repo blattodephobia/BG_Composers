@@ -30,5 +30,15 @@ namespace BGC.Data
 		{
 			if (this.UnitOfWork != null) this.UnitOfWork.Dispose();
 		}
-	}
+
+        public void Insert(T entity)
+        {
+            this.DataSet.Add(entity);
+        }
+
+        public void Delete(T entity)
+        {
+            this.DataSet.Remove(entity);
+        }
+    }
 }

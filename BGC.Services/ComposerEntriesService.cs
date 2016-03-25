@@ -19,5 +19,10 @@ namespace BGC.Core.Services
 		{
 			return this.Composers.All();
 		}
-	}
+
+        public void Add(Composer composer)
+        {
+            
+        }
+    }
 }

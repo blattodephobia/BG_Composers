@@ -27,7 +27,7 @@ namespace BGC.Data.Migrations
 					userManager.AddToRole(admin.Id, AspNetRole.AdministratorRoleName);
 				}
 			}
-			catch (Exception ex)
+			catch
 			{
 				if (!System.Diagnostics.Debugger.IsAttached)
 				{

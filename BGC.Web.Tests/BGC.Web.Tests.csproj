@@ -120,7 +120,6 @@
     <Compile Include="AdministrationArea\AreaTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
     <Compile Include="Mocks.cs" />
-    <Compile Include="Models\LocalizationDictionaryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +138,9 @@
       <Name>BGC.Web</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

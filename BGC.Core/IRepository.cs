@@ -10,5 +10,9 @@ namespace BGC.Core
 		where T : class
 	{
 		IQueryable<T> All();
+
+        void Insert(T entity);
+
+        void Delete(T entity);
 	}
 }

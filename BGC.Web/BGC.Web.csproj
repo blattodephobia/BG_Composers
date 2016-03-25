@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BGC.WebAPI</RootNamespace>
-    <AssemblyName>BGC.WebAPI</AssemblyName>
+    <RootNamespace>BGC.Web</RootNamespace>
+    <AssemblyName>BGC.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -274,6 +274,9 @@
     <Compile Include="Administration.AuthenticationController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Administration.EditController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Administration.SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -291,22 +294,16 @@
     <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
     <Compile Include="Areas\Administration\Controllers\AdministrationControllerBase.cs" />
     <Compile Include="Areas\Administration\Controllers\AuthenticationController.cs" />
+    <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Localization\LocalizationDictionary.cs" />
-    <Compile Include="Localization\LocalizationDictionary.generated.cs">
-      <DependentUpon>LocalizationDictionary.generated.tt</DependentUpon>
-      <SubType>Code</SubType>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-    <Compile Include="Localization\LocalizedString.cs" />
-    <Compile Include="Models\LoginViewModel.cs" />
-    <Compile Include="Models\ViewModelBase.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public.MainController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
@@ -383,13 +380,11 @@
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\AdminLayout.cshtml" />
     <Content Include="Areas\Administration\Views\Account\Users.cshtml" />
+    <Content Include="Areas\Administration\Views\Edit\List.cshtml" />
+    <Content Include="Areas\Administration\Views\Edit\Add.cshtml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Localization\LocalizationDictionary.generated.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>LocalizationDictionary.generated.cs</LastGenOutput>
-    </Content>
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -440,6 +435,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Localization\" />
+    <Folder Include="Models\" />
     <Folder Include="Views\Administration\" />
   </ItemGroup>
   <ItemGroup>
