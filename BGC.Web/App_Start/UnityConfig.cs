@@ -45,7 +45,7 @@ namespace BGC.WebAPI.App_Start
         public static void RegisterTypes(IUnityContainer container)
         {
 			new BGC.Data.DataLayerDependencyRegistration().RegisterTypes(container);
-			new BGC.Core.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
+			new BGC.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
 
 			container
 				.RegisterType<AdministrationControllerBase>()

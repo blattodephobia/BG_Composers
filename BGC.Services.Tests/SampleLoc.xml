@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LocalizationKeys>
+  <NodeA1>
+    <LocalizedString key="ok">
+      <Translation culture="en">OK</Translation>
+      <Translation culture="bg-BG">ОК</Translation>
+    </LocalizedString>
+  </NodeA1>
+  <NodeB1>
+    <NodeB2>
+      <LocalizedString key="cancel">
+        <Translation culture="en-US">Cancel</Translation>
+        <Translation culture="de-DE">Abbrechen</Translation>
+      </LocalizedString>
+    </NodeB2>
+    <NodeB3>
+      <NodeB4>
+        <LocalizedString key="apply">
+          <Translation culture="en-US">Apply</Translation>
+          <Translation culture="bg-BG">Приложи</Translation>
+        </LocalizedString>
+      </NodeB4>
+    </NodeB3>
+  </NodeB1>
+  <NodeB2>
+  </NodeB2>
+  <NodeB5>
+    <LocalizedString key="close">
+      <Translation culture="en-US">Close</Translation>
+      <Translation culture="bg-BG">Затвори</Translation>
+    </LocalizedString>
+  </NodeB5>
+</LocalizationKeys>

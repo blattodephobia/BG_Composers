@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core.Services
 {
-	internal abstract class ServiceBase : IDisposable
+	internal abstract class DbServiceBase : IDisposable
 	{
 		private static Dictionary<Type, Func<object, IEnumerable<IDbConnect>>> DbConnectMemberAccessors = new Dictionary<Type, Func<object, IEnumerable<IDbConnect>>>();
 
@@ -65,7 +65,7 @@ namespace BGC.Core.Services
 			}
 		}
 
-		protected ServiceBase()
+		protected DbServiceBase()
 		{
 			Type currentType = this.GetType();
 			if (!DbConnectMemberAccessors.ContainsKey(currentType))

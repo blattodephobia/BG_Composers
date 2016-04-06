@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core.Services
 {
-	internal class ComposerEntriesService : ServiceBase, IComposerEntriesService
+	internal class ComposerEntriesService : DbServiceBase, IComposerEntriesService
 	{
 		public IRepository<Composer> Composers { get; private set; }
 
