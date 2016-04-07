@@ -13,7 +13,7 @@ namespace BGC.Core.Tests
 	/// Summary description for ServiceBaseTests
 	/// </summary>
 	[TestClass]
-	public class ServiceBaseTests
+	public class DbServiceBaseTests
 	{
 		public class MockEntity
 		{
@@ -69,7 +69,7 @@ namespace BGC.Core.Tests
 			[TestInitialize]
 			public void TestInit()
 			{
-				this.DbConnectedObjectsAccessorHelper = new PrivateType(typeof(ServiceBase));
+				this.DbConnectedObjectsAccessorHelper = new PrivateType(typeof(DbServiceBase));
 			}
 
 			[TestMethod]
@@ -97,7 +97,7 @@ namespace BGC.Core.Tests
 		[TestClass]
 		public class CommonUnitOfWorkTests
 		{
-			internal class BasicServiceImplementation : ServiceBase
+			internal class BasicServiceImplementation : DbServiceBase
 			{
 				public IUnitOfWork GetCommonUnitOfWork()
 				{

@@ -1,0 +1,85 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+using System;
+
+namespace BGC.Web
+{
+    <#
+    XmlDocument xml = new XmlDocument();
+    xml.Load(Host.ResolvePath("Localization.xml"));
+    WriteClassess(xml);
+    #>
+}
+<#+
+    protected void WriteClassess(XmlDocument doc)
+    {
+        this.WriteLine(string.Format("internal static class {0}\r\n{{", doc.DocumentElement.Name));
+        foreach (XmlNode child in doc.DocumentElement.ChildNodes)
+        {
+            this.WriteNode(child, 1);
+        }
+        
+        this.WriteLine("}");
+    }
+
+    protected void WriteNode(XmlNode node, int offset)
+    {
+        if (node.Name == "LocalizedString")
+        {
+            this.WriteLine("public static string {0} {{ get {{ return \"{1}.{2}\"; }} }}",
+                WithFirstUpper(node.Attributes["key"].Value),
+                this.GetNodePath(node.ParentNode),
+                WithFirstUpper(node.Attributes["key"].Value));
+        }
+        else
+        {
+            this.WriteLine("public class {0}\r\n{{", node.Name);
+            this.SetIndent(offset);
+            foreach (XmlNode child in node.ChildNodes)
+            {
+                WriteNode(child, offset + 1);
+            }
+            this.ClearIndent();
+            this.WriteLine("}");
+        }
+    }
+
+    protected void SetIndent(int offset)
+    {
+        for (int i = 0; i < offset; i++)
+        {
+            PushIndent(new string(' ', 4));
+        }
+    }
+
+    protected string GetNodePath(XmlNode node)
+    {
+        Stack<string> nodes = new Stack<string>();
+        while (node != null && node != node.OwnerDocument.DocumentElement)
+        {
+           nodes.Push(node.Name);
+           node = node.ParentNode;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        while (nodes.Count > 0)
+        {
+           sb.AppendFormat("{0}.", nodes.Pop());
+        }
+        sb.Remove(sb.Length - 1, 1);
+        return sb.ToString();
+    }
+
+    protected static string WithFirstUpper(string s)
+    {
+        char[] _chars= s.ToCharArray();
+        _chars[0] = char.ToUpperInvariant(_chars[0]);
+        return new string(_chars);
+    }
+#>

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<LocalizationKeys>
+  <Administration>
+    
+  </Administration>
+  <Public>
+    
+  </Public>
+  <Global>
+    <LocalizedString key="ok">
+      <Translation culture="en">OK</Translation>
+      <Translation culture="bg-BG">ОК</Translation>
+    </LocalizedString>
+  </Global>  
+</LocalizationKeys>
