@@ -40,9 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DebugCheck.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CodeShield\CodeShield.csproj">
+      <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
+      <Name>CodeShield</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

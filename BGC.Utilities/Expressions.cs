@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,7 +15,7 @@ namespace BGC.Utilities
 		{
 			// Expressions using constants use their values rather names after compilation. Therefore,
 			// any information regarding the constant's name is stripped from the Expression object.
-			DebugCheck.IsFalse(expression is ConstantExpression, () => new InvalidOperationException("Constant member access expressions are not supported."));
+			Shield.Assert(expression, !(expression is ConstantExpression), x => new InvalidOperationException("Constant member access expressions are not supported.")).ThrowOnError();
 
 			Expression result = expression;
 			while (

@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
+using CodeShield;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
 
 			set
 			{
-				DebugCheck.IsTrue(this.userManager == null, () => new InvalidOperationException("User Manager cannot be set more than once"));
+				Shield.Assert(value, this.userManager == null, x => new InvalidOperationException("User Manager cannot be set more than once"));
 				this.userManager = value;
 			}
 		}
