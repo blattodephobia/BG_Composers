@@ -5,7 +5,7 @@ using System.Web;
 
 namespace BGC.WebAPI.ViewModels
 {
-    public partial abstract class ViewModelBase
+    public abstract partial class ViewModelBase
     {
         protected ViewModelBase()
         {
