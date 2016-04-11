@@ -11,3 +11,5 @@
 {
     @(composer.LocalizedNames.FirstOrDefault(c => c.LocalizationCultureName == "bg-BG") ?? composer.LocalizedNames.First())
 }
+
+@Html.ActionLink(Localize(LocalizationKeys.Administration.Edit.List.Add_entry), MVC.AdministrationArea.Edit.Add());

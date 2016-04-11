@@ -1,14 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
 <LocalizationKeys>
   <Administration>
-    
+    <Edit>
+      <List>
+        <LocalizedString key="add_entry">
+          <Translation culture="en-US">Add new entry</Translation>
+        </LocalizedString>
+      </List>
+    </Edit>
   </Administration>
   <Public>
     
   </Public>
   <Global>
     <LocalizedString key="ok">
-      <Translation culture="en">OK</Translation>
+      <Translation culture="en-US">OK</Translation>
       <Translation culture="bg-BG">ОК</Translation>
     </LocalizedString>
   </Global>  

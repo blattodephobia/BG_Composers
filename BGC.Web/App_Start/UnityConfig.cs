@@ -11,6 +11,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Web;
 using System.Reflection;
+using BGC.Web.Views;
+using BGC.Core.Services;
+using BGC.Services;
 
 namespace BGC.WebAPI.App_Start
 {

@@ -19,7 +19,7 @@ namespace BGC.Web
 <#+
     protected void WriteClassess(XmlDocument doc)
     {
-        this.WriteLine(string.Format("internal static class {0}\r\n{{", doc.DocumentElement.Name));
+        this.WriteLine(string.Format("public static class {0}\r\n{{", doc.DocumentElement.Name));
         foreach (XmlNode child in doc.DocumentElement.ChildNodes)
         {
             this.WriteNode(child, 1);

@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace BGC.Services
 {
-    public class LocalizationService : ILocalizationService
+    internal class LocalizationService : ILocalizationService
     {
         private static readonly string LocalizationElementName = "LocalizedString";
         private static readonly string TranslationElementName = "Translation";

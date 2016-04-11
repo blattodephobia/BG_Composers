@@ -2,10 +2,17 @@
 
 namespace BGC.Web
 {
-    internal static class LocalizationKeys
+    public static class LocalizationKeys
     {
         public class Administration
         {
+            public class Edit
+            {
+                public class List
+                {
+                    public static string Add_entry { get { return "Administration.Edit.List.Add_entry"; } }
+                }
+            }
         }
         public class Public
         {
