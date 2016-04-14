@@ -8,7 +8,7 @@
 <#@ output extension=".cs" #>
 using System;
 
-namespace BGC.Web
+namespace BGC.Web.LocalizationKeys
 {
     <#
     XmlDocument xml = new XmlDocument();
@@ -19,20 +19,17 @@ namespace BGC.Web
 <#+
     protected void WriteClassess(XmlDocument doc)
     {
-        this.WriteLine(string.Format("public static class {0}\r\n{{", doc.DocumentElement.Name));
         foreach (XmlNode child in doc.DocumentElement.ChildNodes)
         {
             this.WriteNode(child, 1);
         }
-        
-        this.WriteLine("}");
     }
 
     protected void WriteNode(XmlNode node, int offset)
     {
         if (node.Name == "LocalizedString")
         {
-            this.WriteLine("public static string {0} {{ get {{ return \"{1}.{2}\"; }} }}",
+            this.WriteLine("public static readonly string {0} = \"{1}.{2}\";",
                 WithFirstUpper(node.Attributes["key"].Value),
                 this.GetNodePath(node.ParentNode),
                 WithFirstUpper(node.Attributes["key"].Value));

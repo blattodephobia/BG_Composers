@@ -14,7 +14,6 @@ namespace BGC.Services
 		public void RegisterTypes(IUnityContainer helper)
 		{
             helper.RegisterType<IComposerEntriesService, ComposerEntriesService>();
-            helper.RegisterType<ILocalizationService, LocalizationService>();
 		}
 	}
 }

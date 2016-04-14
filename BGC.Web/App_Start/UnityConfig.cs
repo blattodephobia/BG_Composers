@@ -14,6 +14,8 @@ using System.Reflection;
 using BGC.Web.Views;
 using BGC.Core.Services;
 using BGC.Services;
+using System.Xml;
+using System.IO;
 
 namespace BGC.WebAPI.App_Start
 {
@@ -67,6 +69,19 @@ namespace BGC.WebAPI.App_Start
 			{
 				return new SignInManager<AspNetUser, long>(c.Resolve<UserManager<AspNetUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
 			}));
+            
+            container.RegisterType<ILocalizationService, LocalizationService>(
+                new ContainerControlledLifetimeManager(),
+                new InjectionFactory(c =>
+                {
+                    string xmlPath = HttpContext.Current.Server.MapPath(@"Localization\Localization.xml");
+                    using (Stream xmlStream = File.OpenRead(xmlPath))
+                    {
+                        XmlDocument localizationXml = new XmlDocument();
+                        localizationXml.Load(xmlStream);
+                        return new LocalizationService(localizationXml);
+                    }
+                }));
         }
     }
 }

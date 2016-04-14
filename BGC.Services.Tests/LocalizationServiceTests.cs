@@ -68,7 +68,7 @@ namespace BGC.Services.Tests
                 LocalizationService service = new LocalizationService(sampleLocalization);
                 service.Culture = CultureInfo.GetCultureInfo("bg-BG");
 
-                Assert.AreEqual("NodeB2", service.Localize("NodeB2"));
+                Assert.AreEqual("[bg-bg]+nodeb2", service.Localize("NodeB2"));
 
             }
 
@@ -78,7 +78,14 @@ namespace BGC.Services.Tests
                 LocalizationService service = new LocalizationService(sampleLocalization);
                 service.Culture = CultureInfo.GetCultureInfo("de-DE");
 
-                Assert.AreEqual("NodeB5.Close", service.Localize("NodeB5.Close"));
+                Assert.AreEqual("[de-de]+nodeb5.close", service.Localize("NodeB5.Close"));
+            }
+
+            [TestMethod]
+            public void LocalizesWithCultureOverride()
+            {
+                LocalizationService service = new LocalizationService(sampleLocalization);
+                Assert.AreEqual("Abbrechen", service.Localize("NodeB1.NodeB2.Cancel", CultureInfo.GetCultureInfo("de-DE")));
             }
         }
 

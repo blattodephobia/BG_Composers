@@ -10,7 +10,7 @@ using System.Xml;
 
 namespace BGC.Services
 {
-    internal class LocalizationService : ILocalizationService
+    public class LocalizationService : ILocalizationService
     {
         private static readonly string LocalizationElementName = "LocalizedString";
         private static readonly string TranslationElementName = "Translation";
@@ -73,12 +73,15 @@ namespace BGC.Services
             }
         }
 
-        public string Localize(string key)
+        public string Localize(string key) => this.Localize(key, this.Culture);
+
+        public string Localize(string key, CultureInfo culture)
         {
             Shield.ArgumentNotNull(key, nameof(key)).ThrowOnError();
 
             string result;
-            this.localizationCache.TryGetValue(this.GetNormalizedKey(key, this.Culture), out result);
+            key = this.GetNormalizedKey(key, culture);
+            this.localizationCache.TryGetValue(key, out result);
             return result ?? key;
         }
 

@@ -5,6 +5,7 @@
       <List>
         <LocalizedString key="add_entry">
           <Translation culture="en-US">Add new entry</Translation>
+          <Translation culture="bg-BG">Добави нов</Translation>
         </LocalizedString>
       </List>
     </Edit>
