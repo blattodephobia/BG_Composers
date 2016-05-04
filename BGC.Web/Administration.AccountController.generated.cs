@@ -22,7 +22,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace BGC.WebAPI.Areas.Administration.Controllers
+namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class AccountController
     {
@@ -101,7 +101,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_AccountController : BGC.WebAPI.Areas.Administration.Controllers.AccountController
+    public partial class T4MVC_AccountController : BGC.Web.Areas.Administration.Controllers.AccountController
     {
         public T4MVC_AccountController() : base(Dummy.Instance) { }
 

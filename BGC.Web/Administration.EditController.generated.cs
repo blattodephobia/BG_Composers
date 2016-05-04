@@ -22,7 +22,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace BGC.WebAPI.Areas.Administration.Controllers
+namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class EditController
     {
@@ -55,12 +55,6 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Add_Post()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public EditController Actions { get { return MVC.AdministrationArea.Edit; } }
@@ -79,7 +73,6 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         {
             public readonly string List = "List";
             public readonly string Add = "Add";
-            public readonly string Add_Post = nameof(Add);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -87,15 +80,14 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         {
             public const string List = "List";
             public const string Add = "Add";
-            public const string Add_Post = nameof(Add);
         }
 
 
-        static readonly ActionParamsClass_Add_Post s_params_Add_Post = new ActionParamsClass_Add_Post();
+        static readonly ActionParamsClass_Add s_params_Add = new ActionParamsClass_Add();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Add_Post Add_PostParams { get { return s_params_Add_Post; } }
+        public ActionParamsClass_Add AddParams { get { return s_params_Add; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Add_Post
+        public class ActionParamsClass_Add
         {
             public readonly string composer = "composer";
         }
@@ -118,7 +110,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_EditController : BGC.WebAPI.Areas.Administration.Controllers.EditController
+    public partial class T4MVC_EditController : BGC.Web.Areas.Administration.Controllers.EditController
     {
         public T4MVC_EditController() : base(Dummy.Instance) { }
 
@@ -145,14 +137,14 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.WebAPI.Areas.Administration.ViewModels.AddComposerViewModel composer);
+        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel composer);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add_Post(BGC.WebAPI.Areas.Administration.ViewModels.AddComposerViewModel composer)
+        public override System.Web.Mvc.ActionResult Add(BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel composer)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "composer", composer);
-            Add_PostOverride(callInfo, composer);
+            AddOverride(callInfo, composer);
             return callInfo;
         }
 

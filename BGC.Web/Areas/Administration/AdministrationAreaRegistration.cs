@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BGC.WebAPI.Areas.Administration
+namespace BGC.Web.Areas.Administration
 {
 	public class AdministrationAreaRegistration : AreaRegistration
 	{

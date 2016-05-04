@@ -8,6 +8,48 @@ namespace BGC.Data.Migrations
         public override void Up()
         {
             CreateTable(
+                "dbo.ComposerEntries",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        CultureName = c.String(unicode: false),
+                        ArticleId = c.Guid(nullable: false),
+                        ComposerId = c.Long(),
+                        ComposerNameId = c.Long(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Composers", t => t.ComposerId)
+                .ForeignKey("dbo.ComposerNames", t => t.ComposerNameId)
+                .Index(t => t.ComposerId)
+                .Index(t => t.ComposerNameId);
+            
+            CreateTable(
+                "dbo.Composers",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ComposerNames",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        ComposerId = c.Long(),
+                        LocalizationCultureName = c.String(unicode: false),
+                        FirstName = c.String(maxLength: 32, storeType: "nvarchar"),
+                        LastName = c.String(maxLength: 32, storeType: "nvarchar"),
+                        FullName = c.String(maxLength: 128, storeType: "nvarchar"),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Composers", t => t.ComposerId)
+                .Index(t => t.ComposerId)
+                .Index(t => t.FirstName)
+                .Index(t => t.LastName)
+                .Index(t => t.FullName);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
@@ -35,6 +77,7 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
+                        MustChangePassword = c.Boolean(nullable: false),
                         Email = c.String(maxLength: 256, storeType: "nvarchar"),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(unicode: false),
@@ -83,17 +126,29 @@ namespace BGC.Data.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.ComposerEntries", "ComposerNameId", "dbo.ComposerNames");
+            DropForeignKey("dbo.ComposerNames", "ComposerId", "dbo.Composers");
+            DropForeignKey("dbo.ComposerEntries", "ComposerId", "dbo.Composers");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.ComposerNames", new[] { "FullName" });
+            DropIndex("dbo.ComposerNames", new[] { "LastName" });
+            DropIndex("dbo.ComposerNames", new[] { "FirstName" });
+            DropIndex("dbo.ComposerNames", new[] { "ComposerId" });
+            DropIndex("dbo.ComposerEntries", new[] { "ComposerNameId" });
+            DropIndex("dbo.ComposerEntries", new[] { "ComposerId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.ComposerNames");
+            DropTable("dbo.Composers");
+            DropTable("dbo.ComposerEntries");
         }
     }
 }

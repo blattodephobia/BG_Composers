@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace BGC.WebAPI.Tests
+namespace BGC.Web.Tests
 {
 	public class Mocks
 	{

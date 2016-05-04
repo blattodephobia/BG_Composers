@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BGC.WebAPI.Areas.Public.Controllers
+namespace BGC.Web.Areas.Public.Controllers
 {
 	public partial class MainController : Controller
     {

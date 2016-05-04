@@ -1,19 +1,20 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
-using BGC.WebAPI.Areas.Administration.ViewModels;
+using BGC.Web.Areas.Administration.ViewModels;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BGC.WebAPI.Areas.Administration.Controllers
+namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class EditController : AdministrationControllerBase
     {
         public EditController(IComposerEntriesService composersService)
         {
-            this.composersService = composersService;
+            this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
         }
 
         public virtual ActionResult List()
@@ -25,15 +26,14 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         [HttpGet]
         public virtual ActionResult Add()
         {
-            return this.View();
+            return this.View(new AddComposerViewModel());
         }
 
         [HttpPost]
-        [ActionName(nameof(Add))]
-        public virtual ActionResult Add_Post(AddComposerViewModel composer)
+        public virtual ActionResult Add(AddComposerViewModel composer)
         {
-            this.composersService.Add(new Composer() { Id = 0, LocalizedNames = new List<ComposerName>(), Articles = new List<ComposerEntry>() });
-            return this.RedirectToAction(this.List());
+            this.composersService.Add(new Composer() { LocalizedNames = new List<ComposerName>() { new ComposerName(composer.Name) }, Articles = new List<ComposerEntry>() });
+            return base.RedirectToAction(nameof(List));
         }
 
         private IComposerEntriesService composersService;

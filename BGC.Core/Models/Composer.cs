@@ -14,8 +14,6 @@ namespace BGC.Core
 
 		public Composer()
 		{
-			this.LocalizedNames = new HashSet<ComposerName>();
-			this.Articles = new HashSet<ComposerEntry>();
 		}
 	}
 }

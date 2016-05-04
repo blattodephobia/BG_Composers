@@ -18,5 +18,13 @@
       <Translation culture="en-US">OK</Translation>
       <Translation culture="bg-BG">ОК</Translation>
     </LocalizedString>
+    <LocalizedString key="submit">
+      <Translation culture="en-US">Submit</Translation>
+      <Translation culture="bg-BG">Добави</Translation>
+    </LocalizedString>
+    <LocalizedString key="name">
+      <Translation culture="en-US">Name</Translation>
+      <Translation culture="bg-BG">Име</Translation>
+    </LocalizedString>
   </Global>  
 </LocalizationKeys>

@@ -43,7 +43,7 @@ namespace BGC.Data
 			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
 				.HasMaxLength(32)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>().Property(name => name.CompleteName)
+			modelBuilder.Entity<ComposerName>().Property(name => name.FullName)
 				.HasMaxLength(128)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)

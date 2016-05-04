@@ -1,5 +1,13 @@
-﻿@{
+﻿@model AddComposerViewModel
+
+@{
     ViewBag.Title = "Add";
 }
 
 <h2>Add</h2>
+
+@using (Html.BeginForm())
+{
+    <label>@string.Format("{0}:", Localize(Global.Name))</label>@Html.TextBoxFor(m => m.Name)
+    <input type="submit" value="@Localize(Global.Submit)"/>
+}

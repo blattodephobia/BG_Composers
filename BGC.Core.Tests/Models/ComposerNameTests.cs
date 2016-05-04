@@ -17,12 +17,12 @@ namespace BGC.Core.Tests.Models
 			{
 				ComposerName name = new ComposerName();
 				name.FirstName = "First";
-				Assert.AreEqual("First", name.CompleteName);
+				Assert.AreEqual("First", name.FullName);
 
 				name.LastName = "Last";
-				Assert.AreEqual("First Last", name.CompleteName);
+				Assert.AreEqual("First Last", name.FullName);
 
-				name.CompleteName = "First1 Middle1 Last1";
+				name.FullName = "First1 Middle1 Last1";
 				Assert.AreEqual("First1", name.FirstName);
 				Assert.AreEqual("Last1", name.LastName);
 			}

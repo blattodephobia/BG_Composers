@@ -22,7 +22,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace BGC.WebAPI.Areas.Administration.Controllers
+namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class AuthenticationController
     {
@@ -106,7 +106,7 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_AuthenticationController : BGC.WebAPI.Areas.Administration.Controllers.AuthenticationController
+    public partial class T4MVC_AuthenticationController : BGC.Web.Areas.Administration.Controllers.AuthenticationController
     {
         public T4MVC_AuthenticationController() : base(Dummy.Instance) { }
 
@@ -122,10 +122,10 @@ namespace BGC.WebAPI.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.WebAPI.ViewModels.LoginViewModel model);
+        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.ViewModels.LoginViewModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.WebAPI.ViewModels.LoginViewModel model)
+        public override System.Web.Mvc.ActionResult Login(BGC.Web.ViewModels.LoginViewModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);

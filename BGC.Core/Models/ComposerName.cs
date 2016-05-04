@@ -39,15 +39,15 @@ namespace BGC.Core
 			set
 			{
 				this.firstName = value;
-				if (this.completeName != null)
+				if (this.fullName != null)
 				{
-					List<string> names = ExtractNames(this.completeName);
+					List<string> names = ExtractNames(this.fullName);
 					names[0] = this.firstName;
-					this.completeName = CombineNames(names);
+					this.fullName = CombineNames(names);
 				}
 				else
 				{
-					this.completeName = value;
+					this.fullName = value;
 				}
 			}
 		}
@@ -62,14 +62,14 @@ namespace BGC.Core
 
 			set
 			{
-				if (this.completeName != null)
+				if (this.fullName != null)
 				{
-					List<string> names = ExtractNames(this.completeName);
+					List<string> names = ExtractNames(this.fullName);
 					this.lastName = value;
 					if (names.Count > 1) names[names.Count - 1] = this.lastName;
 					else names.Add(value);
 
-					this.completeName = CombineNames(names);
+					this.fullName = CombineNames(names);
 				}
 				else
 				{
@@ -78,21 +78,33 @@ namespace BGC.Core
 			}
 		}
 
-		private string completeName;
-		public string CompleteName
+		private string fullName;
+		public string FullName
 		{
 			get
 			{
-				return this.completeName;
+				return this.fullName;
 			}
 
 			set
 			{
-				this.completeName = value;
+				this.fullName = value;
 				List<string> names = ExtractNames(value);
 				this.firstName = names[0];
 				if (names.Count > 1) this.lastName = names.Last();
 			}
 		}
+
+        public ComposerName()
+        {
+        }
+
+        public override string ToString() => this.FullName;
+
+        public ComposerName(string completeName) :
+            this()
+        {
+            this.FullName = completeName;
+        }
 	}
 }

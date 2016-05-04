@@ -1,6 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
-using BGC.WebAPI.ViewModels;
+using BGC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace BGC.WebAPI.Areas.Administration.Controllers
+namespace BGC.Web.Areas.Administration.Controllers
 {
 	public partial class AuthenticationController : AdministrationControllerBase
 	{

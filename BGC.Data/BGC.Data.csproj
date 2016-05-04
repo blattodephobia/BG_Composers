@@ -93,21 +93,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComposersDbContext.cs" />
-    <Compile Include="Migrations\201503180749086_Initial.cs" />
-    <Compile Include="Migrations\201503180749086_Initial.Designer.cs">
-      <DependentUpon>201503180749086_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201503181146205_Add_MustChangePassword_Option.cs" />
-    <Compile Include="Migrations\201503181146205_Add_MustChangePassword_Option.Designer.cs">
-      <DependentUpon>201503181146205_Add_MustChangePassword_Option.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507271815516_ComposerEntities_Initial.cs" />
-    <Compile Include="Migrations\201507271815516_ComposerEntities_Initial.Designer.cs">
-      <DependentUpon>201507271815516_ComposerEntities_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.cs" />
-    <Compile Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.Designer.cs">
-      <DependentUpon>201507271922464_ComposerName_IndexAndMaxLength.cs</DependentUpon>
+    <Compile Include="Migrations\201605040813318_Initial.cs" />
+    <Compile Include="Migrations\201605040813318_Initial.Designer.cs">
+      <DependentUpon>201605040813318_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -119,20 +107,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201503180749086_Initial.resx">
-      <DependentUpon>201503180749086_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201503181146205_Add_MustChangePassword_Option.resx">
-      <DependentUpon>201503181146205_Add_MustChangePassword_Option.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507271815516_ComposerEntities_Initial.resx">
-      <DependentUpon>201507271815516_ComposerEntities_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201507271922464_ComposerName_IndexAndMaxLength.resx">
-      <DependentUpon>201507271922464_ComposerName_IndexAndMaxLength.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">
       <Project>{e3cb843a-3420-4a76-91c8-e4db0688fef5}</Project>
       <Name>BGC.Core</Name>
@@ -141,6 +115,11 @@
       <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
       <Name>BGC.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201605040813318_Initial.resx">
+      <DependentUpon>201605040813318_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

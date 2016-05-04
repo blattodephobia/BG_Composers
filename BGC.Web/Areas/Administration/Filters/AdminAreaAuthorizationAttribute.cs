@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace BGC.WebAPI.Areas.Administration
+namespace BGC.Web.Areas.Administration
 {
 	public class AdminAreaAuthorizationAttribute : AuthorizeAttribute
 	{

@@ -22,7 +22,7 @@ using System.Web.Mvc.Ajax;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using T4MVC;
-namespace BGC.WebAPI.Areas.Public.Controllers
+namespace BGC.Web.Areas.Public.Controllers
 {
     public partial class MainController
     {
@@ -98,7 +98,7 @@ namespace BGC.WebAPI.Areas.Public.Controllers
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_MainController : BGC.WebAPI.Areas.Public.Controllers.MainController
+    public partial class T4MVC_MainController : BGC.Web.Areas.Public.Controllers.MainController
     {
         public T4MVC_MainController() : base(Dummy.Instance) { }
 

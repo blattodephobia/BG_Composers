@@ -1,4 +1,4 @@
-﻿using BGC.WebAPI.Areas.Administration;
+﻿using BGC.Web.Areas.Administration;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BGC.WebAPI.App_Start
+namespace BGC.Web.App_Start
 {
 	public class OwinStartupConfig
 	{

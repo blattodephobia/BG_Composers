@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace BGC.Core.Services
 
 		public ComposerEntriesService(IRepository<Composer> composers)
 		{
+            Shield.ArgumentNotNull(composers, nameof(composers)).ThrowOnError();
 			this.Composers = composers;
 		}
 
@@ -22,7 +24,9 @@ namespace BGC.Core.Services
 
         public void Add(Composer composer)
         {
-            
+            Shield.ArgumentNotNull(composer, nameof(composer)).ThrowOnError();
+            this.Composers.Insert(composer);
+            this.Composers.UnitOfWork.SaveChanges();
         }
     }
 }

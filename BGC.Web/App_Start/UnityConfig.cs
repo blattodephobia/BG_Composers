@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using BGC.Core;
 using BGC.Data;
-using BGC.WebAPI.Areas.Administration.Controllers;
+using BGC.Web.Areas.Administration.Controllers;
 using BGC.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
@@ -17,7 +17,7 @@ using BGC.Services;
 using System.Xml;
 using System.IO;
 
-namespace BGC.WebAPI.App_Start
+namespace BGC.Web.App_Start
 {
     /// <summary>
     /// Specifies the Unity configuration for the main container.
@@ -74,7 +74,7 @@ namespace BGC.WebAPI.App_Start
                 new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    string xmlPath = HttpContext.Current.Server.MapPath(@"Localization\Localization.xml");
+                    string xmlPath = HttpContext.Current.Request.PhysicalApplicationPath + @"Localization\Localization.xml";
                     using (Stream xmlStream = File.OpenRead(xmlPath))
                     {
                         XmlDocument localizationXml = new XmlDocument();

@@ -12,17 +12,19 @@ namespace BGC.Core.Services
 	{
 		private static Dictionary<Type, Func<object, IEnumerable<IDbConnect>>> DbConnectMemberAccessors = new Dictionary<Type, Func<object, IEnumerable<IDbConnect>>>();
 
-		/// <summary>
-		/// Dynamically generates a method that will return the values of all properties implementing a specific type in an IEnumerable of that type.
-		/// For example, when invoked with <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple&lt;double, double&gt;"/>) and
-		/// <typeparamref name="TPropertyType"/> is <see cref="System.Double"/> the generated method's return value will the values of the Item1 and
-		/// Item2 properties. If, however, <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple&lt;double, double&gt;"/>) and 
-		/// <typeparamref name="TPropertyType"/> is <see cref="System.Int32" an empty collection will be returned./>
-		/// </summary>
-		/// <typeparam name="TPropertyType"></typeparam>
-		/// <param name="propertyDeclaringType">The delcaring type. Must be a reference type.</param>
-		/// <returns></returns>		
-		private static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type propertyDeclaringType)
+        /// <summary>
+        /// Dynamically generates a method that will select the values of all properties of a given type <typeparamref name="TPropertyType"/> in
+        /// an <see cref="IEnumerable{TPropertyType}"/>.
+        /// For example, when invoked with <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple&lt;double, double&gt;"/>)
+        /// and <typeparamref name="TPropertyType"/> is <see cref="Double"/> the generated method return an <see cref="IEnumerable{double}"/>
+        /// with the values of the Item1 and Item2 properties.
+        /// If, however, <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple{double, double}"/>)
+        /// and <typeparamref name="TPropertyType"/> is <see cref="Int32" an empty collection will be returned./>
+        /// </summary>
+        /// <typeparam name="TPropertyType"></typeparam>
+        /// <param name="propertyDeclaringType">The delcaring type. Must be a reference type.</param>
+        /// <returns></returns>		
+        private static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type propertyDeclaringType)
 		{
 			IEnumerable<PropertyInfo> matchingProperties = propertyDeclaringType
 														   .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
@@ -42,16 +44,18 @@ namespace BGC.Core.Services
 				)
 			);
 			return lambda.Compile();
-		}
+        }
 
-		private IUnitOfWork commonUnitOfWork;
+        private readonly Type currentType;
+
+        private IUnitOfWork commonUnitOfWork;
 		protected IUnitOfWork CommonUnitOfWork
 		{
 			get
 			{
 				if (this.commonUnitOfWork == null)
 				{
-					IEnumerable<IDbConnect> dbConnectedObjects = DbConnectMemberAccessors[this.GetType()].Invoke(this) ?? Enumerable.Empty<IDbConnect>();
+					IEnumerable<IDbConnect> dbConnectedObjects = DbConnectMemberAccessors[this.currentType].Invoke(this) ?? Enumerable.Empty<IDbConnect>();
 					IEnumerable<IUnitOfWork> unitOfWorkInstances = dbConnectedObjects.Select(obj => obj.UnitOfWork);
 					if (!unitOfWorkInstances.Any()) throw new InvalidOperationException("There are no objects connected to a database.");
 
@@ -67,12 +71,15 @@ namespace BGC.Core.Services
 
 		protected DbServiceBase()
 		{
-			Type currentType = this.GetType();
-			if (!DbConnectMemberAccessors.ContainsKey(currentType))
-			{
-				var lambda = GetPropertyValuesOfTypeAccessor<IDbConnect>(currentType);
-				DbConnectMemberAccessors.Add(currentType, lambda);
-			}
+            lock (DbConnectMemberAccessors)
+            {
+                this.currentType = this.GetType();
+                if (!DbConnectMemberAccessors.ContainsKey(currentType))
+                {
+                    var lambda = GetPropertyValuesOfTypeAccessor<IDbConnect>(currentType);
+                    DbConnectMemberAccessors.Add(currentType, lambda);
+                }
+            }
 		}
 
 		public void Dispose()
