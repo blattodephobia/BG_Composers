@@ -32,7 +32,7 @@ namespace BGC.Web.App_Start
             return container;
         });
 
-		private static IDependencyRegistration<IUnityContainer> DependencyRegistrationProvider = new DataLayerDependencyRegistration();
+        private static IDependencyRegistration<IUnityContainer> DependencyRegistrationProvider = new DataLayerDependencyRegistration();
 
         /// <summary>
         /// Gets the configured Unity container.
@@ -49,28 +49,29 @@ namespace BGC.Web.App_Start
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-			new BGC.Data.DataLayerDependencyRegistration().RegisterTypes(container);
-			new BGC.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
+            new BGC.Data.DataLayerDependencyRegistration().RegisterTypes(container);
+            new BGC.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
 
-			container
-				.RegisterType<AdministrationControllerBase>()
-				.RegisterTypes(
-					types: AllClasses
-						   .FromAssemblies(typeof(AdministrationControllerBase).Assembly)
-						   .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
-					getInjectionMembers: (t) => new InjectionMember[]
-					{
-						new InjectionProperty(
-							Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
-							container.Resolve<UserManager<AspNetUser, long>>())
-					});
+            container
+                .RegisterType<AdministrationControllerBase>()
+                .RegisterTypes(
+                    types: AllClasses
+                           .FromAssemblies(typeof(AdministrationControllerBase).Assembly)
+                           .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
+                    getInjectionMembers: (t) => new InjectionMember[]
+                    {
+                        new InjectionProperty(
+                            Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
+                            container.Resolve<UserManager<AspNetUser, long>>())
+                    });
 
-			container.RegisterType<SignInManager<AspNetUser, long>>(new InjectionFactory(c =>
-			{
-				return new SignInManager<AspNetUser, long>(c.Resolve<UserManager<AspNetUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
-			}));
-            
-            container.RegisterType<ILocalizationService, LocalizationService>(
+            container.RegisterType<SignInManager<AspNetUser, long>>(new InjectionFactory(c =>
+            {
+                return new SignInManager<AspNetUser, long>(c.Resolve<UserManager<AspNetUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
+            }));
+
+            container.RegisterType<ILocalizationService, LocalizationService>
+            (
                 new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c =>
                 {
@@ -81,7 +82,8 @@ namespace BGC.Web.App_Start
                         localizationXml.Load(xmlStream);
                         return new LocalizationService(localizationXml);
                     }
-                }));
+                })
+            );
         }
     }
 }
