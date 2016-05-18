@@ -6,218 +6,250 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BGC.Core.Services;
 using Moq;
 using System.Runtime.CompilerServices;
+using BGC.Services;
 
 namespace BGC.Core.Tests
 {
-	/// <summary>
-	/// Summary description for ServiceBaseTests
-	/// </summary>
-	[TestClass]
-	public class DbServiceBaseTests
-	{
-		public class MockEntity
-		{
+    /// <summary>
+    /// Summary description for ServiceBaseTests
+    /// </summary>
+    [TestClass]
+    public class DbServiceBaseTests
+    {
+        public class MockEntity
+        {
 
-		}
+        }
 
-		[TestClass]
-		public class GetPropertyValuesOfTypeAccessorTests
-		{
-			public class CustomNonEmptyService
-			{
-				internal IRepository<MockEntity> MockRepo1 { get; set; }
-				internal IRepository<MockEntity> MockRepo2 { get; set; }
+        internal class BasicServiceImplementation : DbServiceBase
+        {
+            public IUnitOfWork GetCommonUnitOfWork()
+            {
+                return this.CommonUnitOfWork;
+            }
 
-				public CustomNonEmptyService()
-				{
-					Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
-					Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-					Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-					mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
-					mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
-					this.MockRepo1 = mockRepo1.Object;
-					this.MockRepo2 = mockRepo2.Object;
-				}
-			}
-			public struct CustomNonEmptyStructService
-			{
-				internal IRepository<MockEntity> MockRepo1 { get; set; }
-				internal IRepository<MockEntity> MockRepo2 { get; set; }
+            public IEnumerable<IDbConnect> GetDbConnectMembers() => GetDatbaseConnectedObjects();
 
-				public CustomNonEmptyStructService(bool dummy) :
-					this()
-				{
-					Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
-					Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-					Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-					mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
-					mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
-					this.MockRepo1 = mockRepo1.Object;
-					this.MockRepo2 = mockRepo2.Object;
-				}
-			}
+            public BasicServiceImplementation()
+            {
+            }
+        }
 
-			public class CustomEmptyService
-			{
-				public CustomEmptyService()
-				{
-				}
-			}
+        internal class CustomNonEmptyService : BasicServiceImplementation
+        {
+            internal IRepository<MockEntity> MockRepo1 { get; set; }
+            internal IRepository<MockEntity> MockRepo2 { get; set; }
 
-			public PrivateType DbConnectedObjectsAccessorHelper { get; set; }
+            public CustomNonEmptyService()
+            {
+            }
+        }
 
-			[TestInitialize]
-			public void TestInit()
-			{
-				this.DbConnectedObjectsAccessorHelper = new PrivateType(typeof(DbServiceBase));
-			}
+        internal class MockUnitOfWork : IUnitOfWork
+        {
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
 
-			[TestMethod]
-			public void ShouldReturnAllMatchingProperties()
-			{
-				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
-				Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyService()).Count());
-			}
+            public int SaveChanges()
+            {
+                throw new NotImplementedException();
+            }
 
-			[TestMethod]
-			public void ShouldReturnAllMatchingPropertiesForValueTypes()
-			{
-				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyStructService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
-				Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyStructService()).Count());
-			}
+            public IRepository<T> GetRepository<T>() where T : class
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-			[TestMethod]
-			public void ShouldReturnEmptyEnumerable()
-			{
-				Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomEmptyService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
-				Assert.AreEqual(0, accessor.Invoke(new CustomEmptyService()).Count());
-			}
-		}
+        internal class MockUnitOfWorkThrowsOnGetHashCode : IUnitOfWork
+        {
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
 
-		[TestClass]
-		public class CommonUnitOfWorkTests
-		{
-			internal class BasicServiceImplementation : DbServiceBase
-			{
-				public IUnitOfWork GetCommonUnitOfWork()
-				{
-					return this.CommonUnitOfWork;
-				}
+            public override int GetHashCode()
+            {
+                throw new NotSupportedException("UnitOfWork equality should not depend on GetHashCode but rather than on the static objec.ReferenceEquals method");
+            }
 
-				public BasicServiceImplementation()
-				{
-				}
-			}
+            public int SaveChanges()
+            {
+                throw new NotImplementedException();
+            }
 
-			internal class CustomNonEmptyService : BasicServiceImplementation
-			{
-				internal IRepository<MockEntity> MockRepo1 { get; set; }
-				internal IRepository<MockEntity> MockRepo2 { get; set; }
+            public IRepository<T> GetRepository<T>() where T : class
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-				public CustomNonEmptyService()
-				{
-				}
-			}
+        [TestClass]
+        public class GetPropertyValuesOfTypeAccessorTests
+        {
+            internal class CustomNonEmptyService
+            {
+                internal IRepository<MockEntity> MockRepo1 { get; set; }
+                internal IRepository<MockEntity> MockRepo2 { get; set; }
 
-			internal class MockUnitOfWork : IUnitOfWork
-			{
-				public void Dispose()
-				{
-					throw new NotImplementedException();
-				}
+                public CustomNonEmptyService()
+                {
+                    Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
+                    Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                    Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                    mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
+                    mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
+                    this.MockRepo1 = mockRepo1.Object;
+                    this.MockRepo2 = mockRepo2.Object;
+                }
+            }
 
-				public int SaveChanges()
-				{
-					throw new NotImplementedException();
-				}
+            internal struct CustomNonEmptyStructService
+            {
+                internal IRepository<MockEntity> MockRepo1 { get; set; }
+                internal IRepository<MockEntity> MockRepo2 { get; set; }
 
-				public IRepository<T> GetRepository<T>() where T : class
-				{
-					throw new NotImplementedException();
-				}
-			}
+                public CustomNonEmptyStructService(bool dummy) :
+                    this()
+                {
+                    Mock<IUnitOfWork> commonUnitOfWork = new Mock<IUnitOfWork>();
+                    Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                    Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                    mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
+                    mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork.Object);
+                    this.MockRepo1 = mockRepo1.Object;
+                    this.MockRepo2 = mockRepo2.Object;
+                }
+            }
 
-			internal class MockUnitOfWorkThrowsOnGetHashCode : IUnitOfWork
-			{
-				public void Dispose()
-				{
-					throw new NotImplementedException();
-				}
+            internal class CustomEmptyService
+            {
+                public CustomEmptyService()
+                {
+                }
+            }
 
-				public override int GetHashCode()
-				{
-					throw new NotSupportedException("UnitOfWork equality should not depend on GetHashCode but rather than on the static objec.ReferenceEquals method");
-				}
+            public PrivateType DbConnectedObjectsAccessorHelper { get; set; }
 
-				public int SaveChanges()
-				{
-					throw new NotImplementedException();
-				}
+            [TestInitialize]
+            public void TestInit()
+            {
+                this.DbConnectedObjectsAccessorHelper = new PrivateType(typeof(DbServiceBase));
+            }
 
-				public IRepository<T> GetRepository<T>() where T : class
-				{
-					throw new NotImplementedException();
-				}
-			}
+            [TestMethod]
+            public void ShouldReturnAllMatchingProperties()
+            {
+                Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
+                Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyService()).Count());
+            }
 
-			[TestMethod]
-			[ExpectedException(typeof(InvalidOperationException))]
-			public void ThrowsExceptionIfMoreThanOneUnitOfWork()
-			{
-				Mock<IUnitOfWork> unitOfWork1 = new Mock<IUnitOfWork>();
-				Mock<IUnitOfWork> unitOfWork2 = new Mock<IUnitOfWork>();
-				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(unitOfWork1.Object);
-				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(unitOfWork2.Object);
-				CustomNonEmptyService testObj = new CustomNonEmptyService()
-				{
-					MockRepo1 = mockRepo1.Object,
-					MockRepo2 = mockRepo2.Object
-				};
-				IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
-			}
+            [TestMethod]
+            public void ShouldReturnAllMatchingPropertiesForValueTypes()
+            {
+                Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomNonEmptyStructService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
+                Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyStructService()).Count());
+            }
 
-			[TestMethod]
-			[ExpectedException(typeof(InvalidOperationException))]
-			public void ThrowsExceptionIfNoUnitOfWork()
-			{
-				BasicServiceImplementation testObj = new BasicServiceImplementation();
-				IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
-			}
+            [TestMethod]
+            public void ShouldReturnEmptyEnumerable()
+            {
+                Func<object, IEnumerable<IDbConnect>> accessor = this.DbConnectedObjectsAccessorHelper.InvokeStatic("GetPropertyValuesOfTypeAccessor", new Type[] { typeof(Type) }, new object[] { typeof(CustomEmptyService) }, new Type[] { typeof(IDbConnect) }) as Func<object, IEnumerable<IDbConnect>>;
+                Assert.AreEqual(0, accessor.Invoke(new CustomEmptyService()).Count());
+            }
+        }
 
-			[TestMethod]
-			public void ReturnsCorrectUnitOfWorkReference()
-			{
-				IUnitOfWork mockUnitOfWork = new MockUnitOfWork();
-				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
-				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
-				CustomNonEmptyService testObj = new CustomNonEmptyService()
-				{
-					MockRepo1 = mockRepo1.Object,
-					MockRepo2 = mockRepo2.Object
-				};
-				IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
-				Assert.AreSame(mockUnitOfWork, commonUnitOfWork);
-			}
+        [TestClass]
+        public class CommonUnitOfWorkTests
+        {
 
-			[TestMethod]
-			public void ReturnsCorrectUnitOfWorkReferenceWithoutGetHashCode()
-			{
-				IUnitOfWork commonUnitOfWork = new MockUnitOfWorkThrowsOnGetHashCode();
-				Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-				Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-				mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
-				mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
-				CustomNonEmptyService testObj = new CustomNonEmptyService()
-				{
-					MockRepo1 = mockRepo1.Object,
-					MockRepo2 = mockRepo2.Object
-				};
-				Assert.AreSame(commonUnitOfWork, testObj.GetCommonUnitOfWork());
-			}
-		}
-	}
+            [TestMethod]
+            [ExpectedException(typeof(InvalidOperationException))]
+            public void ThrowsExceptionIfMoreThanOneUnitOfWork()
+            {
+                Mock<IUnitOfWork> unitOfWork1 = new Mock<IUnitOfWork>();
+                Mock<IUnitOfWork> unitOfWork2 = new Mock<IUnitOfWork>();
+                Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                mockRepo1.SetupGet(x => x.UnitOfWork).Returns(unitOfWork1.Object);
+                mockRepo2.SetupGet(x => x.UnitOfWork).Returns(unitOfWork2.Object);
+                CustomNonEmptyService testObj = new CustomNonEmptyService()
+                {
+                    MockRepo1 = mockRepo1.Object,
+                    MockRepo2 = mockRepo2.Object
+                };
+                IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
+            }
+
+            [TestMethod]
+            [ExpectedException(typeof(InvalidOperationException))]
+            public void ThrowsExceptionIfNoUnitOfWork()
+            {
+                BasicServiceImplementation testObj = new BasicServiceImplementation();
+                IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
+            }
+
+            [TestMethod]
+            public void ReturnsCorrectUnitOfWorkReference()
+            {
+                IUnitOfWork mockUnitOfWork = new MockUnitOfWork();
+                Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                mockRepo1.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
+                mockRepo2.SetupGet(x => x.UnitOfWork).Returns(mockUnitOfWork);
+                CustomNonEmptyService testObj = new CustomNonEmptyService()
+                {
+                    MockRepo1 = mockRepo1.Object,
+                    MockRepo2 = mockRepo2.Object
+                };
+                IUnitOfWork commonUnitOfWork = testObj.GetCommonUnitOfWork();
+                Assert.AreSame(mockUnitOfWork, commonUnitOfWork);
+            }
+
+            [TestMethod]
+            public void ReturnsCorrectUnitOfWorkReferenceWithoutGetHashCode()
+            {
+                IUnitOfWork commonUnitOfWork = new MockUnitOfWorkThrowsOnGetHashCode();
+                Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+                mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+                CustomNonEmptyService testObj = new CustomNonEmptyService()
+                {
+                    MockRepo1 = mockRepo1.Object,
+                    MockRepo2 = mockRepo2.Object
+                };
+                Assert.AreSame(commonUnitOfWork, testObj.GetCommonUnitOfWork());
+            }
+        }
+
+        [TestClass]
+        public class GetDbConnectMembersTest
+        {
+            [TestMethod]
+            public void ReturnsEmptyCollectionWhenNoDbConnectedObjects()
+            {
+                BasicServiceImplementation svc = new BasicServiceImplementation();
+                Assert.IsFalse(svc.GetDbConnectMembers().Any());
+            }
+
+            [TestMethod]
+            public void ReturnsCorrectDbConnectedMembers()
+            {
+                IUnitOfWork commonUnitOfWork = new Mock<IUnitOfWork>().Object;
+                Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+                Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+                mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+                mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+                CustomNonEmptyService testObj = new CustomNonEmptyService()
+                {
+                    MockRepo1 = mockRepo1.Object,
+                    MockRepo2 = mockRepo2.Object
+                };
+                Assert.AreEqual(2, testObj.GetDbConnectMembers().Count());
+            }
+        }
+    }
 }

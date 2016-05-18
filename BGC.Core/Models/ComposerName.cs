@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -29,6 +30,7 @@ namespace BGC.Core
 		public string LocalizationCultureName { get; set; }
 
 		private string firstName;
+        [MaxLength(32)]
 		public string FirstName
 		{
 			get
@@ -53,7 +55,8 @@ namespace BGC.Core
 		}
 
 		private string lastName;
-		public string LastName
+        [MaxLength(32)]
+        public string LastName
 		{
 			get
 			{
@@ -79,7 +82,8 @@ namespace BGC.Core
 		}
 
 		private string fullName;
-		public string FullName
+        [MaxLength(128)]
+        public string FullName
 		{
 			get
 			{

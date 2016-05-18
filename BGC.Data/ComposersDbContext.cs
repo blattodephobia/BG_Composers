@@ -41,13 +41,10 @@ namespace BGC.Data
 			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
 
 			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
-				.HasMaxLength(32)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 			modelBuilder.Entity<ComposerName>().Property(name => name.FullName)
-				.HasMaxLength(128)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
-				.HasMaxLength(32)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 

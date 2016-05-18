@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BGC.Core.Tests.Models
 {
     [TestClass]
-    public class CultureParameterTests
+    public class CultureSupportParameterTests
     {
         [TestClass]
         public class SupportedCulturesTests
@@ -66,6 +66,14 @@ namespace BGC.Core.Tests.Models
                 CultureSupportParameter s = new CultureSupportParameter();
                 s.SupportedCultures = new[] { CultureInfo.GetCultureInfo("en-US") };
                 Assert.AreEqual("en-US", s.StringValue);
+            }
+
+            [TestMethod]
+            [ExpectedException(typeof(CultureNotFoundException))]
+            public void FormatTest()
+            {
+                CultureSupportParameter s = new CultureSupportParameter(); ;
+                s.StringValue = "df-QQ";
             }
         }
     }

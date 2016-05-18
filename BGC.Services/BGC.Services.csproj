@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbServiceBase.cs" />
     <Compile Include="ServiceLayerDependencyRegistration.cs" />
+    <Compile Include="SettingsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

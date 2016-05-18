@@ -12,8 +12,6 @@ namespace BGC.Core
 
         public string Description { get; set; }
 
-        public Parameter Value { get; set; }
-
-        public abstract int Priority { get; }
+        public virtual Parameter Value { get; set; }
     }
 }

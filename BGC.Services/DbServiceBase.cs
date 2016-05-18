@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BGC.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -6,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Services
+namespace BGC.Services
 {
 	internal abstract class DbServiceBase : IDisposable
 	{
@@ -26,9 +27,10 @@ namespace BGC.Core.Services
         /// <returns></returns>		
         private static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type propertyDeclaringType)
 		{
-			IEnumerable<PropertyInfo> matchingProperties = propertyDeclaringType
-														   .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-														   .Where(property => typeof(TPropertyType).IsAssignableFrom(property.PropertyType));
+			IEnumerable<PropertyInfo> matchingProperties =
+                propertyDeclaringType
+                .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => typeof(TPropertyType).IsAssignableFrom(property.PropertyType));
 			ParameterExpression parameter = Expression.Parameter(typeof(object));
 			var lambda = Expression.Lambda<Func<object, IEnumerable<TPropertyType>>>
 			(
@@ -68,6 +70,11 @@ namespace BGC.Core.Services
 				return this.commonUnitOfWork;
 			}
 		}
+
+        protected IEnumerable<IDbConnect> GetDatbaseConnectedObjects()
+        {
+            return DbConnectMemberAccessors[this.currentType].Invoke(this);
+        }
 
 		protected DbServiceBase()
 		{

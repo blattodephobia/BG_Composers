@@ -1,11 +1,13 @@
-﻿using CodeShield;
+﻿using BGC.Core;
+using BGC.Core.Services;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Services
+namespace BGC.Services
 {
 	internal class ComposerEntriesService : DbServiceBase, IComposerEntriesService
 	{
