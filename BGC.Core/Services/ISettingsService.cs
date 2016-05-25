@@ -24,6 +24,6 @@ namespace BGC.Core.Services
         /// <param name="name"></param>
         /// <param name="value"></param>
         [OperationContract]
-        void ConfigureSetting(string name, Parameter value);
+        void ConfigureSetting(string name, Parameter value, BgcUser user);
     }
 }

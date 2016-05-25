@@ -14,7 +14,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
 	public partial class AuthenticationController : AdministrationControllerBase
 	{
-		public SignInManager<AspNetUser, long> SignInManager { get; private set; }
+		public SignInManager<BgcUser, long> SignInManager { get; private set; }
 
 		[AllowAnonymous]
 		[HttpGet]
@@ -31,7 +31,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 		[HttpPost]
 		public virtual ActionResult Login(LoginViewModel model)
 		{
-			AspNetUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
+			BgcUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
 			bool success = user != null && this.SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
 			if (success)
 			{
@@ -45,7 +45,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 			}
 		}
 
-		public AuthenticationController(SignInManager<AspNetUser, long> signInManager)
+		public AuthenticationController(SignInManager<BgcUser, long> signInManager)
 		{
 			this.SignInManager = signInManager;
 		}

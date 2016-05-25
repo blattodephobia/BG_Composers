@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using BGC.Core.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,19 +8,21 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class AspNetRole : IdentityRole<long, AspNetUserRole>
+	public class BgcRole : IdentityRole<long, BgcUserRole>
 	{
 		public static readonly string AdministratorRoleName = "Administrator";
 
-		public AspNetRole() :
+		public BgcRole() :
 			this(string.Empty)
 		{
 
 		}
 
-		public AspNetRole(string roleName)
+		public BgcRole(string roleName)
 		{
 			this.Name = roleName;
-		}
-	}
+        }
+
+        public virtual ICollection<Permission> Permissions { get; set; }
+    }
 }

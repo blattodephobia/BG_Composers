@@ -20,13 +20,15 @@ namespace BGC.Services
         private IRepository<ApplicationSetting> AppSettings { get; set; }
         private IRepository<UserSetting> UserSettings { get; set; }
 
-        public SettingsService(IRepository<ApplicationSetting> appSettings, IRepository<UserSetting> userSettings = null, AspNetUser user = null)
+        public SettingsService(IRepository<ApplicationSetting> appSettings, IRepository<UserSetting> userSettings = null, BgcUser user = null)
         {
+            Shield.ArgumentNotNull(appSettings, nameof(appSettings)).ThrowOnError();
+
             AppSettings = appSettings;
             UserSettings = userSettings;
         }
 
-        public void ConfigureSetting(string name, Parameter value)
+        public void ConfigureSetting(string name, Parameter value, BgcUser user)
         {
         }
 

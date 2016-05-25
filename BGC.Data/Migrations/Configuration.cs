@@ -12,19 +12,19 @@ namespace BGC.Data.Migrations
 		{
 			try
 			{
-				var roleManager = new RoleManager<AspNetRole, long>(new RoleStore<AspNetRole, long, AspNetUserRole>(context));
-				var userManager = new UserManager<AspNetUser, long>(new UserStore<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>(context));
+				var roleManager = new RoleManager<BgcRole, long>(new RoleStore<BgcRole, long, BgcUserRole>(context));
+				var userManager = new UserManager<BgcUser, long>(new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context));
 
-				if (!roleManager.RoleExists(AspNetRole.AdministratorRoleName))
+				if (!roleManager.RoleExists(BgcRole.AdministratorRoleName))
 				{
-					roleManager.Create(new AspNetRole(AspNetRole.AdministratorRoleName));
+					roleManager.Create(new BgcRole(BgcRole.AdministratorRoleName));
 				}
 
-				if (userManager.FindByName(AspNetUser.AdministratorUserName) == null)
+				if (userManager.FindByName(BgcUser.AdministratorUserName) == null)
 				{
-					AspNetUser admin = new AspNetUser(AspNetUser.AdministratorUserName);
+					BgcUser admin = new BgcUser(BgcUser.AdministratorUserName);
 					userManager.Create(admin, "__8ja&7.s9/G");
-					userManager.AddToRole(admin.Id, AspNetRole.AdministratorRoleName);
+					userManager.AddToRole(admin.Id, BgcRole.AdministratorRoleName);
 				}
 			}
 			catch

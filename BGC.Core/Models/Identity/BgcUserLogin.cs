@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class AspNetUserLogin : IdentityUserLogin<long>
+	public class BgcUserLogin : IdentityUserLogin<long>
 	{
 	}
 }

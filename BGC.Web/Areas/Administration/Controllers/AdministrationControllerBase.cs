@@ -13,8 +13,8 @@ namespace BGC.Web.Areas.Administration.Controllers
 	[AdminAreaAuthorization(Roles = "Administrator")]
     public abstract class AdministrationControllerBase : Controller
     {
-		private UserManager<AspNetUser, long> userManager;
-		public UserManager<AspNetUser, long> UserManager
+		private UserManager<BgcUser, long> userManager;
+		public UserManager<BgcUser, long> UserManager
 		{
 			get
 			{

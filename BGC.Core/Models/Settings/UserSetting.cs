@@ -12,6 +12,6 @@ namespace BGC.Core
         public long UserId { get; set; }
 
         [Required]
-        public virtual AspNetUser User { get; set; }
+        public virtual BgcUser User { get; set; }
     }
 }

@@ -62,12 +62,12 @@ namespace BGC.Web.App_Start
                     {
                         new InjectionProperty(
                             Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
-                            container.Resolve<UserManager<AspNetUser, long>>())
+                            container.Resolve<UserManager<BgcUser, long>>())
                     });
 
-            container.RegisterType<SignInManager<AspNetUser, long>>(new InjectionFactory(c =>
+            container.RegisterType<SignInManager<BgcUser, long>>(new InjectionFactory(c =>
             {
-                return new SignInManager<AspNetUser, long>(c.Resolve<UserManager<AspNetUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
+                return new SignInManager<BgcUser, long>(c.Resolve<UserManager<BgcUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
             }));
 
             container.RegisterType<ILocalizationService, LocalizationService>

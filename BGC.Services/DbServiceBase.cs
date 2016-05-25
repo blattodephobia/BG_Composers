@@ -60,7 +60,7 @@ namespace BGC.Services
 					IEnumerable<IDbConnect> dbConnectedObjects = DbConnectMemberAccessors[this.currentType].Invoke(this) ?? Enumerable.Empty<IDbConnect>();
 					IEnumerable<IUnitOfWork> unitOfWorkInstances = dbConnectedObjects.Select(obj => obj.UnitOfWork);
 					if (!unitOfWorkInstances.Any()) throw new InvalidOperationException("There are no objects connected to a database.");
-
+                    
 					this.commonUnitOfWork = unitOfWorkInstances.Aggregate((prev, curr) =>
 					{
 						if (object.ReferenceEquals(prev, curr)) return curr;

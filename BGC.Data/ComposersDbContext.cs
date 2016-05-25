@@ -8,7 +8,7 @@ using System.Data.Entity.Infrastructure.Annotations;
 namespace BGC.Data
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
-	internal class ComposersDbContext : IdentityDbContext<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>, IUnitOfWork
+	internal class ComposersDbContext : IdentityDbContext<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>, IUnitOfWork
 	{
 		public DbSet<Composer> Composers { get; set; }
 
@@ -29,16 +29,16 @@ namespace BGC.Data
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-			modelBuilder.Entity<AspNetUser>().HasKey(user => user.Id);
-			modelBuilder.Entity<AspNetRole>().HasKey(role => role.Id);
-			modelBuilder.Entity<AspNetUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
-			modelBuilder.Entity<AspNetUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
-			modelBuilder.Entity<AspNetUserClaim>().HasKey(userClaim => userClaim.Id);
+			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id);
+			modelBuilder.Entity<BgcRole>().HasKey(role => role.Id);
+			modelBuilder.Entity<BgcUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
+			modelBuilder.Entity<BgcUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
+			modelBuilder.Entity<BgcUserClaim>().HasKey(userClaim => userClaim.Id);
 
 			// The Role's Name and the User's UserName lengths are reduced, because otherwise MySQL wouldn't allow indexing them;
 			// Max key size is 767 bytes and a string with length 256 in UTF-8 is at most 1024 bytes.
-			modelBuilder.Entity<AspNetRole>().Property(anr => anr.Name).HasMaxLength(64);
-			modelBuilder.Entity<AspNetUser>().Property(anu => anu.UserName).HasMaxLength(32);
+			modelBuilder.Entity<BgcRole>().Property(anr => anr.Name).HasMaxLength(64);
+			modelBuilder.Entity<BgcUser>().Property(anu => anu.UserName).HasMaxLength(32);
 
 			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
@@ -46,6 +46,8 @@ namespace BGC.Data
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+
+            modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
 		}
 
 		public IRepository<T> GetRepository<T>()

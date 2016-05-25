@@ -19,11 +19,11 @@ namespace BGC.Data
 		{
             helper.RegisterType(typeof(IRepository<>), typeof(MySqlRepository<>));
 			helper.RegisterType<IUnitOfWork, ComposersDbContext>(new InjectionConstructor());
-			helper.RegisterType<IUserStore<AspNetUser, long>, UserStore<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>>(
+			helper.RegisterType<IUserStore<BgcUser, long>, UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>>(
 				new InjectionFactory(container =>
 				{
 					ComposersDbContext context = container.Resolve<ComposersDbContext>();
-					return new UserStore<AspNetUser, AspNetRole, long, AspNetUserLogin, AspNetUserRole, AspNetUserClaim>(context);
+					return new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context);
 				}));
 		}
 	}
