@@ -45,14 +45,6 @@ namespace BGC.Core.Tests.Models
         public class StringValue
         {
             [TestMethod]
-            public void AcceptsNull()
-            {
-                CultureSupportParameter s = new CultureSupportParameter();
-                s.StringValue = null;
-                Assert.AreEqual(null, s.SupportedCultures);
-            }
-
-            [TestMethod]
             public void IsSetFromSupportedCulturesProperty1()
             {
                 CultureSupportParameter s = new CultureSupportParameter();
@@ -74,6 +66,25 @@ namespace BGC.Core.Tests.Models
             {
                 CultureSupportParameter s = new CultureSupportParameter(); ;
                 s.StringValue = "df-QQ";
+            }
+        }
+
+        [TestClass]
+        public class CtorTests
+        {
+            [TestMethod]
+            public void ConstructsCorrectlyWithValidInput()
+            {
+                CultureSupportParameter param = new CultureSupportParameter("bg-BG, de-DE");
+                Assert.AreEqual("bg-BG", param.SupportedCultures.ElementAt(0).Name);
+                Assert.AreEqual("de-DE", param.SupportedCultures.ElementAt(1).Name);
+            }
+
+            [TestMethod]
+            [ExpectedException(typeof(ArgumentNullException))]
+            public void ThrowsExceptionOnNullValue()
+            {
+                CultureSupportParameter param = new CultureSupportParameter(null);
             }
         }
     }

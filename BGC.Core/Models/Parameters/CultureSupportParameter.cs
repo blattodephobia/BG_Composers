@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class CultureSupportParameter : StringParameter
+    public class CultureSupportParameter : Parameter
     {
         private static readonly char[] Separators = new[] { ',', ' ', ';' };
         private static readonly string AppendSeparator = ", ";
@@ -25,7 +26,9 @@ namespace BGC.Core
 
             set
             {
-                SupportedCultures = value?
+                Shield.ValueNotNull(value, nameof(StringValue)).ThrowOnError();
+
+                SupportedCultures = value
                     .Split(Separators, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => CultureInfo.GetCultureInfo(s));
                 this._string = value;
@@ -54,6 +57,16 @@ namespace BGC.Core
                             : sb)
                     .ToString();
             }
+        }
+
+        public CultureSupportParameter()
+        {
+        }
+
+        public CultureSupportParameter(string culturesList) :
+            this()
+        {
+            this.StringValue = culturesList.ArgumentNotNull().GetValueOrThrow();
         }
     }
 }

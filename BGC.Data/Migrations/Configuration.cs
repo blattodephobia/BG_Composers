@@ -6,9 +6,9 @@ using System.Data.Entity.Migrations;
 
 namespace BGC.Data.Migrations
 {
-	internal sealed class Configuration : DbMigrationsConfiguration<BGC.Data.ComposersDbContext>
+	internal sealed class Configuration : DbMigrationsConfiguration<ComposersDbContext>
 	{
-		protected override void Seed(BGC.Data.ComposersDbContext context)
+		protected override void Seed(ComposersDbContext context)
 		{
 			try
 			{
@@ -26,6 +26,9 @@ namespace BGC.Data.Migrations
 					userManager.Create(admin, "__8ja&7.s9/G");
 					userManager.AddToRole(admin.Id, BgcRole.AdministratorRoleName);
 				}
+
+                context.ApplicationSettings.AddOrUpdate(appSetting => appSetting.Name,
+                    new ApplicationSetting() { Name = "SupportedLanguages", Value = new CultureSupportParameter("bg-BG, de-DE") });
 			}
 			catch
 			{

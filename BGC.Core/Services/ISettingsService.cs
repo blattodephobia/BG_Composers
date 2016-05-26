@@ -17,13 +17,5 @@ namespace BGC.Core.Services
         /// <returns></returns>
         [OperationContract]
         Setting FindSetting(string name);
-
-        /// <summary>
-        /// Sets a value 
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="value"></param>
-        [OperationContract]
-        void ConfigureSetting(string name, Parameter value, BgcUser user);
     }
 }

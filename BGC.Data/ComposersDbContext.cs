@@ -10,6 +10,12 @@ namespace BGC.Data
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
 	internal class ComposersDbContext : IdentityDbContext<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>, IUnitOfWork
 	{
+        public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
+
+        public DbSet<UserSetting> UserSettings { get; set; }
+
+        public DbSet<Parameter> Parameters { get; set; }
+
 		public DbSet<Composer> Composers { get; set; }
 
 		public DbSet<ComposerEntry> ComposerArticles { get; set; }

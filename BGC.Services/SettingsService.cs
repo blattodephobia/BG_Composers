@@ -20,16 +20,12 @@ namespace BGC.Services
         private IRepository<ApplicationSetting> AppSettings { get; set; }
         private IRepository<UserSetting> UserSettings { get; set; }
 
-        public SettingsService(IRepository<ApplicationSetting> appSettings, IRepository<UserSetting> userSettings = null, BgcUser user = null)
+        public SettingsService(IRepository<ApplicationSetting> appSettings, IRepository<UserSetting> userSettings = null)
         {
             Shield.ArgumentNotNull(appSettings, nameof(appSettings)).ThrowOnError();
 
             AppSettings = appSettings;
             UserSettings = userSettings;
-        }
-
-        public void ConfigureSetting(string name, Parameter value, BgcUser user)
-        {
         }
 
         public Setting FindSetting(string name)
@@ -50,6 +46,7 @@ namespace BGC.Services
 
             int xPriority;
             int yPriority;
+
             if (SettingPriorities.TryGetValue(x.GetType(), out xPriority) &&
                 SettingPriorities.TryGetValue(x.GetType(), out yPriority))
             {

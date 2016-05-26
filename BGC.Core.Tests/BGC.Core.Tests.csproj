@@ -69,6 +69,7 @@
   <ItemGroup>
     <Compile Include="Models\ComposerNameTests.cs" />
     <Compile Include="Models\CultureSupportParameterTests.cs" />
+    <Compile Include="Models\DateTimeParameterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

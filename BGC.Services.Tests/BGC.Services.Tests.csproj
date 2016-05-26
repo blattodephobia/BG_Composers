@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DbServiceBaseTests.cs" />
     <Compile Include="LocalizationServiceTests.cs" />
+    <Compile Include="SettingsServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">

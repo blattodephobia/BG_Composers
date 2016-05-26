@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public abstract class Parameter : BgcEntity<long>
+    public class Parameter : BgcEntity<long>
     {
+        public virtual string StringValue { get; set; }
+
+        public sealed override string ToString()
+        {
+            return StringValue;
+        }
     }
 }
