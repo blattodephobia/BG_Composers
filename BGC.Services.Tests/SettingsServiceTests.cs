@@ -18,25 +18,37 @@ namespace BGC.Services.Tests
             [TestMethod]
             public void GetsHighestPrioritySettingFirst()
             {
-                Mock<IRepository<ApplicationSetting>> mockAppSettingsRepo = new Mock<IRepository<ApplicationSetting>>();
-                mockAppSettingsRepo
+                Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
+                mockSettingsRepo
                     .Setup(x => x.All())
-                    .Returns(new List<ApplicationSetting>()
+                    .Returns(new List<Setting>()
                     {
-                        new ApplicationSetting() { Name = "TestSetting" }
+                        new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application }
                     }.AsQueryable());
 
-                Mock<IRepository<UserSetting>> mockUserSettingsRepo = new Mock<IRepository<UserSetting>>();
-                mockUserSettingsRepo
-                    .Setup(x => x.All())
-                    .Returns(new List<UserSetting>()
-                    {
-                        new UserSetting() { Name = "TestSetting" }
-                    }.AsQueryable());
+                BgcUser mockUser = new BgcUser();
+                mockUser.UserSettings = new List<Setting>()
+                {
+                    new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User }
+                };
 
-                SettingsService service = new SettingsService(mockAppSettingsRepo.Object, mockUserSettingsRepo.Object);
-                Setting setting = service.FindSetting("TestSetting");
-                Assert.IsTrue(setting is UserSetting);
+                SettingsService service = new SettingsService(mockSettingsRepo.Object, mockUser);
+                Setting setting = service.ReadSetting("TestSetting");
+                Assert.AreEqual(mockUser.UserSettings.First(), setting);
+            }
+
+            [TestMethod]
+            public void CanHandleNullUser()
+            {
+                DateTimeSetting result = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application };
+                Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
+                mockSettingsRepo
+                    .Setup(x => x.All())
+                    .Returns(new List<Setting>() { result, new DateTimeSetting() { Name = "OtherSetting" } }.AsQueryable());
+                
+                SettingsService service = new SettingsService(mockSettingsRepo.Object);
+                Setting setting = service.ReadSetting("TestSetting");
+                Assert.AreEqual(result, setting);
             }
         }
     }

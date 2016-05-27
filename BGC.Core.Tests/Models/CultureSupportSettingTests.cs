@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BGC.Core.Tests.Models
 {
     [TestClass]
-    public class CultureSupportParameterTests
+    public class CultureSupportSettingTests
     {
         [TestClass]
         public class SupportedCulturesTests
@@ -17,7 +17,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void AcceptsNull()
             {
-                CultureSupportParameter s = new CultureSupportParameter();
+                CultureSupportSetting s = new CultureSupportSetting();
                 s.SupportedCultures = null;
                 Assert.IsNull(s.StringValue);
             }
@@ -25,7 +25,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void IsPopulatedFromStringCorrectly1()
             {
-                CultureSupportParameter s = new CultureSupportParameter();
+                CultureSupportSetting s = new CultureSupportSetting();
                 s.StringValue = "en-US, bg-BG, de-DE";
                 Assert.AreEqual("en-US", s.SupportedCultures.ElementAt(0).Name);
                 Assert.AreEqual("bg-BG", s.SupportedCultures.ElementAt(1).Name);
@@ -35,7 +35,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void IsPopulatedFromStringCorrectly2()
             {
-                CultureSupportParameter s = new CultureSupportParameter();
+                CultureSupportSetting s = new CultureSupportSetting();
                 s.StringValue = "en-US";
                 Assert.AreEqual("en-US", s.SupportedCultures.ElementAt(0).Name);
             }
@@ -47,7 +47,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void IsSetFromSupportedCulturesProperty1()
             {
-                CultureSupportParameter s = new CultureSupportParameter();
+                CultureSupportSetting s = new CultureSupportSetting();
                 s.SupportedCultures = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("tr-TR") };
                 Assert.AreEqual("en-US, tr-TR", s.StringValue);
             }
@@ -55,7 +55,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void IsSetFromSupportedCulturesProperty2()
             {
-                CultureSupportParameter s = new CultureSupportParameter();
+                CultureSupportSetting s = new CultureSupportSetting();
                 s.SupportedCultures = new[] { CultureInfo.GetCultureInfo("en-US") };
                 Assert.AreEqual("en-US", s.StringValue);
             }
@@ -64,7 +64,7 @@ namespace BGC.Core.Tests.Models
             [ExpectedException(typeof(CultureNotFoundException))]
             public void FormatTest()
             {
-                CultureSupportParameter s = new CultureSupportParameter(); ;
+                CultureSupportSetting s = new CultureSupportSetting(); ;
                 s.StringValue = "df-QQ";
             }
         }
@@ -75,7 +75,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void ConstructsCorrectlyWithValidInput()
             {
-                CultureSupportParameter param = new CultureSupportParameter("bg-BG, de-DE");
+                CultureSupportSetting param = new CultureSupportSetting("bg-BG, de-DE");
                 Assert.AreEqual("bg-BG", param.SupportedCultures.ElementAt(0).Name);
                 Assert.AreEqual("de-DE", param.SupportedCultures.ElementAt(1).Name);
             }
@@ -84,7 +84,7 @@ namespace BGC.Core.Tests.Models
             [ExpectedException(typeof(ArgumentNullException))]
             public void ThrowsExceptionOnNullValue()
             {
-                CultureSupportParameter param = new CultureSupportParameter(null);
+                CultureSupportSetting param = new CultureSupportSetting(null);
             }
         }
     }

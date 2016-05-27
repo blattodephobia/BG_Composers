@@ -10,11 +10,7 @@ namespace BGC.Data
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
 	internal class ComposersDbContext : IdentityDbContext<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>, IUnitOfWork
 	{
-        public DbSet<ApplicationSetting> ApplicationSettings { get; set; }
-
-        public DbSet<UserSetting> UserSettings { get; set; }
-
-        public DbSet<Parameter> Parameters { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
 		public DbSet<Composer> Composers { get; set; }
 
@@ -30,6 +26,7 @@ namespace BGC.Data
 			base(connectionStringName)
 		{
 			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
+            this.RequireUniqueEmail = true;
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -54,6 +51,7 @@ namespace BGC.Data
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 
             modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
+            modelBuilder.Entity<BgcUser>().HasMany(user => user.UserSettings).WithMany();
 		}
 
 		public IRepository<T> GetRepository<T>()

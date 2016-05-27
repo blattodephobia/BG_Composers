@@ -11,28 +11,22 @@ namespace BGC.Services
 {
     internal class SettingsService : DbServiceBase, ISettingsService, IComparer<Setting>
     {
-        private static readonly Dictionary<Type, int> SettingPriorities = new Dictionary<Type, int>()
+        private IRepository<Setting> Settings { get; set; }
+        private BgcUser CurrentUser { get; set; }
+
+        public SettingsService(IRepository<Setting> settings, BgcUser currentUser = null)
         {
-            { typeof(ApplicationSetting), 0 },
-            { typeof(UserSetting), 1 },
-        };
+            Shield.ArgumentNotNull(settings, nameof(settings)).ThrowOnError();
 
-        private IRepository<ApplicationSetting> AppSettings { get; set; }
-        private IRepository<UserSetting> UserSettings { get; set; }
-
-        public SettingsService(IRepository<ApplicationSetting> appSettings, IRepository<UserSetting> userSettings = null)
-        {
-            Shield.ArgumentNotNull(appSettings, nameof(appSettings)).ThrowOnError();
-
-            AppSettings = appSettings;
-            UserSettings = userSettings;
+            Settings = settings;
+            CurrentUser = currentUser;
         }
 
-        public Setting FindSetting(string name)
+        public Setting ReadSetting(string name)
         {
             List<Setting> matchingSettings = new List<Setting>();
-            matchingSettings.AddRange(AppSettings.All().Where(s => s.Name == name));
-            matchingSettings.AddRange(UserSettings.All().Where(s => s.Name == name));
+            matchingSettings.AddRange(Settings.All().Where(s => s.Name == name));
+            matchingSettings.AddRange(CurrentUser?.UserSettings.Where(s => s.Name == name) ?? Enumerable.Empty<Setting>());
 
             return matchingSettings.OrderBy(setting => setting, this).LastOrDefault();
         }
@@ -44,18 +38,9 @@ namespace BGC.Services
                 .And(Shield.ArgumentNotNull(y, nameof(y)))
                 .ThrowOnError();
 
-            int xPriority;
-            int yPriority;
-
-            if (SettingPriorities.TryGetValue(x.GetType(), out xPriority) &&
-                SettingPriorities.TryGetValue(x.GetType(), out yPriority))
-            {
-                return xPriority.CompareTo(yPriority);
-            }
-            else
-            {
-                throw new InvalidOperationException($"One or more of the given setting types for priority comparison are invalid: {x.GetType()}, {y.GetType()}.");
-            }
+            int xPriority = (int)x.Priority;
+            int yPriority = (int)y.Priority;
+            return xPriority.CompareTo(yPriority);
         }
     }
 }

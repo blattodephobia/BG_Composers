@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Models
+namespace BGC.Core
 {
     public abstract class Permission : BgcEntity<long>
     {

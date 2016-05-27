@@ -28,7 +28,7 @@ namespace BGC.Data
 
 		public void Dispose()
 		{
-			if (this.UnitOfWork != null) this.UnitOfWork.Dispose();
+			this.UnitOfWork?.Dispose();
 		}
 
         public void Insert(T entity)

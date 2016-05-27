@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class UserSettingsPermission : SettingsWritePermission
+    public class ApplicationSettingsWritePermission : SettingsWritePermission
     {
         public sealed override SettingPriority GetSettingsPriority()
         {
-            return SettingPriority.User;
+            return SettingPriority.Application;
         }
     }
 }

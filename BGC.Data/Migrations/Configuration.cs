@@ -3,6 +3,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Data.Entity.Migrations;
+using System.Globalization;
 
 namespace BGC.Data.Migrations
 {
@@ -27,8 +28,16 @@ namespace BGC.Data.Migrations
 					userManager.AddToRole(admin.Id, BgcRole.AdministratorRoleName);
 				}
 
-                context.ApplicationSettings.AddOrUpdate(appSetting => appSetting.Name,
-                    new ApplicationSetting() { Name = "SupportedLanguages", Value = new CultureSupportParameter("bg-BG, de-DE") });
+                context.Settings.AddOrUpdate(setting => setting.Name,
+                    new CultureSupportSetting()
+                    {
+                        Name = "SupportedLanguages",
+                        SupportedCultures = new[]
+                        {
+                            CultureInfo.GetCultureInfo("bg-BG"),
+                            CultureInfo.GetCultureInfo("de-DE"),
+                        }
+                    });
 			}
 			catch
 			{
@@ -38,5 +47,5 @@ namespace BGC.Data.Migrations
 				}
 			}
 		}
-	}
+    }
 }

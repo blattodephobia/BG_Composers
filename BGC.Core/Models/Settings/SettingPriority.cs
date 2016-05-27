@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class ApplicationSetting : Setting
+    public enum SettingPriority : int
     {
+        Application = 0,
+        User = 1
     }
 }

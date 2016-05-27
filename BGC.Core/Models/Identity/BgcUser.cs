@@ -1,5 +1,4 @@
-﻿using BGC.Core.Models;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +12,8 @@ namespace BGC.Core
 		public static readonly string AdministratorUserName = "Administrator";
 
 		public bool MustChangePassword { get; set; }
+
+        public virtual ICollection<Setting> UserSettings { get; set; }
 
 		public BgcUser() :
 			this(string.Empty)

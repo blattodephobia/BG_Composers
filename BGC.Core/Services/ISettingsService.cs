@@ -11,11 +11,11 @@ namespace BGC.Core.Services
     public interface ISettingsService
     {
         /// <summary>
-        /// Finds the highest priority setting with the given name
+        /// Finds the highest priority setting that the service can currently access by using the given setting's name.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
         [OperationContract]
-        Setting FindSetting(string name);
+        Setting ReadSetting(string name);
     }
 }

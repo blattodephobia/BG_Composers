@@ -12,6 +12,13 @@ namespace BGC.Core
 
         public string Description { get; set; }
 
-        public virtual Parameter Value { get; set; }
+        public virtual string StringValue { get; set; }
+
+        public SettingPriority Priority { get; set; }
+
+        public sealed override string ToString()
+        {
+            return $"{Name}: {StringValue}";
+        }
     }
 }

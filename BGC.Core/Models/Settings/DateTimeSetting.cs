@@ -1,6 +1,7 @@
 ﻿using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class DateTimeParameter : Parameter
+    public class DateTimeSetting : Setting
     {
         /// <summary>
         /// The format used during string conversion for the <see cref="StringValue"/> property.
@@ -35,7 +36,7 @@ namespace BGC.Core
                 Date = DateTime.Parse(_value, FormatProvider);
             }
         }
-
+        
         public DateTime Date { get; set; }
     }
 }

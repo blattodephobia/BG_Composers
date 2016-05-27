@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BGC.Utilities.Tests
 {
@@ -14,8 +15,8 @@ namespace BGC.Utilities.Tests
 			const int Constant = 0;
 
 			string TestProperty { get; set; }
-
-			string testField;
+            
+			string testField = null;
 
 			int TestValueTypeProperty { get; set; }
 
