@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure.Annotations;

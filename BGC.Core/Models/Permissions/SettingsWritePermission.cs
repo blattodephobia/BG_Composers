@@ -8,6 +8,10 @@ namespace BGC.Core
 {
     public abstract class SettingsWritePermission : Permission
     {
-        public abstract SettingPriority GetSettingsPriority();
+        internal abstract SettingPriority GetSettingsPriority();
+
+        internal SettingsWritePermission()
+        {
+        }
     }
 }
