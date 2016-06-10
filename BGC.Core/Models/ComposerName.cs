@@ -105,10 +105,10 @@ namespace BGC.Core
 
         public override string ToString() => this.FullName;
 
-        public ComposerName(string completeName) :
+        public ComposerName(string fullName) :
             this()
         {
-            this.FullName = completeName;
+            this.FullName = fullName;
         }
 	}
 }

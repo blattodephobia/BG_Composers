@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class CultureSupportSetting : Setting
+    public class CultureSupportSetting : Setting, IParameter<IEnumerable<CultureInfo>>
     {
         private static readonly char[] Separators = new[] { ',', ' ', ';' };
         private static readonly string AppendSeparator = ", ";
@@ -67,6 +67,19 @@ namespace BGC.Core
             this()
         {
             this.StringValue = culturesList.ArgumentNotNull().GetValueOrThrow();
+        }
+
+        IEnumerable<CultureInfo> IParameter<IEnumerable<CultureInfo>>.Value
+        {
+            get
+            {
+                return SupportedCultures;
+            }
+
+            set
+            {
+                SupportedCultures = value;
+            }
         }
     }
 }

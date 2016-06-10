@@ -50,6 +50,25 @@ namespace BGC.Services.Tests
                 Setting setting = service.ReadSetting("TestSetting");
                 Assert.AreEqual(result, setting);
             }
+
+            [TestMethod]
+            public void FindSettingWithMultipleUsers()
+            {
+                DateTimeSetting appSetting = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application };
+                DateTimeSetting userSetting1 = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User };
+                DateTimeSetting userSetting2 = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User };
+
+                Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
+                mockSettingsRepo
+                    .Setup(x => x.All())
+                    .Returns(new List<Setting>() { appSetting, userSetting1, userSetting2 }.AsQueryable());
+
+                BgcUser user = new BgcUser() { UserSettings = new List<Setting>() { userSetting1 } };
+
+                SettingsService service = new SettingsService(mockSettingsRepo.Object, user);
+                DateTimeSetting setting = service.ReadSetting<DateTimeSetting>("TestSetting");
+                Assert.AreSame(userSetting1, setting);
+            }
         }
     }
 }

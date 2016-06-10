@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-    internal class SettingsService : DbServiceBase, ISettingsService, IComparer<Setting>
+    internal class SettingsService : DbServiceBase, ISettingsService
     {
         private IRepository<Setting> Settings { get; set; }
         private BgcUser CurrentUser { get; set; }
@@ -28,19 +28,12 @@ namespace BGC.Services
             matchingSettings.AddRange(Settings.All().Where(s => s.Name == name));
             matchingSettings.AddRange(CurrentUser?.UserSettings.Where(s => s.Name == name) ?? Enumerable.Empty<Setting>());
 
-            return matchingSettings.OrderBy(setting => setting, this).LastOrDefault();
+            return matchingSettings.OrderBy(setting => (int)setting.Priority).LastOrDefault();
         }
 
-        int IComparer<Setting>.Compare(Setting x, Setting y)
+        public T ReadSetting<T>(string name) where T : Setting
         {
-            Shield
-                .ArgumentNotNull(x, nameof(x))
-                .And(Shield.ArgumentNotNull(y, nameof(y)))
-                .ThrowOnError();
-
-            int xPriority = (int)x.Priority;
-            int yPriority = (int)y.Priority;
-            return xPriority.CompareTo(yPriority);
+            return (T)ReadSetting(name);
         }
     }
 }

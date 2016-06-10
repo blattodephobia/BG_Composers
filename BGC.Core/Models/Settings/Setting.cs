@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public abstract class Setting : BgcEntity<long>
+    public class Setting : BgcEntity<long>, IParameter<string>
     {
         public string Name { get; set; }
 
@@ -19,6 +19,19 @@ namespace BGC.Core
         public sealed override string ToString()
         {
             return $"{Name}: {StringValue}";
+        }
+
+        string IParameter<string>.Value
+        {
+            get
+            {
+                return StringValue;
+            }
+
+            set
+            {
+                StringValue = value;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model AddComposerViewModel
+﻿@model IEnumerable<AddComposerViewModel>
 
 @{
     ViewBag.Title = "Add";
@@ -8,6 +8,12 @@
 
 @using (Html.BeginForm())
 {
-    <label>@string.Format("{0}:", Localize(Global.Name))</label>@Html.TextBoxFor(m => m.Name)
+    <div class="ui-accordion">
+        <h3></h3>
+        @foreach (AddComposerViewModel newEntry in Model)
+        {
+            <label>@string.Format("{0}:", Localize(Global.Name))</label>@Html.TextBoxFor(m => m.Name)
+        }
+    </div>
     <input type="submit" value="@Localize(Global.Submit)"/>
 }

@@ -12,9 +12,13 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class EditController : AdministrationControllerBase
     {
-        public EditController(IComposerEntriesService composersService)
+        private IComposerEntriesService composersService;
+        private ISettingsService settingsService;
+
+        public EditController(IComposerEntriesService composersService, ISettingsService settingsService)
         {
             this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
+            this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
         }
 
         public virtual ActionResult List()
@@ -26,16 +30,18 @@ namespace BGC.Web.Areas.Administration.Controllers
         [HttpGet]
         public virtual ActionResult Add()
         {
-            return this.View(new AddComposerViewModel());
+            IEnumerable<AddComposerViewModel> articlesRequired =
+                settingsService.ReadSetting<CultureSupportSetting>("SupportedLanguages")
+                .SupportedCultures
+                .Select(c => new AddComposerViewModel() { Language = c });
+            return this.View(articlesRequired);
         }
 
         [HttpPost]
         public virtual ActionResult Add(AddComposerViewModel composer)
         {
-            this.composersService.Add(new Composer() { LocalizedNames = new List<ComposerName>() { new ComposerName(composer.Name) }, Articles = new List<ComposerEntry>() });
+            this.composersService.Add(new Composer() { LocalizedNames = new List<ComposerName>() { new ComposerName(composer.FullName) }, Articles = new List<ComposerEntry>() });
             return base.RedirectToAction(nameof(List));
         }
-
-        private IComposerEntriesService composersService;
     }
 }

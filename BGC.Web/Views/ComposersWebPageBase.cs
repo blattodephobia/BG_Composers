@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Views
 {
-    public class ComposersWebPageBase : WebViewPage
+    public class ComposersWebPageBase<T> : WebViewPage<T>
     {
         private ILocalizationService localizationService;
         [Dependency]
@@ -31,5 +31,21 @@ namespace BGC.Web.Views
         }
 
         public string Localize(string key) => this.localizationService.Localize(key);
+
+        public bool IsDebugBuild
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
+    }
+
+    public class ComposersWebPageBase : ComposersWebPageBase<object>
+    {
     }
 }

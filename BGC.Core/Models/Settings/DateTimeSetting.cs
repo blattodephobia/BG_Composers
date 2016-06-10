@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class DateTimeSetting : Setting
+    public class DateTimeSetting : Setting, IParameter<DateTime>
     {
         /// <summary>
         /// The format used during string conversion for the <see cref="StringValue"/> property.
@@ -38,5 +38,18 @@ namespace BGC.Core
         }
         
         public DateTime Date { get; set; }
+
+        DateTime IParameter<DateTime>.Value
+        {
+            get
+            {
+                return Date;
+            }
+
+            set
+            {
+                Date = value;
+            }
+        }
     }
 }

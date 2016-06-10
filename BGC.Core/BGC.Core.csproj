@@ -58,6 +58,7 @@
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="IUnitOfWork.cs" />
+    <Compile Include="Models\IParameter.cs" />
     <Compile Include="Models\Permissions\ApplicationSettingsWritePermission.cs" />
     <Compile Include="Models\Permissions\Permission.cs" />
     <Compile Include="Models\Permissions\SettingsWritePermission.cs" />
