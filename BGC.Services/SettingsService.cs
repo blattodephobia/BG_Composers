@@ -14,7 +14,12 @@ namespace BGC.Services
         private IRepository<Setting> Settings { get; set; }
         private BgcUser CurrentUser { get; set; }
 
-        public SettingsService(IRepository<Setting> settings, BgcUser currentUser = null)
+        public SettingsService(IRepository<Setting> settings) :
+            this(settings, null)
+        {
+        }
+
+        public SettingsService(IRepository<Setting> settings, BgcUser currentUser)
         {
             Shield.ArgumentNotNull(settings, nameof(settings)).ThrowOnError();
 
