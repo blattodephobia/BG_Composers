@@ -30,17 +30,23 @@ namespace BGC.Web.Areas.Administration.Controllers
         [HttpGet]
         public virtual ActionResult Add()
         {
-            IEnumerable<AddComposerViewModel> articlesRequired =
+            IList<AddComposerViewModel> articlesRequired =
                 settingsService.ReadSetting<CultureSupportSetting>("SupportedLanguages")
                 .SupportedCultures
-                .Select(c => new AddComposerViewModel() { Language = c });
+                .Select(c => new AddComposerViewModel() { Language = c })
+                .ToList();
             return this.View(articlesRequired);
         }
 
         [HttpPost]
-        public virtual ActionResult Add(AddComposerViewModel composer)
+        public virtual ActionResult Add(IList<AddComposerViewModel> editedData)
         {
-            this.composersService.Add(new Composer() { LocalizedNames = new List<ComposerName>() { new ComposerName(composer.FullName) }, Articles = new List<ComposerEntry>() });
+            Composer newComposer = new Composer();
+            for (int i = 0; i < editedData.Count; i++)
+            {
+                newComposer.LocalizedNames.Add(new ComposerName(editedData[i].FullName));
+            }
+            this.composersService.Add(newComposer);
             return base.RedirectToAction(nameof(List));
         }
     }

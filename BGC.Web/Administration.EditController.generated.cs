@@ -89,7 +89,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Add
         {
-            public readonly string composer = "composer";
+            public readonly string editedData = "editedData";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -137,14 +137,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel composer);
+        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel> editedData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add(BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel composer)
+        public override System.Web.Mvc.ActionResult Add(System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel> editedData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "composer", composer);
-            AddOverride(callInfo, composer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "editedData", editedData);
+            AddOverride(callInfo, editedData);
             return callInfo;
         }
 

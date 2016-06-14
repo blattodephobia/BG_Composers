@@ -8,9 +8,34 @@ namespace BGC.Core
 {
 	public class Composer : BgcEntity<long>
 	{
-		public virtual ICollection<ComposerName> LocalizedNames { get; set; }
+        private ICollection<ComposerName> localizedNames;
+        private ICollection<ComposerEntry> articles;
 
-		public virtual ICollection<ComposerEntry> Articles { get; set; }
+		public virtual ICollection<ComposerName> LocalizedNames
+        {
+            get
+            {
+                return this.localizedNames ?? (this.localizedNames = new HashSet<ComposerName>());
+            }
+
+            set
+            {
+                this.localizedNames = value;
+            }
+        }
+
+		public virtual ICollection<ComposerEntry> Articles
+        {
+            get
+            {
+                return this.articles ?? (this.articles = new HashSet<ComposerEntry>());
+            }
+
+            set
+            {
+                this.articles = value;
+            }
+        }
 
 		public Composer()
 		{

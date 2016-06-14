@@ -1,7 +1,38 @@
-﻿@model IEnumerable<AddComposerViewModel>
+﻿@model IList<AddComposerViewModel>
 
 @{
     ViewBag.Title = "Add";
+}
+
+@section scripts
+{
+    @if (IsDebugBuild)
+    {
+    }
+    else
+    {   
+    }
+    <!-- TinyMCE is not available in an uncompressed version -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function ()
+        {
+            tinymce.init({
+                selector: 'textarea.tinymce',
+                height: 500,
+                plugins: [
+                  'advlist autolink lists link image charmap print preview anchor',
+                  'searchreplace visualblocks code fullscreen',
+                  'insertdatetime media table contextmenu paste code'
+                ],
+                toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+                content_css: [
+                  '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+                  '//www.tinymce.com/css/codepen.min.css'
+                ]
+            });
+        });
+    </script>
 }
 
 <h2>Add</h2>
@@ -10,18 +41,19 @@
 {
     <div id="accordion" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
-        @foreach (AddComposerViewModel newEntry in Model)
+        @for (int i = 0; i < Model.Count; i++)
         {
             <div class="panel-heading" role="tab" id="headingOne">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne">
-                        +
+                        &gt;
                     </a>
-                    @Html.TextBox(newEntry.Language.NativeName)
+                    @Model[i].Language.DisplayName:
+                    @Html.TextBoxFor(m => Model[i].FullName)
                 </h4>
             </div>
             <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
-                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                @Html.TextAreaFor(m => Model[i].Article, new { @class = "tinymce" })
             </div>
         }
         </div>

@@ -17,10 +17,17 @@ namespace BGC.Web.Areas.Administration
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
-			context.Routes
-				.MapRoute(
-					name: "Administration",
-					url: string.Format("{0}/{{controller}}/{{action}}", UrlPrefixToken),
+            context.Routes
+                .MapRoute(
+                    name: $"{MVC.AdministrationArea.Name}1",
+                    url: $"{UrlPrefixToken}/{{controller}}/{{action}}",
+                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Users })
+                .DataTokens.Add("area", this.AreaName);
+
+            context.Routes
+                .MapRoute(
+					name: $"{MVC.AdministrationArea.Name}2",
+					url: $"{MVC.AdministrationArea.Name}/{{controller}}/{{action}}",
 					defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Users })
 				.DataTokens.Add("area", this.AreaName);
 		}
