@@ -13,7 +13,7 @@ namespace BGC.Services
 	{
 		public void RegisterTypes(IUnityContainer helper)
 		{
-            helper.RegisterType<IComposerEntriesService, ComposerEntriesService>();
+            helper.RegisterType<IComposerDataService, ComposerEntriesService>();
             helper.RegisterType<ISettingsService, SettingsService>(new InjectionFactory(c => new SettingsService(c.Resolve<IRepository<Setting>>())));
 		}
 	}

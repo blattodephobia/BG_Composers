@@ -12,10 +12,10 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class EditController : AdministrationControllerBase
     {
-        private IComposerEntriesService composersService;
+        private IComposerDataService composersService;
         private ISettingsService settingsService;
 
-        public EditController(IComposerEntriesService composersService, ISettingsService settingsService)
+        public EditController(IComposerDataService composersService, ISettingsService settingsService)
         {
             this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
@@ -23,7 +23,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         public virtual ActionResult List()
         {
-            IEnumerable<Composer> composers = this.composersService.GetAllEntries().ToList();
+            IEnumerable<Composer> composers = this.composersService.GetAllComposers().ToList();
             return this.View(composers);
         }
 

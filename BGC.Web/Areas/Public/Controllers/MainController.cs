@@ -9,9 +9,9 @@ namespace BGC.Web.Areas.Public.Controllers
 {
 	public partial class MainController : Controller
     {
-		private IComposerEntriesService ComposersService { get; set; }
+		private IComposerDataService ComposersService { get; set; }
 
-		public MainController(IComposerEntriesService composersService)
+		public MainController(IComposerDataService composersService)
 		{
 			this.ComposersService = composersService;
 		}

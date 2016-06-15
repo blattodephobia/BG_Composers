@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-	internal class ComposerEntriesService : DbServiceBase, IComposerEntriesService
+	internal class ComposerEntriesService : DbServiceBase, IComposerDataService
 	{
 		public IRepository<Composer> Composers { get; private set; }
 
@@ -19,7 +19,7 @@ namespace BGC.Services
 			this.Composers = composers;
 		}
 
-		public IQueryable<Composer> GetAllEntries()
+		public IQueryable<Composer> GetAllComposers()
 		{
 			return this.Composers.All();
 		}

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 namespace BGC.Core.Services
 {
 	[ServiceContract]
-	public interface IComposerEntriesService
+	public interface IComposerDataService
 	{
 		[OperationContract]
-		IQueryable<Composer> GetAllEntries();
+		IQueryable<Composer> GetAllComposers();
 
         [OperationContract]
         void Add(Composer composer);
