@@ -276,6 +276,7 @@
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
+    <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

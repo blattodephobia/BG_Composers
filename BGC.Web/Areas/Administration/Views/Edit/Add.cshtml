@@ -43,16 +43,16 @@
         <div class="panel panel-default">
         @for (int i = 0; i < Model.Count; i++)
         {
-            <div class="panel-heading" role="tab" id="headingOne">
+            <div class="panel-heading" role="tab" id="article-heading-(@i)">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="collapseOne">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="article-collapse-(@i)">
                         &gt;
                     </a>
                     @Model[i].Language.DisplayName:
                     @Html.TextBoxFor(m => Model[i].FullName)
                 </h4>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+            <div id="article-collapse-(@i)" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="article-heading-(@i)">
                 @Html.TextAreaFor(m => Model[i].Article, new { @class = "tinymce" })
             </div>
         }

@@ -78,7 +78,8 @@
     <Compile Include="Models\BgcEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IComposerEntriesService.cs" />
-    <Compile Include="Services\IArticleStorageService.cs" />
+    <Compile Include="Services\IDataStorageService.cs" />
+    <Compile Include="Services\IImageStorageService.cs" />
     <Compile Include="Services\ILocalizationService.cs" />
     <Compile Include="Services\ISettingsService.cs" />
   </ItemGroup>
