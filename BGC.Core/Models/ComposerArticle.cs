@@ -52,6 +52,11 @@ namespace BGC.Core
         [Required]
 		public virtual ComposerName LocalizedName { get; set; }
 
+        public long ComposerId { get; set; }
+
+        [Required]
+        public virtual Composer Composer { get; set; }
+
 		public ComposerArticle()
 		{
 		}

@@ -15,13 +15,21 @@ namespace BGC.Data.Migrations
                         Language = c.String(nullable: false, unicode: false),
                         StorageId = c.Guid(nullable: false),
                         ComposerNameId = c.Long(nullable: false),
-                        Composer_Id = c.Long(),
+                        ComposerId = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composers", t => t.Composer_Id)
+                .ForeignKey("dbo.Composers", t => t.ComposerId, cascadeDelete: true)
                 .ForeignKey("dbo.ComposerNames", t => t.ComposerNameId, cascadeDelete: true)
                 .Index(t => t.ComposerNameId)
-                .Index(t => t.Composer_Id);
+                .Index(t => t.ComposerId);
+            
+            CreateTable(
+                "dbo.Composers",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                    })
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.ComposerNames",
@@ -40,14 +48,6 @@ namespace BGC.Data.Migrations
                 .Index(t => t.FirstName)
                 .Index(t => t.LastName)
                 .Index(t => t.FullName);
-            
-            CreateTable(
-                "dbo.Composers",
-                c => new
-                    {
-                        Id = c.Long(nullable: false, identity: true),
-                    })
-                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -181,8 +181,8 @@ namespace BGC.Data.Migrations
             DropForeignKey("dbo.BgcRolePermissions", "Permission_Id", "dbo.Permissions");
             DropForeignKey("dbo.BgcRolePermissions", "BgcRole_Id", "dbo.AspNetRoles");
             DropForeignKey("dbo.ComposerArticles", "ComposerNameId", "dbo.ComposerNames");
+            DropForeignKey("dbo.ComposerArticles", "ComposerId", "dbo.Composers");
             DropForeignKey("dbo.ComposerNames", "ComposerId", "dbo.Composers");
-            DropForeignKey("dbo.ComposerArticles", "Composer_Id", "dbo.Composers");
             DropIndex("dbo.BgcUserSettings", new[] { "Setting_Id" });
             DropIndex("dbo.BgcUserSettings", new[] { "BgcUser_Id" });
             DropIndex("dbo.BgcRolePermissions", new[] { "Permission_Id" });
@@ -197,7 +197,7 @@ namespace BGC.Data.Migrations
             DropIndex("dbo.ComposerNames", new[] { "LastName" });
             DropIndex("dbo.ComposerNames", new[] { "FirstName" });
             DropIndex("dbo.ComposerNames", new[] { "ComposerId" });
-            DropIndex("dbo.ComposerArticles", new[] { "Composer_Id" });
+            DropIndex("dbo.ComposerArticles", new[] { "ComposerId" });
             DropIndex("dbo.ComposerArticles", new[] { "ComposerNameId" });
             DropTable("dbo.BgcUserSettings");
             DropTable("dbo.BgcRolePermissions");
@@ -208,8 +208,8 @@ namespace BGC.Data.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Permissions");
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Composers");
             DropTable("dbo.ComposerNames");
+            DropTable("dbo.Composers");
             DropTable("dbo.ComposerArticles");
         }
     }

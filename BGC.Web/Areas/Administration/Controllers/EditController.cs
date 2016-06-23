@@ -51,6 +51,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 newComposer.Articles.Add(new ComposerArticle()
                 {
                     StorageId = this.articleStorageService.StoreEntry(editedData[i].Article),
+                    Composer = newComposer,
                     Language = editedData[i].Language
                 });
             }

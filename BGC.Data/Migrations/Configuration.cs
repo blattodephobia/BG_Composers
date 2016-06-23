@@ -61,12 +61,14 @@ namespace BGC.Data.Migrations
                 {
                     new ComposerArticle()
                     {
+                        Composer = pStupel,
                         LocalizedName = pStupel.LocalizedNames.First(),
                         Language = pStupel.LocalizedNames.First().Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000001")
                     },
                     new ComposerArticle()
                     {
+                        Composer = pStupel,
                         LocalizedName = pStupel.LocalizedNames.Last(),
                         Language = pStupel.LocalizedNames.Last().Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000002")
