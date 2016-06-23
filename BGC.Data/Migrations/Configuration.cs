@@ -2,8 +2,10 @@ using BGC.Core;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Globalization;
+using System.Linq;
 
 namespace BGC.Data.Migrations
 {
@@ -38,7 +40,41 @@ namespace BGC.Data.Migrations
                             CultureInfo.GetCultureInfo("de-DE"),
                         }
                     });
-			}
+
+#if DEBUG
+                Composer pStupel = new Composer();
+                pStupel.LocalizedNames = new HashSet<ComposerName>()
+                {
+                    new ComposerName("Petar Stupel")
+                    {
+                        Composer = pStupel,
+                        Language = CultureInfo.GetCultureInfo("de-DE")
+                    },
+                    new ComposerName("Петър Ступел")
+                    {
+                        Composer = pStupel,
+                        Language = CultureInfo.GetCultureInfo("bg-BG")
+                    }
+                };
+
+                pStupel.Articles = new HashSet<ComposerArticle>()
+                {
+                    new ComposerArticle()
+                    {
+                        LocalizedName = pStupel.LocalizedNames.First(),
+                        Language = pStupel.LocalizedNames.First().Language,
+                        StorageId = Guid.Parse("00000000-0000-0000-0000-000000000001")
+                    },
+                    new ComposerArticle()
+                    {
+                        LocalizedName = pStupel.LocalizedNames.Last(),
+                        Language = pStupel.LocalizedNames.Last().Language,
+                        StorageId = Guid.Parse("00000000-0000-0000-0000-000000000002")
+                    }
+                };
+                context.Composers.AddOrUpdate(pStupel);
+#endif
+            }
 			catch
 			{
 				if (!System.Diagnostics.Debugger.IsAttached)

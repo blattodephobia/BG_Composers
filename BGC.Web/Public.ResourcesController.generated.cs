@@ -24,10 +24,10 @@ using System.Web.Routing;
 using T4MVC;
 namespace BGC.Web.Areas.Public.Controllers
 {
-    public partial class MainController
+    public partial class ResourcesController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected MainController(Dummy d) { }
+        protected ResourcesController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -55,21 +55,15 @@ namespace BGC.Web.Areas.Public.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Read()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Read);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public MainController Actions { get { return MVC.Public.Main; } }
+        public ResourcesController Actions { get { return MVC.Public.Resources; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "Public";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Main";
+        public readonly string Name = "Resources";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "Main";
+        public const string NameConst = "Resources";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -77,26 +71,14 @@ namespace BGC.Web.Areas.Public.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string Index = "Index";
-            public readonly string Read = "Read";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string Index = "Index";
-            public const string Read = "Read";
         }
 
 
-        static readonly ActionParamsClass_Read s_params_Read = new ActionParamsClass_Read();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Read ReadParams { get { return s_params_Read; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Read
-        {
-            public readonly string article = "article";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -107,41 +89,14 @@ namespace BGC.Web.Areas.Public.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Index = "Index";
-                public readonly string Read = "Read";
             }
-            public readonly string Index = "~/Areas/Public/Views/Main/Index.cshtml";
-            public readonly string Read = "~/Areas/Public/Views/Main/Read.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_MainController : BGC.Web.Areas.Public.Controllers.MainController
+    public partial class T4MVC_ResourcesController : BGC.Web.Areas.Public.Controllers.ResourcesController
     {
-        public T4MVC_MainController() : base(Dummy.Instance) { }
-
-        [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Index()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            IndexOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ReadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid article);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Read(System.Guid article)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Read);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "article", article);
-            ReadOverride(callInfo, article);
-            return callInfo;
-        }
+        public T4MVC_ResourcesController() : base(Dummy.Instance) { }
 
     }
 }

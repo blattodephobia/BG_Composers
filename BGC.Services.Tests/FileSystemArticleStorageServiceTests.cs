@@ -13,8 +13,8 @@ namespace BGC.Services.Tests
     {
         class FSArticleStorageServiceProxy : FileSystemDataStorageService
         {
-            public FSArticleStorageServiceProxy() :
-                base(new DirectoryInfo(@"C:\"))
+            public FSArticleStorageServiceProxy(string dirPath) :
+                base(new DirectoryInfo(dirPath))
             {
             }
 
@@ -29,7 +29,7 @@ namespace BGC.Services.Tests
             [TestMethod]
             public void GeneratesValidFileName()
             {
-                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy();
+                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\");
                 Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
                 Assert.AreEqual("789ABCDE-00FB-ADCC-1111-0123456789AB", svc.GuidToFileName(guid).Name);
             }
@@ -37,9 +37,17 @@ namespace BGC.Services.Tests
             [TestMethod]
             public void GeneratesFileNameInCorrectDirectory()
             {
-                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy();
+                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\Windows\");
                 Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
-                Assert.AreEqual("C:\\", svc.GuidToFileName(guid).Directory.Name);
+                Assert.AreEqual("Windows", svc.GuidToFileName(guid).Directory.Name);
+            }
+
+            [TestMethod]
+            public void GeneratesFileNameInCorrectDirectory_NoBackslash()
+            {
+                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\Windows");
+                Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
+                Assert.AreEqual("Windows", svc.GuidToFileName(guid).Directory.Name);
             }
         }
 
@@ -50,7 +58,7 @@ namespace BGC.Services.Tests
             public void ParsesNameCorrectly()
             {
                 Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
-                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy();
+                FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\");
                 Assert.AreEqual(guid, svc.FileNameToGuid(new FileInfo("789ABCDE-00FB-ADCC-1111-0123456789AB")));
             }
         }

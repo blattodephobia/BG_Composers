@@ -93,9 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComposersDbContext.cs" />
-    <Compile Include="Migrations\201606031506156_Initial.cs" />
-    <Compile Include="Migrations\201606031506156_Initial.Designer.cs">
-      <DependentUpon>201606031506156_Initial.cs</DependentUpon>
+    <Compile Include="CultureInfoConvention.cs" />
+    <Compile Include="Migrations\201606232202530_Initial.cs" />
+    <Compile Include="Migrations\201606232202530_Initial.Designer.cs">
+      <DependentUpon>201606232202530_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -117,8 +118,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606031506156_Initial.resx">
-      <DependentUpon>201606031506156_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606232202530_Initial.resx">
+      <DependentUpon>201606232202530_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

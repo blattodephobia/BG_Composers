@@ -65,7 +65,7 @@ namespace BGC.Core.Tests.Models
             public void FormatTest()
             {
                 CultureSupportSetting s = new CultureSupportSetting(); ;
-                s.StringValue = "df-QQ";
+                s.StringValue = "dfQQ";
             }
         }
 

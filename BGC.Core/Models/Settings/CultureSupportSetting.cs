@@ -27,10 +27,11 @@ namespace BGC.Core
             set
             {
                 Shield.ValueNotNull(value, nameof(StringValue)).ThrowOnError();
-
+                
                 SupportedCultures = value
                     .Split(Separators, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => CultureInfo.GetCultureInfo(s));
+                
                 this._string = value;
             }
         }

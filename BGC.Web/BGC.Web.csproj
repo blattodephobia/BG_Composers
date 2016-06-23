@@ -278,6 +278,7 @@
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
+    <Compile Include="Areas\Public\ViewModels\ArticleViewModel.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -285,6 +286,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizationKeys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Public.ResourcesController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
@@ -367,6 +371,9 @@
     <Content Include="Areas\Administration\Views\Account\Users.cshtml" />
     <Content Include="Areas\Administration\Views\Edit\List.cshtml" />
     <Content Include="Areas\Administration\Views\Edit\Add.cshtml" />
+    <Content Include="Areas\Public\Views\Main\Read.cshtml" />
+    <Content Include="App_Data\00000000-0000-0000-0000-000000000001" />
+    <Content Include="App_Data\00000000-0000-0000-0000-000000000002" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">
@@ -415,7 +422,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Models\" />
     <Folder Include="Scripts\" />
     <Folder Include="Views\Administration\" />

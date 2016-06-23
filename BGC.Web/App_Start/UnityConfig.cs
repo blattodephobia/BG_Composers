@@ -16,6 +16,8 @@ using BGC.Core.Services;
 using BGC.Services;
 using System.Xml;
 using System.IO;
+using System.Configuration;
+using System.Web.Hosting;
 
 namespace BGC.Web.App_Start
 {
@@ -49,14 +51,20 @@ namespace BGC.Web.App_Start
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
         public static void RegisterTypes(IUnityContainer container)
         {
-            new BGC.Data.DataLayerDependencyRegistration().RegisterTypes(container);
-            new BGC.Services.ServiceLayerDependencyRegistration().RegisterTypes(container);
+            new DataLayerDependencyRegistration().RegisterTypes(container);
+            new ServiceLayerDependencyRegistration().RegisterTypes(container);
 
+            string storageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey];
+            container.RegisterInstance(
+                ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey,
+                new DirectoryInfo(HostingEnvironment.MapPath(storageDir)));
+
+            // Inject UserManager<BgcUser, long> into all controllers inheriting from AdministrationControllerBase
             container
                 .RegisterType<AdministrationControllerBase>()
                 .RegisterTypes(
                     types: AllClasses
-                           .FromAssemblies(typeof(AdministrationControllerBase).Assembly)
+                           .FromAssemblies(Assembly.GetAssembly(typeof(AdministrationControllerBase)))
                            .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
                     getInjectionMembers: (t) => new InjectionMember[]
                     {

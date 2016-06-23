@@ -73,7 +73,7 @@
     <Compile Include="Models\Identity\BgcUserLogin.cs" />
     <Compile Include="Models\Identity\BgcUserRole.cs" />
     <Compile Include="Models\Composer.cs" />
-    <Compile Include="Models\ComposerEntry.cs" />
+    <Compile Include="Models\ComposerArticle.cs" />
     <Compile Include="Models\ComposerName.cs" />
     <Compile Include="Models\BgcEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

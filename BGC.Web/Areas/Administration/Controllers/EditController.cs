@@ -14,11 +14,13 @@ namespace BGC.Web.Areas.Administration.Controllers
     {
         private IComposerDataService composersService;
         private ISettingsService settingsService;
+        private IDataStorageService articleStorageService;
 
-        public EditController(IComposerDataService composersService, ISettingsService settingsService)
+        public EditController(IComposerDataService composersService, ISettingsService settingsService, IDataStorageService articleStorageService)
         {
             this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
+            this.articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
         }
 
         public virtual ActionResult List()
@@ -35,6 +37,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 .SupportedCultures
                 .Select(c => new AddComposerViewModel() { Language = c })
                 .ToList();
+
             return this.View(articlesRequired);
         }
 
@@ -45,8 +48,14 @@ namespace BGC.Web.Areas.Administration.Controllers
             for (int i = 0; i < editedData.Count; i++)
             {
                 newComposer.LocalizedNames.Add(new ComposerName(editedData[i].FullName));
+                newComposer.Articles.Add(new ComposerArticle()
+                {
+                    StorageId = this.articleStorageService.StoreEntry(editedData[i].Article),
+                    Language = editedData[i].Language
+                });
             }
             this.composersService.Add(newComposer);
+
             return base.RedirectToAction(nameof(List));
         }
     }

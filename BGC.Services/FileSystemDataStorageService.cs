@@ -1,5 +1,6 @@
 ﻿using BGC.Core.Services;
 using CodeShield;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -15,7 +16,7 @@ namespace BGC.Services
 
         protected FileInfo GuidToFileName(Guid guid)
         {
-            return new FileInfo(directory.FullName + guid.ToString("D").ToUpperInvariant());
+            return new FileInfo($"{directory.FullName}\\{guid.ToString("D").ToUpperInvariant()}");
         }
 
         protected Guid FileNameToGuid(FileInfo file)
@@ -49,7 +50,7 @@ namespace BGC.Services
             }
         }
 
-        public FileSystemDataStorageService(DirectoryInfo storageDir)
+        public FileSystemDataStorageService([Dependency(ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey)] DirectoryInfo storageDir)
         {
             this.directory = storageDir.ArgumentNotNull(nameof(directory)).GetValueOrThrow();
         }

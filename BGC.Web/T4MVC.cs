@@ -61,6 +61,7 @@ namespace T4MVC
     {
         public readonly string Name = "Public";
         public BGC.Web.Areas.Public.Controllers.MainController Main = new BGC.Web.Areas.Public.Controllers.T4MVC_MainController();
+        public BGC.Web.Areas.Public.Controllers.ResourcesController Resources = new BGC.Web.Areas.Public.Controllers.T4MVC_ResourcesController();
     }
 }
 

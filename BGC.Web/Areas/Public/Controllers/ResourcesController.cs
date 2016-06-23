@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Public.Controllers
 {
-    public class ResourcesController : Controller
+    public partial class ResourcesController : Controller
     {
         private IDataStorageService textStorageService;
 

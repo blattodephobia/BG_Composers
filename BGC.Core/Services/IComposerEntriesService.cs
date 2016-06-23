@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.ServiceModel;
 using System.Text;
@@ -11,7 +12,10 @@ namespace BGC.Core.Services
 	public interface IComposerDataService
 	{
 		[OperationContract]
-		IQueryable<Composer> GetAllComposers();
+		IList<Composer> GetAllComposers();
+
+        [OperationContract]
+        IList<ComposerName> GetNames(CultureInfo culture);
 
         [OperationContract]
         void Add(Composer composer);

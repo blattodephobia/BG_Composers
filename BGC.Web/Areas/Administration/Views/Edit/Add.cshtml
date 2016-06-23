@@ -8,12 +8,12 @@
 {
     @if (IsDebugBuild)
     {
+        <script src="http://cdn.tinymce.com/4/tinymce.js" integrity="sha384-ZLmGcx7NndDoJD1tvNLyxHbAgPmytCoUoJaZE9jgXaHtwusXSYf8STW0nS0404nY" crossorigin="anonymous"></script>
     }
     else
-    {   
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" crossorigin="anonymous"></script>
     }
-    <!-- TinyMCE is not available in an uncompressed version -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" crossorigin="anonymous"></script>
     <script>
         $(document).ready(function ()
         {
@@ -43,16 +43,17 @@
         <div class="panel panel-default">
         @for (int i = 0; i < Model.Count; i++)
         {
-            <div class="panel-heading" role="tab" id="article-heading-(@i)">
+            @Html.HiddenFor(m => Model[i].Language)
+            <div class="panel-heading" role="tab" id="article-heading-@i">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-controls="article-collapse-(@i)">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
                         &gt;
                     </a>
                     @Model[i].Language.DisplayName:
                     @Html.TextBoxFor(m => Model[i].FullName)
                 </h4>
             </div>
-            <div id="article-collapse-(@i)" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="article-heading-(@i)">
+            <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
                 @Html.TextAreaFor(m => Model[i].Article, new { @class = "tinymce" })
             </div>
         }

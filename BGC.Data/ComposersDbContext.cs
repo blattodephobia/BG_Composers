@@ -15,7 +15,7 @@ namespace BGC.Data
 
 		public DbSet<Composer> Composers { get; set; }
 
-		public DbSet<ComposerEntry> ComposerArticles { get; set; }
+		public DbSet<ComposerArticle> ComposerArticles { get; set; }
 
 		public DbSet<ComposerName> LocalizedComposerNames { get; set; }
 
@@ -33,6 +33,7 @@ namespace BGC.Data
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
+            
 			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id);
 			modelBuilder.Entity<BgcRole>().HasKey(role => role.Id);
 			modelBuilder.Entity<BgcUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
@@ -50,6 +51,13 @@ namespace BGC.Data
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
 				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+            modelBuilder.Entity<ComposerName>().Property(name => name.LanguageInternal)
+                .HasColumnName(nameof(ComposerName.Language))
+                .IsRequired();
+
+            modelBuilder.Entity<ComposerArticle>().Property(entry => entry.LanguageInternal)
+                .HasColumnName(nameof(ComposerArticle.Language))
+                .IsRequired();
 
             modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
             modelBuilder.Entity<BgcUser>().HasMany(user => user.UserSettings).WithMany();

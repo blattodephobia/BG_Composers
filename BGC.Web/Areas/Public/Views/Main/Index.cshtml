@@ -1,7 +1,22 @@
-﻿@{
+﻿@model IEnumerable<IGrouping<char, ComposerArticle>>
+
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
 
-@Localize(Administration.Edit.List.Add_entry)
+<ol>
+    @foreach (IGrouping<char, ComposerArticle> group in Model)
+    {
+        <li>
+            <span>@group.Key</span>
+            <ol>
+                @foreach (ComposerArticle link in group)
+                {
+                    <li>@Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))</li>
+                }
+            </ol>
+        </li>
+    }
+</ol>
