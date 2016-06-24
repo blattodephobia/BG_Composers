@@ -18,7 +18,7 @@ namespace BGC.Services
 		{
             helper.RegisterType<IComposerDataService, ComposerDataService>();
             helper.RegisterType<ISettingsService, SettingsService>(new InjectionFactory(c => new SettingsService(c.Resolve<IRepository<Setting>>())));
-            helper.RegisterType<IDataStorageService, FileSystemDataStorageService>();
+            helper.RegisterType<IDataStorageService<string>, FileSystemTextStorageService>();
 		}
 	}
 }

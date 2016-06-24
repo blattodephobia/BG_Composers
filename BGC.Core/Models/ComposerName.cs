@@ -65,6 +65,7 @@ namespace BGC.Core
 
 		private string firstName;
         [MaxLength(32)]
+        [Unicode]
 		public string FirstName
 		{
 			get
@@ -90,6 +91,7 @@ namespace BGC.Core
 
 		private string lastName;
         [MaxLength(32)]
+        [Unicode]
         public string LastName
 		{
 			get
@@ -121,6 +123,7 @@ namespace BGC.Core
         /// Gets the full name of the composer in western order ({first_name} {middle_name} {last_name})
         /// </summary>
         [MaxLength(128)]
+        [Unicode]
         public string FullName
 		{
 			get

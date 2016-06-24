@@ -10,8 +10,10 @@ namespace BGC.Core
     {
         public string Name { get; set; }
 
+        [Unicode]
         public string Description { get; set; }
 
+        [Unicode]
         public virtual string StringValue { get; set; }
 
         public SettingPriority Priority { get; set; }

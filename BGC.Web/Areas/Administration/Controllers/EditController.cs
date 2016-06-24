@@ -7,16 +7,41 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
     public partial class EditController : AdministrationControllerBase
     {
+        private static readonly XName ImgTagName = XName.Get("img");
+
         private IComposerDataService composersService;
         private ISettingsService settingsService;
-        private IDataStorageService articleStorageService;
+        private IDataStorageService<string> articleStorageService;
 
-        public EditController(IComposerDataService composersService, ISettingsService settingsService, IDataStorageService articleStorageService)
+        private static IEnumerable<XElement> GetImageTags(XElement htmlRoot)
+        {
+            List<XElement> result = new List<XElement>();
+            Queue<XElement> searchQueue = new Queue<XElement>();
+            searchQueue.Enqueue(htmlRoot);
+            while (searchQueue.Count > 0)
+            {
+                XElement current = searchQueue.Dequeue();
+                if (current.Name == ImgTagName)
+                {
+                    result.Add(current);
+                }
+
+                foreach (XElement child in current.Elements())
+                {
+                    searchQueue.Enqueue(child);
+                }
+            }
+
+            return result;
+        }
+
+        public EditController(IComposerDataService composersService, ISettingsService settingsService, IDataStorageService<string> articleStorageService)
         {
             this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
@@ -47,6 +72,15 @@ namespace BGC.Web.Areas.Administration.Controllers
             Composer newComposer = new Composer();
             for (int i = 0; i < editedData.Count; i++)
             {
+                string articleRaw = editedData[i].Article;
+                XDocument doc = XDocument.Parse(articleRaw);
+                IEnumerable<XElement> imageTags = GetImageTags(doc.Root);
+                foreach (XElement image in imageTags)
+                {
+                    //Guid imageId = this.articleStorageService.StoreEntry(Convert.FromBase64String(image.Attribute("src").Value));
+                    //image.SetAttributeValue("src", imageId.ToString());
+                }
+
                 newComposer.LocalizedNames.Add(new ComposerName(editedData[i].FullName));
                 newComposer.Articles.Add(new ComposerArticle()
                 {

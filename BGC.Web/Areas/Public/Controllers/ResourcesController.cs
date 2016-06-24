@@ -10,16 +10,5 @@ namespace BGC.Web.Areas.Public.Controllers
 {
     public partial class ResourcesController : Controller
     {
-        private IDataStorageService textStorageService;
-
-        public ResourcesController(IDataStorageService textStorageService)
-        {
-            this.textStorageService = textStorageService.ArgumentNotNull(nameof(textStorageService)).GetValueOrThrow();
-        }
-
-        public string GetText(Guid id)
-        {
-            return this.textStorageService.GetEntry(id);
-        }
     }
 }

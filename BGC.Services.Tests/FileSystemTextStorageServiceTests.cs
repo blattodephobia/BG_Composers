@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace BGC.Services.Tests
 {
     [TestClass]
-    public class FileSystemArticleStorageServiceTests
+    public class FileSystemTextStorageServiceTests
     {
-        class FSArticleStorageServiceProxy : FileSystemDataStorageService
+        class FSArticleStorageServiceProxy : FileSystemTextStorageService
         {
             public FSArticleStorageServiceProxy(string dirPath) :
                 base(new DirectoryInfo(dirPath))

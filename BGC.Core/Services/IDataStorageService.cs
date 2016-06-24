@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 namespace BGC.Core.Services
 {
     [ServiceContract]
-    public interface IDataStorageService
+    public interface IDataStorageService<T>
     {
         [OperationContract]
-        Guid StoreEntry(string text);
+        Guid StoreEntry(T content);
 
         [OperationContract]
-        string GetEntry(Guid id);
+        T GetEntry(Guid id);
 
         [OperationContract]
         void RemoveEntry(Guid id);
 
         [OperationContract]
-        void UpdateEntry(Guid id, string text);
+        void UpdateEntry(Guid id, T content);
     }
 }
