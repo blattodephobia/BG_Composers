@@ -134,8 +134,8 @@ namespace BGC.Data.Migrations
                     {
                         Id = c.Long(nullable: false, identity: true),
                         Name = c.String(unicode: false),
-                        Description = c.String(unicode: false),
-                        StringValue = c.String(unicode: false),
+                        Description = c.String(maxLength: 1000, storeType: "nvarchar"),
+                        StringValue = c.String(maxLength: 1000, storeType: "nvarchar"),
                         Priority = c.Int(nullable: false),
                         Date = c.DateTime(precision: 0),
                         Discriminator = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),

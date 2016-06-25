@@ -95,9 +95,9 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="CultureInfoConvention.cs" />
-    <Compile Include="Migrations\201606241656415_Initial.cs" />
-    <Compile Include="Migrations\201606241656415_Initial.Designer.cs">
-      <DependentUpon>201606241656415_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201606241840221_Initial.cs" />
+    <Compile Include="Migrations\201606241840221_Initial.Designer.cs">
+      <DependentUpon>201606241840221_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -119,8 +119,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606241656415_Initial.resx">
-      <DependentUpon>201606241656415_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606241840221_Initial.resx">
+      <DependentUpon>201606241840221_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -66,6 +66,9 @@ namespace BGC.Data
                         .HasColumnName(nameof(ComposerArticle.Language))
                         .IsRequired();
 
+            modelBuilder.Entity<Setting>().Property(s => s.Description).IsUnicode();
+            modelBuilder.Entity<Setting>().Property(s => s.StringValue).IsUnicode();
+
             modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
             modelBuilder.Entity<BgcUser>().HasMany(user => user.UserSettings).WithMany();
 		}

@@ -16,7 +16,8 @@ namespace BGC.Data.Conventions
     {
         public override void Apply(ConventionPrimitivePropertyConfiguration configuration, UnicodeAttribute attribute)
         {
-            configuration.IsUnicode(attribute.IsUnicode);
+            configuration.IsUnicode(attribute.IsUnicode)
+                         .HasColumnType(attribute.IsUnicode ? "nvarchar" : "varchar");
         }
     }
 }
