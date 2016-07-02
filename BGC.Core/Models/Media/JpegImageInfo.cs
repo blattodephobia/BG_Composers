@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class JpegImageInfo : ImageInfo
+    public class JpegImageInfo : VisualMediaInfo
     {
         private struct _JFIFHeader
         {

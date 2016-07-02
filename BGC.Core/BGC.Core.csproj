@@ -57,7 +57,7 @@
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="Models\Media\ImageInfo.cs" />
+    <Compile Include="Models\Media\VisualMediaInfo.cs" />
     <Compile Include="Models\Media\JpegImageInfo.cs" />
     <Compile Include="UnicodeAttribute.cs" />
     <Compile Include="IUnitOfWork.cs" />

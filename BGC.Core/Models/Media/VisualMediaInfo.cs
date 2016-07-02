@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public abstract class ImageInfo : MediaTypeInfo
+    public abstract class VisualMediaInfo : MediaTypeInfo
     {
         public int Width { get; protected set; }
 
         public int Height { get; protected set; }
 
-        protected ImageInfo(Stream content) :
+        protected VisualMediaInfo(Stream content) :
             base(content)
         {
         }
