@@ -13,12 +13,5 @@ namespace BGC.Core
         public abstract bool ValidateHeader();
 
         public abstract ContentType MimeType { get; }
-
-        public Stream Content { get; private set; }
-
-        public MediaTypeInfo(Stream content = null)
-        {
-            this.Content = content;
-        }
     }
 }

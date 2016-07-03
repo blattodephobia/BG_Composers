@@ -12,10 +12,5 @@ namespace BGC.Core
         public int Width { get; protected set; }
 
         public int Height { get; protected set; }
-
-        protected VisualMediaInfo(Stream content) :
-            base(content)
-        {
-        }
     }
 }

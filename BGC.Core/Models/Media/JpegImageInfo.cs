@@ -69,17 +69,13 @@ namespace BGC.Core
 
         public override bool ValidateHeader()
         {
-            byte[] headerData = new byte[21];
-            Content.Read(headerData, 0, headerData.Length);
-            _JFIFHeader header = _JFIFHeader.FromByteArray(headerData);
             return true;
         }
 
-        public JpegImageInfo(Stream content = null) :
-            base(content)
+        public JpegImageInfo(Stream content)
         {
             byte[] headerData = new byte[21];
-            Content.Read(headerData, 0, headerData.Length);
+            content.Read(headerData, 0, headerData.Length);
             _JFIFHeader header = _JFIFHeader.FromByteArray(headerData);
             Width = header.XResolution;
             Height = header.YResolution;

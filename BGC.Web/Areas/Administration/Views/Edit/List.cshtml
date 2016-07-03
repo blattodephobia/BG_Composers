@@ -9,7 +9,7 @@
 
 @foreach (Composer composer in this.Model)
 {
-    @(composer.LocalizedNames.FirstOrDefault(c => c.LocalizationCultureName == "bg-BG") ?? composer.LocalizedNames.First())
+    @(composer.LocalizedNames.FirstOrDefault(c => c.Language.Name == "bg-BG") ?? composer.LocalizedNames.First())
 }
 
 @Html.ActionLink(Localize(Administration.Edit.List.Add_entry), MVC.AdministrationArea.Edit.Add());
