@@ -14,9 +14,9 @@ namespace BGC.Web.Areas.Public.Controllers
 	public partial class MainController : Controller
     {
         private IComposerDataService composersService;
-        private IDataStorageService<string> articlesStorageService;
+        private ITextStorageService articlesStorageService;
 
-		public MainController(IComposerDataService composersService, IDataStorageService<string> articlesStorageService)
+		public MainController(IComposerDataService composersService, ITextStorageService articlesStorageService)
 		{
 			this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.articlesStorageService = articlesStorageService.ArgumentNotNull(nameof(articlesStorageService)).GetValueOrThrow();

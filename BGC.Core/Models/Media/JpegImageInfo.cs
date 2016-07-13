@@ -65,13 +65,6 @@ namespace BGC.Core
 
         private static readonly ContentType JpegContentType = new ContentType(MediaTypeNames.Image.Jpeg);
 
-        public override ContentType MimeType => JpegContentType;
-
-        public override bool ValidateHeader()
-        {
-            return true;
-        }
-
         public JpegImageInfo(Stream content)
         {
             byte[] headerData = new byte[21];

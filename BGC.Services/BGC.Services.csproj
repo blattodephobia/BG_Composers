@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComposerDataService.cs" />
+    <Compile Include="FileSystemMediaStorageService.cs" />
     <Compile Include="FileSystemStorageService.cs" />
     <Compile Include="FileSystemTextStorageService.cs" />
     <Compile Include="LocalizationService.cs" />

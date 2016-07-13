@@ -55,6 +55,12 @@ namespace BGC.Web.Areas.Public.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Upload()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Upload);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ResourcesController Actions { get { return MVC.Public.Resources; } }
@@ -71,14 +77,24 @@ namespace BGC.Web.Areas.Public.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string Upload = "Upload";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string Upload = "Upload";
         }
 
 
+        static readonly ActionParamsClass_Upload s_params_Upload = new ActionParamsClass_Upload();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Upload UploadParams { get { return s_params_Upload; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Upload
+        {
+            public readonly string file = "file";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -97,6 +113,18 @@ namespace BGC.Web.Areas.Public.Controllers
     public partial class T4MVC_ResourcesController : BGC.Web.Areas.Public.Controllers.ResourcesController
     {
         public T4MVC_ResourcesController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void UploadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Web.HttpPostedFileBase file);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Upload(System.Web.HttpPostedFileBase file)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Upload);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "file", file);
+            UploadOverride(callInfo, file);
+            return callInfo;
+        }
 
     }
 }

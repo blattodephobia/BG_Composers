@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-    internal abstract class FileSystemStorageService<T> : IDataStorageService<T>
+    internal abstract class FileSystemStorageService<T>
     {
         private DirectoryInfo directory;
 

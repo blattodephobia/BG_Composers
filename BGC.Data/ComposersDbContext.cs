@@ -21,6 +21,8 @@ namespace BGC.Data
 
 		public DbSet<ComposerName> LocalizedComposerNames { get; set; }
 
+        public DbSet<MediaTypeInfo> ContentMedia { get; set; }
+
 		public ComposersDbContext() : this("MySqlConnection")
 		{
 		}

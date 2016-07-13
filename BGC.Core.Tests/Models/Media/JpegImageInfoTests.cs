@@ -18,7 +18,6 @@ namespace BGC.Core.Tests.Models.Media
             public void ReturnsCorrectHeaderWithValidImage()
             {
                 JpegImageInfo img = new JpegImageInfo(File.OpenRead(@"Models\Media\jpgimagetest.jpg"));
-                img.ValidateHeader();
             }
         }
     }

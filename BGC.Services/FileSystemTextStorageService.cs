@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-    internal class FileSystemTextStorageService : FileSystemStorageService<string>
+    internal class FileSystemTextStorageService : FileSystemStorageService<string>, ITextStorageService
     {
         public override string GetEntry(Guid id)
         {

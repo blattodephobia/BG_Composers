@@ -14,6 +14,7 @@ namespace BGC.Core
 	public class ComposerArticle : BgcEntity<long>
 	{
         private CultureInfo language;
+        private ICollection<MediaTypeInfo> media;
 
 		internal protected string LanguageInternal
         {
@@ -57,8 +58,17 @@ namespace BGC.Core
         [Required]
         public virtual Composer Composer { get; set; }
 
-		public ComposerArticle()
-		{
-		}
+        public virtual ICollection<MediaTypeInfo> Media
+        {
+            get
+            {
+                return this.media ?? (this.media = new HashSet<MediaTypeInfo>());
+            }
+
+            set
+            {
+                this.media = value;
+            }
+        }
 	}
 }
