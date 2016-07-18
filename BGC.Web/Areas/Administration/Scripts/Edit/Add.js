@@ -40,7 +40,6 @@ $(document).ready(function ()
     });
     $('#uploadArea').on("drop", function (e)
     {
-        debugger;
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
         var input = $('#uploadInput');
         input[0].files = dt.files;

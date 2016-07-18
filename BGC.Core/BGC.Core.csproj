@@ -57,12 +57,10 @@
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="Models\Media\VisualMediaInfo.cs" />
-    <Compile Include="Models\Media\JpegImageInfo.cs" />
+    <Compile Include="Models\Media\MediaTypeInfo.cs" />
     <Compile Include="UnicodeAttribute.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Models\IParameter.cs" />
-    <Compile Include="Models\Media\MediaTypeInfo.cs" />
     <Compile Include="Models\Permissions\ApplicationSettingsWritePermission.cs" />
     <Compile Include="Models\Permissions\Permission.cs" />
     <Compile Include="Models\Permissions\SettingsWritePermission.cs" />

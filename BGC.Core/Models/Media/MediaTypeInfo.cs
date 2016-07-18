@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
@@ -28,6 +29,7 @@ namespace BGC.Core
 
         public Guid StorageId { get; set; }
 
+        [NotMapped]
         public ContentType MimeType
         {
             get
@@ -52,6 +54,18 @@ namespace BGC.Core
             {
                 this.asociatedArticles = value;
             }
+        }
+
+        [NotMapped]
+        public Stream Content { get; set; }
+
+        public MediaTypeInfo()
+        {
+        }
+
+        public MediaTypeInfo(Stream content)
+        {
+            this.Content = content;
         }
     }
 }

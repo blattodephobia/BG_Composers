@@ -12,8 +12,13 @@ namespace BGC.Core.Services
     [ServiceContract]
     public interface IMediaStorageService
     {
+        [OperationContract]
         Guid AddMedia(ContentType contentType, Stream data);
 
+        [OperationContract]
+        Guid AddMedia(ContentType contentType, Stream data, Guid articleId);
+
+        [OperationContract]
         MediaTypeInfo GetMedia(Guid guid);
     }
 }

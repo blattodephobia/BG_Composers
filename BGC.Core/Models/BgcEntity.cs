@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace BGC.Core
 {
 	public abstract class BgcEntity<TKey>
+        where TKey : struct
 	{
 		[Key]
 		public virtual TKey Id { get; set; }

@@ -5,6 +5,7 @@ using MySql.Data.Entity;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Linq;
 
@@ -40,7 +41,7 @@ namespace BGC.Data
 
             modelBuilder.Conventions.Add<UnicodeSupportConvention>();
 
-			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id);
+			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id); 
 			modelBuilder.Entity<BgcRole>().HasKey(role => role.Id);
 			modelBuilder.Entity<BgcUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
 			modelBuilder.Entity<BgcUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
@@ -51,28 +52,45 @@ namespace BGC.Data
 			 * Max key (and hence - index) size is 767 bytes and a string with
              * length 256 in UTF-8 is at most 1024 bytes.
              */
-			modelBuilder.Entity<BgcRole>().Property(anr => anr.Name).HasMaxLength(64);
-			modelBuilder.Entity<BgcUser>().Property(anu => anu.UserName).HasMaxLength(32);
+			modelBuilder.Entity<BgcRole>()
+                .Property(anr => anr.Name)
+                .HasMaxLength(64);
+			modelBuilder.Entity<BgcUser>()
+                .Property(anu => anu.UserName)
+                .HasMaxLength(32);
 
-			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
-				        .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>().Property(name => name.FullName)
-                        .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
-                        .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-            modelBuilder.Entity<ComposerName>().Property(name => name.LanguageInternal)
-                        .HasColumnName(nameof(ComposerName.Language))
-                        .IsRequired();
+			modelBuilder.Entity<ComposerName>()
+                .Property(name => name.FirstName)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+			modelBuilder.Entity<ComposerName>()
+                .Property(name => name.FullName)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+			modelBuilder.Entity<ComposerName>()
+                .Property(name => name.LastName)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+            modelBuilder.Entity<ComposerName>()
+                .Property(name => name.LanguageInternal)
+                .HasColumnName(nameof(ComposerName.Language))
+                .IsRequired();
 
-            modelBuilder.Entity<ComposerArticle>().Property(entry => entry.LanguageInternal)
-                        .HasColumnName(nameof(ComposerArticle.Language))
-                        .IsRequired();
+            modelBuilder.Entity<ComposerArticle>()
+                .Property(entry => entry.LanguageInternal)
+                .HasColumnName(nameof(ComposerArticle.Language))
+                .IsRequired();
 
+            modelBuilder.Entity<ComposerArticle>()
+                .Property(entry => entry.StorageId)
+                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+            
             modelBuilder.Entity<Setting>().Property(s => s.Description).IsUnicode();
             modelBuilder.Entity<Setting>().Property(s => s.StringValue).IsUnicode();
 
             modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
             modelBuilder.Entity<BgcUser>().HasMany(user => user.UserSettings).WithMany();
+
+            modelBuilder.Entity<MediaTypeInfo>().HasMany(media => media.AsociatedArticles).WithMany(article => article.Media);
+            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.MimeTypeInternal).IsRequired();
+            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.StorageId).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		public IRepository<T> GetRepository<T>()

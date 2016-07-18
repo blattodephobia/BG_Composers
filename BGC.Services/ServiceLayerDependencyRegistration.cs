@@ -12,7 +12,9 @@ namespace BGC.Services
 {
 	public class ServiceLayerDependencyRegistration : IDependencyRegistration<IUnityContainer>
 	{
-        public const string DefaultDataStorageDirectoryKey = "StorageDir";
+        public const string DefaultDataStorageDirectoryKey = "DataStorageDir";
+
+        public const string DefaultMediaStorageDirectoryKey = "MediaStorageDir";
 
 		public void RegisterTypes(IUnityContainer helper)
 		{

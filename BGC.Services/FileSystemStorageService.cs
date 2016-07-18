@@ -9,17 +9,17 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-    internal abstract class FileSystemStorageService<T>
+    internal abstract class FileSystemStorageService<T> : DbServiceBase
     {
         private DirectoryInfo directory;
 
         public abstract T GetEntry(Guid id);
 
-        public abstract Guid StoreEntry(T text);
+        public abstract Guid StoreEntry(T data);
 
         public abstract void UpdateEntry(Guid id, T data);
 
-        public void RemoveEntry(Guid id)
+        public virtual void RemoveEntry(Guid id)
         {
             GuidToFileName(id).Delete();
         }
