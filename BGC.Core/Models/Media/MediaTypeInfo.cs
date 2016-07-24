@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
@@ -9,11 +10,13 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
+    [Table(nameof(MediaTypeInfo) + "s")] // Entity Framework maps this entity to "MediaTypeInfoes", which is incorrect
     public class MediaTypeInfo : BgcEntity<long>
     {
         private ContentType mimeType;
         private ICollection<ComposerArticle> asociatedArticles;
 
+        [Required]
         internal protected string MimeTypeInternal
         {
             get
@@ -27,6 +30,7 @@ namespace BGC.Core
             }   
         }
 
+        [Index]
         public Guid StorageId { get; set; }
 
         [NotMapped]
@@ -43,7 +47,7 @@ namespace BGC.Core
             }
         }
 
-        public ICollection<ComposerArticle> AsociatedArticles
+        public virtual ICollection<ComposerArticle> AsociatedArticles
         {
             get
             {
@@ -58,14 +62,18 @@ namespace BGC.Core
 
         [NotMapped]
         public Stream Content { get; set; }
+        
+        [Unicode, Required, MaxLength(255)]
+        public string OriginalFileName { get; set; }
 
-        public MediaTypeInfo()
+        protected MediaTypeInfo()
         {
         }
 
-        public MediaTypeInfo(Stream content)
+        public MediaTypeInfo(string fileName, ContentType contentType)
         {
-            this.Content = content;
+            this.OriginalFileName = fileName;
+            this.MimeType = contentType;
         }
     }
 }

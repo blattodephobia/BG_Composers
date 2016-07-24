@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace BGC.Core.Services
 {
     [ServiceContract]
-    public interface ITextStorageService
+    public interface IArticleContentService
     {
         [OperationContract]
         Guid StoreEntry(string content);

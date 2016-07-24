@@ -61,7 +61,7 @@ namespace BGC.Web.App_Start
 
             string mediaStorageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey];
             container.RegisterInstance(
-                ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey,
+                ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey,
                 new DirectoryInfo(HostingEnvironment.MapPath(mediaStorageDir)));
 
             // Inject UserManager<BgcUser, long> into all controllers inheriting from AdministrationControllerBase

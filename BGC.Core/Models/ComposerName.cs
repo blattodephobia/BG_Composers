@@ -29,14 +29,9 @@ namespace BGC.Core
                 sb => sb.Length > 0 ? sb.Remove(0, 1) : sb) // remove leading space
                 .ToString();
         }
-
-        private CultureInfo language;
-
-		public long? ComposerId { get; set; }
-
-		public virtual Composer Composer { get; set; }
         
-		internal protected string LanguageInternal
+        [MaxLength(5)]
+        internal protected string LanguageInternal
         {
             get
             {
@@ -49,6 +44,10 @@ namespace BGC.Core
             }
         }
 
+        [Required]
+        public virtual Composer Composer { get; set; }
+        
+        private CultureInfo language;
         [NotMapped]
         public CultureInfo Language
         {
@@ -64,8 +63,7 @@ namespace BGC.Core
         }
 
 		private string firstName;
-        [MaxLength(32)]
-        [Unicode]
+        [MaxLength(32), Unicode, Index]
 		public string FirstName
 		{
 			get
@@ -90,8 +88,7 @@ namespace BGC.Core
 		}
 
 		private string lastName;
-        [MaxLength(32)]
-        [Unicode]
+        [MaxLength(32), Unicode, Index]
         public string LastName
 		{
 			get
@@ -122,8 +119,7 @@ namespace BGC.Core
         /// <summary>
         /// Gets the full name of the composer in western order ({first_name} {middle_name} {last_name})
         /// </summary>
-        [MaxLength(128)]
-        [Unicode]
+        [MaxLength(128), Unicode, Index]
         public string FullName
 		{
 			get
@@ -146,10 +142,10 @@ namespace BGC.Core
         {
         }
 
-        public ComposerName(string fullName) :
+        public ComposerName(string westernOrderFullName) :
             this()
         {
-            this.FullName = fullName;
+            this.FullName = westernOrderFullName;
         }
 
         /// <summary>

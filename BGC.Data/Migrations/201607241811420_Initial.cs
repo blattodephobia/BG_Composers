@@ -12,16 +12,18 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Language = c.String(nullable: false, unicode: false),
+                        Language = c.String(nullable: false, maxLength: 5, storeType: "nvarchar"),
                         StorageId = c.Guid(nullable: false),
-                        ComposerNameId = c.Long(nullable: false),
-                        ComposerId = c.Long(nullable: false),
+                        Composer_Id = c.Long(nullable: false),
+                        LocalizedName_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composers", t => t.ComposerId, cascadeDelete: true)
-                .ForeignKey("dbo.ComposerNames", t => t.ComposerNameId, cascadeDelete: true)
-                .Index(t => t.ComposerNameId)
-                .Index(t => t.ComposerId);
+                .ForeignKey("dbo.Composers", t => t.Composer_Id, cascadeDelete: true)
+                .ForeignKey("dbo.ComposerNames", t => t.LocalizedName_Id, cascadeDelete: true)
+                .Index(t => t.StorageId)
+                .Index(t => new { t.Composer_Id, t.Language }, name: "IX_LanguageUnique", unique: true)
+                .Index(t => t.Composer_Id)
+                .Index(t => t.LocalizedName_Id);
             
             CreateTable(
                 "dbo.Composers",
@@ -36,18 +38,31 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        ComposerId = c.Long(),
-                        Language = c.String(nullable: false, unicode: false),
+                        Language = c.String(nullable: false, maxLength: 5, storeType: "nvarchar"),
                         FirstName = c.String(maxLength: 32, storeType: "nvarchar"),
                         LastName = c.String(maxLength: 32, storeType: "nvarchar"),
                         FullName = c.String(maxLength: 128, storeType: "nvarchar"),
+                        Composer_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composers", t => t.ComposerId)
-                .Index(t => t.ComposerId)
+                .ForeignKey("dbo.Composers", t => t.Composer_Id, cascadeDelete: true)
+                .Index(t => new { t.Composer_Id, t.Language }, name: "IX_LanguageUnique", unique: true)
                 .Index(t => t.FirstName)
                 .Index(t => t.LastName)
-                .Index(t => t.FullName);
+                .Index(t => t.FullName)
+                .Index(t => t.Composer_Id);
+            
+            CreateTable(
+                "dbo.MediaTypeInfos",
+                c => new
+                    {
+                        Id = c.Long(nullable: false, identity: true),
+                        MimeTypeInternal = c.String(nullable: false, unicode: false),
+                        StorageId = c.Guid(nullable: false),
+                        OriginalFileName = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
+                    })
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.StorageId);
             
             CreateTable(
                 "dbo.AspNetRoles",
@@ -143,6 +158,19 @@ namespace BGC.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.MediaTypeInfoComposerArticles",
+                c => new
+                    {
+                        MediaTypeInfo_Id = c.Long(nullable: false),
+                        ComposerArticle_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.MediaTypeInfo_Id, t.ComposerArticle_Id })
+                .ForeignKey("dbo.MediaTypeInfos", t => t.MediaTypeInfo_Id, cascadeDelete: true)
+                .ForeignKey("dbo.ComposerArticles", t => t.ComposerArticle_Id, cascadeDelete: true)
+                .Index(t => t.MediaTypeInfo_Id)
+                .Index(t => t.ComposerArticle_Id);
+            
+            CreateTable(
                 "dbo.BgcRolePermissions",
                 c => new
                     {
@@ -180,27 +208,34 @@ namespace BGC.Data.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.BgcRolePermissions", "Permission_Id", "dbo.Permissions");
             DropForeignKey("dbo.BgcRolePermissions", "BgcRole_Id", "dbo.AspNetRoles");
-            DropForeignKey("dbo.ComposerArticles", "ComposerNameId", "dbo.ComposerNames");
-            DropForeignKey("dbo.ComposerArticles", "ComposerId", "dbo.Composers");
-            DropForeignKey("dbo.ComposerNames", "ComposerId", "dbo.Composers");
+            DropForeignKey("dbo.MediaTypeInfoComposerArticles", "ComposerArticle_Id", "dbo.ComposerArticles");
+            DropForeignKey("dbo.MediaTypeInfoComposerArticles", "MediaTypeInfo_Id", "dbo.MediaTypeInfos");
+            DropForeignKey("dbo.ComposerArticles", "LocalizedName_Id", "dbo.ComposerNames");
+            DropForeignKey("dbo.ComposerArticles", "Composer_Id", "dbo.Composers");
+            DropForeignKey("dbo.ComposerNames", "Composer_Id", "dbo.Composers");
             DropIndex("dbo.BgcUserSettings", new[] { "Setting_Id" });
             DropIndex("dbo.BgcUserSettings", new[] { "BgcUser_Id" });
             DropIndex("dbo.BgcRolePermissions", new[] { "Permission_Id" });
             DropIndex("dbo.BgcRolePermissions", new[] { "BgcRole_Id" });
+            DropIndex("dbo.MediaTypeInfoComposerArticles", new[] { "ComposerArticle_Id" });
+            DropIndex("dbo.MediaTypeInfoComposerArticles", new[] { "MediaTypeInfo_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.MediaTypeInfos", new[] { "StorageId" });
+            DropIndex("dbo.ComposerNames", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerNames", new[] { "FullName" });
             DropIndex("dbo.ComposerNames", new[] { "LastName" });
             DropIndex("dbo.ComposerNames", new[] { "FirstName" });
-            DropIndex("dbo.ComposerNames", new[] { "ComposerId" });
-            DropIndex("dbo.ComposerArticles", new[] { "ComposerId" });
-            DropIndex("dbo.ComposerArticles", new[] { "ComposerNameId" });
+            DropIndex("dbo.ComposerArticles", new[] { "LocalizedName_Id" });
+            DropIndex("dbo.ComposerArticles", new[] { "Composer_Id" });
+            DropIndex("dbo.ComposerArticles", new[] { "StorageId" });
             DropTable("dbo.BgcUserSettings");
             DropTable("dbo.BgcRolePermissions");
+            DropTable("dbo.MediaTypeInfoComposerArticles");
             DropTable("dbo.Settings");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
@@ -208,6 +243,7 @@ namespace BGC.Data.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Permissions");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.MediaTypeInfos");
             DropTable("dbo.ComposerNames");
             DropTable("dbo.Composers");
             DropTable("dbo.ComposerArticles");

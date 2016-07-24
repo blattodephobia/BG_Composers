@@ -32,18 +32,42 @@ $(document).ready(function ()
         dt.dropEffect = "copy";
         return stopEvent(e);
     });
+
     $('#uploadArea').on("dragenter", function (e)
     {
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
         dt.dropEffect = "copy";
         return stopEvent(e);
     });
+
     $('#uploadArea').on("drop", function (e)
     {
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
-        var input = $('#uploadInput');
-        input[0].files = dt.files;
-        $("#uploadArea").submit();
+        var imagesArea = $("#uploadedImages");
+        for (var i = 0; i < dt.files.length; i++)
+        {
+            imagesArea.append(document.createElement("div"));
+            var formData = new FormData();
+            formData.append("file", dt.files[i]);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/resources/upload');
+            xhr.onload = function ()
+            {
+                progress.value = progress.innerHTML = 100;
+            };
+
+            xhr.upload.onprogress = function (event)
+            {
+                if (event.lengthComputable)
+                {
+                    var complete = (event.loaded / event.total * 100 | 0);
+                    progress.value = progress.innerHTML = complete;
+                }
+            }
+
+            xhr.send(formData);
+        }
         return stopEvent(e);
     });
 });

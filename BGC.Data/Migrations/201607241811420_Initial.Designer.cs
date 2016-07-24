@@ -7,13 +7,13 @@ namespace BGC.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class Add_MediaTypeInfo : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Add_MediaTypeInfo));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201607172254412_Add_MediaTypeInfo"; }
+            get { return "201607241811420_Initial"; }
         }
         
         string IMigrationMetadata.Source

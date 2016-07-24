@@ -10,15 +10,12 @@ using System.Threading.Tasks;
 namespace BGC.Core.Services
 {
     [ServiceContract]
-    public interface IMediaStorageService
+    public interface IMediaService
     {
         [OperationContract]
-        Guid AddMedia(ContentType contentType, Stream data);
+        Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null);
 
         [OperationContract]
-        Guid AddMedia(ContentType contentType, Stream data, Guid articleId);
-
-        [OperationContract]
-        MediaTypeInfo GetMedia(Guid guid);
+        MediaTypeInfo GetMedia(Guid mediaId);
     }
 }

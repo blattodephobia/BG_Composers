@@ -11,26 +11,24 @@ using Microsoft.Practices.Unity;
 
 namespace BGC.Services
 {
-    internal class FileSystemMediaStorageService : FileSystemStorageService<Stream>, IMediaStorageService
+    internal class FileSystemMediaService : FileSystemStorageService<Stream>, IMediaService
     {
         protected IRepository<MediaTypeInfo> MetaDataRepository { get; private set; }
         protected IRepository<ComposerArticle> ArticleRepository { get; private set; }
-        
-        public Guid AddMedia(ContentType contentType, Stream data)
-        {
-            return AddMedia(contentType, data, default(Guid));
-        }
 
         public MediaTypeInfo GetMedia(Guid guid)
         {
             MediaTypeInfo result = MetaDataRepository.All().FirstOrDefault(media => media.StorageId == guid);
-            result.Content = GuidToFileName(guid).OpenRead();
+            if (result != null)
+            {
+                result.Content = GuidToFileName(guid).OpenRead();
+            }
             return result;
         }
 
         public override Stream GetEntry(Guid id)
         {
-            return GetMedia(id).Content;
+            return GetMedia(id)?.Content;
         }
 
         public override Guid StoreEntry(Stream data)
@@ -47,10 +45,9 @@ namespace BGC.Services
 
         public override void UpdateEntry(Guid id, Stream data)
         {
-            using (BufferedStream wrapper = new BufferedStream(data))
             using (Stream storage = GuidToFileName(id).Open(FileMode.OpenOrCreate))
             {
-                wrapper.CopyTo(storage);
+                data.CopyTo(storage);
             }
         }
 
@@ -65,18 +62,21 @@ namespace BGC.Services
             }
         }
 
-        public Guid AddMedia(ContentType contentType, Stream data, Guid articleId)
+        public Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null)
         {
             Guid storageId = StoreEntry(data);
-            var mediaEntry = new MediaTypeInfo() { MimeType = contentType, StorageId = storageId };
+            var mediaEntry = new MediaTypeInfo(fileName, contentType) { StorageId = storageId };
             MetaDataRepository.Insert(mediaEntry);
-            ArticleRepository.All().FirstOrDefault(article => article.StorageId == articleId)?.Media.Add(mediaEntry);
+            if (articleId != null)
+            {
+                ArticleRepository.All().FirstOrDefault(article => article.StorageId == articleId)?.Media.Add(mediaEntry);
+            }
             SaveAll();
             return storageId;
 
         }
 
-        public FileSystemMediaStorageService(
+        public FileSystemMediaService(
             [Dependency(ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey)] DirectoryInfo storageDir,
             IRepository<MediaTypeInfo> metaDataRepository,
             IRepository<ComposerArticle> articleRepository) :

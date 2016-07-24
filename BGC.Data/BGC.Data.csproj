@@ -95,13 +95,9 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="CultureInfoConvention.cs" />
-    <Compile Include="Migrations\201606241840221_Initial.cs" />
-    <Compile Include="Migrations\201606241840221_Initial.Designer.cs">
-      <DependentUpon>201606241840221_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201607172254412_Add_MediaTypeInfo.cs" />
-    <Compile Include="Migrations\201607172254412_Add_MediaTypeInfo.Designer.cs">
-      <DependentUpon>201607172254412_Add_MediaTypeInfo.cs</DependentUpon>
+    <Compile Include="Migrations\201607241811420_Initial.cs" />
+    <Compile Include="Migrations\201607241811420_Initial.Designer.cs">
+      <DependentUpon>201607241811420_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -121,13 +117,14 @@
       <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
       <Name>BGC.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeShield\CodeShield.csproj">
+      <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
+      <Name>CodeShield</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201606241840221_Initial.resx">
-      <DependentUpon>201606241840221_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201607172254412_Add_MediaTypeInfo.resx">
-      <DependentUpon>201607172254412_Add_MediaTypeInfo.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607241811420_Initial.resx">
+      <DependentUpon>201607241811420_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

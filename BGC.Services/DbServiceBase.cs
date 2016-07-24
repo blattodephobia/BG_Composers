@@ -75,8 +75,7 @@ namespace BGC.Services
         {
             return DbConnectMemberAccessors[this.currentType].Invoke(this);
         }
-
-
+        
         protected void SaveAll()
         {
             foreach (IDbConnect dbConnection in GetDatbaseConnectedObjects())

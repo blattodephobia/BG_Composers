@@ -13,7 +13,7 @@ namespace BGC.Utilities
 	{
 		private static Expression RemoveConvert(Expression expression)
 		{
-			// Expressions using constants use their values rather names after compilation. Therefore,
+			// Expressions using constants use their values rather than names after compilation. Therefore,
 			// any information regarding the constant's name is stripped from the Expression object.
 			Shield.Assert(expression, !(expression is ConstantExpression), x => new InvalidOperationException("Constant member access expressions are not supported.")).ThrowOnError();
 

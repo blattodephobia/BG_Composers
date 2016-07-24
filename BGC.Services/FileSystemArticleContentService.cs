@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Services
 {
-    internal class FileSystemTextStorageService : FileSystemStorageService<string>, ITextStorageService
+    internal class FileSystemArticleContentService : FileSystemStorageService<string>, IArticleContentService
     {
         public override string GetEntry(Guid id)
         {
@@ -38,7 +38,7 @@ namespace BGC.Services
             }
         }
 
-        public FileSystemTextStorageService([Dependency(ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey)] DirectoryInfo storageDir) :
+        public FileSystemArticleContentService([Dependency(ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey)] DirectoryInfo storageDir) :
             base(storageDir)
         {
         }

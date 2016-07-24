@@ -42,8 +42,9 @@ namespace BGC.Data.Migrations
                     });
 
 #if DEBUG
-                Composer pStupel = new Composer();
-                pStupel.LocalizedNames = new HashSet<ComposerName>()
+                Composer pStupel = new Composer() { Id = 1 };
+
+                ComposerName[] names = new[]
                 {
                     new ComposerName("Petar Stupel")
                     {
@@ -57,6 +58,7 @@ namespace BGC.Data.Migrations
                     }
                 };
 
+                pStupel.LocalizedNames = names;
                 pStupel.Articles = new HashSet<ComposerArticle>()
                 {
                     new ComposerArticle()
@@ -74,7 +76,7 @@ namespace BGC.Data.Migrations
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000002")
                     }
                 };
-                context.Composers.AddOrUpdate(pStupel);
+                context.Composers.AddOrUpdate(composer => composer.Id, pStupel);
 #endif
             }
 			catch

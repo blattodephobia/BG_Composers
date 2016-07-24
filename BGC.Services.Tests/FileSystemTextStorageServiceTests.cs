@@ -11,7 +11,7 @@ namespace BGC.Services.Tests
     [TestClass]
     public class FileSystemTextStorageServiceTests
     {
-        class FSArticleStorageServiceProxy : FileSystemTextStorageService
+        class FSArticleStorageServiceProxy : FileSystemArticleContentService
         {
             public FSArticleStorageServiceProxy(string dirPath) :
                 base(new DirectoryInfo(dirPath))

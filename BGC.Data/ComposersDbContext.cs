@@ -58,16 +58,7 @@ namespace BGC.Data
 			modelBuilder.Entity<BgcUser>()
                 .Property(anu => anu.UserName)
                 .HasMaxLength(32);
-
-			modelBuilder.Entity<ComposerName>()
-                .Property(name => name.FirstName)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>()
-                .Property(name => name.FullName)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>()
-                .Property(name => name.LastName)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
+            
             modelBuilder.Entity<ComposerName>()
                 .Property(name => name.LanguageInternal)
                 .HasColumnName(nameof(ComposerName.Language))
@@ -79,9 +70,8 @@ namespace BGC.Data
                 .IsRequired();
 
             modelBuilder.Entity<ComposerArticle>()
-                .Property(entry => entry.StorageId)
-                .HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-            
+                .Property(entry => entry.StorageId);
+                        
             modelBuilder.Entity<Setting>().Property(s => s.Description).IsUnicode();
             modelBuilder.Entity<Setting>().Property(s => s.StringValue).IsUnicode();
 

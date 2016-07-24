@@ -15,8 +15,9 @@ namespace BGC.Core
 	{
         private CultureInfo language;
         private ICollection<MediaTypeInfo> media;
-
-		internal protected string LanguageInternal
+        
+        [MaxLength(5)]
+        internal protected string LanguageInternal
         {
             get
             {
@@ -43,17 +44,14 @@ namespace BGC.Core
             }
         }
 
+        [Index]
         /// <summary>
         /// Gets or sets the <see cref="Guid"/> that identifies the actual text of this article, as stored in an external service (such as <see cref="IDataStorageService"/>).
         /// </summary>
 		public Guid StorageId { get; set; }
 
-		public long ComposerNameId { get; set; }
-
         [Required]
 		public virtual ComposerName LocalizedName { get; set; }
-
-        public long ComposerId { get; set; }
 
         [Required]
         public virtual Composer Composer { get; set; }

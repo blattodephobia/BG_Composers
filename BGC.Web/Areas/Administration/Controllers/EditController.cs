@@ -17,7 +17,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         private IComposerDataService composersService;
         private ISettingsService settingsService;
-        private ITextStorageService articleStorageService;
+        private IArticleContentService articleStorageService;
 
         private static IEnumerable<XElement> GetImageTags(XElement htmlRoot)
         {
@@ -41,7 +41,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             return result;
         }
 
-        public EditController(IComposerDataService composersService, ISettingsService settingsService, ITextStorageService articleStorageService)
+        public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService)
         {
             this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();

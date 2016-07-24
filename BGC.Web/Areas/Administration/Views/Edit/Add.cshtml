@@ -19,10 +19,13 @@
 
 <h2>Add</h2>
 
-@using (Html.BeginForm(MVC.Public.Resources.Actions.Upload(), FormMethod.Post, new { @id = "uploadArea", target = "postResult" }))
+@using (Html.BeginForm(MVC.Public.Resources.Actions.Upload(), FormMethod.Post, new { @id = "uploadArea", target = "postResult", enctype = "multipart/form-data" }))
 {
-    <input id="uploadInput" hidden="hidden" type="file"/>
+    <input id="uploadInput" name="file" hidden="hidden" type="file"/>
+    <input type="submit"/>
 }
+
+<div id="uploadedImages"></div>
 
 <iframe id="postResult" hidden="hidden"></iframe>
 
