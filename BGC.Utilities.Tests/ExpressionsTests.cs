@@ -81,5 +81,82 @@ namespace BGC.Utilities.Tests
 				Assert.AreEqual("Constant", actual);
 			}
 		}
+
+        [TestClass]
+        public class GetQueryStringTests
+        {
+            private static void MockActionMethod1(int param1, string param2)
+            {
+            }
+
+            private static int MockActionMethod2(int param1, string param2)
+            {
+                return 0;
+            }
+
+            private int field1 = 5;
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithConstants()
+            {
+                string result = Expressions.GetQueryString(() => MockActionMethod1(2, "cimf"));
+                Assert.AreEqual("param1=2&param2=cimf", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithVariables()
+            {
+                int value1 = 2;
+                string value2 = "cimf";
+                string result = Expressions.GetQueryString(() => MockActionMethod1(value1, value2));
+                Assert.AreEqual("param1=2&param2=cimf", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithMixedConstantsAndVariables1()
+            {
+                string value2 = "cimf";
+                string result = Expressions.GetQueryString(() => MockActionMethod1(2, value2));
+                Assert.AreEqual("param1=2&param2=cimf", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithMixedConstantsAndVariables2()
+            {
+                string value2 = "cimf";
+                string result = Expressions.GetQueryString(() => MockActionMethod2(2, value2));
+                Assert.AreEqual("param1=2&param2=cimf", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithMixedConstantsAndVariables_ThisCall()
+            {
+                string value2 = "cimf";
+                string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, value2));
+                Assert.AreEqual("param1=5&param2=cimf", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithMixedConstantsAndVariables_IncludeNullValue()
+            {
+                string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, null), includeNullValueParams: true);
+                Assert.AreEqual("param1=5&param2=", result);
+            }
+
+            [TestMethod]
+            public void GeneratesCorrectStringWithMixedConstantsAndVariables_ExcludeNullValue()
+            {
+                string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, null), includeNullValueParams: false);
+                Assert.AreEqual("param1=5", result);
+            }
+
+            [TestMethod]
+            [ExpectedException(typeof(InvalidOperationException))]
+            public void ThrowsOnNestedMethodCallExpressions()
+            {
+                string value2 = "cimf";
+                string result = Expressions.GetQueryString(() => MockActionMethod1(MockActionMethod2(2, ""), value2));
+            }
+        }
 	}
 }

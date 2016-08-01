@@ -40,26 +40,6 @@ namespace BGC.Web
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 			BundleConfig.RegisterBundles(BundleTable.Bundles);
 			AreaRegistration.RegisterAllAreas();
-
-			// RegisterRouteDebugger();
-		}
-
-		private static void RegisterRouteDebugger()
-		{
-			using (RouteTable.Routes.GetReadLock())
-			{
-				bool foundDebugRoute = false;
-				foreach (Route route in RouteTable.Routes.OfType<Route>())
-				{
-					route.RouteHandler = new DebugRouteHandler();
-					if (route == DebugRoute.Singleton)
-						foundDebugRoute = true;
-				}
-				if (!foundDebugRoute)
-				{
-					RouteTable.Routes.Add(DebugRoute.Singleton);
-				}
-			}
 		}
 	}
 }

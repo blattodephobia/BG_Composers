@@ -31,18 +31,7 @@ namespace BGC.Core
         }
         
         [MaxLength(5)]
-        internal protected string LanguageInternal
-        {
-            get
-            {
-                return this.language.Name;
-            }
-
-            protected set
-            {
-                this.language = CultureInfo.GetCultureInfo(value);
-            }
-        }
+        internal protected string LanguageInternal { get; protected set; }
 
         [Required]
         public virtual Composer Composer { get; set; }
@@ -53,12 +42,12 @@ namespace BGC.Core
         {
             get
             {
-                return language;
+                return language ?? (language = CultureInfo.GetCultureInfo(LanguageInternal));
             }
 
             set
             {
-                this.language = value;
+                this.LanguageInternal = (this.language = value.ValueNotNull(nameof(Language)).GetValueOrThrow()).Name;
             }
         }
 
@@ -138,14 +127,21 @@ namespace BGC.Core
 			}
 		}
 
-        public ComposerName()
+        // This constructor is added to support Entity Framework
+        protected ComposerName()
         {
         }
 
-        public ComposerName(string westernOrderFullName) :
+        public ComposerName(string westernOrderFullName, string language) :
+            this(westernOrderFullName, CultureInfo.GetCultureInfo(language))
+        {
+        }
+
+        public ComposerName(string westernOrderFullName, CultureInfo language) :
             this()
         {
-            this.FullName = westernOrderFullName;
+            this.FullName = westernOrderFullName.ArgumentNotNull(nameof(westernOrderFullName)).GetValueOrThrow();
+            this.Language = language.ArgumentNotNull(nameof(language)).GetValueOrThrow();
         }
 
         /// <summary>

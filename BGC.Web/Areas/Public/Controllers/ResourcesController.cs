@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Utilities;
 using CodeShield;
 using System;
 using System.Collections.Generic;
@@ -41,6 +42,11 @@ namespace BGC.Web.Areas.Public.Controllers
         {
             Guid id = storageService.AddMedia(new ContentType(file.ContentType), file.InputStream, file.FileName);
             string resourceUrl = $"{Url.Action(Get())}?{MVC.Public.Resources.Actions.GetParams.resourceId}={id.ToString("N")}";
+            var urlBuilder = new UriBuilder(Request.Url.AbsoluteUri)
+            {
+                Path = Url.Action(MVC.Public.Resources.ActionNames.Get, MVC.Public.Resources.Name),
+                Query = Expressions.GetQueryString(() => Get(id)),
+            };
             return Content(resourceUrl);
         }
     }

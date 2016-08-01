@@ -23,7 +23,7 @@ namespace BGC.Services.Tests
                 Mock<IRepository<ComposerArticle>> mockArticleRepo = new Mock<IRepository<ComposerArticle>>();
                 mockArticleRepo.SetupAllProperties();
                 Mock<IRepository<MediaTypeInfo>> mockMediaRepo = new Mock<IRepository<MediaTypeInfo>>();
-                mockMediaRepo.Setup(a => a.All()).Returns(new[] { new MediaTypeInfo() { StorageId = new Guid(1, 2, 3, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }) } }.AsQueryable());
+                mockMediaRepo.Setup(a => a.All()).Returns(new[] { new MediaTypeInfo("file", "image/jpeg") { StorageId = new Guid(1, 2, 3, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }) } }.AsQueryable());
                 
                 FileSystemMediaService service = new FileSystemMediaService(
                     new DirectoryInfo(Environment.CurrentDirectory),

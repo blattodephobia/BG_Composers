@@ -46,15 +46,13 @@ namespace BGC.Data.Migrations
 
                 ComposerName[] names = new[]
                 {
-                    new ComposerName("Petar Stupel")
+                    new ComposerName("Petar Stupel", "de-DE")
                     {
-                        Composer = pStupel,
-                        Language = CultureInfo.GetCultureInfo("de-DE")
+                        Composer = pStupel
                     },
-                    new ComposerName("Петър Ступел")
+                    new ComposerName("Петър Ступел", "bg-BG")
                     {
-                        Composer = pStupel,
-                        Language = CultureInfo.GetCultureInfo("bg-BG")
+                        Composer = pStupel
                     }
                 };
 

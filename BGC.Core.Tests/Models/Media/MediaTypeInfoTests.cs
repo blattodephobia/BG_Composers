@@ -17,16 +17,14 @@ namespace BGC.Core.Tests.Models.Media
             [TestMethod]
             public void IsSetFromInternalPropertyCorrectly()
             {
-                MediaTypeInfo mt = new MediaTypeInfo();
-                mt.MimeTypeInternal = "image/jpeg";
+                MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
                 Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeType.MediaType);
             }
 
             [TestMethod]
             public void IsSetFromPublicPropertyCorrectly()
             {
-                MediaTypeInfo mt = new MediaTypeInfo();
-                mt.MimeType = new ContentType("image/jpeg");
+                MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
                 Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeTypeInternal);
             }
         }

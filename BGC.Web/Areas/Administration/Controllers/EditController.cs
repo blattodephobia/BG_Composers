@@ -72,21 +72,14 @@ namespace BGC.Web.Areas.Administration.Controllers
             Composer newComposer = new Composer();
             for (int i = 0; i < editedData.Count; i++)
             {
-                string articleRaw = editedData[i].Article;
-                XDocument doc = XDocument.Parse(articleRaw);
-                IEnumerable<XElement> imageTags = GetImageTags(doc.Root);
-                foreach (XElement image in imageTags)
-                {
-                    //Guid imageId = this.articleStorageService.StoreEntry(Convert.FromBase64String(image.Attribute("src").Value));
-                    //image.SetAttributeValue("src", imageId.ToString());
-                }
-
-                newComposer.LocalizedNames.Add(new ComposerName(editedData[i].FullName));
+                var name = new ComposerName(editedData[i].FullName, editedData[i].Language);
+                newComposer.LocalizedNames.Add(name);
                 newComposer.Articles.Add(new ComposerArticle()
                 {
                     StorageId = this.articleStorageService.StoreEntry(editedData[i].Article),
                     Composer = newComposer,
-                    Language = editedData[i].Language
+                    Language = editedData[i].Language,
+                    LocalizedName = name
                 });
             }
             this.composersService.Add(newComposer);

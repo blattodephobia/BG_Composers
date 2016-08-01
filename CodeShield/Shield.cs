@@ -42,7 +42,6 @@ namespace CodeShield
         /// <param name="objName">The name of the argument to validate.</param>
         /// <returns></returns>
         public static Validation<T> ArgumentNotNull<T>(this T obj, string objName = null)
-            where T : class
         {
             return new Validation<T>(obj, ReferenceEquals(obj, null) ? (x => new ArgumentNullException(objName)) : (Func<T, Exception>)null);
         }
@@ -72,7 +71,21 @@ namespace CodeShield
 
         public static Validation<T> Assert<T>(this T value, bool condition, Func<T, Exception> exceptionProvider)
         {
-            return new Validation<T>(value, condition ? (Func<T, Exception>)null : exceptionProvider ?? (x => new Exception("Assert failed")));
+            return new Validation<T>(value, condition ? null : exceptionProvider ?? (x => new Exception("Assert failed")));
+        }
+
+        public static Validation<T> Assert<T>(this T value, Func<T, bool> predicate, string message)
+        {
+            return Assert(value, predicate, x => new Exception(message));
+        }
+
+        public static Validation<T> Assert<T>(this T value, Func<T, bool> predicate, Func<T, Exception> exceptionProvider)
+        {
+            return new Validation<T>(
+                value: value,
+                exceptionProvider: (predicate ?? ((T x) => true)).Invoke(value)
+                    ? null
+                    : exceptionProvider ?? (x => new Exception("Assert failed")));
         }
     }
 }

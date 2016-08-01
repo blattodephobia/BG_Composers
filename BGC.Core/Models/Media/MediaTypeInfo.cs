@@ -66,7 +66,15 @@ namespace BGC.Core
         [Unicode, Required, MaxLength(255)]
         public string OriginalFileName { get; set; }
 
+        public bool IsTemporary => AsociatedArticles.Any();
+
+        // This constructor is added for Entity Framework's sake
         protected MediaTypeInfo()
+        {
+        }
+
+        public MediaTypeInfo(string fileName, string contentType) :
+            this(fileName, new ContentType(contentType))
         {
         }
 

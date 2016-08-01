@@ -46,26 +46,34 @@ $(document).ready(function ()
         var imagesArea = $("#uploadedImages");
         for (var i = 0; i < dt.files.length; i++)
         {
-            imagesArea.append(document.createElement("div"));
+            var div = document.createElement("div");
+            imagesArea.append(div);
             var formData = new FormData();
             formData.append("file", dt.files[i]);
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/resources/upload');
-            xhr.onload = function ()
-            {
-                progress.value = progress.innerHTML = 100;
-            };
-
             xhr.upload.onprogress = function (event)
             {
                 if (event.lengthComputable)
                 {
+                    var localDiv = div;
                     var complete = (event.loaded / event.total * 100 | 0);
-                    progress.value = progress.innerHTML = complete;
+                    localDiv.innerHTML = complete;
                 }
-            }
+            };
 
+            xhr.onreadystatechange = function (e)
+            {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    var localDiv = div;
+                    var img = document.createElement("img");
+                    img.src = this.responseText;
+                    localDiv.appendChild(img);
+                }
+            };
+
+            xhr.open('POST', '/resources/upload');
             xhr.send(formData);
         }
         return stopEvent(e);
