@@ -71,6 +71,7 @@
     <Compile Include="Models\ComposerTests.cs" />
     <Compile Include="Models\CultureSupportSettingTests.cs" />
     <Compile Include="Models\DateTimeSettingTests.cs" />
+    <Compile Include="Models\Media\MediaTypeInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -84,6 +85,11 @@
       <Project>{e3cb843a-3420-4a76-91c8-e4db0688fef5}</Project>
       <Name>BGC.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\Media\jpgimagetest.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

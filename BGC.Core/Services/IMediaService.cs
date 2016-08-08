@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,18 +10,12 @@ using System.Threading.Tasks;
 namespace BGC.Core.Services
 {
     [ServiceContract]
-    public interface IDataStorageService
+    public interface IMediaService
     {
         [OperationContract]
-        Guid StoreEntry(string text);
+        Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null);
 
         [OperationContract]
-        string GetEntry(Guid id);
-
-        [OperationContract]
-        void RemoveEntry(Guid id);
-
-        [OperationContract]
-        void UpdateEntry(Guid id, string text);
+        MediaTypeInfo GetMedia(Guid mediaId);
     }
 }

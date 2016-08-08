@@ -32,7 +32,7 @@ namespace BGC.Core.Tests.Models
 			[TestMethod]
 			public void FirstAndLastNameDependencies()
 			{
-				ComposerName name = new ComposerName();
+				ComposerName name = new ComposerName("ads", new CultureInfo(1033));
 				name.FirstName = "First";
 				Assert.AreEqual("First", name.FullName);
 
@@ -47,7 +47,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void SingleNameMapsToLastNameOnly()
             {
-                ComposerName name = new ComposerName("Last");
+                ComposerName name = new ComposerName("Last", new CultureInfo(1033));
                 Assert.AreEqual("Last", name.LastName);
                 Assert.IsTrue(string.IsNullOrEmpty(name.FirstName));
             }
@@ -79,14 +79,14 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void ReturnsCorrectNameWithTwoNamesOnly1()
             {
-                ComposerName name = new ComposerName("First Last");
+                ComposerName name = new ComposerName("First Last", "en-US");
                 Assert.AreEqual("Last, First", name.GetEasternOrderFullName());
             }
 
             [TestMethod]
             public void ReturnsCorrectNameWithTwoNamesOnly2()
             {
-                ComposerName name = new ComposerName("First Last");
+                ComposerName name = new ComposerName("First Last", "en-US");
                 name.LastName = "Last1";
                 Assert.AreEqual("Last1, First", name.GetEasternOrderFullName());
             }
@@ -94,14 +94,14 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void ReturnsCorrectNameWithThreeNames1()
             {
-                ComposerName name = new ComposerName("First Middle Last");
+                ComposerName name = new ComposerName("First Middle Last", "en-US");
                 Assert.AreEqual("Last, First Middle", name.GetEasternOrderFullName());
             }
 
             [TestMethod]
             public void ReturnsCorrectNameWithThreeNames2()
             {
-                ComposerName name = new ComposerName("First Middle Last");
+                ComposerName name = new ComposerName("First Middle Last", "en-US");
                 name.FirstName = "FIRST1";
                 Assert.AreEqual("Last, FIRST1 Middle", name.GetEasternOrderFullName());
             }
@@ -109,7 +109,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void ReturnsCorrectNameWithSingleNameOnly()
             {
-                ComposerName name = new ComposerName("Last");
+                ComposerName name = new ComposerName("Last", "en-US");
                 Assert.AreEqual("Last", name.GetEasternOrderFullName());
             }
         }

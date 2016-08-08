@@ -14,8 +14,10 @@ namespace BGC.Core
 	public class ComposerArticle : BgcEntity<long>
 	{
         private CultureInfo language;
-
-		internal protected string LanguageInternal
+        private ICollection<MediaTypeInfo> media;
+        
+        [MaxLength(5)]
+        internal protected string LanguageInternal
         {
             get
             {
@@ -24,7 +26,7 @@ namespace BGC.Core
 
             set
             {
-                this.language = CultureInfo.GetCultureInfo(value.ValueNotNull(nameof(Language)).GetValueOrThrow());
+                this.language = CultureInfo.GetCultureInfo(value.ValueNotNull());
             }
         }
 
@@ -38,27 +40,33 @@ namespace BGC.Core
 
             set
             {
-                this.language = value.ValueNotNull(nameof(Language)).GetValueOrThrow();
+                this.language = value.ValueNotNull();
             }
         }
 
+        [Index]
         /// <summary>
         /// Gets or sets the <see cref="Guid"/> that identifies the actual text of this article, as stored in an external service (such as <see cref="IDataStorageService"/>).
         /// </summary>
 		public Guid StorageId { get; set; }
 
-		public long ComposerNameId { get; set; }
-
         [Required]
 		public virtual ComposerName LocalizedName { get; set; }
-
-        public long ComposerId { get; set; }
 
         [Required]
         public virtual Composer Composer { get; set; }
 
-		public ComposerArticle()
-		{
-		}
+        public virtual ICollection<MediaTypeInfo> Media
+        {
+            get
+            {
+                return this.media ?? (this.media = new HashSet<MediaTypeInfo>());
+            }
+
+            set
+            {
+                this.media = value;
+            }
+        }
 	}
 }

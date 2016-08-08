@@ -8,38 +8,26 @@
 {
     @if (IsDebugBuild)
     {
-        <script src="http://cdn.tinymce.com/4/tinymce.js" integrity="sha384-ZLmGcx7NndDoJD1tvNLyxHbAgPmytCoUoJaZE9jgXaHtwusXSYf8STW0nS0404nY" crossorigin="anonymous"></script>
+        <script src="http://cdn.tinymce.com/4/tinymce.js" crossorigin="anonymous"></script> @*integrity="sha384-ZLmGcx7NndDoJD1tvNLyxHbAgPmytCoUoJaZE9jgXaHtwusXSYf8STW0nS0404nY" attribute removed due to compatibility issues with Firefox *@
     }
     else
     {
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" crossorigin="anonymous"></script> @*integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" attribute removed due to compatibility issues with Firefox *@
     }
-    <script>
-        $(document).ready(function ()
-        {
-            tinymce.init({
-                selector: 'textarea.tinymce',
-                height: 500,
-                plugins: [
-                  'advlist autolink lists link image charmap print preview anchor',
-                  'searchreplace visualblocks code fullscreen',
-                  'insertdatetime media table contextmenu paste code'
-                ],
-                toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-                content_css: [
-                  '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-                  '//www.tinymce.com/css/codepen.min.css'
-                ]
-            });
-        });
-    </script>
+    <script src="~/Areas/Administration/Scripts/Edit/Add.js"></script>
 }
 
 <h2>Add</h2>
 
+<div id="uploadArea"></div>
+
+<div id="uploadedImages"></div>
+
+<iframe id="postResult" hidden="hidden"></iframe>
+
 @using (Html.BeginForm())
 {
-    <div id="accordion" role="tablist" aria-multiselectable="true">
+    <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
         @for (int i = 0; i < Model.Count; i++)
         {

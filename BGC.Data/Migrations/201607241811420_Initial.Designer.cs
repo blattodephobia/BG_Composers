@@ -13,7 +13,7 @@ namespace BGC.Data.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201606232215279_Initial"; }
+            get { return "201607241811420_Initial"; }
         }
         
         string IMigrationMetadata.Source

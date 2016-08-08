@@ -1,10 +1,13 @@
 ﻿using BGC.Core;
+using BGC.Data.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.Annotations;
+using System.Linq;
 
 namespace BGC.Data
 {
@@ -18,6 +21,8 @@ namespace BGC.Data
 		public DbSet<ComposerArticle> ComposerArticles { get; set; }
 
 		public DbSet<ComposerName> LocalizedComposerNames { get; set; }
+
+        public DbSet<MediaTypeInfo> ContentMedia { get; set; }
 
 		public ComposersDbContext() : this("MySqlConnection")
 		{
@@ -33,34 +38,49 @@ namespace BGC.Data
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
-            
-			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id);
+
+            modelBuilder.Conventions.Add<UnicodeSupportConvention>();
+
+			modelBuilder.Entity<BgcUser>().HasKey(user => user.Id); 
 			modelBuilder.Entity<BgcRole>().HasKey(role => role.Id);
 			modelBuilder.Entity<BgcUserLogin>().HasKey(userLogin => new { userLogin.UserId, userLogin.ProviderKey });
 			modelBuilder.Entity<BgcUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
 			modelBuilder.Entity<BgcUserClaim>().HasKey(userClaim => userClaim.Id);
 
-			// The Role's Name and the User's UserName lengths are reduced, because otherwise MySQL wouldn't allow indexing them;
-			// Max key size is 767 bytes and a string with length 256 in UTF-8 is at most 1024 bytes.
-			modelBuilder.Entity<BgcRole>().Property(anr => anr.Name).HasMaxLength(64);
-			modelBuilder.Entity<BgcUser>().Property(anu => anu.UserName).HasMaxLength(32);
-
-			modelBuilder.Entity<ComposerName>().Property(name => name.FirstName)
-				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>().Property(name => name.FullName)
-				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-			modelBuilder.Entity<ComposerName>().Property(name => name.LastName)
-				.HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
-            modelBuilder.Entity<ComposerName>().Property(name => name.LanguageInternal)
+			/* The Role's Name and the User's UserName lengths are reduced,
+             * because otherwise MySQL wouldn't allow indexing them.
+			 * Max key (and hence - index) size is 767 bytes and a string with
+             * length 256 in UTF-8 is at most 1024 bytes.
+             */
+			modelBuilder.Entity<BgcRole>()
+                .Property(anr => anr.Name)
+                .HasMaxLength(64);
+			modelBuilder.Entity<BgcUser>()
+                .Property(anu => anu.UserName)
+                .HasMaxLength(32);
+            
+            modelBuilder.Entity<ComposerName>()
+                .Property(name => name.LanguageInternal)
                 .HasColumnName(nameof(ComposerName.Language))
                 .IsRequired();
 
-            modelBuilder.Entity<ComposerArticle>().Property(entry => entry.LanguageInternal)
+            modelBuilder.Entity<ComposerArticle>()
+                .Property(entry => entry.LanguageInternal)
                 .HasColumnName(nameof(ComposerArticle.Language))
                 .IsRequired();
 
+            modelBuilder.Entity<ComposerArticle>()
+                .Property(entry => entry.StorageId);
+                        
+            modelBuilder.Entity<Setting>().Property(s => s.Description).IsUnicode();
+            modelBuilder.Entity<Setting>().Property(s => s.StringValue).IsUnicode();
+
             modelBuilder.Entity<BgcRole>().HasMany(role => role.Permissions).WithMany();
             modelBuilder.Entity<BgcUser>().HasMany(user => user.UserSettings).WithMany();
+
+            modelBuilder.Entity<MediaTypeInfo>().HasMany(media => media.AsociatedArticles).WithMany(article => article.Media);
+            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.MimeTypeInternal).IsRequired();
+            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.StorageId).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 		}
 
 		public IRepository<T> GetRepository<T>()

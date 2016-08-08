@@ -754,3 +754,10 @@ tr.pager td {
             margin: 0;
         }
 }
+
+
+#uploadArea {
+    height: 200px;
+    width: 100%;
+    background-color: darkgray;
+}

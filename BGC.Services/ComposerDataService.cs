@@ -12,8 +12,8 @@ namespace BGC.Services
 {
 	internal class ComposerDataService : DbServiceBase, IComposerDataService
 	{
-		public IRepository<Composer> Composers { get; private set; }
-        public IRepository<ComposerName> Names { get; private set; }
+		protected IRepository<Composer> Composers { get; private set; }
+        protected IRepository<ComposerName> Names { get; private set; }
 
 		public ComposerDataService(IRepository<Composer> composers, IRepository<ComposerName> names)
 		{
@@ -33,7 +33,7 @@ namespace BGC.Services
             Shield.ArgumentNotNull(composer, nameof(composer)).ThrowOnError();
 
             this.Composers.Insert(composer);
-            this.Composers.UnitOfWork.SaveChanges();
+            SaveAll();
         }
 
         public IList<ComposerName> GetNames(CultureInfo culture)

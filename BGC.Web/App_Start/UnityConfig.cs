@@ -54,10 +54,15 @@ namespace BGC.Web.App_Start
             new DataLayerDependencyRegistration().RegisterTypes(container);
             new ServiceLayerDependencyRegistration().RegisterTypes(container);
 
-            string storageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey];
+            string dataStorageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey];
             container.RegisterInstance(
                 ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey,
-                new DirectoryInfo(HostingEnvironment.MapPath(storageDir)));
+                new DirectoryInfo(HostingEnvironment.MapPath(dataStorageDir)));
+
+            string mediaStorageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey];
+            container.RegisterInstance(
+                ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey,
+                new DirectoryInfo(HostingEnvironment.MapPath(mediaStorageDir)));
 
             // Inject UserManager<BgcUser, long> into all controllers inheriting from AdministrationControllerBase
             container
