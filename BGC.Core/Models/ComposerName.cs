@@ -47,7 +47,7 @@ namespace BGC.Core
 
             set
             {
-                this.LanguageInternal = (this.language = value.ValueNotNull(nameof(Language)).GetValueOrThrow()).Name;
+                this.LanguageInternal = (this.language = value.ValueNotNull()).Name;
             }
         }
 
@@ -140,8 +140,8 @@ namespace BGC.Core
         public ComposerName(string westernOrderFullName, CultureInfo language) :
             this()
         {
-            this.FullName = westernOrderFullName.ArgumentNotNull(nameof(westernOrderFullName)).GetValueOrThrow();
-            this.Language = language.ArgumentNotNull(nameof(language)).GetValueOrThrow();
+            this.FullName = westernOrderFullName.ArgumentNotNull(nameof(westernOrderFullName));
+            this.Language = language.ArgumentNotNull(nameof(language));
         }
 
         /// <summary>

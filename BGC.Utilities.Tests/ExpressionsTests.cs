@@ -89,7 +89,7 @@ namespace BGC.Utilities.Tests
             {
             }
 
-            private static int MockActionMethod2(int param1, string param2)
+            private int MockActionMethod2(int param1, string param2)
             {
                 return 0;
             }
@@ -146,7 +146,7 @@ namespace BGC.Utilities.Tests
             [TestMethod]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables_ExcludeNullValue()
             {
-                string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, null), includeNullValueParams: false);
+                string result = Expressions.GetQueryString((GetQueryStringTests t) => t.MockActionMethod2(this.field1, null), includeNullValueParams: false);
                 Assert.AreEqual("param1=5", result);
             }
 

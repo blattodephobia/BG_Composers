@@ -1,4 +1,5 @@
-﻿using CodeShield;
+﻿using BGC.Utilities;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -49,14 +50,7 @@ namespace BGC.Core
                 this.supportedCultures = value;
 
                 // generates a string of culture codes, separated by a comma and space, e.g. "en-US, de-DE"
-                this._string = this.supportedCultures?
-                    .Aggregate(
-                        new StringBuilder(),
-                        (sb, current) => sb.AppendFormat("{0}{1}", current.Name, AppendSeparator),
-                        sb => sb.Length >= AppendSeparator.Length
-                            ? sb.Remove(sb.Length - AppendSeparator.Length, AppendSeparator.Length)
-                            : sb)
-                    .ToString();
+                this._string = this.supportedCultures?.ToStringAggregate(", ");
             }
         }
 
@@ -67,7 +61,7 @@ namespace BGC.Core
         public CultureSupportSetting(string culturesList) :
             this()
         {
-            this.StringValue = culturesList.ArgumentNotNull().GetValueOrThrow();
+            this.StringValue = culturesList.ArgumentNotNull();
         }
 
         IEnumerable<CultureInfo> IParameter<IEnumerable<CultureInfo>>.Value

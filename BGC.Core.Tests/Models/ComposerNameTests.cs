@@ -32,7 +32,7 @@ namespace BGC.Core.Tests.Models
 			[TestMethod]
 			public void FirstAndLastNameDependencies()
 			{
-				ComposerName name = new ComposerName("ads", new CultureInfo(0));
+				ComposerName name = new ComposerName("ads", new CultureInfo(1033));
 				name.FirstName = "First";
 				Assert.AreEqual("First", name.FullName);
 
@@ -47,7 +47,7 @@ namespace BGC.Core.Tests.Models
             [TestMethod]
             public void SingleNameMapsToLastNameOnly()
             {
-                ComposerName name = new ComposerName("Last", new CultureInfo(0));
+                ComposerName name = new ComposerName("Last", new CultureInfo(1033));
                 Assert.AreEqual("Last", name.LastName);
                 Assert.IsTrue(string.IsNullOrEmpty(name.FirstName));
             }

@@ -72,9 +72,9 @@ namespace CodeShield
             }
         }
 
-        public static implicit operator bool(Validation<T> result)
+        public static implicit operator T(Validation<T> result)
         {
-            return result.Success;
+            return result.GetValueOrThrow();
         }
     }
 }

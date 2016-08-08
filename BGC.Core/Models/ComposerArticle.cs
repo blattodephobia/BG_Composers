@@ -26,7 +26,7 @@ namespace BGC.Core
 
             set
             {
-                this.language = CultureInfo.GetCultureInfo(value.ValueNotNull(nameof(Language)).GetValueOrThrow());
+                this.language = CultureInfo.GetCultureInfo(value.ValueNotNull());
             }
         }
 
@@ -40,7 +40,7 @@ namespace BGC.Core
 
             set
             {
-                this.language = value.ValueNotNull(nameof(Language)).GetValueOrThrow();
+                this.language = value.ValueNotNull();
             }
         }
 

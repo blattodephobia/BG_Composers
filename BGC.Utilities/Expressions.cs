@@ -12,6 +12,7 @@ namespace BGC.Utilities
 	public static class Expressions
 	{
         private static readonly Dictionary<Type, IDynamicMemberGetter> CachedGetters = new Dictionary<Type, IDynamicMemberGetter>();
+
 		private static Expression RemoveConvert(Expression expression)
 		{
 			// Expressions using constants use their values rather than names after compilation. Therefore,
@@ -42,9 +43,10 @@ namespace BGC.Utilities
 
         private static object ExtractValue(Expression argumentExpression)
         {
-            Shield
-                .Assert(argumentExpression, (argumentExpression is ConstantExpression) || (argumentExpression is MemberExpression), "The expression's value cannot be determined")
-                .ThrowOnError();
+            Shield.AssertOperation(
+                argumentExpression,
+                (argumentExpression is ConstantExpression) || (argumentExpression is MemberExpression),
+                "The expression's value cannot be determined");
 
             ConstantExpression argument = RemoveMemberAccess(argumentExpression) as ConstantExpression;
             object result = null;
@@ -63,6 +65,27 @@ namespace BGC.Utilities
             }
 
             return result;
+        }
+
+        private static string GetQueryStringInternal(MethodCallExpression call, bool includeNullValueParams)
+        {
+            ParameterInfo[] parameters = call.Method.GetParameters();
+            List<string> paramValuePairs = new List<string>(call.Arguments.Count);
+            for (int i = 0; i < call.Arguments.Count; i++)
+            {
+                Shield.AssertOperation(
+                    call.Arguments[i] as MethodCallExpression,
+                    argumentAsMethodCall => argumentAsMethodCall == null,
+                    x => $"Cannot determine the return value of {x.Method.Name}; nested method call expressions are not supported.");
+                
+                string value = ExtractValue(call.Arguments[i])?.ToString() ?? string.Empty;
+                if (value != string.Empty || includeNullValueParams) // if ExtractValue actually returns an empty string, it's still as good as a null value
+                {
+                    string paramAssignment = $"{parameters[i].Name}={value}";
+                    paramValuePairs.Add(paramAssignment);
+                }
+            }
+            return paramValuePairs.ToStringAggregate("&");
         }
 
         /// <summary>
@@ -95,33 +118,46 @@ namespace BGC.Utilities
         /// Generates a query string with the parameters and their values from the expressed invokation of a method (without actually invoking it).
         /// </summary>
         /// <param name="methodCallExpression">A method call expression, such as () => Method("value1", "value2")</param>
-        /// <param name="includeNullValueParams">Specifies whether parameters whose values are null should be included in the returned string in the form of '&param='.</param>
+        /// <param name="includeNullValueParams">Specifies whether parameters whose values are null or an empty string should be included in the returned string in the form of '&amp;param='.</param>
         /// <exception cref="InvalidOperationException">One or more of the method's paramters are the return values of another method.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="methodCallExpression"/> is null.</exception>
-        /// <returns>A query string in the form of "param1=value1&param2=value2".</returns>
+        /// <returns>A query string in the form of "param1=value1&amp;param2=value2".</returns>
         public static string GetQueryString(Expression<Action> methodCallExpression, bool includeNullValueParams = false)
         {
             Shield.ArgumentNotNull(methodCallExpression, nameof(methodCallExpression)).ThrowOnError();
 
             MethodCallExpression call = (methodCallExpression.Body as MethodCallExpression).ValueNotNull().GetValueOrThrow();
-            ParameterInfo[] parameters = call.Method.GetParameters();
-            List<string> paramValuePairs = new List<string>(call.Arguments.Count);
-            for (int i = 0; i < call.Arguments.Count; i++)
+            return GetQueryStringInternal(call, includeNullValueParams);
+        }
+
+        /// <summary>
+        /// Generates a query string with the parameters and their values from the expressed invokation of a method (without actually invoking it).
+        /// This method can get query strings without needing an object instance of the declaring type.
+        /// </summary>
+        /// <param name="methodCallExpression">A method call expression, such as (x) => x.Method("value1", "value2")</param>
+        /// <param name="includeNullValueParams">Specifies whether parameters whose values are null or an empty string should be included in the returned string in the form of '&amp;param='.</param>
+        /// <exception cref="InvalidOperationException">One or more of the method's paramters are the return values of another method.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="methodCallExpression"/> is null.</exception>
+        /// <returns>A query string in the form of "param1=value1&amp;param2=value2".</returns>
+        public static string GetQueryString<T>(Expression<Action<T>> methodCallExpression, bool includeNullValueParams = false)
+        {
+            Shield.ArgumentNotNull(methodCallExpression, nameof(methodCallExpression)).ThrowOnError();
+
+            MethodCallExpression call = (methodCallExpression.Body as MethodCallExpression).AssertOperation(c => c != null, $"Expression is not supported.");
+            return GetQueryStringInternal(call, includeNullValueParams);
+        }
+
+        public static Uri GetUri(Expression<Action> methodCallExpression, bool includeNullValueParams = false)
+        {
+            Shield.ArgumentNotNull(methodCallExpression, nameof(methodCallExpression));
+
+            UriBuilder result = new UriBuilder()
             {
-                Shield
-                    .Assert(
-                        call.Arguments[i],
-                        (expr) => !(call.Arguments[i] is MethodCallExpression),
-                        (expr) => new InvalidOperationException($"Cannot determine the return value of {(expr as MethodCallExpression).Method.Name}; nested method call expressions are not supported."))
-                    .ThrowOnError();
-                string value = ExtractValue(call.Arguments[i])?.ToString();
-                if (value != null || includeNullValueParams)
-                {
-                    string paramAssignment = $"{parameters[i].Name}={value}";
-                    paramValuePairs.Add(paramAssignment);
-                }
-            }
-            return paramValuePairs.ToStringAggregate("&");
+                Path = (methodCallExpression.Body as MethodCallExpression).Method.Name,
+                Query = GetQueryStringInternal(methodCallExpression.Body as MethodCallExpression, includeNullValueParams)
+            };
+
+            return result.Uri;
         }
 	}
 }

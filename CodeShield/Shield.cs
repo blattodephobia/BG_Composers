@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -52,13 +53,13 @@ namespace CodeShield
             return new Validation<T?>(obj, obj.HasValue ? (Func<T?, Exception>)null : x => new ArgumentNullException(objName));
         }
 
-        public static Validation<T> ValueNotNull<T>(this T obj, string objName = null)
+        public static Validation<T> ValueNotNull<T>(this T obj, [CallerMemberName] string objName = null)
             where T : class
         {
             return new Validation<T>(obj, ReferenceEquals(obj, null) ? (x => new InvalidOperationException($"Value cannot be null: {objName}")) : (Func<T, Exception>)null);
         }
 
-        public static Validation<T?> ValueNotNull<T>(this T? obj, string objName = null)
+        public static Validation<T?> ValueNotNull<T>(this T? obj, [CallerMemberName] string objName = null)
             where T : struct
         {
             return new Validation<T?>(obj, obj.HasValue ? (Func<T?, Exception>)null : x => new InvalidOperationException($"Value cannot be null: {objName}"));
@@ -86,6 +87,33 @@ namespace CodeShield
                 exceptionProvider: (predicate ?? ((T x) => true)).Invoke(value)
                     ? null
                     : exceptionProvider ?? (x => new Exception("Assert failed")));
+        }
+
+        public static Validation<T> AssertOperation<T>(this T value, bool condition, string message = null)
+        {
+            return new Validation<T>(
+                value: value,
+                exceptionProvider: condition
+                    ? (Func<T, Exception>)null
+                    : (x) => new InvalidOperationException(message));
+        }
+
+        public static Validation<T> AssertOperation<T>(this T value, Func<T, bool> predicate, string message = null)
+        {
+            return new Validation<T>(
+                value: value,
+                exceptionProvider: (predicate ?? ((T x) => true)).Invoke(value)
+                    ? (Func<T, Exception>)null
+                    : (x) => new InvalidOperationException(message));
+        }
+
+        public static Validation<T> AssertOperation<T>(this T value, Func<T, bool> predicate, Func<T, string> messageProvider)
+        {
+            return new Validation<T>(
+                value: value,
+                exceptionProvider: (predicate ?? ((T x) => true)).Invoke(value)
+                    ? (Func<T, Exception>)null
+                    : (x) => new InvalidOperationException((messageProvider ?? ((T v) => null)).Invoke(value)));
         }
     }
 }
