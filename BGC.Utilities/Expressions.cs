@@ -74,9 +74,10 @@ namespace BGC.Utilities
             for (int i = 0; i < call.Arguments.Count; i++)
             {
                 Shield.AssertOperation(
-                    call.Arguments[i] as MethodCallExpression,
-                    argumentAsMethodCall => argumentAsMethodCall == null,
-                    x => $"Cannot determine the return value of {x.Method.Name}; nested method call expressions are not supported.");
+                        call.Arguments[i] as MethodCallExpression,
+                        argumentAsMethodCall => argumentAsMethodCall == null,
+                        x => $"Cannot determine the return value of {x.Method.Name}; nested method call expressions are not supported.")
+                    .ThrowOnError();
                 
                 string value = ExtractValue(call.Arguments[i])?.ToString() ?? string.Empty;
                 if (value != string.Empty || includeNullValueParams) // if ExtractValue actually returns an empty string, it's still as good as a null value
@@ -126,7 +127,7 @@ namespace BGC.Utilities
         {
             Shield.ArgumentNotNull(methodCallExpression, nameof(methodCallExpression)).ThrowOnError();
 
-            MethodCallExpression call = (methodCallExpression.Body as MethodCallExpression).ValueNotNull().GetValueOrThrow();
+            MethodCallExpression call = (methodCallExpression.Body as MethodCallExpression).ValueNotNull();
             return GetQueryStringInternal(call, includeNullValueParams);
         }
 
