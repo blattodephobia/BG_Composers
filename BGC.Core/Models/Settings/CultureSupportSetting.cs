@@ -13,7 +13,6 @@ namespace BGC.Core
     public class CultureSupportSetting : Setting, IParameter<IEnumerable<CultureInfo>>
     {
         private static readonly char[] Separators = new[] { ',', ' ', ';' };
-        private static readonly string AppendSeparator = ", ";
 
         private IEnumerable<CultureInfo> supportedCultures;
         private string _string;
