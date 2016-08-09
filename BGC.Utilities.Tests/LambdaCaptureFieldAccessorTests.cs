@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities.Tests
 {
-    [TestClass]
-    public class LambdaCaptureFieldAccessorTests
-    {
-        [TestClass]
+        [TestFixture]
         public class GetMemberValueTests
         {
-            [TestMethod]
+            [Test]
             public void GetValueOfReferenceType()
             {
                 Tuple<string, string> testObj = new Tuple<string, string>("item1", "item2");
@@ -25,7 +22,7 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual("item2", item2);
             }
 
-            [TestMethod]
+            [Test]
             public void GetValueOfValueType()
             {
                 Tuple<int, int> testObj = new Tuple<int, int>(1, 2);
@@ -37,23 +34,20 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual(2, item2);
             }
 
-            [TestMethod]
-            [ExpectedException(typeof(InvalidOperationException))]
+            [Test]
             public void ThrowsOnIncompatibleType()
             {
                 Tuple<int> testObj = new Tuple<int>(1);
                 LambdaCaptureFieldAccessor<Tuple<string>> accessor = new LambdaCaptureFieldAccessor<Tuple<string>>();
-                string item1 = accessor.GetMemberValue(testObj, nameof(Tuple<string>.Item1)) as string;
+                Assert.Throws<InvalidOperationException>(() => accessor.GetMemberValue(testObj, nameof(Tuple<string>.Item1)));
             }
 
-            [TestMethod]
-            [ExpectedException(typeof(ArgumentNullException))]
+            [Test]
             public void ThrowsOnNull()
             {
                 Tuple<string> testObj = new Tuple<string>("1");
                 LambdaCaptureFieldAccessor<Tuple<string>> accessor = new LambdaCaptureFieldAccessor<Tuple<string>>();
-                string item1 = accessor.GetMemberValue(null, nameof(Tuple<string>.Item1)) as string;
+                Assert.Throws<ArgumentNullException>(() => accessor.GetMemberValue(null, nameof(Tuple<string>.Item1)));
             }
         }
-    }
 }

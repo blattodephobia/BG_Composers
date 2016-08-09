@@ -1,13 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace BGC.Utilities.Tests
 {
-	[TestClass]
-	public class ExpressionsTests
-	{
-		[TestClass]
+		[TestFixture]
 		public class NameOfTests
 		{
 			static string StaticProperty { get; set; }
@@ -20,49 +17,49 @@ namespace BGC.Utilities.Tests
 
 			int TestValueTypeProperty { get; set; }
 
-			[TestMethod]
+			[Test]
 			public void ReturnsInstanceMemberName()
 			{
 				string actual = Expressions.NameOf(() => this.TestProperty);
 				Assert.AreEqual("TestProperty", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsInstanceMemberNameWithBoxing()
 			{
 				string actual = Expressions.NameOf<object>(() => this.TestValueTypeProperty);
 				Assert.AreEqual("TestValueTypeProperty", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsInstanceFieldName()
 			{
 				string actual = Expressions.NameOf(() => this.testField);
 				Assert.AreEqual("testField", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsNonInstantiatedMemberName()
 			{
 				string actual = Expressions.NameOf<NameOfTests>((obj) => obj.TestProperty);
 				Assert.AreEqual("TestProperty", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsNonInstantiatedMemberNameWithBoxing()
 			{
 				string actual = Expressions.NameOf<NameOfTests>((obj) => obj.TestValueTypeProperty);
 				Assert.AreEqual("TestValueTypeProperty", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsNonInstantiatedFieldName()
 			{
 				string actual = Expressions.NameOf<NameOfTests>((obj) => obj.testField);
 				Assert.AreEqual("testField", actual);
 			}
 
-			[TestMethod]
+			[Test]
 			public void ReturnsStaticPropertyName()
 			{
 				string actual = Expressions.NameOf(() => StaticProperty);
@@ -71,18 +68,14 @@ namespace BGC.Utilities.Tests
 				Assert.AreEqual("StaticProperty", actual);
 			}
 
-			[TestMethod]
-			[ExpectedException(typeof(InvalidOperationException))]
+			[Test]
 			public void ThrowsOnConstantExpression()
 			{
-				string actual = Expressions.NameOf(() => Constant);
-				Assert.AreEqual("Constant", actual);
-				actual = Expressions.NameOf(() => NameOfTests.Constant);
-				Assert.AreEqual("Constant", actual);
+				Assert.Throws<InvalidOperationException>(() => Expressions.NameOf(() => NameOfTests.Constant));
 			}
 		}
 
-        [TestClass]
+        [TestFixture]
         public class GetQueryStringTests
         {
             private static void MockActionMethod1(int param1, string param2)
@@ -96,14 +89,14 @@ namespace BGC.Utilities.Tests
 
             private int field1 = 5;
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithConstants()
             {
                 string result = Expressions.GetQueryString(() => MockActionMethod1(2, "cimf"));
                 Assert.AreEqual("param1=2&param2=cimf", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithVariables()
             {
                 int value1 = 2;
@@ -112,7 +105,7 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual("param1=2&param2=cimf", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables1()
             {
                 string value2 = "cimf";
@@ -120,7 +113,7 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual("param1=2&param2=cimf", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables2()
             {
                 string value2 = "cimf";
@@ -128,7 +121,7 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual("param1=2&param2=cimf", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables_ThisCall()
             {
                 string value2 = "cimf";
@@ -136,27 +129,25 @@ namespace BGC.Utilities.Tests
                 Assert.AreEqual("param1=5&param2=cimf", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables_IncludeNullValue()
             {
                 string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, null), includeNullValueParams: true);
                 Assert.AreEqual("param1=5&param2=", result);
             }
 
-            [TestMethod]
+            [Test]
             public void GeneratesCorrectStringWithMixedConstantsAndVariables_ExcludeNullValue()
             {
                 string result = Expressions.GetQueryString((GetQueryStringTests t) => t.MockActionMethod2(this.field1, null), includeNullValueParams: false);
                 Assert.AreEqual("param1=5", result);
             }
 
-            [TestMethod]
-            [ExpectedException(typeof(InvalidOperationException))]
+            [Test]
             public void ThrowsOnNestedMethodCallExpressions()
             {
                 string value2 = "cimf";
-                string result = Expressions.GetQueryString(() => MockActionMethod1(MockActionMethod2(2, ""), value2));
+                Assert.Throws<InvalidOperationException>(() => Expressions.GetQueryString(() => MockActionMethod1(MockActionMethod2(2, ""), value2)));
             }
         }
-	}
 }
