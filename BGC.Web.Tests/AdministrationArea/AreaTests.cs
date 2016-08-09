@@ -1,5 +1,5 @@
 ﻿using BGC.Web.Areas.Administration;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Tests.AdministrationArea
 {
-	[TestClass]
+	[TestFixture]
 	public class AreaTests
 	{
-		[TestMethod]
+		[Test]
 		public void AllControllersHaveAuthorizationAttribute()
 		{
 			IEnumerable<Type> controllers = typeof(AdministrationAreaRegistration).Assembly.GetTypes()

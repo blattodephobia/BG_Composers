@@ -1,6 +1,6 @@
 ﻿using BGC.Web.Areas.Administration.Controllers;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Web;
@@ -9,12 +9,8 @@ using System.Web.Routing;
 
 namespace BGC.Web.Tests.AdministrationArea.Controllers
 {
-	[TestClass]
-	public class AccountControllerTests
+	[TestFixture]
+	public class UsersActionTests
 	{
-		[TestClass]
-		public class UsersActionTests
-		{
-		}
 	}
 }
