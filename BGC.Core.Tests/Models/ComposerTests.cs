@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -8,20 +8,15 @@ using System.Threading.Tasks;
 
 namespace BGC.Core.Tests.Models
 {
-    [TestClass]
-    public class ComposerTests
+    [TestFixture]
+    public class GetArticleTests
     {
-        [TestClass]
-        public class GetArticleTests
+        [Test]
+        public void ThrowsExceptionIfArticleNotFound()
         {
-            [TestMethod]
-            [ExpectedException(typeof(InvalidOperationException))]
-            public void ThrowsExceptionIfArticleNotFound()
-            {
-                Composer c = new Composer();
-                c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
-                c.GetArticle(CultureInfo.GetCultureInfo("en-US"));
-            }
+            Composer c = new Composer();
+            c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
+            Assert.Throws<InvalidOperationException>(() => c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
         }
     }
 }

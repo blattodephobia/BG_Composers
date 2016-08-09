@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,25 +8,21 @@ using System.Threading.Tasks;
 
 namespace BGC.Core.Tests.Models.Media
 {
-    [TestClass]
-    public class MediaTypeInfoTests
+    [TestFixture]
+    public class MimeTypeInternalTests
     {
-        [TestClass]
-        public class MimeTypeInternalTests
+        [Test]
+        public void IsSetFromInternalPropertyCorrectly()
         {
-            [TestMethod]
-            public void IsSetFromInternalPropertyCorrectly()
-            {
-                MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
-                Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeType.MediaType);
-            }
+            MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
+            Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeType.MediaType);
+        }
 
-            [TestMethod]
-            public void IsSetFromPublicPropertyCorrectly()
-            {
-                MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
-                Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeTypeInternal);
-            }
+        [Test]
+        public void IsSetFromPublicPropertyCorrectly()
+        {
+            MediaTypeInfo mt = new MediaTypeInfo("file", new ContentType("image/jpeg"));
+            Assert.AreEqual(MediaTypeNames.Image.Jpeg, mt.MimeTypeInternal);
         }
     }
 }

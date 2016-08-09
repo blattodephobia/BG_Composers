@@ -2,116 +2,112 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using System.Globalization;
 
 namespace BGC.Core.Tests.Models
 {
-	[TestClass]
-	public class ComposerNameTests
-	{
-        class ComposerNameProxy : ComposerName
+    class ComposerNameProxy : ComposerName
+    {
+        public string LocalizationCultureNameProxy
         {
-            public string LocalizationCultureNameProxy
+            get
             {
-                get
-                {
-                    return LanguageInternal;
-                }
+                return LanguageInternal;
+            }
 
-                set
-                {
-                    this.LanguageInternal = value;
-                }
+            set
+            {
+                this.LanguageInternal = value;
             }
         }
+    }
 
-		[TestClass]
-		public class NameTests
-		{
-			[TestMethod]
-			public void FirstAndLastNameDependencies()
-			{
-				ComposerName name = new ComposerName("ads", new CultureInfo(1033));
-				name.FirstName = "First";
-				Assert.AreEqual("First", name.FullName);
-
-				name.LastName = "Last";
-				Assert.AreEqual("First Last", name.FullName);
-
-				name.FullName = "First1 Middle1 Last1";
-				Assert.AreEqual("First1", name.FirstName);
-				Assert.AreEqual("Last1", name.LastName);
-			}
-
-            [TestMethod]
-            public void SingleNameMapsToLastNameOnly()
-            {
-                ComposerName name = new ComposerName("Last", new CultureInfo(1033));
-                Assert.AreEqual("Last", name.LastName);
-                Assert.IsTrue(string.IsNullOrEmpty(name.FirstName));
-            }
-		}
-
-        [TestClass]
-        public class LocalizationCultureNameTests
+    [TestFixture]
+    public class NameTests
+    {
+        [Test]
+        public void FirstAndLastNameDependencies()
         {
-            [TestMethod]
-            public void SetsInternalPropertyCorrectly()
-            {
-                ComposerNameProxy name = new ComposerNameProxy();
-                name.Language = CultureInfo.GetCultureInfo("en-US");
-                Assert.AreEqual("en-US", name.LocalizationCultureNameProxy);
-            }
+            ComposerName name = new ComposerName("ads", new CultureInfo(1033));
+            name.FirstName = "First";
+            Assert.AreEqual("First", name.FullName);
 
-            [TestMethod]
-            public void SetsPublicPropertyCorrectly()
-            {
-                ComposerNameProxy name = new ComposerNameProxy();
-                name.LocalizationCultureNameProxy = "en-US";
-                Assert.AreEqual("en-US", name.Language.Name);
-            }
+            name.LastName = "Last";
+            Assert.AreEqual("First Last", name.FullName);
+
+            name.FullName = "First1 Middle1 Last1";
+            Assert.AreEqual("First1", name.FirstName);
+            Assert.AreEqual("Last1", name.LastName);
         }
 
-        [TestClass]
-        public class GetEasternOrderFullNameTests
+        [Test]
+        public void SingleNameMapsToLastNameOnly()
         {
-            [TestMethod]
-            public void ReturnsCorrectNameWithTwoNamesOnly1()
-            {
-                ComposerName name = new ComposerName("First Last", "en-US");
-                Assert.AreEqual("Last, First", name.GetEasternOrderFullName());
-            }
-
-            [TestMethod]
-            public void ReturnsCorrectNameWithTwoNamesOnly2()
-            {
-                ComposerName name = new ComposerName("First Last", "en-US");
-                name.LastName = "Last1";
-                Assert.AreEqual("Last1, First", name.GetEasternOrderFullName());
-            }
-
-            [TestMethod]
-            public void ReturnsCorrectNameWithThreeNames1()
-            {
-                ComposerName name = new ComposerName("First Middle Last", "en-US");
-                Assert.AreEqual("Last, First Middle", name.GetEasternOrderFullName());
-            }
-
-            [TestMethod]
-            public void ReturnsCorrectNameWithThreeNames2()
-            {
-                ComposerName name = new ComposerName("First Middle Last", "en-US");
-                name.FirstName = "FIRST1";
-                Assert.AreEqual("Last, FIRST1 Middle", name.GetEasternOrderFullName());
-            }
-
-            [TestMethod]
-            public void ReturnsCorrectNameWithSingleNameOnly()
-            {
-                ComposerName name = new ComposerName("Last", "en-US");
-                Assert.AreEqual("Last", name.GetEasternOrderFullName());
-            }
+            ComposerName name = new ComposerName("Last", new CultureInfo(1033));
+            Assert.AreEqual("Last", name.LastName);
+            Assert.IsTrue(string.IsNullOrEmpty(name.FirstName));
         }
-	}
+    }
+
+    [TestFixture]
+    public class LocalizationCultureNameTests
+    {
+        [Test]
+        public void SetsInternalPropertyCorrectly()
+        {
+            ComposerNameProxy name = new ComposerNameProxy();
+            name.Language = CultureInfo.GetCultureInfo("en-US");
+            Assert.AreEqual("en-US", name.LocalizationCultureNameProxy);
+        }
+
+        [Test]
+        public void SetsPublicPropertyCorrectly()
+        {
+            ComposerNameProxy name = new ComposerNameProxy();
+            name.LocalizationCultureNameProxy = "en-US";
+            Assert.AreEqual("en-US", name.Language.Name);
+        }
+    }
+
+    [TestFixture]
+    public class GetEasternOrderFullNameTests
+    {
+        [Test]
+        public void ReturnsCorrectNameWithTwoNamesOnly1()
+        {
+            ComposerName name = new ComposerName("First Last", "en-US");
+            Assert.AreEqual("Last, First", name.GetEasternOrderFullName());
+        }
+
+        [Test]
+        public void ReturnsCorrectNameWithTwoNamesOnly2()
+        {
+            ComposerName name = new ComposerName("First Last", "en-US");
+            name.LastName = "Last1";
+            Assert.AreEqual("Last1, First", name.GetEasternOrderFullName());
+        }
+
+        [Test]
+        public void ReturnsCorrectNameWithThreeNames1()
+        {
+            ComposerName name = new ComposerName("First Middle Last", "en-US");
+            Assert.AreEqual("Last, First Middle", name.GetEasternOrderFullName());
+        }
+
+        [Test]
+        public void ReturnsCorrectNameWithThreeNames2()
+        {
+            ComposerName name = new ComposerName("First Middle Last", "en-US");
+            name.FirstName = "FIRST1";
+            Assert.AreEqual("Last, FIRST1 Middle", name.GetEasternOrderFullName());
+        }
+
+        [Test]
+        public void ReturnsCorrectNameWithSingleNameOnly()
+        {
+            ComposerName name = new ComposerName("Last", "en-US");
+            Assert.AreEqual("Last", name.GetEasternOrderFullName());
+        }
+    }
 }
