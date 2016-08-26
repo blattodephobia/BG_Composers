@@ -12,5 +12,9 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
 			return this.View();
         }
+
+        public virtual ActionResult Profile()
+        {
+        }
     }
 }

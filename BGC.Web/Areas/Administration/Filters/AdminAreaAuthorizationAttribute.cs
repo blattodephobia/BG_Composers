@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BGC.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,5 +28,20 @@ namespace BGC.Web.Areas.Administration
 			filterContext.Controller.TempData.Add(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
 			filterContext.Result = new RedirectResult(loginUrl);
 		}
+
+        protected AdminAreaAuthorizationAttribute(IEnumerable<string> rolesCollection)
+        {
+            this.Roles = rolesCollection.ToStringAggregate(",");
+        }
+
+        public AdminAreaAuthorizationAttribute(params string[] roles) :
+            this(rolesCollection: roles)
+        {
+        }
+
+        public AdminAreaAuthorizationAttribute(params Type[] roleTypes) :
+            this(roleTypes.Where(t => t != null).Select(t => t.Name))
+        {
+        }
 	}
 }

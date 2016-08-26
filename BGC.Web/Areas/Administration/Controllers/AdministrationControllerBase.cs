@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
-	[AdminAreaAuthorization(Roles = "Administrator")]
+	[AdminAreaAuthorization("Administrator")]
     public abstract class AdministrationControllerBase : Controller
     {
 		private UserManager<BgcUser, long> userManager;
@@ -27,5 +27,21 @@ namespace BGC.Web.Areas.Administration.Controllers
 				this.userManager = value;
 			}
 		}
+
+        private BgcUser user;
+        private bool userInitialized;
+        public new BgcUser User
+        {
+            get
+            {
+                if (!userInitialized && (base.User?.Identity.IsAuthenticated ?? false))
+                {
+                    user = this.UserManager.FindByName(base.User.Identity.Name);
+                    userInitialized = true;
+                }
+
+                return user;
+            }
+        }
     }
 }

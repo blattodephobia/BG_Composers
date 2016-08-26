@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class BgcRole : IdentityRole<long, BgcUserRole>
+	public abstract class BgcRole : IdentityRole<long, BgcUserRole>
 	{
 		public static readonly string AdministratorRoleName = "Administrator";
 
-		public BgcRole() :
+		protected BgcRole() :
 			this(string.Empty)
 		{
-
 		}
 
-		public BgcRole(string roleName)
+		protected BgcRole(string roleName)
 		{
 			this.Name = roleName;
         }
