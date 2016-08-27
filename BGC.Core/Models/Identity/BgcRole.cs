@@ -7,18 +7,15 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public abstract class BgcRole : IdentityRole<long, BgcUserRole>
+	public class BgcRole : IdentityRole<long, BgcUserRole>
 	{
-		public static readonly string AdministratorRoleName = "Administrator";
-
-		protected BgcRole() :
-			this(string.Empty)
+		public BgcRole()
 		{
 		}
 
-		protected BgcRole(string roleName)
+		public BgcRole(string roleName)
 		{
-			this.Name = roleName;
+			Name = roleName;
         }
 
         public virtual ICollection<Permission> Permissions { get; set; }

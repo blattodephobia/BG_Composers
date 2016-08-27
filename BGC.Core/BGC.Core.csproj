@@ -57,7 +57,9 @@
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Models\BgcRoleManager.cs" />
     <Compile Include="Models\Identity\AdministratorRole.cs" />
+    <Compile Include="Models\Identity\EditorRole.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
     <Compile Include="UnicodeAttribute.cs" />
     <Compile Include="IUnitOfWork.cs" />
