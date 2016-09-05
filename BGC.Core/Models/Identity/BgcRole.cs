@@ -19,5 +19,11 @@ namespace BGC.Core
         }
 
         public virtual ICollection<Permission> Permissions { get; set; }
+
+        public TPermission GetPermission<TPermission>()
+            where TPermission : Permission, new()
+        {
+            return Permissions?.Where(p => p.GetType() == typeof(TPermission)).SingleOrDefault() as TPermission;
+        }
     }
 }

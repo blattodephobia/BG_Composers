@@ -1,0 +1,15 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="Microsoft.CodeAnalysis.CSharp.Workspaces" #>
+<#@ assembly name="Microsoft.CodeAnalysis.Workspaces.Desktop" #>
+<#@ assembly name="Microsoft.CodeAnalysis.Workspaces" #>
+<#@ assembly name="System.Runtime" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="Microsoft.CodeAnalysis.MSBuild" #>
+<#
+	var solution = MSBuildWorkspace.Create();
+
+#>

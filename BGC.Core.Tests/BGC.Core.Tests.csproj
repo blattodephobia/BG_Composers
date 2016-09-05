@@ -67,6 +67,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Models\BgcRoleTests.cs" />
     <Compile Include="Models\ComposerNameTests.cs" />
     <Compile Include="Models\ComposerTests.cs" />
     <Compile Include="Models\CultureSupportSettingTests.cs" />
