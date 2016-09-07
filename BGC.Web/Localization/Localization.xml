@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?> 
-<LocalizationKeys>
+<LocalizationKeys xmlns="https://github.com/blattodephobia/BG_Composers">
   <Administration>
     <Edit>
       <List>
@@ -9,6 +9,15 @@
         </LocalizedString>
       </List>
     </Edit>
+    <Authentication>
+      <Login>
+        <LocalizedString key="remember_me">
+          <Translation culture="en-US">Remember me</Translation>
+          <Translation culture="bg-BG">Запомни ме на този компютър</Translation>
+          <Translation culture="de-DE">Angemeldet bleiben</Translation>
+        </LocalizedString>
+      </Login>
+    </Authentication>
   </Administration>
   <Public>
     

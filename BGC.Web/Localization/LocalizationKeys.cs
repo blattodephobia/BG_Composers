@@ -11,6 +11,13 @@ namespace BGC.Web.LocalizationKeys
                         public static readonly string Add_entry = "Administration.Edit.List.Add_entry";
 }
 }
+public class Authentication
+{
+        public class Login
+        {
+                    public static readonly string Remember_me = "Administration.Authentication.Login.Remember_me";
+}
+}
 }
 public class Public
 {

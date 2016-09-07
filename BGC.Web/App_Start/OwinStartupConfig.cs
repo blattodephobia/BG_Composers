@@ -12,19 +12,23 @@ namespace BGC.Web.App_Start
 {
 	public class OwinStartupConfig
 	{
+        private static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(30);
+
 		public void Configuration(IAppBuilder app)
 		{
 			app.UseCookieAuthentication(new CookieAuthenticationOptions()
 			{
+                AuthenticationMode = Microsoft.Owin.Security.AuthenticationMode.Active,
 				AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
 				LoginPath = new PathString(string.Format(
 					"/{0}/{1}/{2}",
-					"admin",
 					AdministrationAreaRegistration.UrlPrefixToken,
 					MVC.AdministrationArea.Authentication.Name,
 					MVC.AdministrationArea.Authentication.ActionNames.Login)),
-				CookieName = "BGC.Auth"
-			});
+				CookieName = "BGC.Auth",
+                ExpireTimeSpan = CookieExpiration,
+                SlidingExpiration = true
+            });
 		}
 	}
 }

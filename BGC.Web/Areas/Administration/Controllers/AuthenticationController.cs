@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
+using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -20,34 +21,32 @@ namespace BGC.Web.Areas.Administration.Controllers
 		[HttpGet]
 		public virtual ActionResult Login()
 		{
-			if (this.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+			if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
 			{
-				this.TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+				TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
 			}
-			return this.View();
+			return View();
 		}
 
 		[AllowAnonymous]
 		[HttpPost]
 		public virtual ActionResult Login(LoginViewModel model)
 		{
-			BgcUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
-			bool success = user != null && this.SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
-			if (success)
+			if (SignInManager.PasswordSignIn(model.UserName, model.Password, model.Remember, false) == SignInStatus.Success)
 			{
 				object returnUrl;
-				this.TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
+				TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
 				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? Url.Action(MVC.AdministrationArea.Account.Users()) : returnUrl as string);
 			}
 			else
 			{
-				return this.Login();
+				return Login();
 			}
 		}
 
 		public AuthenticationController(SignInManager<BgcUser, long> signInManager)
 		{
-			this.SignInManager = signInManager;
+			SignInManager = signInManager;
 		}
     }
 }

@@ -122,10 +122,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.ViewModels.LoginViewModel model);
+        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.Web.ViewModels.LoginViewModel model)
+        public override System.Web.Mvc.ActionResult Login(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
