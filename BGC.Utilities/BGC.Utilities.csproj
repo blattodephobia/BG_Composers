@@ -40,8 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DefaultValueDependencySource.cs" />
+    <Compile Include="DependencyPrecedenceAttribute.cs" />
+    <Compile Include="DependencyValue.cs" />
+    <Compile Include="DependencySource.cs" />
+    <Compile Include="EffectiveValueChangedEventArgs.cs" />
     <Compile Include="Expressions.cs" />
+    <Compile Include="MultiValueFifoDependencySource.cs" />
+    <Compile Include="MultiValueLifoDependencySource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleValueDependencySource.cs" />
+    <Compile Include="SingleValueNonOverridableDependencySource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeShield\CodeShield.csproj">

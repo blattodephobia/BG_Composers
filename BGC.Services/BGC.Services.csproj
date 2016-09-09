@@ -74,6 +74,10 @@
       <Project>{e3cb843a-3420-4a76-91c8-e4db0688fef5}</Project>
       <Name>BGC.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233e69-ff24-41d8-b779-9dd446202d8d}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeShield\CodeShield.csproj">
       <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
       <Name>CodeShield</Name>
