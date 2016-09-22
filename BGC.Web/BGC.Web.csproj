@@ -275,7 +275,7 @@
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.cs">
+    <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>PermissionsViewModelGen.tt</DependentUpon>
@@ -315,7 +315,7 @@
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />
     <Content Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>PermissionsViewModelGen.cs</LastGenOutput>
+      <LastGenOutput>PermissionsViewModelGen1.cs</LastGenOutput>
     </Content>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
