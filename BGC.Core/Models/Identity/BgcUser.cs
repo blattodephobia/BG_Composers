@@ -25,13 +25,14 @@ namespace BGC.Core
 			this.UserName = username;
 		}
 
+        public IEnumerable<Permission> GetPermissions()
+        {
+            return Roles.SelectMany(userRole => userRole.Role.Permissions);
+        }
+
         public T FindPermission<T>() where T : Permission
         {
-            T result = this.Roles
-                .SelectMany(ur => ur.Role.Permissions)
-                .OfType<T>()
-                .FirstOrDefault();
-
+            T result = GetPermissions().OfType<T>().FirstOrDefault();
             return result;
         }
 	}

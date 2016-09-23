@@ -18,6 +18,11 @@ namespace BGC.Core
 			Name = roleName;
         }
 
+        /// <summary>
+        /// Determines whether this role can be deleted from the data store or not; crucial, compile-time known roles cannot be deleted.
+        /// </summary>
+        public virtual bool CanDelete => true;
+
         public virtual ICollection<Permission> Permissions { get; set; }
 
         public TPermission GetPermission<TPermission>()

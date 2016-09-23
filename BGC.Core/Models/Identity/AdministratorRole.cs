@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class AdministratorRole : BgcRole
+    /// <summary>
+    /// The role for users that have unrestricted access to the application.
+    /// This role populates its default permissions when it's instantiated.
+    /// </summary>
+    public sealed class AdministratorRole : BgcRole
     {
+        public override bool CanDelete => false;
+
+        public AdministratorRole()
+        {
+            Permissions.Add(new SendInvitePermission());
+            Permissions.Add(new ApplicationSettingsWritePermission());
+            Permissions.Add(new UserSettingsPermission());
+        }
     }
 }

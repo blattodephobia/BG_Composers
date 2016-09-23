@@ -66,21 +66,21 @@ namespace BGC.Web.App_Start
 
             // Inject UserManager<BgcUser, long> into all controllers inheriting from AdministrationControllerBase
             container
-                .RegisterType<AdministrationControllerBase>()
+                .RegisterType<AccountController>()
                 .RegisterTypes(
                     types: AllClasses
-                           .FromAssemblies(Assembly.GetAssembly(typeof(AdministrationControllerBase)))
-                           .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
+                           .FromAssemblies(Assembly.GetAssembly(typeof(AccountController)))
+                           .Where(t => typeof(AccountController).IsAssignableFrom(t)),
                     getInjectionMembers: (t) => new InjectionMember[]
                     {
                         new InjectionProperty(
-                            Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
-                            container.Resolve<UserManager<BgcUser, long>>())
+                            Expressions.NameOf<AccountController>(obj => obj.UserManager),
+                            container.Resolve<BgcUserManager>())
                     });
 
             container.RegisterType<SignInManager<BgcUser, long>>(new InjectionFactory(c =>
             {
-                return new SignInManager<BgcUser, long>(c.Resolve<UserManager<BgcUser, long>>(), HttpContext.Current.GetOwinContext().Authentication);
+                return new SignInManager<BgcUser, long>(c.Resolve<BgcUserManager>(), HttpContext.Current.GetOwinContext().Authentication);
             }));
 
             container.RegisterType<ILocalizationService, LocalizationService>

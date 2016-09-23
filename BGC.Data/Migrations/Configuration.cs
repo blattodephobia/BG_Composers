@@ -15,19 +15,19 @@ namespace BGC.Data.Migrations
 		{
 			try
 			{
-				var roleManager = new RoleManager<BgcRole, long>(new RoleStore<BgcRole, long, BgcUserRole>(context));
-				var userManager = new UserManager<BgcUser, long>(new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context));
+				var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
+				var userManager = new BgcUserManager(new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context));
 
-				if (!roleManager.RoleExists(BgcRole.AdministratorRoleName))
+				if (!roleManager.RoleExists(nameof(AdministratorRole)))
 				{
-					roleManager.Create(new BgcRole(BgcRole.AdministratorRoleName));
+					roleManager.Create(new AdministratorRole());
 				}
 
 				if (userManager.FindByName(BgcUser.AdministratorUserName) == null)
 				{
 					BgcUser admin = new BgcUser(BgcUser.AdministratorUserName);
 					userManager.Create(admin, "__8ja&7.s9/G");
-					userManager.AddToRole(admin.Id, BgcRole.AdministratorRoleName);
+					userManager.AddToRole(admin.Id, nameof(AdministratorRole));
 				}
 
                 context.Settings.AddOrUpdate(setting => setting.Name,

@@ -270,7 +270,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
-    <Compile Include="Areas\Administration\Controllers\AdministrationControllerBase.cs" />
+    <Compile Include="Areas\Administration\Controllers\AdministrationController.cs" />
     <Compile Include="Areas\Administration\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
@@ -280,6 +280,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PermissionsViewModelGen.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionViewModelBase.cs" />
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
