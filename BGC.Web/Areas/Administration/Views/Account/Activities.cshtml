@@ -1,0 +1,16 @@
+﻿@using BGC.Web.Areas.Administration.ViewModels.Permissions;
+
+@model IEnumerable<PermissionViewModelBase>
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>Profile</h2>
+
+<ul>
+@foreach (PermissionViewModelBase permission in Model)
+{
+    <li>@(Localize(permission.LocalizationKey))</li>
+}
+</ul>

@@ -82,6 +82,7 @@
     <Compile Include="DbServiceBase.cs" />
     <Compile Include="ServiceLayerDependencyRegistration.cs" />
     <Compile Include="SettingsService.cs" />
+    <Compile Include="UserManagementService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

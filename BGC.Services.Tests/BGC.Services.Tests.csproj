@@ -78,6 +78,7 @@
     <Compile Include="DbServiceBaseTests.cs" />
     <Compile Include="LocalizationServiceTests.cs" />
     <Compile Include="SettingsServiceTests.cs" />
+    <Compile Include="UserManagementServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">

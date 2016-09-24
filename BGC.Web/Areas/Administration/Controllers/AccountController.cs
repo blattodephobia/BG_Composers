@@ -13,57 +13,24 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
-    [Authorize]
-	public partial class AccountController : Controller
+	public partial class AccountController : AdministrationControllerBase
     {
         private TypeDiscoveryProvider typeDiscovery;
-
-        private BgcUserManager userManager;
-        public BgcUserManager UserManager
-        {
-            get
-            {
-                return this.userManager;
-            }
-
-            set
-            {
-                Shield.Assert(value, this.userManager == null, x => new InvalidOperationException("User Manager cannot be set more than once"));
-                this.userManager = value;
-            }
-        }
-
-        private BgcUser user;
-        private bool userInitialized;
-        public new BgcUser User
-        {
-            get
-            {
-                if (!userInitialized && (base.User?.Identity.IsAuthenticated ?? false))
-                {
-                    user = UserManager.FindByName(base.User.Identity.Name);
-                    userInitialized = true;
-                }
-
-                return user;
-            }
-        }
-
+        
         public AccountController()
-        {
-            this.typeDiscovery = new TypeDiscoveryProvider(this.GetType(), a => a == Assembly.GetExecutingAssembly());
+        {            
+            this.typeDiscovery = new TypeDiscoveryProvider(GetType(), a => a == Assembly.GetExecutingAssembly());
         }
 
         public virtual ActionResult Activities()
         {
             var validActivities = from viewModel in typeDiscovery.GetDiscoveredInheritanceChain<PermissionViewModelBase>()
-                                  join permission in User.GetPermissions() on viewModel.GetCustomAttribute<>().PermissionType == permission.GetType()
+                                  from mapAttribute in viewModel.GetCustomAttributes<MappableWithAttribute>()
+                                  join permission in User.GetPermissions() on mapAttribute.RelatedType equals permission.GetType()
                                   where viewModel.GetCustomAttribute<GeneratedCodeAttribute>() != null
-                                  select Activator.CreateInstance(viewModel);
-            foreach (PermissionViewModelBase permissionViewModel in validActivities)
-            {
+                                  select Activator.CreateInstance(viewModel) as PermissionViewModelBase;
 
-            }
+            return View(validActivities);
         }
     }
 }

@@ -77,12 +77,18 @@ namespace BGC.Data.Migrations
                 context.Composers.AddOrUpdate(composer => composer.Id, pStupel);
 #endif
             }
-			catch
+			catch (Exception e)
 			{
 				if (!System.Diagnostics.Debugger.IsAttached)
 				{
 					System.Diagnostics.Debugger.Launch();
 				}
+                else
+                {
+                    System.Diagnostics.Debugger.Break();
+                }
+
+                throw e;
 			}
 		}
     }

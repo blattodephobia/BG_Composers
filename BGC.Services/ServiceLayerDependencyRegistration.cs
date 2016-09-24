@@ -22,6 +22,7 @@ namespace BGC.Services
             helper.RegisterType<ISettingsService, SettingsService>(new InjectionFactory(c => new SettingsService(c.Resolve<IRepository<Setting>>())));
             helper.RegisterType<IArticleContentService, FileSystemArticleContentService>();
             helper.RegisterType<IMediaService, FileSystemMediaService>();
+            helper.RegisterType<IUserManagementService, UserManagementService>();
 		}
 	}
 }

@@ -23,7 +23,19 @@ namespace BGC.Core
         /// </summary>
         public virtual bool CanDelete => true;
 
-        public virtual ICollection<Permission> Permissions { get; set; }
+        private ICollection<Permission> permissions;
+        public virtual ICollection<Permission> Permissions
+        {
+            get
+            {
+                return this.permissions ?? (this.permissions = new HashSet<Permission>());
+            }
+
+            set
+            {
+                this.permissions = value;
+            }
+        }
 
         public TPermission GetPermission<TPermission>()
             where TPermission : Permission, new()

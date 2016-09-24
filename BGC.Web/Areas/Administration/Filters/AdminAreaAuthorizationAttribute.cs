@@ -8,7 +8,8 @@ using System.Web.Routing;
 
 namespace BGC.Web.Areas.Administration
 {
-	public class AdminAreaAuthorizationAttribute : AuthorizeAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public class AdminAreaAuthorizationAttribute : AuthorizeAttribute
 	{
 		protected string GetActionUrl(RequestContext context, ActionResult action)
 		{
@@ -31,7 +32,7 @@ namespace BGC.Web.Areas.Administration
 
         protected AdminAreaAuthorizationAttribute(IEnumerable<string> rolesCollection)
         {
-            this.Roles = rolesCollection.ToStringAggregate(",");
+            Roles = rolesCollection.ToStringAggregate(",");
         }
 
         public AdminAreaAuthorizationAttribute(params string[] roles) :
@@ -39,8 +40,8 @@ namespace BGC.Web.Areas.Administration
         {
         }
 
-        public AdminAreaAuthorizationAttribute(params Type[] roleTypes) :
-            this(roleTypes.Where(t => t != null).Select(t => t.Name))
+        public AdminAreaAuthorizationAttribute() :
+            base()
         {
         }
 	}

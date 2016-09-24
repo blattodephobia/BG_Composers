@@ -8,7 +8,7 @@ namespace BGC.Web.Areas.Administration
 {
 	public class AdministrationAreaRegistration : AreaRegistration
 	{
-		public static readonly string UrlPrefixToken = "admin";
+		public static readonly string UrlPrefixToken = "administration";
 
 		public override string AreaName
 		{
@@ -21,15 +21,15 @@ namespace BGC.Web.Areas.Administration
                 .MapRoute(
                     name: $"{MVC.AdministrationArea.Name}1",
                     url: $"{UrlPrefixToken}/{{controller}}/{{action}}",
-                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Users })
-                .DataTokens.Add("area", this.AreaName);
+                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
+                .DataTokens.Add("area", AreaName);
 
             context.Routes
                 .MapRoute(
 					name: $"{MVC.AdministrationArea.Name}2",
 					url: $"{MVC.AdministrationArea.Name}/{{controller}}/{{action}}",
-					defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Users })
-				.DataTokens.Add("area", this.AreaName);
+					defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
+				.DataTokens.Add("area", AreaName);
 		}
 	}
 }

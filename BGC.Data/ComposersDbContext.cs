@@ -24,6 +24,8 @@ namespace BGC.Data
 
         public DbSet<MediaTypeInfo> ContentMedia { get; set; }
 
+        public DbSet<Invitation> Invitations { get; set; }
+
 		public ComposersDbContext() : this("MySqlConnection")
 		{
 		}

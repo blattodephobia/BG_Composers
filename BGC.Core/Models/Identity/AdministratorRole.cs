@@ -16,6 +16,7 @@ namespace BGC.Core
 
         public AdministratorRole()
         {
+            Name = nameof(AdministratorRole);
             Permissions.Add(new SendInvitePermission());
             Permissions.Add(new ApplicationSettingsWritePermission());
             Permissions.Add(new UserSettingsPermission());

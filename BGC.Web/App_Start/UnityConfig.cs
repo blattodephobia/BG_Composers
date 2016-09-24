@@ -64,20 +64,21 @@ namespace BGC.Web.App_Start
                 ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey,
                 new DirectoryInfo(HostingEnvironment.MapPath(mediaStorageDir)));
 
-            // Inject UserManager<BgcUser, long> into all controllers inheriting from AdministrationControllerBase
+            container.RegisterType<BgcUser>(new InjectionFactory(c => c.Resolve<BgcUserManager>().FindByName(HttpContext.Current.User.Identity.Name)));
+            // Inject BgcUserManager into all controllers inheriting from AdministrationControllerBase
             container
                 .RegisterType<AccountController>()
                 .RegisterTypes(
                     types: AllClasses
-                           .FromAssemblies(Assembly.GetAssembly(typeof(AccountController)))
-                           .Where(t => typeof(AccountController).IsAssignableFrom(t)),
+                           .FromAssemblies(Assembly.GetAssembly(typeof(AdministrationControllerBase)))
+                           .Where(t => typeof(AdministrationControllerBase).IsAssignableFrom(t)),
                     getInjectionMembers: (t) => new InjectionMember[]
                     {
                         new InjectionProperty(
-                            Expressions.NameOf<AccountController>(obj => obj.UserManager),
+                            Expressions.NameOf<AdministrationControllerBase>(obj => obj.UserManager),
                             container.Resolve<BgcUserManager>())
                     });
-
+            
             container.RegisterType<SignInManager<BgcUser, long>>(new InjectionFactory(c =>
             {
                 return new SignInManager<BgcUser, long>(c.Resolve<BgcUserManager>(), HttpContext.Current.GetOwinContext().Authentication);

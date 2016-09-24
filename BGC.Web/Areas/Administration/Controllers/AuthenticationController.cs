@@ -12,7 +12,7 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
-	public partial class AuthenticationController : AdministrationControllerBase
+	public partial class AuthenticationController : AccountController
 	{
 		public SignInManager<BgcUser, long> SignInManager { get; private set; }
 
@@ -20,9 +20,9 @@ namespace BGC.Web.Areas.Administration.Controllers
 		[HttpGet]
 		public virtual ActionResult Login()
 		{
-			if (this.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+			if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
 			{
-				this.TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+				TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
 			}
 			return this.View();
 		}
@@ -31,23 +31,23 @@ namespace BGC.Web.Areas.Administration.Controllers
 		[HttpPost]
 		public virtual ActionResult Login(LoginViewModel model)
 		{
-			BgcUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
-			bool success = user != null && this.SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
+			BgcUser user = UserManager.FindByNameAsync(model.UserName).Result;
+			bool success = user != null && SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
 			if (success)
 			{
 				object returnUrl;
-				this.TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
-				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? Url.Action(MVC.AdministrationArea.Account.Users()) : returnUrl as string);
+				TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
+				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? Url.Action(MVC.AdministrationArea.Account.Activities()) : returnUrl as string);
 			}
 			else
 			{
-				return this.Login();
+				return Login();
 			}
 		}
 
 		public AuthenticationController(SignInManager<BgcUser, long> signInManager)
 		{
-			this.SignInManager = signInManager;
+			SignInManager = signInManager;
 		}
     }
 }

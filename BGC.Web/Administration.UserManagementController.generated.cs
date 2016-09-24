@@ -24,10 +24,10 @@ using System.Web.Routing;
 using T4MVC;
 namespace BGC.Web.Areas.Administration.Controllers
 {
-    public partial class AccountController
+    public partial class UserManagementController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        protected AccountController(Dummy d) { }
+        protected UserManagementController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected RedirectToRouteResult RedirectToAction(ActionResult result)
@@ -55,15 +55,21 @@ namespace BGC.Web.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SendInvite_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendInvite_Post);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public AccountController Actions { get { return MVC.AdministrationArea.Account; } }
+        public UserManagementController Actions { get { return MVC.AdministrationArea.UserManagement; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "Administration";
         [GeneratedCode("T4MVC", "2.0")]
-        public readonly string Name = "Account";
+        public readonly string Name = "UserManagement";
         [GeneratedCode("T4MVC", "2.0")]
-        public const string NameConst = "Account";
+        public const string NameConst = "UserManagement";
 
         static readonly ActionNamesClass s_actions = new ActionNamesClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -71,16 +77,28 @@ namespace BGC.Web.Areas.Administration.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string SendInvite = "SendInvite";
+            public readonly string SendInvite_Post = nameof(SendInvite);
             public readonly string Activities = "Activities";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string SendInvite = "SendInvite";
+            public const string SendInvite_Post = nameof(SendInvite);
             public const string Activities = "Activities";
         }
 
 
+        static readonly ActionParamsClass_SendInvite_Post s_params_SendInvite_Post = new ActionParamsClass_SendInvite_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SendInvite_Post SendInvite_PostParams { get { return s_params_SendInvite_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SendInvite_Post
+        {
+            public readonly string invitation = "invitation";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -91,18 +109,37 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Activites = "Activites";
-                public readonly string Users = "Users";
             }
-            public readonly string Activites = "~/Areas/Administration/Views/Account/Activites.cshtml";
-            public readonly string Users = "~/Areas/Administration/Views/Account/Users.cshtml";
         }
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-    public partial class T4MVC_AccountController : BGC.Web.Areas.Administration.Controllers.AccountController
+    public partial class T4MVC_UserManagementController : BGC.Web.Areas.Administration.Controllers.UserManagementController
     {
-        public T4MVC_AccountController() : base(Dummy.Instance) { }
+        public T4MVC_UserManagementController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void SendInviteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SendInvite()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendInvite);
+            SendInviteOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SendInvite_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.Permissions.SendInvitePermissionViewModel invitation);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SendInvite_Post(BGC.Web.Areas.Administration.ViewModels.Permissions.SendInvitePermissionViewModel invitation)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendInvite_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "invitation", invitation);
+            SendInvite_PostOverride(callInfo, invitation);
+            return callInfo;
+        }
 
         [NonAction]
         partial void ActivitiesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);

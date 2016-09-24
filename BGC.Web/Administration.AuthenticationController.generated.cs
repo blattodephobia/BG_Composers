@@ -72,12 +72,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionNamesClass
         {
             public readonly string Login = "Login";
+            public readonly string Activities = "Activities";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string Login = "Login";
+            public const string Activities = "Activities";
         }
 
 
@@ -130,6 +132,17 @@ namespace BGC.Web.Areas.Administration.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             LoginOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ActivitiesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Activities()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Activities);
+            ActivitiesOverride(callInfo);
             return callInfo;
         }
 

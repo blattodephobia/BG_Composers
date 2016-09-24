@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    internal sealed class UserSettingsPermission : SettingsWritePermission
+    public sealed class UserSettingsPermission : SettingsWritePermission
     {
         internal sealed override SettingPriority GetSettingsPriority()
         {

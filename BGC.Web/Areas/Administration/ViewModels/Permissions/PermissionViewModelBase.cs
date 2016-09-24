@@ -8,5 +8,6 @@ namespace BGC.Web.Areas.Administration.ViewModels.Permissions
 {
     public abstract class PermissionViewModelBase : ViewModelBase
     {
+        public abstract string LocalizationKey { get; }
     }
 }

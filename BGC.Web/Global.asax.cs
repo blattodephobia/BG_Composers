@@ -20,7 +20,7 @@ namespace BGC.Web
 		{
 			public class AdministrationArea
 			{
-				public static readonly string LoginSuccessReturnUrl = Expressions.NameOf(() => TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+				public static readonly string LoginSuccessReturnUrl = nameof(LoginSuccessReturnUrl);
 			}
 		}
 

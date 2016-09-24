@@ -31,7 +31,7 @@
     Compilation compiledProject = coreProject.GetCompilationAsync().Result;
 	IEnumerable<INamedTypeSymbol> permissionTypes = compiledProject.SyntaxTrees
         .Select(tree => GetSyntaxNodeOfType<ClassDeclarationSyntax>(tree.GetRoot()))
-        .Where(classDeclararion => classDeclararion != null)
+        .Where(classDeclaration => classDeclaration != null && !classDeclaration.Modifiers.Any(modifier => modifier.ToString() == "abstract"))
         .Select(_class =>
         {
             string _namespace = GetNamespace(_class).Name.GetText().ToString().Trim();
@@ -41,15 +41,27 @@
         .Where(type => type != null && GetBaseTypes(type).FirstOrDefault(t => t.ToString() == "BGC.Core.Permission") != null);
 #>using System.CodeDom.Compiler;
 using BGC.Web.Areas.Administration.ViewModels.Permissions;
+using BGC.Web.Areas.Administration.Controllers;
+using BGC.Utilities;
+
+namespace BGC.Web.Areas.Administration.ViewModels.Permissions
+{
 <#
     foreach (INamedTypeSymbol permission in permissionTypes)
     {
         string viewModelName = permission.ToString() + "ViewModel";
         viewModelName = viewModelName.Substring(viewModelName.LastIndexOf('.') + 1);
-        #>[GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")] public partial class <#= viewModelName #> : PermissionViewModelBase {} 
+        #>
+    [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
+    [MappableWith(typeof(<#= permission.ToString() #>))]
+    [DiscoverableBy(typeof(AccountController))]
+    public partial class <#= viewModelName #> : PermissionViewModelBase
+    {
+    }
 <#
     }
 #>
+}
 <#+
     T GetSyntaxNodeOfType<T>(SyntaxNode root) where T : SyntaxNode
     {

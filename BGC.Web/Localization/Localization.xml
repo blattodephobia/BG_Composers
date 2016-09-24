@@ -9,6 +9,22 @@
         </LocalizedString>
       </List>
     </Edit>
+    <Account>
+      <Activities>
+        <LocalizedString key="SendInvite">
+          <Translation culture="en-US">Invite users</Translation>
+          <Translation culture="bg-BG">Покани потребители</Translation>
+        </LocalizedString>
+        <LocalizedString key="UserSettings">
+          <Translation culture="en-US">Settings</Translation>
+          <Translation culture="bg-BG">Настройки</Translation>
+        </LocalizedString>
+        <LocalizedString key="ApplicationSettings">
+          <Translation culture="en-US">Global settings</Translation>
+          <Translation culture="bg-BG">Глобални настройки</Translation>
+        </LocalizedString>
+      </Activities>
+    </Account>
   </Administration>
   <Public>
     

@@ -54,6 +54,7 @@ namespace T4MVC
         public BGC.Web.Areas.Administration.Controllers.AccountController Account = new BGC.Web.Areas.Administration.Controllers.T4MVC_AccountController();
         public BGC.Web.Areas.Administration.Controllers.AuthenticationController Authentication = new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController();
         public BGC.Web.Areas.Administration.Controllers.EditController Edit = new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController();
+        public BGC.Web.Areas.Administration.Controllers.UserManagementController UserManagement = new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController();
         public T4MVC.Administration.SharedController Shared = new T4MVC.Administration.SharedController();
     }
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

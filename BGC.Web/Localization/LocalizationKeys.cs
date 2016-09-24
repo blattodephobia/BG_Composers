@@ -11,6 +11,15 @@ namespace BGC.Web.LocalizationKeys
                         public static readonly string Add_entry = "Administration.Edit.List.Add_entry";
 }
 }
+public class Account
+{
+        public class Activities
+        {
+                    public static readonly string SendInvite = "Administration.Account.Activities.SendInvite";
+                    public static readonly string UserSettings = "Administration.Account.Activities.UserSettings";
+                    public static readonly string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
+}
+}
 }
 public class Public
 {

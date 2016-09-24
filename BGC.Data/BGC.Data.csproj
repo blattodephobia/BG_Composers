@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201607241811420_Initial.Designer.cs">
       <DependentUpon>201607241811420_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609241300057_Invitations.cs" />
+    <Compile Include="Migrations\201609241300057_Invitations.Designer.cs">
+      <DependentUpon>201609241300057_Invitations.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -125,6 +129,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201607241811420_Initial.resx">
       <DependentUpon>201607241811420_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609241300057_Invitations.resx">
+      <DependentUpon>201609241300057_Invitations.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
