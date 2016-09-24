@@ -18,6 +18,20 @@ namespace BGC.Core
         [Required]
         public virtual BgcUser Sender { get; set; }
 
+        private ICollection<BgcRole> availableRoles;
+        public virtual ICollection<BgcRole> AvailableRoles
+        {
+            get
+            {
+                return this.availableRoles ?? (this.availableRoles = new HashSet<BgcRole>());
+            }
+
+            set
+            {
+                this.availableRoles = value;
+            }
+        }
+
         /// <summary>
         /// Returns true if the <see cref="ExpirationDate"/> is in the future.
         /// </summary>

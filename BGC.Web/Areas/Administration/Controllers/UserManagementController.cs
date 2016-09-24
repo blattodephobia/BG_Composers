@@ -16,12 +16,13 @@ namespace BGC.Web.Areas.Administration.Controllers
     public partial class UserManagementController : AccountController
     {
         private IUserManagementService managementService;
+        private BgcRoleManager roleManager;
 
         [HttpGet]
         [Permissions(typeof(SendInvitePermission))]
         public virtual ActionResult SendInvite()
         {
-            return View(new SendInvitePermissionViewModel());
+            return View(new SendInvitePermissionViewModel() { AvailableRoles = roleManager.Roles.Select(r => r.Name).ToList() });
         }
 
         [HttpPost]
@@ -33,9 +34,10 @@ namespace BGC.Web.Areas.Administration.Controllers
             return SendInvite();
         }
 
-        public UserManagementController(IUserManagementService managementService)
+        public UserManagementController(IUserManagementService managementService, BgcRoleManager roleManager)
         {
             this.managementService = Shield.ArgumentNotNull(managementService, nameof(managementService)).GetValueOrThrow();
+            this.roleManager = Shield.ArgumentNotNull(roleManager, nameof(roleManager)).GetValueOrThrow();
         }
     }
 }

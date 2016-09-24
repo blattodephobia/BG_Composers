@@ -9,8 +9,19 @@
 <h2>Profile</h2>
 
 <ul>
-@foreach (PermissionViewModelBase permission in Model)
-{
-    <li>@(Localize(permission.LocalizationKey))</li>
-}
+    @foreach (PermissionViewModelBase permission in Model)
+    {
+        <li>
+            @if (!string.IsNullOrEmpty(permission.ActivityUrl))
+            {
+                <a href="@permission.ActivityUrl">
+                    @(Localize(permission.LocalizationKey))
+                </a>
+            }
+            else
+            {
+                @(Localize(permission.LocalizationKey))
+            }
+        </li>
+    }
 </ul>

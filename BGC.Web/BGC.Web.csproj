@@ -394,6 +394,7 @@
     <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000001" />
     <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000002" />
     <Content Include="Areas\Administration\Views\Account\Activities.cshtml" />
+    <Content Include="Areas\Administration\Views\UserManagement\SendInvite.cshtml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">

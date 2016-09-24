@@ -30,6 +30,10 @@ namespace BGC.Web.Areas.Administration.Controllers
                                   where viewModel.GetCustomAttribute<GeneratedCodeAttribute>() != null
                                   select Activator.CreateInstance(viewModel) as PermissionViewModelBase;
 
+            foreach (PermissionViewModelBase vm in validActivities.Where(activity => activity.ActivityAction != null))
+            {
+                vm.ActivityUrl = Url.RouteUrl(vm.ActivityAction);
+            }
             return View(validActivities);
         }
     }
