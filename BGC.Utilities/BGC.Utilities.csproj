@@ -40,7 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DiscoverableByAttribute.cs" />
+    <Compile Include="DiscoverableAttribute.cs" />
+    <Compile Include="DiscoverableHierarchyAttribute.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="IDynamicMemberGetter.cs" />

@@ -26,6 +26,8 @@ namespace BGC.Data
 
         public DbSet<Invitation> Invitations { get; set; }
 
+        public DbSet<Permission> Permissions { get; set; }
+
 		public ComposersDbContext() : this("MySqlConnection")
 		{
 		}

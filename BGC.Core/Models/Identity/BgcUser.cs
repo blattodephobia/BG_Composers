@@ -27,7 +27,7 @@ namespace BGC.Core
 
         public IEnumerable<Permission> GetPermissions()
         {
-            return Roles.SelectMany(userRole => userRole.Role.Permissions);
+            return Roles.SelectMany(userRole => userRole.Role?.Permissions ?? Enumerable.Empty<Permission>());
         }
 
         public T FindPermission<T>() where T : Permission

@@ -20,12 +20,20 @@ public class Account
                     public static readonly string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
 }
 }
+public class UserManagement
+{
+        public class SendInvite
+        {
+                    public static readonly string Roles = "Administration.UserManagement.SendInvite.Roles";
+}
+}
 }
 public class Public
 {
 }
 public class Global
 {
+    public static readonly string Email = "Global.Email";
     public static readonly string Ok = "Global.Ok";
     public static readonly string Submit = "Global.Submit";
     public static readonly string Name = "Global.Name";

@@ -74,6 +74,7 @@
     <Compile Include="Models\DateTimeSettingTests.cs" />
     <Compile Include="Models\Media\MediaTypeInfoTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingletonRepositoryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

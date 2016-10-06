@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" ?> 
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizationKeys>
   <Administration>
     <Edit>
@@ -25,11 +25,23 @@
         </LocalizedString>
       </Activities>
     </Account>
+    <UserManagement>
+      <SendInvite>
+        <LocalizedString key="roles">
+          <Translation culture="en-US">Roles</Translation>
+          <Translation culture="bg-BG">Роли</Translation>
+        </LocalizedString>
+      </SendInvite>
+    </UserManagement>
   </Administration>
   <Public>
-    
+
   </Public>
   <Global>
+    <LocalizedString key="email">
+      <Translation culture="en-US">Email</Translation>
+      <Translation culture="bg-BG">Е-мейл</Translation>
+    </LocalizedString>
     <LocalizedString key="ok">
       <Translation culture="en-US">OK</Translation>
       <Translation culture="bg-BG">ОК</Translation>
@@ -42,5 +54,5 @@
       <Translation culture="en-US">Name</Translation>
       <Translation culture="bg-BG">Име</Translation>
     </LocalizedString>
-  </Global>  
+  </Global>
 </LocalizationKeys>

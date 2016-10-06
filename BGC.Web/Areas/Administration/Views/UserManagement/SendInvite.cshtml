@@ -8,7 +8,7 @@
 
 @using (Html.BeginForm(MVC.AdministrationArea.UserManagement.SendInvite_Post(), FormMethod.Post))
 {
-    <span>Email: @Html.TextBoxFor(m => m.Email)</span>
-    <span>Roles: @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }))</span>
+    <span>@Localize(Global.Email): @Html.TextBoxFor(m => m.Email)</span>
+    <span>@Localize(Administration.UserManagement.SendInvite.Roles): @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }), new { multiple = "" })</span>
     <input type="submit"/>
 }
