@@ -48,6 +48,7 @@
     <Compile Include="LambdaCaptureFieldAccessor.cs" />
     <Compile Include="MappableWithAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TypeDiscoveryMode.cs" />
     <Compile Include="TypeDiscoveryProvider.cs" />
   </ItemGroup>
   <ItemGroup>

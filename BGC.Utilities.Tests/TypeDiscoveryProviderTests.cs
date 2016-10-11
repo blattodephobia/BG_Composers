@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,16 +22,79 @@ namespace BGC.Utilities.Tests
         }
     }
 
+    [Discoverable]
+    public class FreelyDiscoverableType
+    {
+    }
+
+    [Discoverable(typeof(ModeTests))]
+    public class RestrictedDiscoverableType
+    {
+    }
+
     [TestFixture]
     public class AssemblyPredicateTests
     {
-        static readonly Assembly[] DynamicAssemblies = new Assembly[2];
+
+        public static readonly List<Assembly> DynamicAssemblies = new List<Assembly>();
+
         [Test]
-        public void FiltersAssemblies()
+        public void FiltersAssemblies1()
         {
-            AssemblyBuilder dynamicAssembly1 = AssemblyBuilder.DefineDynamicAssembly(new AssemblyName("Dynamic1"), AssemblyBuilderAccess.ReflectionOnly);
-            TypeBuilder.
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => true);
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName == executingAssembly.GetName().FullName);
+            Assert.IsTrue(t.DiscoveredTypes.All(discoveredType => discoveredType.Assembly == executingAssembly));
+        }
+
+        [Test]
+        public void FiltersAssemblies2()
+        {
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
+            Assert.IsFalse(t.DiscoveredTypes.Any());
+        }
+
+        [Test]
+        public void FiltersConsumingTypes1()
+        {
+            Assembly executingAssembly = Assembly.GetExecutingAssembly();
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
+            Assert.IsFalse(t.DiscoveredTypes.Any());
+        }
+    }
+
+    [TestFixture]
+    public class ModeTests
+    {
+        public class ModeTestDerived : ModeTests
+        {
+
+        }
+
+        [Test]
+        public void DiscoversRestrictedTypesOnlyInStrictMode()
+        {
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Strict);
+            Assert.AreEqual(typeof(RestrictedDiscoverableType), t.DiscoveredTypes.Single());
+        }
+
+        [Test]
+        public void DiscoversNonRestrictedTypes()
+        {
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Loose);
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(FreelyDiscoverableType)));
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(RestrictedDiscoverableType)));
+            Assert.AreEqual(2, t.DiscoveredTypes.Count());
+        }
+        
+        [Test]
+        public void DiscoversDerivedTypes()
+        {
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(consumingType: typeof(ModeTestDerived), mode: TypeDiscoveryMode.Loose);
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(FreelyDiscoverableType)));
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(RestrictedDiscoverableType)));
+            Assert.AreEqual(2, t.DiscoveredTypes.Count());
+
         }
     }
 }

@@ -19,7 +19,7 @@ namespace BGC.Utilities
         /// Creates a new instance of the <see cref="DiscoverableAttribute"/> 
         /// </summary>
         /// <param name="consumingTypes">The types that will instantiate the type this attribute is applied on. Use null to make the type discoverable by any consuming type.</param>
-        public DiscoverableAttribute(Type[] consumingTypes = null)
+        public DiscoverableAttribute(params Type[] consumingTypes)
         {
             ConsumingTypes = consumingTypes;
         }
