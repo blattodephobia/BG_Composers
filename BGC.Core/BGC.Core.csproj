@@ -61,6 +61,7 @@
     <Compile Include="Models\Identity\AuthorizedUserRole.cs" />
     <Compile Include="Models\Identity\BgcRoleManager.cs" />
     <Compile Include="Models\Identity\BgcUserManager.cs" />
+    <Compile Include="Models\Identity\DynamicRole.cs" />
     <Compile Include="Models\Identity\EditorRole.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />

@@ -24,9 +24,12 @@ namespace BGC.Utilities
             {
                 return this.discoveredTypes ?? (this.discoveredTypes =
                     from type in this.assembliesToSearch.SelectMany(a => a.GetExportedTypes()).ToList()
-                    let discoverableAttribute = type.GetCustomAttribute<DiscoverableAttribute>()
-                    let matchesConsumingType = discoverableAttribute?.ConsumingTypes?.Any(baseType => baseType.IsAssignableFrom(ConsumingType)) ?? false
-                    let isNonRestrictedType = discoverableAttribute != null && !(discoverableAttribute.ConsumingTypes?.Any() ?? false) // is not restricted when ConsumingTypes is null or it's empty
+                    let discoverableAttributes = type.GetCustomAttributes<TypeDiscoveryAttribute>()
+                    let matchesConsumingType = (from typeDiscoveryAttribute in discoverableAttributes ?? Enumerable.Empty<TypeDiscoveryAttribute>()
+                                                from consumingType in typeDiscoveryAttribute?.ConsumingTypes
+                                                where consumingType.IsAssignableFrom(ConsumingType)
+                                                select consumingType).Any()
+                    let isNonRestrictedType = discoverableAttributes?.Any(t => t.IsFreelyDiscoverable) ?? false
                     where matchesConsumingType || (isNonRestrictedType && this.mode.HasFlag(TypeDiscoveryMode.Loose))
                     select type);
             }

@@ -11,6 +11,11 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities.Tests
 {
+    [Discoverable]
+    public class FreelyDiscoverableType
+    {
+    }
+
     [TestFixture]
     public class CtorTests
     {
@@ -20,16 +25,6 @@ namespace BGC.Utilities.Tests
             TypeDiscoveryProvider obj = new TypeDiscoveryProvider();
             Assert.AreEqual(typeof(CtorTests), obj.ConsumingType);
         }
-    }
-
-    [Discoverable]
-    public class FreelyDiscoverableType
-    {
-    }
-
-    [Discoverable(typeof(ModeTests))]
-    public class RestrictedDiscoverableType
-    {
     }
 
     [TestFixture]
@@ -66,7 +61,12 @@ namespace BGC.Utilities.Tests
     [TestFixture]
     public class ModeTests
     {
-        public class ModeTestDerived : ModeTests
+        [Discoverable(typeof(ModeTests))]
+        public class RestrictedDiscoverableType
+        {
+        }
+
+        public class ModeTestDerivedConsumer : ModeTests
         {
 
         }
@@ -86,15 +86,52 @@ namespace BGC.Utilities.Tests
             Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(RestrictedDiscoverableType)));
             Assert.AreEqual(2, t.DiscoveredTypes.Count());
         }
-        
+
         [Test]
-        public void DiscoversDerivedTypes()
+        public void DiscoversWithDerivedConsumerTypes()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(consumingType: typeof(ModeTestDerived), mode: TypeDiscoveryMode.Loose);
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider(consumingType: typeof(ModeTestDerivedConsumer), mode: TypeDiscoveryMode.Loose);
             Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(FreelyDiscoverableType)));
             Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(RestrictedDiscoverableType)));
             Assert.AreEqual(2, t.DiscoveredTypes.Count());
 
+        }
+    }
+
+    [TestFixture]
+    public class DiscoverableHierarchyTests
+    {
+        [DiscoverableHierarchy(typeof(DiscoverableHierarchyTests))]
+        public class BaseDiscoverable1
+        {
+        }
+
+        public class DerivedDiscoverable1 : BaseDiscoverable1
+        {
+        }
+
+        [Discoverable(typeof(DiscoverableHierarchyTests))]
+        public class BaseDiscoverable2
+        {
+        }
+
+        [DiscoverableHierarchy(typeof(DiscoverableHierarchyTests))]
+        public class DerivedDiscoverable2 : BaseDiscoverable2
+        {
+        }
+
+        [Test]
+        public void DiscoversDerivedTypes1()
+        {
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider();
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(DerivedDiscoverable1)));
+        }
+
+        [Test]
+        public void DiscoversDerivedTypes2()
+        {
+            TypeDiscoveryProvider t = new TypeDiscoveryProvider();
+            Assert.IsTrue(t.DiscoveredTypes.Contains(typeof(DerivedDiscoverable2)));
         }
     }
 }
