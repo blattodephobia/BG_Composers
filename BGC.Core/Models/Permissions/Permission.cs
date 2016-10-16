@@ -1,13 +1,16 @@
-﻿using CodeShield;
+﻿using BGC.Utilities;
+using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public abstract class Permission : BgcEntity<long>
+    [DiscoverableHierarchy(typeof(AdministratorRole), typeof(BgcRoleManager))]
+    public abstract class Permission : BgcEntity<long>, IEquatable<Permission>
     {
         private string name;
 
@@ -17,6 +20,7 @@ namespace BGC.Core
         /// Although this property should technically be a read-only property, the setter is provided for compatibility
         /// with ORM frameworks.
         /// </summary>
+        [Required]
         public string Name
         {
             get
@@ -24,7 +28,7 @@ namespace BGC.Core
                 return this.name ?? (this.name = this.GetType().FullName); ; 
             }
 
-            set
+            protected set
             {
                 Shield.Assert(
                     value,
@@ -33,5 +37,25 @@ namespace BGC.Core
                 this.name = value;
             }
         }
+
+        private ICollection<BgcRole> roles;
+        public virtual ICollection<BgcRole> Roles
+        {
+            get
+            {
+                return this.roles ?? (this.roles = new HashSet<BgcRole>());
+            }
+
+            set
+            {
+                this.roles = value;
+            }
+        }
+
+        public bool Equals(Permission other) => (other?.Name ?? "").CompareTo(Name) == 0;
+
+        public sealed override bool Equals(object obj) => Equals(obj as Permission);
+
+        public sealed override int GetHashCode() => Name.GetHashCode();
     }
 }

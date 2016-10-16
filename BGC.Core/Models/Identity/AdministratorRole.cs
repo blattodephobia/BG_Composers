@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BGC.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +11,19 @@ namespace BGC.Core
     /// The role for users that have unrestricted access to the application.
     /// This role populates its default permissions when it's instantiated.
     /// </summary>
-    public sealed class AdministratorRole : BgcRole
+    public sealed class AdministratorRole : ApplicationCriticalRole
     {
-        public override bool CanDelete => false;
+        private static readonly IEnumerable<Permission> ApplicationPermissions =
+            new TypeDiscoveryProvider()
+                .DiscoveredTypesInheritingFrom<Permission>()
+                .Where(permission => !permission.IsAbstract)
+                .Select(permission => (Permission)Activator.CreateInstance(permission))
+                .ToList();
 
         public AdministratorRole()
         {
             Name = nameof(AdministratorRole);
-            Permissions.Add(new SendInvitePermission());
-            Permissions.Add(new ApplicationSettingsWritePermission());
-            Permissions.Add(new UserSettingsPermission());
+            Permissions = new HashSet<Permission>(ApplicationPermissions);
         }
     }
 }

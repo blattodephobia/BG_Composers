@@ -7,13 +7,13 @@ namespace BGC.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class Invitations_v2 : IMigrationMetadata
+    public sealed partial class Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Invitations_v2));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201609272347085_Invitations_v2"; }
+            get { return "201610160755042_Initial"; }
         }
         
         string IMigrationMetadata.Source

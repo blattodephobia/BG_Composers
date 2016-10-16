@@ -95,17 +95,9 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="CultureInfoConvention.cs" />
-    <Compile Include="Migrations\201607241811420_Initial.cs" />
-    <Compile Include="Migrations\201607241811420_Initial.Designer.cs">
-      <DependentUpon>201607241811420_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609241300057_Invitations.cs" />
-    <Compile Include="Migrations\201609241300057_Invitations.Designer.cs">
-      <DependentUpon>201609241300057_Invitations.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609272347085_Invitations_v2.cs" />
-    <Compile Include="Migrations\201609272347085_Invitations_v2.Designer.cs">
-      <DependentUpon>201609272347085_Invitations_v2.cs</DependentUpon>
+    <Compile Include="Migrations\201610160755042_Initial.cs" />
+    <Compile Include="Migrations\201610160755042_Initial.Designer.cs">
+      <DependentUpon>201610160755042_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -125,20 +117,18 @@
       <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
       <Name>BGC.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233E69-FF24-41D8-B779-9DD446202D8D}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeShield\CodeShield.csproj">
       <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
       <Name>CodeShield</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607241811420_Initial.resx">
-      <DependentUpon>201607241811420_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609241300057_Invitations.resx">
-      <DependentUpon>201609241300057_Invitations.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609272347085_Invitations_v2.resx">
-      <DependentUpon>201609272347085_Invitations_v2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610160755042_Initial.resx">
+      <DependentUpon>201610160755042_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

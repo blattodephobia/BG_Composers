@@ -24,7 +24,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         public virtual ActionResult Activities()
         {
-            var validActivities = from viewModel in typeDiscovery.GetDiscoveredInheritanceChain<PermissionViewModelBase>()
+            var validActivities = from viewModel in typeDiscovery.DiscoveredTypesInheritingFrom<PermissionViewModelBase>()
                                   from mapAttribute in viewModel.GetCustomAttributes<MappableWithAttribute>()
                                   join permission in User.GetPermissions() on mapAttribute.RelatedType equals permission.GetType()
                                   where viewModel.GetCustomAttribute<GeneratedCodeAttribute>() != null

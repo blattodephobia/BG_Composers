@@ -73,6 +73,7 @@
     <Compile Include="Models\CultureSupportSettingTests.cs" />
     <Compile Include="Models\DateTimeSettingTests.cs" />
     <Compile Include="Models\Media\MediaTypeInfoTests.cs" />
+    <Compile Include="Models\PermissionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

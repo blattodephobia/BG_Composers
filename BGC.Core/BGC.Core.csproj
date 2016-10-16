@@ -58,6 +58,7 @@
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Identity\AdministratorRole.cs" />
+    <Compile Include="Models\Identity\ApplicationCriticalRole.cs" />
     <Compile Include="Models\Identity\AuthorizedUserRole.cs" />
     <Compile Include="Models\Identity\BgcRoleManager.cs" />
     <Compile Include="Models\Identity\BgcUserManager.cs" />
