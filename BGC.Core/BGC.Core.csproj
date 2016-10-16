@@ -66,6 +66,7 @@
     <Compile Include="Models\Identity\EditorRole.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
+    <Compile Include="Models\Settings\Setting.SettingDebugView.cs" />
     <Compile Include="Models\Permissions\SendInvitePermission.cs" />
     <Compile Include="Services\IUserManagementService.cs" />
     <Compile Include="SingletonRepository.cs" />

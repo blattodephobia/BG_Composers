@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class Setting : BgcEntity<long>, IParameter<string>
+    [DebuggerDisplay("{" + nameof(StringValue) + "}")]
+    [DebuggerTypeProxy(typeof(SettingDebugView))]
+    public partial class Setting : BgcEntity<long>, IParameter<string>
     {
         public string Name { get; set; }
 
@@ -19,10 +22,7 @@ namespace BGC.Core
 
         public SettingPriority Priority { get; set; }
 
-        public sealed override string ToString()
-        {
-            return $"{Name}: {StringValue}";
-        }
+        public sealed override string ToString() => StringValue;
 
         string IParameter<string>.Value
         {
