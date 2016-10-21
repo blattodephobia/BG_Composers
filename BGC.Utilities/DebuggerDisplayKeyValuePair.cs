@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities
 {
-    [DebuggerDisplay("{Value}", Name = "{Name}", Type = "{Value?.GetType()}")]
+    [DebuggerDisplay("{Value}", Name = "{" + nameof(Name) + "}", Type = "{"+ nameof(Value) + "?.GetType()}")]
     public sealed class DebuggerDisplayKeyValuePair
     {
         public string Name { get; private set; }

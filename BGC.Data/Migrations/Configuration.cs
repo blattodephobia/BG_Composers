@@ -34,7 +34,6 @@ namespace BGC.Data.Migrations
         {
             try
             {
-                System.Diagnostics.Debugger.Launch();
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
                 var userManager = new BgcUserManager(new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context));
 

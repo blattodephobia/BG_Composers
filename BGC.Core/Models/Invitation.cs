@@ -15,6 +15,8 @@ namespace BGC.Core
 
         public DateTime ExpirationDate { get; set; }
 
+        public bool IsObsolete { get; set; }
+
         [Required]
         public virtual BgcUser Sender { get; set; }
 
@@ -39,7 +41,6 @@ namespace BGC.Core
 
         protected Invitation()
         {
-            Id = Guid.NewGuid();
         }
 
         public Invitation(string email, DateTime expirationDate) :

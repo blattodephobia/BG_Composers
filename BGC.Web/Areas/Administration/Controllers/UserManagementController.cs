@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -30,8 +32,21 @@ namespace BGC.Web.Areas.Administration.Controllers
         [ActionName(nameof(SendInvite))]
         public virtual ActionResult SendInvite_Post(SendInvitePermissionViewModel invitation)
         {
-            this.managementService.Invite(invitation.Email);
+            Invitation invitationResult = this.managementService.Invite(invitation.Email, invitation.AvailableRoles.Select(s => new BgcRole(s)));
             return SendInvite();
+            //using (var emailClient = new SmtpClient())
+            //{
+            //    emailClient.Credentials = new NetworkCredential()
+            //    {
+            //        UserName = "",
+            //        Password = ""
+            //    };
+            //    emailClient.Host = "";
+            //    emailClient.Port = 587;
+            //    emailClient.EnableSsl = true;
+            //    emailClient.SendMailAsync(new MailMessage("", invitation.Email, "BGC editor invitation", "body")).RunSynchronously();
+            //    return SendInvite();
+            //}
         }
 
         public UserManagementController(IUserManagementService managementService, BgcRoleManager roleManager)

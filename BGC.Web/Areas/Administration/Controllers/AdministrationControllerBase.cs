@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using CodeShield;
 using Microsoft.AspNet.Identity;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace BGC.Web.Areas.Administration.Controllers
     public class AdministrationControllerBase : Controller
     {
         private BgcUserManager userManager;
+        [Dependency]
         public BgcUserManager UserManager
         {
             get

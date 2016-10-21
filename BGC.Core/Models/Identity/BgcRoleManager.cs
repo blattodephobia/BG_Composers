@@ -11,7 +11,7 @@ namespace BGC.Core
 {
     public class BgcRoleManager : RoleManager<BgcRole, long>
     {
-        public BgcRoleManager(RoleStore<BgcRole, long, BgcUserRole> store) :
+        public BgcRoleManager(IRoleStore<BgcRole, long> store) :
             base(store)
         {
         }

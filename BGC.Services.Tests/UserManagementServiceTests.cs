@@ -17,11 +17,12 @@ namespace BGC.Services.Tests
         {
             Mock<IRepository<BgcUser>> userRepo = new Mock<IRepository<BgcUser>>();
             Mock<IRepository<Invitation>> invitationsRepo = new Mock<IRepository<Invitation>>();
+            Mock<IRepository<BgcRole>> roleRepository = new Mock<IRepository<BgcRole>>();
             BgcUser mockUser = new BgcUser();
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                UserManagementService svc = new UserManagementService(userRepo.Object, invitationsRepo.Object, mockUser);
+                UserManagementService svc = new UserManagementService(userRepo.Object, invitationsRepo.Object, roleRepository.Object, mockUser);
             });
         }
 
@@ -30,13 +31,14 @@ namespace BGC.Services.Tests
         {
             Mock<IRepository<BgcUser>> userRepo = new Mock<IRepository<BgcUser>>();
             Mock<IRepository<Invitation>> invitationsRepo = new Mock<IRepository<Invitation>>();
+            Mock<IRepository<BgcRole>> roleRepository = new Mock<IRepository<BgcRole>>();
 
             BgcUser mockCorrectUser = new BgcUser();
             mockCorrectUser.Roles.Add(new BgcUserRole() { Role = new AdministratorRole(), User = mockCorrectUser });
 
             BgcUser mockWrongUser = new BgcUser();
 
-            UserManagementService svc = new UserManagementService(userRepo.Object, invitationsRepo.Object, mockCorrectUser);
+            UserManagementService svc = new UserManagementService(userRepo.Object, invitationsRepo.Object, roleRepository.Object, mockCorrectUser);
             Assert.Throws<InvalidOperationException>(() =>
             {
                 svc.Administrator = mockWrongUser;

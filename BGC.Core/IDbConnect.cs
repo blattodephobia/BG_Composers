@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	internal interface IDbConnect : IDisposable
+	public interface IDbConnect : IDisposable
 	{
 		IUnitOfWork UnitOfWork { get; }
 	}

@@ -14,7 +14,7 @@ namespace BGC.Core.Services
         IEnumerable<BgcUser> GetUsers();
 
         [OperationContract]
-        Invitation Invite(string email);
+        Invitation Invite(string email, IEnumerable<BgcRole> role);
 
         BgcUser Administrator { get; set; }
     }

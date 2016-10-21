@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public interface IDependencyRegistration<TInjectorObject>
+	public interface IDependencyRegistration<TInjectorObject, TScope>
 	{
-		void RegisterTypes(TInjectorObject helper);
+		void RegisterType(Type type, TInjectorObject helper, TScope scope = default(TScope));
 	}
 }
