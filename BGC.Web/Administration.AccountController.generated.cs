@@ -91,10 +91,10 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Activites = "Activites";
+                public readonly string Activities = "Activities";
                 public readonly string Users = "Users";
             }
-            public readonly string Activites = "~/Areas/Administration/Views/Account/Activites.cshtml";
+            public readonly string Activities = "~/Areas/Administration/Views/Account/Activities.cshtml";
             public readonly string Users = "~/Areas/Administration/Views/Account/Users.cshtml";
         }
     }

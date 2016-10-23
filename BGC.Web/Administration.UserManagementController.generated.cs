@@ -91,6 +91,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
 
+        static readonly ActionParamsClass_SendInvite s_params_SendInvite = new ActionParamsClass_SendInvite();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SendInvite SendInviteParams { get { return s_params_SendInvite; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SendInvite
+        {
+            public readonly string vm = "vm";
+        }
         static readonly ActionParamsClass_SendInvite_Post s_params_SendInvite_Post = new ActionParamsClass_SendInvite_Post();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_SendInvite_Post SendInvite_PostParams { get { return s_params_SendInvite_Post; } }
@@ -109,7 +117,9 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string SendInvite = "SendInvite";
             }
+            public readonly string SendInvite = "~/Areas/Administration/Views/UserManagement/SendInvite.cshtml";
         }
     }
 
@@ -119,13 +129,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         public T4MVC_UserManagementController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void SendInviteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void SendInviteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.Permissions.SendInvitePermissionViewModel vm);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult SendInvite()
+        public override System.Web.Mvc.ActionResult SendInvite(BGC.Web.Areas.Administration.ViewModels.Permissions.SendInvitePermissionViewModel vm)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendInvite);
-            SendInviteOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            SendInviteOverride(callInfo, vm);
             return callInfo;
         }
 
