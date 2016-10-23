@@ -15,5 +15,7 @@ namespace BGC.Web.Areas.Administration.ViewModels.Permissions
         internal override ActionResult ActivityAction => MVC.AdministrationArea.UserManagement.SendInvite();
 
         public List<string> AvailableRoles { get; set; }
+
+        public bool IsPreviousInvitationSent { get; set; }
     }
 }

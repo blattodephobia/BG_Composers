@@ -21,14 +21,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         private BgcRoleManager roleManager;
 
         [HttpGet]
-        [Permissions(typeof(SendInvitePermission))]
-        public virtual ActionResult SendInvite()
+        public virtual ActionResult SendInvite(SendInvitePermissionViewModel vm = null)
         {
-            return View(new SendInvitePermissionViewModel() { AvailableRoles = roleManager.Roles.Select(r => r.Name).ToList() });
+            vm = vm ?? new SendInvitePermissionViewModel();
+            vm.AvailableRoles = roleManager.Roles.Select(r => r.Name).ToList();
+            return View(vm);
         }
 
         [HttpPost]
-        [Permissions(typeof(SendInvitePermission))]
         [ActionName(nameof(SendInvite))]
         public virtual ActionResult SendInvite_Post(SendInvitePermissionViewModel invitation)
         {
@@ -45,7 +45,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             //    emailClient.Port = 587;
             //    emailClient.EnableSsl = true;
             //    emailClient.SendMailAsync(new MailMessage("", invitation.Email, "BGC editor invitation", "body")).RunSynchronously();
-            //    return SendInvite();
+            //    return SendInvite(new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
             //}
         }
 

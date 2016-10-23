@@ -6,6 +6,11 @@
 
 <h2>SendInvite</h2>
 
+@if (Model.IsPreviousInvitationSent)
+{
+    <div>@Localize(Administration.UserManagement.SendInvite.Invitation_sent)</div>
+}
+
 @using (Html.BeginForm(MVC.AdministrationArea.UserManagement.SendInvite_Post(), FormMethod.Post))
 {
     <span>@Localize(Global.Email): @Html.TextBoxFor(m => m.Email)</span>

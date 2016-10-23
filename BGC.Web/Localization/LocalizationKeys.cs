@@ -24,6 +24,7 @@ public class UserManagement
 {
         public class SendInvite
         {
+                    public static readonly string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
                     public static readonly string Roles = "Administration.UserManagement.SendInvite.Roles";
 }
 }

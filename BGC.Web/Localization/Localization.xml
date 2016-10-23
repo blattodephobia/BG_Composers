@@ -27,6 +27,10 @@
     </Account>
     <UserManagement>
       <SendInvite>
+        <LocalizedString key="invitation_sent">
+          <Translation culture="en-US">Invitation has been sent successfully.</Translation>
+          <Translation culture="bg-BG">Поканата беше изпратена успешно.</Translation>
+        </LocalizedString>
         <LocalizedString key="roles">
           <Translation culture="en-US">Roles</Translation>
           <Translation culture="bg-BG">Роли</Translation>
