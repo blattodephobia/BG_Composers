@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitStream.cs" />
     <Compile Include="DebuggerDisplayKeyValuePair.cs" />
     <Compile Include="DiscoverableAttribute.cs" />
     <Compile Include="DiscoverableHierarchyAttribute.cs" />
+    <Compile Include="EncodingExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="IDynamicMemberGetter.cs" />

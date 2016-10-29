@@ -10,7 +10,7 @@ namespace BGC.Core
 {
     public class BgcUserManager : UserManager<BgcUser, long>
     {
-        public BgcUserManager(UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim> userStore) :
+        public BgcUserManager(IUserStore<BgcUser, long> userStore) :
             base(userStore)
         {
 

@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class BgcUser : IdentityUser<long, BgcUserLogin, BgcUserRole, BgcUserClaim>
-	{
-		public static readonly string AdministratorUserName = "Administrator";
+    public class BgcUser : IdentityUser<long, BgcUserLogin, BgcUserRole, BgcUserClaim>
+    {
+        public static readonly string AdministratorUserName = "Administrator";
 
-		public bool MustChangePassword { get; set; }
+        public bool MustChangePassword { get; set; }
 
         public virtual ICollection<Setting> UserSettings { get; set; }
 
-		public BgcUser() :
-			this(string.Empty)
+		public BgcUser()
 		{
 		}
 
