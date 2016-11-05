@@ -51,7 +51,9 @@ namespace BGC.Core
             Shield.ArgumentNotNull(manager, nameof(manager)).ThrowOnError();
             Shield.ArgumentNotNull(user, nameof(user)).ThrowOnError();
 
-            return manager.FindById(user.Id) != null && !string.IsNullOrEmpty(user.Email);
+            return manager.FindById(user.Id) != null &&
+                   !string.IsNullOrWhiteSpace(user.Email) &&
+                   !string.IsNullOrWhiteSpace(user.PasswordHash);
         }
 
         public void Notify(string token, UserManager<BgcUser, long> manager, BgcUser user)
@@ -63,8 +65,8 @@ namespace BGC.Core
             Shield.ArgumentNotNull(purpose, nameof(purpose)).ThrowOnError();
             Shield.ArgumentNotNull(manager, nameof(manager)).ThrowOnError();
             Shield.ArgumentNotNull(user, nameof(user)).ThrowOnError();
+            Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
-            if (!IsValidProviderForUser(manager, user)) return false;
 
             if (purpose == Purposes.PasswordReset)
             {
