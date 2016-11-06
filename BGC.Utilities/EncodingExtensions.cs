@@ -177,7 +177,14 @@ namespace BGC.Utilities
         public static byte[] GetHashCode<THashAlgorithm>(this object @object, byte[] salt = null)
             where THashAlgorithm : HashAlgorithm, new()
         {
-            using (var stream = new MemoryStream())
+            Shield.ArgumentNotNull(@object, nameof(@object));
+
+            byte[] objAsArray = @object as byte[];
+            if (objAsArray != null)
+            {
+                return objAsArray.GetHashCode<THashAlgorithm>(salt);
+            }
+            else using (var stream = new MemoryStream())
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(stream, @object);

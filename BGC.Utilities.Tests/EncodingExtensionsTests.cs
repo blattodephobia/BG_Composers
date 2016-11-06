@@ -25,10 +25,18 @@ namespace BGC.Utilities.Tests
     public class HashingTests
     {
         [Test]
-        public void HashesUsingSha256Correctly()
+        public void HashesByteArrayUsingSha256Correctly()
         {
             byte[] source = Encoding.ASCII.GetBytes("Gaga");
             byte[] hash = source.GetHashCode<SHA256Managed>();
+            Assert.AreEqual("6F9D8993CF8925C317CD5404C7BEB4302605173CA6C5EF27A4CDC65288059958", hash.ToStringAggregate(x => x.ToString("X2")));
+        }
+
+        [Test]
+        public void HashesByteArrayUsingSha256Correctly_ObjectOverload()
+        {
+            byte[] source = Encoding.ASCII.GetBytes("Gaga");
+            byte[] hash = EncodingExtensions.GetHashCode<SHA256Managed>(@object: source);
             Assert.AreEqual("6F9D8993CF8925C317CD5404C7BEB4302605173CA6C5EF27A4CDC65288059958", hash.ToStringAggregate(x => x.ToString("X2")));
         }
 
@@ -41,13 +49,31 @@ namespace BGC.Utilities.Tests
         }
 
         [Test]
-        public void HashGenericObject()
+        public void SameObjectsShouldHaveSameHashes_1()
         {
             string str1 = "Gaga";
             string str2 = "Gaga";
             byte[] hash1 = str1.GetHashCode<SHA256Managed>();
             byte[] hash2 = str2.GetHashCode<SHA256Managed>();
             Assert.IsTrue(hash1.SequenceEqual(hash2));
+        }
+
+        [Test]
+        public void SameObjectsShouldHaveSameHashes_2()
+        {
+            Tuple<string, int> t1 = new Tuple<string, int>("Gaga", 2);
+            Tuple<string, int> t2 = new Tuple<string, int>("Gaga", 2);
+            byte[] hash1 = t1.GetHashCode<SHA256Managed>();
+            byte[] hash2 = t2.GetHashCode<SHA256Managed>();
+            Assert.IsTrue(hash1.SequenceEqual(hash2));
+        }
+
+        [Test]
+        public void DifferentObjectShouldHaveDifferentHashes()
+        {
+            DateTime d1 = new DateTime();
+            DateTime d2 = new DateTime(2016, 11, 6);
+            Assert.IsFalse(d1.GetHashCode<SHA256Managed>().SequenceEqual(d2.GetHashCode<SHA256Managed>()));
         }
     }
 }
