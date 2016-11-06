@@ -1,7 +1,9 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -146,6 +148,44 @@ namespace BGC.Utilities
                 return decryptedByteCount == decryptedBytes.Length
                     ? decryptedBytes
                     : decryptedBytes.Take(decryptedByteCount).ToArray(); // source bytes have had padding; skip it
+            }
+        }
+
+        public static byte[] GetHashCode<THashAlgorithm>(this byte[] source , byte[] salt = null)
+            where THashAlgorithm : HashAlgorithm, new()
+        {
+            Shield.ArgumentNotNull(source, nameof(source)).ThrowOnError();
+
+            using (THashAlgorithm hash = new THashAlgorithm())
+            {
+                byte[] buffer;
+                if (salt != null)
+                {
+                    buffer = new byte[source.Length + salt.Length];
+                    source.CopyTo(buffer, 0);
+                    salt.CopyTo(buffer, source.Length);
+                }
+                else
+                {
+                    buffer = source;
+                }
+
+                return hash.ComputeHash(buffer);
+            }
+        }
+
+        public static byte[] GetHashCode<THashAlgorithm>(this object @object, byte[] salt = null)
+            where THashAlgorithm : HashAlgorithm, new()
+        {
+            using (var stream = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(stream, @object);
+                if (salt != null)
+                {
+                    stream.Write(salt, 0, salt.Length);
+                }
+                return stream.ToArray().GetHashCode<THashAlgorithm>(salt);
             }
         }
 
