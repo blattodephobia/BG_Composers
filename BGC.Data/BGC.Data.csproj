@@ -104,6 +104,10 @@
     <Compile Include="Migrations\201610172129073_Invitations_ObsoleteProperty.Designer.cs">
       <DependentUpon>201610172129073_Invitations_ObsoleteProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611061323408_BgcUser_PasswordResetTokenHash.cs" />
+    <Compile Include="Migrations\201611061323408_BgcUser_PasswordResetTokenHash.Designer.cs">
+      <DependentUpon>201611061323408_BgcUser_PasswordResetTokenHash.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -136,6 +140,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610172129073_Invitations_ObsoleteProperty.resx">
       <DependentUpon>201610172129073_Invitations_ObsoleteProperty.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611061323408_BgcUser_PasswordResetTokenHash.resx">
+      <DependentUpon>201611061323408_BgcUser_PasswordResetTokenHash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
