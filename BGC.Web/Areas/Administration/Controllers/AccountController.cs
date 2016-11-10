@@ -56,7 +56,8 @@ namespace BGC.Web.Areas.Administration.Controllers
             string token = await UserManager.UserTokenProvider.GenerateAsync(TokenPurposes.PasswordReset, UserManager, User);
             User.SetPasswordResetTokenHash(token);
             await UserManager.UpdateAsync(User);
-            return RedirectToAction(MVC.AdministrationArea.Authentication.Login(new LoginViewModel() { IsRedirectFromPasswordReset = true }));
+            vm.TokenSent = true;
+            return RedirectToAction(ResetPassword(vm));
         }
     }
 }
