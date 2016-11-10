@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities
 {
-    public static class EncodingExtensions
+    public static class EncryptionExtensions
     {
         private static string Base62CodingSpace = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
         private static readonly byte[] Salt = Encoding.ASCII.GetBytes("W3cHpHqAGgB0");
@@ -138,6 +138,9 @@ namespace BGC.Utilities
 
         public static byte[] Decrypt(this byte[] source, string password)
         {
+            Shield.ArgumentNotNull(source, nameof(source));
+            Shield.ArgumentNotNull(password, nameof(password));
+
             using (var symmetricKey = new RijndaelManaged() { Mode = CipherMode.CBC, Padding = PaddingMode.PKCS7 })
             using (var key = new Rfc2898DeriveBytes(password, Salt))
             using (var memoryStream = new MemoryStream(source))

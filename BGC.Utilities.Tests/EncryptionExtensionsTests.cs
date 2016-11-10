@@ -36,7 +36,7 @@ namespace BGC.Utilities.Tests
         public void HashesByteArrayUsingSha256Correctly_ObjectOverload()
         {
             byte[] source = Encoding.ASCII.GetBytes("Gaga");
-            byte[] hash = EncodingExtensions.GetHashCode<SHA256Managed>(@object: source);
+            byte[] hash = EncryptionExtensions.GetHashCode<SHA256Managed>(@object: source);
             Assert.AreEqual("6F9D8993CF8925C317CD5404C7BEB4302605173CA6C5EF27A4CDC65288059958", hash.ToStringAggregate(x => x.ToString("X2")));
         }
 
