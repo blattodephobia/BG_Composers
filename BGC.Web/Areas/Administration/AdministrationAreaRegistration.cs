@@ -19,14 +19,11 @@ namespace BGC.Web.Areas.Administration
             context
                 .Routes
                 .MapRoute(
-					name: $"{MVC.AdministrationArea.Name}",
-					url: $"{MVC.AdministrationArea.Name}" + "/{controller}/{action}",
-					defaults: new
-                    {
-                        controller = nameof(AccountController),
-                        action = MVC.AdministrationArea.Account.ActionNames.Activities
-                    })
-				.DataTokens.Add("area", AreaName);
-		}
+                    name: $"{AreaName}",
+                    url: $"{AreaName}/{{controller}}/{{action}}",
+                    namespaces: new[] { typeof(AdministrationControllerBase).Namespace },
+                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
+                .DataTokens.Add("area", AreaName);
+        }
 	}
 }

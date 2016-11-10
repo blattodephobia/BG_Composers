@@ -15,12 +15,20 @@ namespace BGC.Web.Areas.Public
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
-			context.Routes
+			context
+                .Routes
 				.MapRoute(
-					name: "Default",
-					url: "{controller}/{action}",
-					defaults: new { controller = MVC.Public.Main.Name, action = MVC.Public.Main.ActionNames.Index })
-				.DataTokens.Add("area", this.AreaName);
-		}
+					name: "Standard",
+					url: "{controller}/{action}")
+				.DataTokens.Add("area", AreaName);
+
+            context
+                .Routes
+                .MapRoute(
+                    name: "HomePage",
+                    url: "",
+                    defaults: new { controller = MVC.Public.Main.Name, action = MVC.Public.Main.ActionNames.Index })
+                .DataTokens.Add("area", AreaName);
+        }
 	}
 }
