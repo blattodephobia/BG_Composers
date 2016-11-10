@@ -30,7 +30,7 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
-            if (purpose == TokenPurposes.PasswordReset)
+            if (purpose == TokenPurposes.ResetPassword)
             {
                 using (var writer = new BinaryWriter(new MemoryStream()))
                 {
@@ -39,7 +39,9 @@ namespace BGC.Core
                     writer.Write(validity);
                     writer.Write(userId);
                     writer.Write(user.PasswordHash);
-                    return (writer.BaseStream as MemoryStream).ToArray().ToBase62();
+                    byte[] result = (writer.BaseStream as MemoryStream).ToArray();
+                    System.Diagnostics.Trace.WriteLine($"Generated token: {result.ToStringAggregate(b => b.ToString("X2"))} or {result.ToBase62()}");
+                    return result.ToBase62();
                 }
             }
 
@@ -68,11 +70,14 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
-            if (purpose == TokenPurposes.PasswordReset)
+            System.Diagnostics.Trace.WriteLine($"Validating token: {token}");
+
+            if (purpose == TokenPurposes.ResetPassword)
             {
                using (var reader = new BinaryReader(new MemoryStream(token.FromBase62())))
                 {
-                    DateTime validity = new DateTime(reader.ReadInt64());
+                    long ticks = reader.ReadInt64();
+                    DateTime validity = new DateTime(ticks);
                     long userId = reader.ReadInt64();
                     string passwordHash = reader.ReadString();
                     return

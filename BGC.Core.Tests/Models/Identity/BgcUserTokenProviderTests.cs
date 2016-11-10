@@ -69,8 +69,8 @@ namespace BGC.Core.Tests
             var um = new BgcUserManager(mockStore.Object);
             var user = new BgcUser() { Email = "email", PasswordHash = "ABCDEF" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
-            string token = provider.Generate(TokenPurposes.PasswordReset, um, user);
-            Assert.IsTrue(provider.Validate(TokenPurposes.PasswordReset, token, um, user));
+            string token = provider.Generate(TokenPurposes.ResetPassword, um, user);
+            Assert.IsTrue(provider.Validate(TokenPurposes.ResetPassword, token, um, user));
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace BGC.Core.Tests
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
             var um = new BgcUserManager(mockStore.Object);
-            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.PasswordReset, um, new BgcUser() { Email = "test" })); // user has email, but doesn't exist in the IUserStore
+            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, new BgcUser() { Email = "test" })); // user has email, but doesn't exist in the IUserStore
         }
 
         [Test]
@@ -92,7 +92,7 @@ namespace BGC.Core.Tests
             var um = new BgcUserManager(mockStore.Object);
             var user = new BgcUser() { Id = 5 };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
-            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.PasswordReset, um, user)); // user has no email; the provider is not valid
+            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, user)); // user has no email; the provider is not valid
         }
     }
 }

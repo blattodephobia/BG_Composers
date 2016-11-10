@@ -8,6 +8,6 @@ namespace BGC.Core
 {
 	public static class TokenPurposes
     {
-        public static readonly string PasswordReset = nameof(PasswordReset);
+        public static readonly string ResetPassword = nameof(ResetPassword);
     }
 }
