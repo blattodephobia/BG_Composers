@@ -24,6 +24,10 @@
     @RenderSection("scripts", required: false)
 </head>
     <body>
+        @if (User.Identity.IsAuthenticated)
+        {
+            <div>@Html.ActionLink(Localize(Global.Logout), MVC.AdministrationArea.Authentication.Actions.LogOut())</div>
+        }
         @RenderBody()
     </body>
 </html>

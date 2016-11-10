@@ -19,6 +19,11 @@ public class Account
                     public static readonly string UserSettings = "Administration.Account.Activities.UserSettings";
                     public static readonly string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
 }
+public class PasswordReset
+{
+            public static readonly string PasswordResetEmailSent = "Administration.Account.PasswordReset.PasswordResetEmailSent";
+            public static readonly string TypeEmailForPasswordReset = "Administration.Account.PasswordReset.TypeEmailForPasswordReset";
+}
 }
 public class UserManagement
 {
@@ -26,6 +31,14 @@ public class UserManagement
         {
                     public static readonly string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
                     public static readonly string Roles = "Administration.UserManagement.SendInvite.Roles";
+}
+}
+public class Authentication
+{
+        public class Login
+        {
+                    public static readonly string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
+                    public static readonly string Forgot_password = "Administration.Authentication.Login.Forgot_password";
 }
 }
 }
@@ -38,5 +51,6 @@ public class Global
     public static readonly string Ok = "Global.Ok";
     public static readonly string Submit = "Global.Submit";
     public static readonly string Name = "Global.Name";
+    public static readonly string Logout = "Global.Logout";
 }
 }

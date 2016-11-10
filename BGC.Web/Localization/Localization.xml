@@ -24,6 +24,16 @@
           <Translation culture="bg-BG">Глобални настройки</Translation>
         </LocalizedString>
       </Activities>
+      <PasswordReset>
+        <LocalizedString key="PasswordResetEmailSent">
+          <Translation culture="en-US">A password reset email has been sent.</Translation>
+          <Translation culture="bg-BG">Беше изпратен имейл за възстановяване на парола.</Translation>
+        </LocalizedString>
+        <LocalizedString key="TypeEmailForPasswordReset">
+          <Translation culture="en-US">Enter your e-mail address here and we'll send you the instructions for resetting your password.</Translation>
+          <Translation culture="bg-BG">Въведете си имейла тук и ще ви изпратим упътванията, за да си възстановите достъпа.</Translation>
+        </LocalizedString>
+      </PasswordReset>
     </Account>
     <UserManagement>
       <SendInvite>
@@ -37,6 +47,18 @@
         </LocalizedString>
       </SendInvite>
     </UserManagement>
+    <Authentication>
+      <Login>
+        <LocalizedString key="authentication_failure">
+          <Translation culture="en-US">User and/or password incorrect.</Translation>
+          <Translation culture="bg-BG">Грешно потребителско име и/или парола.</Translation>
+        </LocalizedString>
+        <LocalizedString key="Forgot_password">
+          <Translation culture="en-US">Forgot your password?</Translation>
+          <Translation culture="bg-BG">Забравили сте си паролата?</Translation>
+        </LocalizedString>
+      </Login>
+    </Authentication>
   </Administration>
   <Public>
 
@@ -57,6 +79,10 @@
     <LocalizedString key="name">
       <Translation culture="en-US">Name</Translation>
       <Translation culture="bg-BG">Име</Translation>
+    </LocalizedString>
+    <LocalizedString key="logout">
+      <Translation culture="en-US">Log out</Translation>
+      <Translation culture="bg-BG">Изход</Translation>
     </LocalizedString>
   </Global>
 </LocalizationKeys>

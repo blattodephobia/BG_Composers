@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BGC.Web.Areas.Administration.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,8 +9,6 @@ namespace BGC.Web.Areas.Administration
 {
 	public class AdministrationAreaRegistration : AreaRegistration
 	{
-		public static readonly string UrlPrefixToken = "administration";
-
 		public override string AreaName
 		{
 			get { return MVC.AdministrationArea.Name; }
@@ -17,18 +16,16 @@ namespace BGC.Web.Areas.Administration
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
-            context.Routes
+            context
+                .Routes
                 .MapRoute(
-                    name: $"{MVC.AdministrationArea.Name}1",
-                    url: $"{UrlPrefixToken}/{{controller}}/{{action}}",
-                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
-                .DataTokens.Add("area", AreaName);
-
-            context.Routes
-                .MapRoute(
-					name: $"{MVC.AdministrationArea.Name}2",
-					url: $"{MVC.AdministrationArea.Name}/{{controller}}/{{action}}",
-					defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
+					name: $"{MVC.AdministrationArea.Name}",
+					url: $"{MVC.AdministrationArea.Name}" + "/{controller}/{action}",
+					defaults: new
+                    {
+                        controller = nameof(AccountController),
+                        action = MVC.AdministrationArea.Account.ActionNames.Activities
+                    })
 				.DataTokens.Add("area", AreaName);
 		}
 	}

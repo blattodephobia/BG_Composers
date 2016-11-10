@@ -87,7 +87,7 @@ namespace BGC.Web.App_Start
                 new ContainerControlledLifetimeManager(),
                 new InjectionFactory(c =>
                 {
-                    string xmlPath = HttpContext.Current.Request.PhysicalApplicationPath + @"Localization\Localization.xml";
+                    string xmlPath = $@"{HostingEnvironment.ApplicationPhysicalPath}\Localization\Localization.xml";
                     using (Stream xmlStream = File.OpenRead(xmlPath))
                     {
                         XmlDocument localizationXml = new XmlDocument();

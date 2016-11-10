@@ -1,8 +1,14 @@
-﻿@{
+﻿@model LoginViewModel
+
+@{
     ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
+@if (Model.AuthenticationFailure)
+{
+    <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
+}
 @using (Html.BeginForm(MVC.AdministrationArea.Authentication.ActionNames.Login, MVC.AdministrationArea.Authentication.Name, FormMethod.Post))
 {
     <input type="text" name="username"/>
