@@ -53,11 +53,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         [ActionName(nameof(ResetPassword))]
         public virtual async Task<ActionResult> ResetPassword_Post(PasswordResetViewModel vm)
         {
-            string token = await UserManager.UserTokenProvider.GenerateAsync(Purposes.PasswordReset, UserManager, User);
+            string token = await UserManager.UserTokenProvider.GenerateAsync(TokenPurposes.PasswordReset, UserManager, User);
             User.SetPasswordResetTokenHash(token);
             await UserManager.UpdateAsync(User);
-            vm.TokenSent = true;
-            return RedirectToAction(ResetPassword(vm));
+            return RedirectToAction(MVC.AdministrationArea.Authentication.Login(new LoginViewModel() { IsRedirectFromPasswordReset = true }));
         }
     }
 }
