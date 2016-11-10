@@ -13,7 +13,7 @@ namespace BGC.Core
 {
     public partial class BgcUserTokenProvider : IUserTokenProvider<BgcUser, long>
     {
-        private static readonly string[] ValidPurposes = (from field in typeof(Purposes).GetFields(BindingFlags.Static | BindingFlags.Public)
+        private static readonly string[] ValidPurposes = (from field in typeof(TokenPurposes).GetFields(BindingFlags.Static | BindingFlags.Public)
                                                           where field.FieldType == typeof(string)
                                                           select field.GetValue(null) as string).ToArray();
 
@@ -30,7 +30,7 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
-            if (purpose == Purposes.PasswordReset)
+            if (purpose == TokenPurposes.PasswordReset)
             {
                 using (var writer = new BinaryWriter(new MemoryStream()))
                 {
@@ -68,7 +68,7 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
-            if (purpose == Purposes.PasswordReset)
+            if (purpose == TokenPurposes.PasswordReset)
             {
                using (var reader = new BinaryReader(new MemoryStream(token.FromBase62())))
                 {

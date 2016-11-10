@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <Compile Include="Models\Identity\BgcUserTokenProvider.Purposes.cs" />
+    <Compile Include="Models\Identity\TokenPurposes.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
