@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
+using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.Areas.Administration.ViewModels.Permissions;
 using CodeShield;
 using Microsoft.AspNet.Identity;
@@ -8,8 +9,12 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using static BGC.Core.BgcUserTokenProvider;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
@@ -35,6 +40,24 @@ namespace BGC.Web.Areas.Administration.Controllers
                 vm.ActivityUrl = Url.RouteUrl(vm.ActivityAction.GetRouteValueDictionary());
             }
             return View(validActivities);
+        }
+
+        [AllowAnonymous]
+        public virtual ActionResult ResetPassword(PasswordResetViewModel vm = null)
+        {
+            return View(vm);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [ActionName(nameof(ResetPassword))]
+        public virtual async Task<ActionResult> ResetPassword_Post(PasswordResetViewModel vm)
+        {
+            string token = await UserManager.UserTokenProvider.GenerateAsync(Purposes.PasswordReset, UserManager, User);
+            User.SetPasswordResetTokenHash(token);
+            await UserManager.UpdateAsync(User);
+            vm.TokenSent = true;
+            return RedirectToAction(ResetPassword(vm));
         }
     }
 }

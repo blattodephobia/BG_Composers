@@ -34,19 +34,6 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             Invitation invitationResult = this.managementService.Invite(invitation.Email, invitation.AvailableRoles.Select(s => new BgcRole(s)));
             return SendInvite();
-            //using (var emailClient = new SmtpClient())
-            //{
-            //    emailClient.Credentials = new NetworkCredential()
-            //    {
-            //        UserName = "",
-            //        Password = ""
-            //    };
-            //    emailClient.Host = "";
-            //    emailClient.Port = 587;
-            //    emailClient.EnableSsl = true;
-            //    emailClient.SendMailAsync(new MailMessage("", invitation.Email, "BGC editor invitation", "body")).RunSynchronously();
-            //    return SendInvite(new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
-            //}
         }
 
         public UserManagementController(IUserManagementService managementService, BgcRoleManager roleManager)

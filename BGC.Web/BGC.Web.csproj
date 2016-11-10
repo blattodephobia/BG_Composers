@@ -280,6 +280,7 @@
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ApplicationSettingsWritePermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen1.cs">
       <AutoGen>True</AutoGen>
@@ -395,6 +396,7 @@
     <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000002" />
     <Content Include="Areas\Administration\Views\Account\Activities.cshtml" />
     <Content Include="Areas\Administration\Views\UserManagement\SendInvite.cshtml" />
+    <Content Include="Areas\Administration\Views\Account\PasswordReset.cshtml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">
