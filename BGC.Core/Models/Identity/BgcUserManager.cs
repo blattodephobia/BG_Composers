@@ -37,7 +37,7 @@ namespace BGC.Core
             }
         }
 
-        public override Task<IdentityResult> ResetPasswordAsync(long userId, string token, string newPassword)
+        public async override Task<IdentityResult> ResetPasswordAsync(long userId, string token, string newPassword)
         {
             try
             {
@@ -45,7 +45,15 @@ namespace BGC.Core
                     ? Encoding.ASCII.GetString(token.FromBase62().Decrypt(EncryptionKey))
                     : token;
 
-                return base.ResetPasswordAsync(userId, plainToken, newPassword);
+                BgcUser user = await FindByIdAsync(userId);
+                if (user?.CheckPasswordResetToken(plainToken) ?? false)
+                {
+                    return await base.ResetPasswordAsync(userId, plainToken, newPassword);
+                }
+                else
+                {
+                    return IdentityResult.Failed();
+                }
             }
             catch (InvalidDataException)
             {
