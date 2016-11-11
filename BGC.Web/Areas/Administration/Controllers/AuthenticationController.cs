@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
-	public partial class AuthenticationController : AccountController
+	public partial class AuthenticationController : AdministrationControllerBase
 	{
 		public SignInManager<BgcUser, long> SignInManager { get; private set; }
 
@@ -80,5 +80,9 @@ namespace BGC.Web.Areas.Administration.Controllers
 		{
 			SignInManager = signInManager;
 		}
+
+        protected AuthenticationController()
+        {
+        }
     }
 }

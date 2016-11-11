@@ -9,9 +9,17 @@
 {
     <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
 }
+
+@if (Model.IsRedirectFromPasswordReset)
+{
+    <div>@Localize(Administration.Authentication.Login.PasswordResetEmailSent)</div>   
+}
+
 @using (Html.BeginForm(MVC.AdministrationArea.Authentication.ActionNames.Login, MVC.AdministrationArea.Authentication.Name, FormMethod.Post))
 {
     <input type="text" name="username"/>
     <input type="password" name="password"/>
     <input type="submit"/>
 }
+
+<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.AdministrationArea.Authentication.ResetPassword())</div>

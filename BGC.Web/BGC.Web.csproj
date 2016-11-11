@@ -302,6 +302,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizationKeys.tt</DependentUpon>
     </Compile>
+    <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
     <Compile Include="Public.MainController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -316,7 +317,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
-    <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ComposersWebPageBase.cs" />
@@ -396,7 +396,7 @@
     <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000002" />
     <Content Include="Areas\Administration\Views\Account\Activities.cshtml" />
     <Content Include="Areas\Administration\Views\UserManagement\SendInvite.cshtml" />
-    <Content Include="Areas\Administration\Views\Account\PasswordReset.cshtml" />
+    <Content Include="Areas\Administration\Views\Account\RequestPasswordReset.cshtml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">

@@ -4,6 +4,7 @@ using BGC.Utilities;
 using BGC.Web.Areas.Administration.ViewModels.Permissions;
 using CodeShield;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,7 +37,8 @@ namespace BGC.Web.Areas.Administration.Controllers
             return SendInvite();
         }
 
-        public UserManagementController(IUserManagementService managementService, BgcRoleManager roleManager)
+        public UserManagementController(IUserManagementService managementService, BgcRoleManager roleManager, SignInManager<BgcUser, long> signInManager) :
+            base(signInManager)
         {
             this.managementService = Shield.ArgumentNotNull(managementService, nameof(managementService)).GetValueOrThrow();
             this.roleManager = Shield.ArgumentNotNull(roleManager, nameof(roleManager)).GetValueOrThrow();

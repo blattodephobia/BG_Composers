@@ -9,6 +9,8 @@ namespace BGC.Web.Areas.Administration.ViewModels
     public class PasswordResetViewModel : ViewModelBase
     {
         public string Email { get; set; }
-        public bool TokenSent { get; set; }
+        public string ErrorMessageKey { get; set; }
+        public string NewPassword { get; set; }
+        public string Token { get; set; }
     }
 }
