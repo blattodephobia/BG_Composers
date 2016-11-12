@@ -80,6 +80,16 @@ namespace BGC.Utilities.Tests
     [TestFixture]
     public class GetQueryStringTests
     {
+        private class CaptureClass
+        {
+            public string Property { get; set; }
+        }
+
+        private class CaptureClass2
+        {
+            public CaptureClass NestedProperty { get; set; }
+        }
+
         private static void MockActionMethod1(int param1, string param2)
         {
         }
@@ -136,6 +146,20 @@ namespace BGC.Utilities.Tests
         {
             string result = Expressions.GetQueryString(() => MockActionMethod2(this.field1, null), includeNullValueParams: true);
             Assert.AreEqual("param1=5&param2=", result);
+        }
+
+        [Test]
+        public void GeneratesCorrectStringWithNestedMemberAccess1()
+        {
+            CaptureClass cc = new CaptureClass() { Property = "1" };
+            Assert.AreEqual("param1=2&param2=1", Expressions.GetQueryString(() => MockActionMethod2(2, cc.Property)));
+        }
+
+        [Test]
+        public void GeneratesCorrectStringWithNestedMemberAccess2()
+        {
+            CaptureClass2 cc2 = new CaptureClass2() { NestedProperty = new CaptureClass() { Property = "1" } };
+            Assert.AreEqual("param1=2&param2=1", Expressions.GetQueryString(() => MockActionMethod2(2, cc2.NestedProperty.Property)));
         }
 
         [Test]
