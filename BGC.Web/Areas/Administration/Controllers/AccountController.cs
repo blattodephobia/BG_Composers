@@ -64,6 +64,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         [AllowAnonymous]
         [HttpPost]
+        [ActionName(nameof(ResetPassword))]
         public virtual async Task<ActionResult> ResetPassword_Post(PasswordResetViewModel vm)
         {
             BgcUser user = await UserManager.FindByEmailAsync(vm.Email);
@@ -80,24 +81,29 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [AllowAnonymous]
-        public virtual ActionResult RequestPasswordReset(PasswordResetViewModel vm = null)
+        public virtual ActionResult RequestPasswordReset(RequestPasswordResetViewModel vm = null)
         {
             return View(vm);
         }
 
         [AllowAnonymous]
         [HttpPost]
-        [ActionName(nameof(ResetPassword))]
+        [ActionName(nameof(RequestPasswordReset))]
         public virtual async Task<ActionResult> RequestPasswordReset_Post(PasswordResetViewModel vm)
         {
-            string token = await UserManager.GeneratePasswordResetTokenAsync(User.Id);
-            await UserManager.EmailService.SendAsync(new IdentityMessage()
+            BgcUser user = UserManager.FindByEmail(vm.Email);
+            if (user != null)
             {
-                Destination = vm.Email,
-                Subject = "Password reset request",
-                //Body = Url.ActionAbsolute( token
-            });
-            return RedirectToAction(MVC.AdministrationArea.Authentication.Login(new LoginViewModel() { IsRedirectFromPasswordReset = true }));
+                string token = UserManager.GeneratePasswordResetToken(user.Id);
+                await UserManager.EmailService.SendAsync(new IdentityMessage()
+                {
+                    Destination = vm.Email,
+                    Subject = "Password reset request",
+                    Body = $"{Url.ActionAbsolute(ResetPassword())}?{Expressions.GetQueryString(() => ResetPassword(vm.Email, token))}"
+                });
+            }
+            // if user == null, we don't want to disclose that the email is not found, due to security reasons
+            return RequestPasswordReset(new RequestPasswordResetViewModel() { IsEmailSent = true });
         }
     }
 }

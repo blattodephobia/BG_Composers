@@ -19,9 +19,13 @@ public class Account
                     public static readonly string UserSettings = "Administration.Account.Activities.UserSettings";
                     public static readonly string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
 }
+public class RequestPasswordReset
+{
+            public static readonly string PasswordResetEmailSent = "Administration.Account.RequestPasswordReset.PasswordResetEmailSent";
+            public static readonly string TypeEmailForPasswordReset = "Administration.Account.RequestPasswordReset.TypeEmailForPasswordReset";
+}
 public class PasswordReset
 {
-            public static readonly string TypeEmailForPasswordReset = "Administration.Account.PasswordReset.TypeEmailForPasswordReset";
             public static readonly string UnknownEmailError = "Administration.Account.PasswordReset.UnknownEmailError";
 }
 }
@@ -37,7 +41,6 @@ public class Authentication
 {
         public class Login
         {
-                    public static readonly string PasswordResetEmailSent = "Administration.Authentication.Login.PasswordResetEmailSent";
                     public static readonly string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
                     public static readonly string Forgot_password = "Administration.Authentication.Login.Forgot_password";
 }

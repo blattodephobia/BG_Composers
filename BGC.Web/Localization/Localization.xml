@@ -24,11 +24,17 @@
           <Translation culture="bg-BG">Глобални настройки</Translation>
         </LocalizedString>
       </Activities>
-      <PasswordReset>
+      <RequestPasswordReset>
+        <LocalizedString key="PasswordResetEmailSent">
+          <Translation culture="en-US">A password reset email has been sent. If the email is valid, you'll be able to reset your password.</Translation>
+          <Translation culture="bg-BG">Беше изпратен имейл за възстановяване на парола. Ако имейлът е правилен, ще можете да си възстановите достъпа.</Translation>
+        </LocalizedString>
         <LocalizedString key="TypeEmailForPasswordReset">
           <Translation culture="en-US">Enter your e-mail address here and we'll send you the instructions for resetting your password.</Translation>
           <Translation culture="bg-BG">Въведете си имейла тук и ще ви изпратим упътванията, за да си възстановите достъпа.</Translation>
         </LocalizedString>
+      </RequestPasswordReset>
+      <PasswordReset>
         <LocalizedString key="UnknownEmailError">
           <Translation culture="en-US">We can't reset your password. You may have followed a wrong or mistyped link.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим паролата. Възможно е да сте използвали грешен линк.</Translation>
@@ -49,10 +55,6 @@
     </UserManagement>
     <Authentication>
       <Login>
-        <LocalizedString key="PasswordResetEmailSent">
-          <Translation culture="en-US">A password reset email has been sent. If the email is valid, you'll be able to reset your password.</Translation>
-          <Translation culture="bg-BG">Беше изпратен имейл за възстановяване на парола. Ако имейлът е правилен, ще можете да си възстановите достъпа.</Translation>
-        </LocalizedString>
         <LocalizedString key="authentication_failure">
           <Translation culture="en-US">User and/or password incorrect.</Translation>
           <Translation culture="bg-BG">Грешно потребителско име и/или парола.</Translation>

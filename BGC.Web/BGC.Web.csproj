@@ -290,6 +290,7 @@
     <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionViewModelBase.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\SendInvitePermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\UserSettingsPermissionViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\RequestPasswordResetViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
@@ -397,6 +398,7 @@
     <Content Include="Areas\Administration\Views\Account\Activities.cshtml" />
     <Content Include="Areas\Administration\Views\UserManagement\SendInvite.cshtml" />
     <Content Include="Areas\Administration\Views\Account\RequestPasswordReset.cshtml" />
+    <Content Include="Areas\Administration\Views\Account\ResetPassword.cshtml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">

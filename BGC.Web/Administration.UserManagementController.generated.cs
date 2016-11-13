@@ -108,9 +108,9 @@ namespace BGC.Web.Areas.Administration.Controllers
             public readonly string SendInvite_Post = nameof(SendInvite);
             public readonly string Activities = "Activities";
             public readonly string ResetPassword = "ResetPassword";
-            public readonly string ResetPassword_Post = "ResetPassword_Post";
+            public readonly string ResetPassword_Post = nameof(ResetPassword);
             public readonly string RequestPasswordReset = "RequestPasswordReset";
-            public readonly string RequestPasswordReset_Post = nameof(ResetPassword);
+            public readonly string RequestPasswordReset_Post = nameof(RequestPasswordReset);
             public readonly string Login = "Login";
             public readonly string Login_Post = nameof(Login);
             public readonly string LogOut = "LogOut";
@@ -123,9 +123,9 @@ namespace BGC.Web.Areas.Administration.Controllers
             public const string SendInvite_Post = nameof(SendInvite);
             public const string Activities = "Activities";
             public const string ResetPassword = "ResetPassword";
-            public const string ResetPassword_Post = "ResetPassword_Post";
+            public const string ResetPassword_Post = nameof(ResetPassword);
             public const string RequestPasswordReset = "RequestPasswordReset";
-            public const string RequestPasswordReset_Post = nameof(ResetPassword);
+            public const string RequestPasswordReset_Post = nameof(RequestPasswordReset);
             public const string Login = "Login";
             public const string Login_Post = nameof(Login);
             public const string LogOut = "LogOut";
@@ -279,10 +279,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void RequestPasswordResetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm);
+        partial void RequestPasswordResetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.RequestPasswordResetViewModel vm);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult RequestPasswordReset(BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm)
+        public override System.Web.Mvc.ActionResult RequestPasswordReset(BGC.Web.Areas.Administration.ViewModels.RequestPasswordResetViewModel vm)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RequestPasswordReset);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
