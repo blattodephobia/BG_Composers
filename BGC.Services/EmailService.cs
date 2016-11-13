@@ -19,12 +19,17 @@ namespace BGC.Services
             $"{nameof(NetworkCredential.UserName)}, and either one of " +
             $"{nameof(NetworkCredential.Password)} or {nameof(NetworkCredential.SecurePassword)} have to be non-null and non-empty.";
 
+        /// <summary>
+        /// The name of the configuration section in the current application's config file (app.config or Web.config)
+        /// </summary>
+        public static readonly string ConfigFileSectionName = "EmailServiceClients";
+
         private SmtpClientConfigurationElement _configuration;
         private SmtpClientConfigurationElement Configuration => _configuration ?? (_configuration = SmtpClientConfigurationSection
-                .FromConfigFile()
+                .FromConfigFile(ConfigFileSectionName).ValueNotNull(ConfigFileSectionName).GetValueOrThrow()
                 .SmtpClients
                 .Cast<SmtpClientConfigurationElement>()
-                .FirstOrDefault(client => client.Purpose == Purpose));
+                .FirstOrDefault(client => client.Purpose == Purpose).ValueNotNull(Purpose).GetValueOrThrow());
         
         public string Purpose { get; private set; }
 
@@ -56,7 +61,7 @@ namespace BGC.Services
         {
             get
             {
-                return _sender;
+                return _sender ?? (_sender = Configuration.Sender);
             }
 
             set
@@ -74,17 +79,29 @@ namespace BGC.Services
             }
         }
 
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
             using (SmtpClient client = GetEmailClient())
             {
-                return client.SendMailAsync(ConvertToMailMessage(message));
+                await client.SendMailAsync(ConvertToMailMessage(message));
             }
         }
 
-        public EmailService(string purpose)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailService"/> class.
+        /// </summary>
+        /// <param name="purpose">The kind of emails that will be sent through this service.
+        /// The applications's config file must contain a configuration section with the same name as in <see cref="ConfigFileSectionName"/>.
+        /// The section must contain an <see cref="SmtpClientConfigurationElement"/> with the same purpose.</param>
+        /// <param name="sender">The sender, as they'll appear in the recipient's inbox, if the SMTP host supports email spoofing.
+        /// Use null to retrieve that information from the <see cref="SmtpClientConfigurationElement"/>.</param>
+        public EmailService(string purpose, string sender = null)
         {
             Purpose = Shield.IsNotNullOrEmpty(purpose, nameof(purpose)).GetValueOrThrow();
+            if (sender != null)
+            {
+                Sender = sender;
+            }
         }
     }
 }

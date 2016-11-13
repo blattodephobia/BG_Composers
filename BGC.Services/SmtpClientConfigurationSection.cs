@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -10,9 +11,17 @@ namespace BGC.Services
 {
     public class SmtpClientConfigurationSection : ConfigurationSection
     {
-        public static SmtpClientConfigurationSection FromConfigFile(ConfigurationUserLevel userLevel = ConfigurationUserLevel.None)
+        public static SmtpClientConfigurationSection FromConfigFile(string sectionName)
         {
-            return ConfigurationManager.OpenExeConfiguration(userLevel).Sections.OfType<SmtpClientConfigurationSection>().Single();
+            Shield.ArgumentNotNull(sectionName, nameof(sectionName)).ThrowOnError();
+            try
+            {
+                return (SmtpClientConfigurationSection)ConfigurationManager.GetSection(sectionName);
+            }
+            catch (InvalidCastException)
+            {
+                throw new InvalidOperationException($"The section with the name {sectionName} is not of type {typeof(SmtpClientConfigurationSection).FullName}.");
+            }
         }
 
         [ConfigurationProperty(nameof(SmtpClients))]

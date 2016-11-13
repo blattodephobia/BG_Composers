@@ -17,6 +17,9 @@ namespace BGC.Services
         bool? _enableSsl;
         SmtpDeliveryMethod? _deliveryMethod;
 
+        [ConfigurationProperty(nameof(Sender), IsRequired = true)]
+        public string Sender => this[nameof(Sender)] as string;
+
         [ConfigurationProperty(nameof(UserName), IsRequired = true)]
         public string UserName => this[nameof(UserName)] as string;
 
