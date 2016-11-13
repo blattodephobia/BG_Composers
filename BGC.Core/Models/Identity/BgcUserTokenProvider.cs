@@ -22,6 +22,18 @@ namespace BGC.Core
             Shield.AssertOperation(purpose, p => ValidPurposes.Contains(purpose), $"The purpose '{purpose}' is not supported.");
         }
 
+        public static readonly TimeSpan DefaultTokenExpiration = TimeSpan.FromHours(24);
+
+        public BgcUserTokenProvider()
+        {
+            TokenExpiration = DefaultTokenExpiration;
+        }
+
+        /// <summary>
+        /// Gets or sets the time span in which generated tokens are valid. The default is 24 hours.
+        /// </summary>
+        public TimeSpan TokenExpiration { get; set; }
+
         public string Generate(string purpose, UserManager<BgcUser, long> manager, BgcUser user)
         {
             Shield.ArgumentNotNull(purpose, nameof(purpose)).ThrowOnError();
@@ -34,7 +46,7 @@ namespace BGC.Core
             {
                 using (var writer = new BinaryWriter(new MemoryStream()))
                 {
-                    long validity = DateTime.UtcNow.AddDays(1).Ticks;
+                    long validity = DateTime.UtcNow.Add(TokenExpiration).Ticks;
                     long userId = user.Id;
                     writer.Write(validity);
                     writer.Write(userId);
