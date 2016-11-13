@@ -75,7 +75,9 @@ namespace BGC.Web.App_Start
                 ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey,
                 new DirectoryInfo(HostingEnvironment.MapPath(mediaStorageDir)));
 
-            container.RegisterType(typeof(UserManager<BgcUser, long>), new InjectionProperty(nameof(UserManager<BgcUser, long>.EmailService), new EmailService("SystemEmails")));
+            container.RegisterType(typeof(BgcUserManager),
+                new InjectionProperty(nameof(BgcUserManager.EmailService), new EmailService("SystemEmails")),
+                new InjectionProperty(nameof(BgcUserManager.UserTokenProvider), new BgcUserTokenProvider()));
 
             container.RegisterType<BgcUser>(new InjectionFactory(c => c.Resolve<BgcUserManager>().FindByName(HttpContext.Current.User.Identity.Name)));
             
