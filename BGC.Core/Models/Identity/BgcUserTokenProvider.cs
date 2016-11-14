@@ -95,6 +95,7 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
+            bool isValid = false;
             try
             {
                 if (purpose == TokenPurposes.ResetPassword)
@@ -105,19 +106,21 @@ namespace BGC.Core
                         DateTime validity = new DateTime(ticks);
                         long userId = reader.ReadInt64();
                         string passwordHash = reader.ReadString();
-                        return
+                        isValid =
                             DateTime.UtcNow < validity &&
                             userId == user.Id &&
                             passwordHash == user.PasswordHash;
                     }
                 }
             }
-            catch (CryptographicException)
+            catch (InvalidDataException) // Token contains invalid characters. Valid characters for Base62 encoded strings are alphanumerical only.
+            {   
+            }
+            catch (CryptographicException) // The token couldn't be decrypted. Probably it was encrypted with a different encryption key or a corrupt token string was passed.
             {
-                return false; // The token couldn't be decrypted. Probably it was encrypted with a different encryption key or a corrupt token string was passed.
             }
 
-            return false;
+            return isValid;
         }
 
         public Task<string> GenerateAsync(string purpose, UserManager<BgcUser, long> manager, BgcUser user)

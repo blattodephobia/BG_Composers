@@ -42,33 +42,5 @@ namespace BGC.Core
                 throw new EntityNotFoundException(userId, typeof(BgcUser));
             }
         }
-
-        public async override Task<IdentityResult> ResetPasswordAsync(long userId, string token, string newPassword)
-        {
-            Shield.ArgumentNotNull(token, nameof(token)).ThrowOnError();
-            Shield.ArgumentNotNull(newPassword, nameof(newPassword)).ThrowOnError();
-
-            try
-            {
-                BgcUser user = await FindByIdAsync(userId);
-
-                if (user?.CheckPasswordResetToken(token) ?? false)
-                {
-                    return await base.ResetPasswordAsync(userId, token, newPassword);
-                }
-                else
-                {
-                    return IdentityResult.Failed($"Invalid user or token.");
-                }
-            }
-            catch (InvalidDataException)
-            {
-                return IdentityResult.Failed($"Token contains invalid characters. Valid characters are alphanumerical only.");
-            }
-            catch (Exception e)
-            {
-                return IdentityResult.Failed(e.Message);
-            }
-        }
     }
 }
