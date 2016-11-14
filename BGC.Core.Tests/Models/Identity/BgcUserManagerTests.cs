@@ -46,14 +46,14 @@ namespace BGC.Core.Tests.Models.Identity
             var user = new BgcUser() { Id = 5 };
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
-            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = mockTokenProvider.Object, EncryptionKey = "password" };
+            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = mockTokenProvider.Object, };
             manager.GeneratePasswordResetToken(user.Id);
             Assert.IsNotNull(user.PasswordResetTokenHash);
             Assert.AreEqual(1, manager.UserUpdatesCalled);
         }
 
         [Test]
-        public void InvalidPasswordResetToken_FailsEncryption()
+        public void InvalidPasswordResetToken_FailsHashCheck()
         {
             Mock<IUserTokenProvider<BgcUser, long>> mockTokenProvider = new Mock<IUserTokenProvider<BgcUser, long>>();
             mockTokenProvider.Setup(t => t.GenerateAsync(It.IsAny<string>(), It.IsAny<UserManager<BgcUser, long>>(), It.IsAny<BgcUser>())).ReturnsAsync("token");
@@ -62,9 +62,9 @@ namespace BGC.Core.Tests.Models.Identity
             var user = new BgcUser() { Id = 5 };
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
-            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = mockTokenProvider.Object, EncryptionKey = "password" };
+            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = mockTokenProvider.Object, };
             string corruptToken = manager.GeneratePasswordResetToken(user.Id) + "1";
-            Assert.IsFalse(manager.ValidatePasswordResetToken(user, corruptToken).Result);
+            Assert.IsFalse(manager.ResetPassword(user.Id, corruptToken, "test").Succeeded);
         }
 
         [Test]
@@ -80,7 +80,7 @@ namespace BGC.Core.Tests.Models.Identity
                 u.PasswordHash = pass;
             });
 
-            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = new BgcUserTokenProvider(), EncryptionKey = "password" };
+            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = new BgcUserTokenProvider() };
             manager.UpdatePasswordCallback += (u, pass) => u.PasswordHash = pass;
             string encryptedToken = manager.GeneratePasswordResetToken(user.Id);
             manager.ResetPasswordAsync(user.Id, encryptedToken, "new").Wait();
@@ -100,7 +100,7 @@ namespace BGC.Core.Tests.Models.Identity
                 u.PasswordHash = pass;
             });
 
-            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = new BgcUserTokenProvider(), EncryptionKey = "password" };
+            var manager = new BgcUserManagerProxy(mockStore.Object) { UserTokenProvider = new BgcUserTokenProvider() };
             manager.UpdatePasswordCallback += (u, pass) => u.PasswordHash = pass;
             string encryptedToken = manager.GeneratePasswordResetToken(user.Id);
             IdentityResult resetResult = manager.ResetPasswordAsync(user.Id, encryptedToken + "corrupt", "new").Result;

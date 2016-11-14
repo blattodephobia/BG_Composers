@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,14 @@ namespace BGC.Core
 
         public static readonly TimeSpan DefaultTokenExpiration = TimeSpan.FromHours(24);
 
+        private string EncryptToken(byte[] token) => !string.IsNullOrEmpty(EncryptionKey)
+            ? token.Encrypt(EncryptionKey).ToBase62()
+            : token.ToBase62();
+
+        private byte[] DecryptToken(string token) => !string.IsNullOrEmpty(EncryptionKey)
+            ? token.FromBase62().Decrypt(EncryptionKey)
+            : token.FromBase62();
+
         public BgcUserTokenProvider()
         {
             TokenExpiration = DefaultTokenExpiration;
@@ -33,6 +42,11 @@ namespace BGC.Core
         /// Gets or sets the time span in which generated tokens are valid. The default is 24 hours.
         /// </summary>
         public TimeSpan TokenExpiration { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the encryption key used for AES encryption/decryption. Set to null to disable encryption.
+        /// </summary>
+        public string EncryptionKey { get; set; }
 
         public string Generate(string purpose, UserManager<BgcUser, long> manager, BgcUser user)
         {
@@ -52,8 +66,7 @@ namespace BGC.Core
                     writer.Write(userId);
                     writer.Write(user.PasswordHash);
                     byte[] result = (writer.BaseStream as MemoryStream).ToArray();
-                    System.Diagnostics.Trace.WriteLine($"Generated token: {result.ToStringAggregate(b => b.ToString("X2"))} or {result.ToBase62()}");
-                    return result.ToBase62();
+                    return EncryptToken(result);
                 }
             }
 
@@ -82,24 +95,29 @@ namespace BGC.Core
             Shield.AssertOperation(user, u => IsValidProviderForUser(manager, user), $"This {nameof(BgcUserTokenProvider)} is not a valid provider for user {user.UserName}.").ThrowOnError();
             VerifyPurposeIsValid(purpose);
 
-            System.Diagnostics.Trace.WriteLine($"Validating token: {token}");
-
-            if (purpose == TokenPurposes.ResetPassword)
+            try
             {
-               using (var reader = new BinaryReader(new MemoryStream(token.FromBase62())))
+                if (purpose == TokenPurposes.ResetPassword)
                 {
-                    long ticks = reader.ReadInt64();
-                    DateTime validity = new DateTime(ticks);
-                    long userId = reader.ReadInt64();
-                    string passwordHash = reader.ReadString();
-                    return
-                        DateTime.UtcNow < validity &&
-                        userId == user.Id &&
-                        passwordHash == user.PasswordHash;
+                    using (var reader = new BinaryReader(new MemoryStream(DecryptToken(token))))
+                    {
+                        long ticks = reader.ReadInt64();
+                        DateTime validity = new DateTime(ticks);
+                        long userId = reader.ReadInt64();
+                        string passwordHash = reader.ReadString();
+                        return
+                            DateTime.UtcNow < validity &&
+                            userId == user.Id &&
+                            passwordHash == user.PasswordHash;
+                    }
                 }
             }
+            catch (CryptographicException)
+            {
+                return false; // The token couldn't be decrypted. Probably it was encrypted with a different encryption key or a corrupt token string was passed.
+            }
 
-            return false; // we won't make it to this line here - if the purpose is invalid, an exception will be thrown during argument validation
+            return false;
         }
 
         public Task<string> GenerateAsync(string purpose, UserManager<BgcUser, long> manager, BgcUser user)
