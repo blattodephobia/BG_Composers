@@ -27,6 +27,7 @@ public class RequestPasswordReset
 public class PasswordReset
 {
             public static readonly string UnknownEmailError = "Administration.Account.PasswordReset.UnknownEmailError";
+            public static readonly string UnknownError = "Administration.Account.PasswordReset.UnknownError";
 }
 }
 public class UserManagement

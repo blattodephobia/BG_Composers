@@ -52,9 +52,9 @@ namespace BGC.Web.Areas.Administration.Controllers
         public virtual async Task<ActionResult> ResetPassword(string email, string token)
         {
             BgcUser user = await UserManager.FindByEmailAsync(email);
-            if (user != null)
+            if (user != null && await UserManager.UserTokenProvider.ValidateAsync(TokenPurposes.ResetPassword, token, UserManager, user))
             {
-                return View(new PasswordResetViewModel() { Email = email });
+                return View(new PasswordResetViewModel() { Email = email, Token = token });
             }
             else
             {
@@ -70,9 +70,16 @@ namespace BGC.Web.Areas.Administration.Controllers
             BgcUser user = await UserManager.FindByEmailAsync(vm.Email);
             if (user != null)
             {
-                await UserManager.ResetPasswordAsync(user.Id, vm.Token, vm.NewPassword);
-                await SignInManager.SignInAsync(user, false, false);
-                return View(new PasswordResetViewModel());
+                IdentityResult resetPasswordResult = await UserManager.ResetPasswordAsync(user.Id, vm.Token, vm.NewPassword);
+                if (resetPasswordResult.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, false, false);
+                    return RedirectToAction(nameof(Activities));
+                }
+                else
+                {
+                    return View(new PasswordResetViewModel() { ErrorMessageKey = LocalizationKeys.Administration.Account.PasswordReset.UnknownError });
+                }
             }
             else
             {

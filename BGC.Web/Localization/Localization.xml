@@ -39,6 +39,10 @@
           <Translation culture="en-US">We can't reset your password. You may have followed a wrong or mistyped link.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим паролата. Възможно е да сте използвали грешен линк.</Translation>
         </LocalizedString>
+        <LocalizedString key="UnknownError">
+          <Translation culture="en-US">We couldn't reset your password. An unknown error occurred.</Translation>
+          <Translation culture="bg-BG">Не можем да ви възстановим достъпа. Възникна неочаквана грешка.</Translation>
+        </LocalizedString>
       </PasswordReset>
     </Account>
     <UserManagement>
