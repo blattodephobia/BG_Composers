@@ -183,10 +183,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 public readonly string Activities = "Activities";
                 public readonly string RequestPasswordReset = "RequestPasswordReset";
+                public readonly string ResetPassword = "ResetPassword";
                 public readonly string Users = "Users";
             }
             public readonly string Activities = "~/Areas/Administration/Views/Account/Activities.cshtml";
             public readonly string RequestPasswordReset = "~/Areas/Administration/Views/Account/RequestPasswordReset.cshtml";
+            public readonly string ResetPassword = "~/Areas/Administration/Views/Account/ResetPassword.cshtml";
             public readonly string Users = "~/Areas/Administration/Views/Account/Users.cshtml";
         }
     }
