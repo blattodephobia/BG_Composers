@@ -102,8 +102,7 @@ namespace BGC.Core
                 {
                     using (var reader = new BinaryReader(new MemoryStream(DecryptToken(token))))
                     {
-                        long ticks = reader.ReadInt64();
-                        DateTime validity = new DateTime(ticks);
+                        DateTime validity = new DateTime(ticks: reader.ReadInt64());
                         long userId = reader.ReadInt64();
                         string passwordHash = reader.ReadString();
                         isValid =
