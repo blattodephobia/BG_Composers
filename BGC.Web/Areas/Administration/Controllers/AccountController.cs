@@ -21,7 +21,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
 	public partial class AccountController : AuthenticationController
     {
-        private TypeDiscoveryProvider typeDiscovery;
+        private DiscoveredTypes typeDiscovery;
         
         protected AccountController()
         {
@@ -30,7 +30,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         public AccountController(SignInManager<BgcUser, long> signInManager) :
             base(signInManager)
         {            
-            this.typeDiscovery = new TypeDiscoveryProvider(GetType(), a => a == Assembly.GetExecutingAssembly());
+            this.typeDiscovery = TypeDiscovery.Discover(GetType(), a => a == Assembly.GetExecutingAssembly());
         }
 
         public virtual ActionResult Activities()

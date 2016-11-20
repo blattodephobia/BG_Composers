@@ -14,7 +14,7 @@ namespace BGC.Core
     public sealed class AdministratorRole : ApplicationCriticalRole
     {
         private static readonly IEnumerable<Permission> ApplicationPermissions =
-            new TypeDiscoveryProvider()
+            TypeDiscovery.Discover()
                 .DiscoveredTypesInheritingFrom<Permission>()
                 .Where(permission => !permission.IsAbstract)
                 .Select(permission => (Permission)Activator.CreateInstance(permission))

@@ -57,7 +57,7 @@
     <Compile Include="ExpressionsTests.cs" />
     <Compile Include="LambdaCaptureFieldAccessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeDiscoveryProviderTests.cs" />
+    <Compile Include="TypeDiscoveryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">

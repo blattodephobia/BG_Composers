@@ -15,7 +15,7 @@ namespace BGC.Data.Migrations
     {
         private void SeedPermissions(ComposersDbContext context)
         {
-            TypeDiscoveryProvider permissionDiscovery = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Strict, consumingType: typeof(BgcRoleManager));
+            DiscoveredTypes permissionDiscovery = TypeDiscovery.Discover(mode: TypeDiscoveryMode.Strict, consumingType: typeof(BgcRoleManager));
             IEnumerable<Permission> discoveredPermissions = from permission in permissionDiscovery.DiscoveredTypesInheritingFrom<Permission>()
                                                             where !permission.IsAbstract
                                                             select (Permission)Activator.CreateInstance(permission);

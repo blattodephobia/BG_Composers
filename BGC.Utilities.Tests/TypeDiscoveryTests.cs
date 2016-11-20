@@ -22,7 +22,7 @@ namespace BGC.Utilities.Tests
         [Test]
         public void InitializesConsumingTypeWithReflection()
         {
-            TypeDiscoveryProvider obj = new TypeDiscoveryProvider();
+            DiscoveredTypes obj = TypeDiscovery.Discover();
             Assert.AreEqual(typeof(CtorTests), obj.ConsumingType);
         }
     }
@@ -37,7 +37,7 @@ namespace BGC.Utilities.Tests
         public void FiltersAssemblies1()
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName == executingAssembly.GetName().FullName);
+            DiscoveredTypes t = TypeDiscovery.Discover(assemblyPredicate: a => a.GetName().FullName == executingAssembly.GetName().FullName);
             Assert.IsTrue(t.AllDiscoveredTypes().All(discoveredType => discoveredType.Assembly == executingAssembly));
         }
 
@@ -45,7 +45,7 @@ namespace BGC.Utilities.Tests
         public void FiltersAssemblies2()
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
+            DiscoveredTypes t = TypeDiscovery.Discover(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
             Assert.IsFalse(t.AllDiscoveredTypes().Any());
         }
 
@@ -53,7 +53,7 @@ namespace BGC.Utilities.Tests
         public void FiltersConsumingTypes1()
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
+            DiscoveredTypes t = TypeDiscovery.Discover(assemblyPredicate: a => a.GetName().FullName != executingAssembly.GetName().FullName);
             Assert.IsFalse(t.AllDiscoveredTypes().Any());
         }
     }
@@ -74,14 +74,14 @@ namespace BGC.Utilities.Tests
         [Test]
         public void DiscoversRestrictedTypesOnlyInStrictMode()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Strict);
+            DiscoveredTypes t = TypeDiscovery.Discover(mode: TypeDiscoveryMode.Strict);
             Assert.AreEqual(typeof(RestrictedDiscoverableType), t.AllDiscoveredTypes().Single());
         }
 
         [Test]
         public void DiscoversNonRestrictedTypes()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Loose);
+            DiscoveredTypes t = TypeDiscovery.Discover(mode: TypeDiscoveryMode.Loose);
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(FreelyDiscoverableType)));
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(RestrictedDiscoverableType)));
             Assert.AreEqual(2, t.AllDiscoveredTypes().Count());
@@ -90,7 +90,7 @@ namespace BGC.Utilities.Tests
         [Test]
         public void DiscoversWithDerivedConsumerTypes()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(consumingType: typeof(ModeTestDerivedConsumer), mode: TypeDiscoveryMode.Loose);
+            DiscoveredTypes t = TypeDiscovery.DiscoverFor<ModeTestDerivedConsumer>(mode: TypeDiscoveryMode.Loose);
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(FreelyDiscoverableType)));
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(RestrictedDiscoverableType)));
             Assert.AreEqual(2, t.AllDiscoveredTypes().Count());
@@ -123,21 +123,21 @@ namespace BGC.Utilities.Tests
         [Test]
         public void DiscoversDerivedTypes1()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider();
+            DiscoveredTypes t = TypeDiscovery.Discover();
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(DerivedDiscoverable1)));
         }
 
         [Test]
         public void DiscoversDerivedTypes2()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider();
+            DiscoveredTypes t = TypeDiscovery.Discover();
             Assert.IsTrue(t.AllDiscoveredTypes().Contains(typeof(DerivedDiscoverable2)));
         }
 
         [Test]
         public void DiscoversDerivedTypes3()
         {
-            TypeDiscoveryProvider t = new TypeDiscoveryProvider(mode: TypeDiscoveryMode.Loose);
+            DiscoveredTypes t = TypeDiscovery.Discover(mode: TypeDiscoveryMode.Loose);
             List<Type> inheritingTypes = t.DiscoveredTypesInheritingFrom<BaseDiscoverable1>().ToList();
             Assert.AreEqual(2, inheritingTypes.Count);
             Assert.IsTrue(inheritingTypes.Contains(typeof(BaseDiscoverable1)));
@@ -151,7 +151,7 @@ namespace BGC.Utilities.Tests
         [Test]
         public void DoesntDiscoverAnonymousTypesInAnonymousMethods()
         {
-            Lazy<TypeDiscoveryProvider> td = new Lazy<TypeDiscoveryProvider>(() => new TypeDiscoveryProvider());
+            Lazy<DiscoveredTypes> td = new Lazy<DiscoveredTypes>(() => TypeDiscovery.Discover());
             Assert.AreEqual(typeof(Lazy<>), td.Value.ConsumingType);
         }
     }
