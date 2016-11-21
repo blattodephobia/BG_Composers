@@ -155,4 +155,38 @@ namespace BGC.Utilities.Tests
             Assert.AreEqual(typeof(Lazy<>), td.Value.ConsumingType);
         }
     }
+
+    [TestFixture]
+    public class CacheTests
+    {
+        [Test]
+        public void CreatesNewDiscoveryAfterGarbageCollection()
+        {
+            // this will call the CLR implementation of GetHashCode();
+            // different references will produce different hash codes, even if the object is logically the same
+            int oldHashCode = TypeDiscovery.FindDiscoveryFor<CacheTests>().GetHashCode();
+            GC.Collect();
+            int newHashCode = TypeDiscovery.FindDiscoveryFor<CacheTests>().GetHashCode();
+
+            Assert.AreNotEqual(oldHashCode, newHashCode);
+        }
+
+        [Test]
+        public void ReturnsSameDiscoveryBetweenCalls1()
+        {
+            DiscoveredTypes discovery1 = TypeDiscovery.FindDiscoveryFor<CacheTests>();
+            DiscoveredTypes discovery2 = TypeDiscovery.FindDiscoveryFor<CacheTests>();
+
+            Assert.AreSame(discovery1, discovery2);
+        }
+
+        [Test]
+        public void ReturnsSameDiscoveryBetweenCalls2()
+        {
+            int oldHashCode = TypeDiscovery.FindDiscoveryFor<CacheTests>().GetHashCode();
+            int newHashCode = TypeDiscovery.FindDiscoveryFor<CacheTests>().GetHashCode();
+
+            Assert.AreEqual(oldHashCode, newHashCode);
+        }
+    }
 }

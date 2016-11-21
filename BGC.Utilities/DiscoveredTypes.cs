@@ -17,40 +17,14 @@ namespace BGC.Utilities
     {
         private readonly IEnumerable<Assembly> assembliesToSearch;
         private readonly TypeDiscoveryMode mode;
-
-        // This method is a wrapper around Assembly.GetExportedTypes(). Occasionally, that method will attempt to load an assembly that hasn't been loaded in the current application
-        // domain and will throw an exception. The cause, as of the time of writing, is unknown.
-        private static IEnumerable<Type> TryGetExportedTypes(Assembly a)
-        {
-            try
-            {
-                return a.GetExportedTypes();
-            }
-            catch
-            {
-                return Enumerable.Empty<Type>();
-            }
-        }
-
-        private IEnumerable<Type> discoveredTypes;
+        
+        private Lazy<Type[]> _enumeratedTypes;
 
         /// <summary>
         /// Returns all types discovered by this instance of <see cref="DiscoveredTypes"/>.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Type> AllDiscoveredTypes()
-        {
-            return this.discoveredTypes ?? (this.discoveredTypes =
-                from type in this.assembliesToSearch.SelectMany(a => TryGetExportedTypes(a)).ToList()
-                let discoverableAttributes = type.GetCustomAttributes<TypeDiscoveryAttribute>()
-                let matchesConsumingType = (from typeDiscoveryAttribute in discoverableAttributes ?? Enumerable.Empty<TypeDiscoveryAttribute>()
-                                            from consumingType in typeDiscoveryAttribute?.ConsumingTypes
-                                            where consumingType.IsAssignableFrom(ConsumingType)
-                                            select consumingType).Any()
-                let isNonRestrictedType = discoverableAttributes?.Any(t => t.IsFreelyDiscoverable) ?? false
-                where matchesConsumingType || (isNonRestrictedType && this.mode.HasFlag(TypeDiscoveryMode.Loose))
-                select type);
-        }
+        public Type[] AllDiscoveredTypes() => _enumeratedTypes.Value;
 
         /// <summary>
         /// Returns all types discovered by this instance of <see cref="DiscoveredTypes"/> that directly or indirectly inherit from or implement <typeparamref name="TBase"/>.
@@ -65,16 +39,19 @@ namespace BGC.Utilities
         /// <summary>
         /// Initializes a new instance of <see cref="DiscoveredTypes"/> with the specified parameters.
         /// </summary>
-        /// <param name="consumingType">The type for which discoverable types will be found. Use null to set the consuming type to the type calling the constructor via reflection.</param>
-        /// <param name="assemblyPredicate">Filters the loaded assemblies in the current AppDomain. Only those that match the predicate will be searched.</param>
-        /// <param name="useStrictMode">When set to true, only types that are discoverable by a specific consuming type will be returned.
-        /// Otherwise, types whose <see cref="DiscoverableAttribute"/> doesn't specify a specific consuming type will also be included.</param>
+        
         internal DiscoveredTypes(Type consumingType = null, Func<Assembly, bool> assemblyPredicate = null, TypeDiscoveryMode mode = TypeDiscoveryMode.Strict)
         {
             ConsumingType = consumingType;
             assemblyPredicate = assemblyPredicate ?? delegate (Assembly a) { return true; };
             this.assembliesToSearch = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && assemblyPredicate.Invoke(a));
             this.mode = mode;
+        }
+
+        internal DiscoveredTypes(IEnumerable<Type> discoveredTypes, Type consumingType)
+        {
+            _enumeratedTypes = new Lazy<Type[]>(() => discoveredTypes.ToArray());
+            ConsumingType = consumingType;
         }
     }
 }
