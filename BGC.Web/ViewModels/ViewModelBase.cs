@@ -9,9 +9,9 @@ namespace BGC.Web.ViewModels
     {
         protected ViewModelBase()
         {
-            ErrorMessages = new string[0];
+            ErrorMessages = Enumerable.Empty<string>();
         }
 
-        public string[] ErrorMessages { get; set; }
+        public IEnumerable<string> ErrorMessages { get; set; }
     }
 }
