@@ -9,6 +9,9 @@ namespace BGC.Web.ViewModels
     {
         protected ViewModelBase()
         {
+            ErrorMessages = new string[0];
         }
+
+        public string[] ErrorMessages { get; set; }
     }
 }
