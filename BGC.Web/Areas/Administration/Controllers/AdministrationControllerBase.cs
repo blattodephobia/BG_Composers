@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.AspNet.Identity;
 using Microsoft.Practices.Unity;
@@ -11,7 +12,7 @@ using System.Web.Mvc;
 namespace BGC.Web.Areas.Administration.Controllers
 {
     [AdminAreaAuthorization]
-    public class AdministrationControllerBase : Controller
+    public class AdministrationControllerBase : BgcControllerBase
     {
         private BgcUserManager userManager;
         [Dependency]

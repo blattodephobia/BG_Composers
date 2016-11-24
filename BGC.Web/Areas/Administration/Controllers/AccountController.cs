@@ -48,6 +48,45 @@ namespace BGC.Web.Areas.Administration.Controllers
             return View(validActivities);
         }
 
+        public virtual ActionResult ChangePassword(ChangePasswordViewModel vm = null)
+        {
+            return View(vm ?? new ChangePasswordViewModel());
+        }
+
+        [HttpPost]
+        [ActionName(nameof(ChangePassword))]
+        public virtual async Task<ActionResult> ChangePassword_Post(ChangePasswordViewModel vm)
+        {
+            if (!ModelState.IsValidField(nameof(ChangePasswordViewModel.ConfirmPassword)))
+            {
+                return ChangePassword(new ChangePasswordViewModel()
+                {
+                    ErrorMessages = new[] { Localize(LocalizationKeys.Administration.Account.ChangePassword.PasswordsMismatch) }
+                });
+            }
+
+            if (!UserManager.CheckPassword(User, vm.CurrentPassword))
+            {
+                return ChangePassword(new ChangePasswordViewModel()
+                {
+                    ErrorMessages = new[] { Localize(LocalizationKeys.Administration.Account.ChangePassword.WrongPassword) }
+                });
+            }
+
+            IdentityResult opResult = await UserManager.ChangePasswordAsync(User.Id, vm.CurrentPassword, vm.NewPassword);
+            if (opResult.Succeeded)
+            {
+                return RedirectToAction(nameof(Activities));
+            }
+            else
+            {
+                return ChangePassword(new ChangePasswordViewModel()
+                {
+                    ErrorMessages = new[] { Localize(LocalizationKeys.Administration.Account.ChangePassword.UnknownError) }
+                });
+            }
+        }
+
         [AllowAnonymous]
         public virtual async Task<ActionResult> ResetPassword(string email, string token)
         {

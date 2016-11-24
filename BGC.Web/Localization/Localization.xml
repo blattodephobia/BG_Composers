@@ -44,6 +44,40 @@
           <Translation culture="bg-BG">Не можем да ви възстановим достъпа. Възникна неочаквана грешка.</Translation>
         </LocalizedString>
       </PasswordReset>
+      <ChangePassword>
+        <LocalizedString key="ChangePasswordTitle">
+          <Translation culture="en-US">Change password</Translation>
+          <Translation culture="bg-BG">Смяна на парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="PasswordsMismatch">
+          <Translation culture="en-US">Confirm password field must match the new password field.</Translation>
+          <Translation culture="bg-BG">Полето за потвърждение на парола трябва да съотвества на новата парола.</Translation>
+        </LocalizedString>
+        <LocalizedString key="UnknownError">
+          <Translation culture="en-US">An unknown error occurred when attempting to change the password.</Translation>
+          <Translation culture="bg-BG">Възникна неочаквана грешка докато се опитвахме да ви сменим паролата.</Translation>
+        </LocalizedString>
+        <LocalizedString key="WrongPassword">
+          <Translation culture="en-US">Current password is wrong.</Translation>
+          <Translation culture="bg-BG">Грешна текуща парола.</Translation>
+        </LocalizedString>
+        <LocalizedString key="ChangePasswordLabel">
+          <Translation culture="en-US">Change password</Translation>
+          <Translation culture="bg-BG">Смяна на парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="CurrentPassword">
+          <Translation culture="en-US">Current password</Translation>
+          <Translation culture="bg-BG">Текуща парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="NewPassword">
+          <Translation culture="en-US">New password</Translation>
+          <Translation culture="bg-BG">Нова парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="ConfirmNewPassword">
+          <Translation culture="en-US">Confirm new password</Translation>
+          <Translation culture="bg-BG">Потвърждаване на нова парола</Translation>
+        </LocalizedString>
+      </ChangePassword>
     </Account>
     <UserManagement>
       <SendInvite>

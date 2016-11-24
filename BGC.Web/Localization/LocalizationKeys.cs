@@ -29,6 +29,17 @@ public class PasswordReset
             public static readonly string UnknownEmailError = "Administration.Account.PasswordReset.UnknownEmailError";
             public static readonly string UnknownError = "Administration.Account.PasswordReset.UnknownError";
 }
+public class ChangePassword
+{
+            public static readonly string ChangePasswordTitle = "Administration.Account.ChangePassword.ChangePasswordTitle";
+            public static readonly string PasswordsMismatch = "Administration.Account.ChangePassword.PasswordsMismatch";
+            public static readonly string UnknownError = "Administration.Account.ChangePassword.UnknownError";
+            public static readonly string WrongPassword = "Administration.Account.ChangePassword.WrongPassword";
+            public static readonly string ChangePasswordLabel = "Administration.Account.ChangePassword.ChangePasswordLabel";
+            public static readonly string CurrentPassword = "Administration.Account.ChangePassword.CurrentPassword";
+            public static readonly string NewPassword = "Administration.Account.ChangePassword.NewPassword";
+            public static readonly string ConfirmNewPassword = "Administration.Account.ChangePassword.ConfirmNewPassword";
+}
 }
 public class UserManagement
 {

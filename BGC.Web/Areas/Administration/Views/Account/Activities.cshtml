@@ -7,7 +7,7 @@
 }
 
 <h2>Profile</h2>
-
+@Html.ActionLink(Localize(Administration.Account.ChangePassword.ChangePasswordTitle), MVC.AdministrationArea.Account.ChangePassword())
 <ul>
     @foreach (PermissionViewModelBase permission in Model)
     {
