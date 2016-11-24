@@ -35,14 +35,17 @@ namespace BGC.Utilities
 
         private static IEnumerable<Type> GetTypeDiscoveryQuery(IEnumerable<Assembly> assembliesToSearch, Type consumingType, TypeDiscoveryMode mode)
         {
-            var query = from type in assembliesToSearch.SelectMany(a => TryGetExportedTypes(a)).ToList()
+            var query = from type in (from assembly in assembliesToSearch
+                                      from exportedTypes in TryGetExportedTypes(assembly)
+                                      where !assembly.IsDynamic
+                                      select exportedTypes)
                         let discoverableAttributes = type.GetCustomAttributes<TypeDiscoveryAttribute>()
                         let matchesConsumingType = (from typeDiscoveryAttribute in discoverableAttributes ?? Enumerable.Empty<TypeDiscoveryAttribute>()
-                                                    from declaredConsumingType in typeDiscoveryAttribute?.ConsumingTypes
+                                                    from declaredConsumingType in typeDiscoveryAttribute.ConsumingTypes
                                                     where declaredConsumingType.IsAssignableFrom(consumingType)
                                                     select declaredConsumingType).Any()
                         let isNonRestrictedType = discoverableAttributes?.Any(t => t.IsFreelyDiscoverable) ?? false
-                        where matchesConsumingType || (isNonRestrictedType && mode.HasFlag(TypeDiscoveryMode.Loose))
+                        where matchesConsumingType || (mode.HasFlag(TypeDiscoveryMode.Loose) && isNonRestrictedType)
                         select type;
             return query;
         }
