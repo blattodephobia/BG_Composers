@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities
 {
+    /// <summary>
+    /// A factory class for getting a list of types that have had the <see cref="TypeDiscoveryAttribute"/> applied in their definition
+    /// and are not located in a dynamic assembly.
+    /// </summary>
     public static class TypeDiscovery
     {
         private static bool IsAnonymousType(Type t)
@@ -36,8 +40,8 @@ namespace BGC.Utilities
         private static IEnumerable<Type> GetTypeDiscoveryQuery(IEnumerable<Assembly> assembliesToSearch, Type consumingType, TypeDiscoveryMode mode)
         {
             var query = from type in (from assembly in assembliesToSearch
-                                      from exportedTypes in TryGetExportedTypes(assembly)
                                       where !assembly.IsDynamic
+                                      from exportedTypes in TryGetExportedTypes(assembly)
                                       select exportedTypes)
                         let discoverableAttributes = type.GetCustomAttributes<TypeDiscoveryAttribute>()
                         let matchesConsumingType = (from typeDiscoveryAttribute in discoverableAttributes ?? Enumerable.Empty<TypeDiscoveryAttribute>()
