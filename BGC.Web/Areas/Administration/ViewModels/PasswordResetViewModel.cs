@@ -11,8 +11,6 @@ namespace BGC.Web.Areas.Administration.ViewModels
     {
         public string Email { get; set; }
 
-        public string ErrorMessageKey { get; set; }
-
         public string Token { get; set; }
     }
 }

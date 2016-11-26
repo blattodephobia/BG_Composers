@@ -1,4 +1,6 @@
-﻿@{
+﻿@model BGC.Web.ViewModels.ViewModelBase
+
+@{
     Layout = null;
 }
 <!DOCTYPE html>
@@ -24,10 +26,17 @@
     @RenderSection("scripts", required: false)
 </head>
     <body>
-        @if (User.Identity.IsAuthenticated)
+        <div @((Model.RenderErrorsOnly) ? "" : "hidden='hidden'")>
+            @RenderSection("errors", required: false)
+        </div>
+
+        @if (!Model.RenderErrorsOnly)
         {
-            <div>@Html.ActionLink(Localize(Global.Logout), MVC.AdministrationArea.Authentication.Actions.LogOut())</div>
+            if (User.Identity.IsAuthenticated)
+            {
+                <div>@Html.ActionLink(Localize(Global.Logout), MVC.AdministrationArea.Authentication.Actions.LogOut())</div>
+            }
+            @RenderBody()
         }
-        @RenderBody()
     </body>
 </html>

@@ -1,6 +1,6 @@
 ﻿@using BGC.Web.Areas.Administration.ViewModels.Permissions;
 
-@model IEnumerable<PermissionViewModelBase>
+@model ActivitiesViewModel
 
 @{
     ViewBag.Title = "Profile";
@@ -9,7 +9,7 @@
 <h2>Profile</h2>
 @Html.ActionLink(Localize(Administration.Account.ChangePassword.ChangePasswordTitle), MVC.AdministrationArea.Account.ChangePassword())
 <ul>
-    @foreach (PermissionViewModelBase permission in Model)
+    @foreach (PermissionViewModelBase permission in Model.PermittedActions)
     {
         <li>
             @if (!string.IsNullOrEmpty(permission.ActivityUrl))

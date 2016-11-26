@@ -279,6 +279,7 @@
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />

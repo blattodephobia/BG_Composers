@@ -45,7 +45,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 vm.ActivityUrl = Url.RouteUrl(vm.ActivityAction.GetRouteValueDictionary());
             }
-            return View(validActivities);
+            return View(new ActivitiesViewModel() { PermittedActions = validActivities });
         }
 
         public virtual ActionResult ChangePassword(ChangePasswordViewModel vm = null)
@@ -97,7 +97,11 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
             else
             {
-                return View(new PasswordResetViewModel() { ErrorMessageKey = LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError });
+                return View(new PasswordResetViewModel()
+                {
+                    RenderErrorsOnly = true,
+                    ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
+                });
             }
         }
 
@@ -117,12 +121,18 @@ namespace BGC.Web.Areas.Administration.Controllers
                 }
                 else
                 {
-                    return View(new PasswordResetViewModel() { ErrorMessageKey = LocalizationKeys.Administration.Account.PasswordReset.UnknownError });
+                    return View(new PasswordResetViewModel()
+                    {
+                        ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownError }
+                    });
                 }
             }
             else
             {
-                return View(new PasswordResetViewModel() { ErrorMessageKey = LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError });
+                return View(new PasswordResetViewModel()
+                {
+                    ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
+                });
             }
         }
 
