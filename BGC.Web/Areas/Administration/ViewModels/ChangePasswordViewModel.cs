@@ -7,18 +7,9 @@ using System.Web;
 
 namespace BGC.Web.Areas.Administration.ViewModels
 {
-    public class ChangePasswordViewModel : ViewModelBase
+    public class ChangePasswordViewModel : PasswordViewModelBase
     {
-        private const int PASSWORD_MIN_LENGTH = 8;
-
         [Required]
         public string CurrentPassword { get; set; }
-
-        [Required]
-        [MinLength(PASSWORD_MIN_LENGTH)]
-        public string NewPassword { get; set; }
-        
-        [Compare(nameof(NewPassword))]
-        public string ConfirmPassword { get; set; }
     }
 }

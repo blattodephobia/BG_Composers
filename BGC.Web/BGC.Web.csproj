@@ -282,6 +282,7 @@
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ApplicationSettingsWritePermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen1.cs">
       <AutoGen>True</AutoGen>
