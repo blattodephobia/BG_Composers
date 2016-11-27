@@ -181,7 +181,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_ResetPassword
         {
-            public readonly string email = "email";
+            public readonly string referrer = "referrer";
             public readonly string token = "token";
         }
         static readonly ActionParamsClass_ResetPassword_Post s_params_ResetPassword_Post = new ActionParamsClass_ResetPassword_Post();
@@ -305,15 +305,15 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string email, string token);
+        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string referrer, string token);
 
         [NonAction]
-        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword(string email, string token)
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword(string referrer, string token)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "email", email);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "referrer", referrer);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "token", token);
-            ResetPasswordOverride(callInfo, email, token);
+            ResetPasswordOverride(callInfo, referrer, token);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
 

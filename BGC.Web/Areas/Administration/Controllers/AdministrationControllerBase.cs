@@ -18,7 +18,18 @@ namespace BGC.Web.Areas.Administration.Controllers
     public class AdministrationControllerBase : BgcControllerBase
     {
         private string _encryptionKey;
-        private string EncryptionKey => _encryptionKey ?? (_encryptionKey = ConfigurationManager.AppSettings["EncryptionKey"]);
+        internal string EncryptionKey
+        {
+            get
+            {
+                return _encryptionKey ?? (_encryptionKey = ConfigurationManager.AppSettings["EncryptionKey"]);
+            }
+
+            set
+            {
+                _encryptionKey = value;
+            }
+        }
 
         protected string Encrypt(string text)
         {

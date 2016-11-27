@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Utilities;
 using BGC.Web.Areas.Administration.Controllers;
 using BGC.Web.Areas.Administration.ViewModels;
 using Microsoft.AspNet.Identity;
@@ -9,6 +10,7 @@ using NUnit.Framework;
 using System;
 using System.Linq;
 using System.Security.Principal;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -50,6 +52,17 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
                 .ReturnsAsync(mockUser);
 
             return mockStore;
+        }
+
+        private static Mock<IIdentityMessageService> GetMockEmailService(Action<IdentityMessage> callback)
+        {
+            var mockEmailService = new Mock<IIdentityMessageService>();
+            mockEmailService
+                .Setup(s => s.SendAsync(It.IsAny<IdentityMessage>()))
+                .Callback(callback)
+                .Returns(Task.CompletedTask);
+
+            return mockEmailService;
         }
 
         private static Mock<IUserTokenProvider<BgcUser, long>> GetMockTokenProvider(string defaultPasswordResetToken, BgcUser testUser)
@@ -95,16 +108,25 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
         {
             var user = new BgcUser() { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com", UserName = "user" };
             string standardToken = "token";
+            string sentEmail = "";
 
             #region Setup mocks
             Mock<IUserStore<BgcUser, long>> mockStore = GetMockUserStore(user);
             Mock<IUserTokenProvider<BgcUser, long>> mockTokenProvider = GetMockTokenProvider(standardToken, user);
             Mock<BgcUserManager> mockManager = GetMockUserManager(user, mockStore.Object, mockTokenProvider.Object);
             Mock<SignInManager<BgcUser, long>> sm = GetMockSignInManager(mockManager.Object, new Mock<IAuthenticationManager>().Object);
+            Mock<IIdentityMessageService> mService = GetMockEmailService(message => sentEmail = message.Body);
+            mockManager.Object.EmailService = mService.Object;
             #endregion
 
-            AccountController ctrl = new AccountController(sm.Object) { UserManager = mockManager.Object };
-            var model = ((ctrl.ResetPassword(user.Email, standardToken).Result as ViewResult).Model as PasswordResetViewModel);
+            AccountController ctrl = new AccountController(sm.Object)
+            {
+                UserManager = mockManager.Object,
+                EncryptionKey = "123"
+            };
+
+            string encryptedEmail = Encoding.Unicode.GetBytes(user.Email).Encrypt(ctrl.EncryptionKey).ToBase62();
+            var model = ((ctrl.ResetPassword(encryptedEmail, standardToken).Result as ViewResult).Model as PasswordResetViewModel);
             Assert.AreEqual(user.Email, model.Email);
             Assert.AreEqual(standardToken, model.Token);
         }
