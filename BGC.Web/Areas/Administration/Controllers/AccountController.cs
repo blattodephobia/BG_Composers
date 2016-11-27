@@ -88,21 +88,36 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [AllowAnonymous]
-        public virtual async Task<ActionResult> ResetPassword(string email, string token)
+        public virtual async Task<ActionResult> ResetPassword(string referrer, string token)
         {
-            BgcUser user = await UserManager.FindByEmailAsync(email);
-            if (user != null && await UserManager.UserTokenProvider.ValidateAsync(TokenPurposes.ResetPassword, token, UserManager, user))
+            if (TempData.ContainsKey(nameof(PasswordResetViewModel)))
             {
-                return View(new PasswordResetViewModel() { Email = email, Token = token });
+                return View(TempData[nameof(PasswordResetViewModel)]);
             }
-            else
+
+            try
             {
-                return View(new PasswordResetViewModel()
+                string email = Decrypt(referrer);
+                BgcUser user = await UserManager.FindByEmailAsync(email);
+                if (user != null && await UserManager.UserTokenProvider.ValidateAsync(TokenPurposes.ResetPassword, token, UserManager, user))
                 {
-                    RenderErrorsOnly = true,
-                    ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
-                });
+                    return View(new PasswordResetViewModel()
+                    {
+                        Email = email,
+                        Token = token
+                    });
+                }
             }
+            catch (Exception e)
+            {
+                System.Diagnostics.Trace.WriteLine($"An unsuccessful password reset attempt occurred: {e.Message}");
+            }
+
+            return View(new PasswordResetViewModel()
+            {
+                RenderErrorsOnly = true,
+                ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
+            });
         }
 
         [AllowAnonymous]
@@ -110,6 +125,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         [ActionName(nameof(ResetPassword))]
         public virtual async Task<ActionResult> ResetPassword_Post(PasswordResetViewModel vm)
         {
+            if (!ModelState.IsValid)
+            {
+                vm.ErrorMessages = ModelState.Values.SelectMany(m => m.Errors).Select(err => err.ErrorMessage);
+                vm.LocalizeErrors(LocalizationService);
+                TempData.Add(nameof(PasswordResetViewModel), vm);
+                return RedirectToAction(nameof(ResetPassword), new { referrer = Encrypt(vm.Email), token = vm.Token });
+            }
+
             BgcUser user = await UserManager.FindByEmailAsync(vm.Email);
             if (user != null)
             {
@@ -151,11 +174,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             if (user != null)
             {
                 string token = UserManager.GeneratePasswordResetToken(user.Id);
+                string emailEncrypted = Encrypt(vm.Email);
                 await UserManager.EmailService.SendAsync(new IdentityMessage()
                 {
                     Destination = vm.Email,
                     Subject = "Password reset request",
-                    Body = $"{Url.ActionAbsolute(ResetPassword())}?{Expressions.GetQueryString(() => ResetPassword(vm.Email, token))}"
+                    Body = $"{Url.ActionAbsolute(ResetPassword())}?{Expressions.GetQueryString(() => ResetPassword(emailEncrypted, token))}"
                 });
             }
             // if user == null, we don't want to disclose that the email is not found, due to security reasons

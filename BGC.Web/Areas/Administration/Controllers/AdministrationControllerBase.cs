@@ -1,11 +1,14 @@
 ﻿using BGC.Core;
+using BGC.Utilities;
 using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.AspNet.Identity;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -14,6 +17,25 @@ namespace BGC.Web.Areas.Administration.Controllers
     [AdminAreaAuthorization]
     public class AdministrationControllerBase : BgcControllerBase
     {
+        private string _encryptionKey;
+        private string EncryptionKey => _encryptionKey ?? (_encryptionKey = ConfigurationManager.AppSettings["EncryptionKey"]);
+
+        protected string Encrypt(string text)
+        {
+            Shield.ArgumentNotNull(text, nameof(text));
+
+            string result = Encoding.Unicode.GetBytes(text).Encrypt(EncryptionKey).ToBase62();
+            return result;
+        }
+
+        protected string Decrypt(string base62String)
+        {
+            Shield.ArgumentNotNull(base62String, nameof(base62String));
+
+            string result = Encoding.Unicode.GetString(base62String.FromBase62().Decrypt(EncryptionKey));
+            return result;
+        }
+
         private BgcUserManager userManager;
         [Dependency]
         public BgcUserManager UserManager

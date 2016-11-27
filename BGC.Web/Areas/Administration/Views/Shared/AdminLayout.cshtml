@@ -26,7 +26,7 @@
     @RenderSection("scripts", required: false)
 </head>
     <body>
-        <div @((Model.RenderErrorsOnly) ? "" : "hidden='hidden'")>
+        <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
             @RenderSection("errors", required: false)
         </div>
 
