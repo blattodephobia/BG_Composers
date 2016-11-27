@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BGC.Core.Services;
+using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -28,6 +30,13 @@ namespace BGC.Web.ViewModels
             {
                 _renderErrorsOnly = value;
             }
+        }
+
+        public void LocalizeErrors(ILocalizationService localizationService)
+        {
+            Shield.ArgumentNotNull(localizationService);
+
+            ErrorMessages = ErrorMessages?.Select(s => localizationService.Localize(s));;
         }
 
         public IEnumerable<string> ErrorMessages { get; set; }

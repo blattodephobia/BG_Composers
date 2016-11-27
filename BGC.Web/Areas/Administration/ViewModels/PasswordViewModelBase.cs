@@ -13,10 +13,10 @@ namespace BGC.Web.Areas.Administration.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
-        [MinLength(PASSWORD_MIN_LENGTH)]
+        [MinLength(PASSWORD_MIN_LENGTH, ErrorMessage = LocalizationKeys.Administration.Account.ChangePassword.PasswordTooShort)]
         public string NewPassword { get; set; }
 
-        [Compare(nameof(NewPassword))]
+        [Compare(nameof(NewPassword), ErrorMessage = LocalizationKeys.Administration.Account.ChangePassword.PasswordsMismatch)]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }
