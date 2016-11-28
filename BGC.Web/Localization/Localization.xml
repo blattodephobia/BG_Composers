@@ -84,6 +84,16 @@
       </ChangePassword>
     </Account>
     <UserManagement>
+      <LocalizedString key="UserName">
+        <Translation culture="en-US">User name</Translation>
+        <Translation culture="bg-BG">Потребителско име</Translation>
+      </LocalizedString>
+      <Register>
+        <LocalizedString key="UserNameRequired">
+          <Translation culture="en-US">User name is required.</Translation>
+          <Translation culture="bg-BG">Потребителското име е задължително.</Translation>
+        </LocalizedString>
+      </Register>
       <SendInvite>
         <LocalizedString key="invitation_sent">
           <Translation culture="en-US">Invitation has been sent successfully.</Translation>
@@ -97,6 +107,10 @@
     </UserManagement>
     <Authentication>
       <Login>
+        <LocalizedString key="Password">
+          <Translation culture="en-US">Password</Translation>
+          <Translation culture="bg-BG">Парола</Translation>
+        </LocalizedString>
         <LocalizedString key="authentication_failure">
           <Translation culture="en-US">User and/or password incorrect.</Translation>
           <Translation culture="bg-BG">Грешно потребителско име и/или парола.</Translation>
@@ -112,6 +126,10 @@
 
   </Public>
   <Global>
+    <LocalizedString key="InvitationEmailFormat">
+      <Translation culture="en-US">You have been invited to participate in the devlopment of the website &quot;Composers from Bulgaria&quot;. Click the link to register. {0}</Translation>
+      <Translation culture="bg-BG">Поканени сте да участвате в изграждането на уебсайта &quot;Композитори от България&quot;. Кликнете върху линка, за да се регистрирате. {0}</Translation>
+    </LocalizedString>
     <LocalizedString key="email">
       <Translation culture="en-US">Email</Translation>
       <Translation culture="bg-BG">Е-мейл</Translation>

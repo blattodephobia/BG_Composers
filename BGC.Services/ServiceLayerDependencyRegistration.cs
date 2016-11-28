@@ -19,7 +19,6 @@ namespace BGC.Services
             { typeof(ISettingsService),         (c, lm) => c.RegisterType<ISettingsService, SettingsService>(new InjectionFactory(c2 => new SettingsService(c2.Resolve<IRepository<Setting>>()))) },
             { typeof(IArticleContentService),   (c, lm) => c.RegisterType<IArticleContentService, FileSystemArticleContentService>() },
             { typeof(IMediaService),            (c, lm) => c.RegisterType<IMediaService, FileSystemMediaService>() },
-            { typeof(IUserManagementService),   (c, lm) => c.RegisterType<IUserManagementService, UserManagementService>() },
         };
 
         public const string DefaultDataStorageDirectoryKey = "DataStorageDir";

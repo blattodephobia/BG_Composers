@@ -63,7 +63,6 @@ namespace BGC.Web.App_Start
             serviceLayerDependencyRegistration.RegisterType(typeof(ISettingsService),       container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IArticleContentService), container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IMediaService),          container);
-            serviceLayerDependencyRegistration.RegisterType(typeof(IUserManagementService), container);
             
             string dataStorageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey];
             container.RegisterInstance(

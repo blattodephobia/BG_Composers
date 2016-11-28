@@ -8,6 +8,7 @@ using Microsoft.Owin.Security;
 using Moq;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Text;
@@ -91,9 +92,27 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             return new Mock<SignInManager<BgcUser, long>>(mockManager, authManager);
         }
 
-        private static Mock<BgcUserManager> GetMockUserManager(BgcUser user, IUserStore<BgcUser, long> mockStore, IUserTokenProvider<BgcUser, long> mockTokenProvider)
+        private static Mock<IRepository<T>> GetMockRepository<T>(List<T> entities) where T : class
         {
-            Mock<BgcUserManager> mockManager = new Mock<BgcUserManager>(mockStore) { CallBase = true };
+            var mockRepo = new Mock<IRepository<T>>();
+            mockRepo
+                .Setup(m => m.All())
+                .Returns(entities.AsQueryable());
+
+            mockRepo
+                .Setup(m => m.Delete(It.IsNotNull<T>()))
+                .Callback((T entity) => entities.Remove(entity));
+
+            mockRepo
+                .Setup(m => m.Insert(It.IsNotNull<T>()))
+                .Callback((T entity) => entities.Add(entity));
+
+            return mockRepo;
+        }
+
+        private static Mock<BgcUserManager> GetMockUserManager(BgcUser user, IUserStore<BgcUser, long> mockStore, IUserTokenProvider<BgcUser, long> mockTokenProvider, IRepository<BgcRole> mockRoleRepository = null, IRepository<Invitation> mockInvitationsRepo = null)
+        {
+            Mock<BgcUserManager> mockManager = new Mock<BgcUserManager>(mockStore, mockRoleRepository ?? GetMockRepository(new List<BgcRole>()).Object, mockInvitationsRepo ?? GetMockRepository(new List<Invitation>()).Object) { CallBase = true };
             mockManager
                 .Setup(um => um.FindByEmailAsync(It.Is<string>(email => email == user.Email)))
                 .ReturnsAsync(user);

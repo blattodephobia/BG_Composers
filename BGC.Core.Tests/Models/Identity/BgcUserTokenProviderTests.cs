@@ -18,7 +18,9 @@ namespace BGC.Core.Tests
         {
             // valid users are present in the IUserStore, have an Email and a set password
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
@@ -30,7 +32,9 @@ namespace BGC.Core.Tests
         public void RejectsInvalidUsers_Missing()
         {
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Email = "email", PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => (BgcUser)null));
 
@@ -42,7 +46,9 @@ namespace BGC.Core.Tests
         public void RejectsInvalidUsers_NoEmail()
         {
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5, PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
@@ -54,7 +60,9 @@ namespace BGC.Core.Tests
         public void RejectsInvalidUsers_NoPassword()
         {
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5, Email = "email" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
@@ -66,7 +74,9 @@ namespace BGC.Core.Tests
         public void RejectsTokensAfterPasswordHasChanged()
         {
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "old" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
@@ -83,7 +93,9 @@ namespace BGC.Core.Tests
         public void RejectsExpiredTokens()
         {
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "old" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
@@ -102,7 +114,9 @@ namespace BGC.Core.Tests
         {
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Email = "email", PasswordHash = "ABCDEF" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
             string token = provider.Generate(TokenPurposes.ResetPassword, um, user);
@@ -115,7 +129,9 @@ namespace BGC.Core.Tests
             // the provider should call IsValidProviderForUser before operations
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, new BgcUser() { Email = "test" })); // user has email, but doesn't exist in the IUserStore
         }
 
@@ -125,7 +141,9 @@ namespace BGC.Core.Tests
             // the provider should call IsValidProviderForUser before operations
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
             var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var um = new BgcUserManager(mockStore.Object);
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
             var user = new BgcUser() { Id = 5 };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
             Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, user)); // user has no email; the provider is not valid

@@ -44,16 +44,22 @@ public class ChangePassword
 }
 public class UserManagement
 {
-        public class SendInvite
+        public const string UserName = "Administration.UserManagement.UserName";
+        public class Register
         {
-                    public const string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
-                    public const string Roles = "Administration.UserManagement.SendInvite.Roles";
+                    public const string UserNameRequired = "Administration.UserManagement.Register.UserNameRequired";
+}
+public class SendInvite
+{
+            public const string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
+            public const string Roles = "Administration.UserManagement.SendInvite.Roles";
 }
 }
 public class Authentication
 {
         public class Login
         {
+                    public const string Password = "Administration.Authentication.Login.Password";
                     public const string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
                     public const string Forgot_password = "Administration.Authentication.Login.Forgot_password";
 }
@@ -64,6 +70,7 @@ public class Public
 }
 public class Global
 {
+    public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";
     public const string Ok = "Global.Ok";
     public const string Submit = "Global.Submit";

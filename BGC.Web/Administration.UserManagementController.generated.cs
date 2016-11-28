@@ -63,6 +63,18 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Register()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Register);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Register_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Register_Post);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangePassword_Post()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword_Post);
@@ -113,6 +125,8 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public readonly string SendInvite = "SendInvite";
             public readonly string SendInvite_Post = nameof(SendInvite);
+            public readonly string Register = "Register";
+            public readonly string Register_Post = nameof(Register);
             public readonly string Activities = "Activities";
             public readonly string ChangePassword = "ChangePassword";
             public readonly string ChangePassword_Post = nameof(ChangePassword);
@@ -130,6 +144,8 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public const string SendInvite = "SendInvite";
             public const string SendInvite_Post = nameof(SendInvite);
+            public const string Register = "Register";
+            public const string Register_Post = nameof(Register);
             public const string Activities = "Activities";
             public const string ChangePassword = "ChangePassword";
             public const string ChangePassword_Post = nameof(ChangePassword);
@@ -158,6 +174,22 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionParamsClass_SendInvite_Post
         {
             public readonly string invitation = "invitation";
+        }
+        static readonly ActionParamsClass_Register s_params_Register = new ActionParamsClass_Register();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Register RegisterParams { get { return s_params_Register; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Register
+        {
+            public readonly string invitation = "invitation";
+        }
+        static readonly ActionParamsClass_Register_Post s_params_Register_Post = new ActionParamsClass_Register_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Register_Post Register_PostParams { get { return s_params_Register_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Register_Post
+        {
+            public readonly string vm = "vm";
         }
         static readonly ActionParamsClass_ChangePassword s_params_ChangePassword = new ActionParamsClass_ChangePassword();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -234,8 +266,10 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Register = "Register";
                 public readonly string SendInvite = "SendInvite";
             }
+            public readonly string Register = "~/Areas/Administration/Views/UserManagement/Register.cshtml";
             public readonly string SendInvite = "~/Areas/Administration/Views/UserManagement/SendInvite.cshtml";
         }
     }
@@ -266,6 +300,30 @@ namespace BGC.Web.Areas.Administration.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SendInvite_Post);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "invitation", invitation);
             SendInvite_PostOverride(callInfo, invitation);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RegisterOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid invitation);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Register(System.Guid invitation)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Register);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "invitation", invitation);
+            RegisterOverride(callInfo, invitation);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void Register_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.RegisterViewModel vm);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Register_Post(BGC.Web.Areas.Administration.ViewModels.RegisterViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Register_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            Register_PostOverride(callInfo, vm);
             return callInfo;
         }
 

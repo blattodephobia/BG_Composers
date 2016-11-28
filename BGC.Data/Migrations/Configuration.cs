@@ -35,7 +35,10 @@ namespace BGC.Data.Migrations
             try
             {
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
-                var userManager = new BgcUserManager(new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context));
+                var userManager = new BgcUserManager(
+                    new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context),
+                    context.GetRepository<BgcRole>(),
+                    context.GetRepository<Invitation>());
 
                 SeedPermissions(context);
 
