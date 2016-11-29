@@ -98,6 +98,10 @@ namespace TestUtils
                 .Setup(m => m.Insert(It.IsNotNull<T>()))
                 .Callback((T entity) => entities.Add(entity));
 
+            mockRepo
+                .SetupGet(x => x.UnitOfWork)
+                .Returns(new Mock<IUnitOfWork>().Object);
+
             return mockRepo;
         }
 

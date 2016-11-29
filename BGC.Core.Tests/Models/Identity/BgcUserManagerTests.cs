@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TestUtils.Mocks;
 
 namespace BGC.Core.Tests.Models.Identity
 {
@@ -120,8 +121,50 @@ namespace BGC.Core.Tests.Models.Identity
     public class InvitationTests
     {
         [Test]
-        public void ChecksUserPermissions()
+        public void InvitesWithPermissions()
         {
+            var inviteRole = new BgcRole()
+            {
+                Permissions = new List<Permission>() { new SendInvitePermission() }
+            };
+
+            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            permittedUser.Roles.Add(new BgcUserRole()
+            {
+                Role = inviteRole
+            });
+
+            var bgcManager = new BgcUserManager(
+                userStore:       GetMockUserStore(permittedUser).Object,
+                roleRepository:  GetMockRepository(new List<BgcRole>(new[] { inviteRole, new BgcRole("Editor") })).Object,
+                invitationsRepo: GetMockRepository(new List<Invitation>()).Object);
+
+            Invitation result = bgcManager.Invite(permittedUser, "email@provider.com", new[] { new BgcRole("Editor") });
+            Assert.AreEqual("email@provider.com", result.Email);
+            Assert.AreEqual("Editor", result.AvailableRoles.Single().Name);
+            Assert.AreEqual(permittedUser.UserName, result.Sender.UserName);
+        }
+
+        [Test]
+        public void ThrowsOnNoInvitationPermission()
+        {
+            var nonInviteRole = new BgcRole()
+            {
+                Permissions = new List<Permission>() { new UserSettingsPermission() }
+            };
+
+            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            permittedUser.Roles.Add(new BgcUserRole()
+            {
+                Role = nonInviteRole
+            });
+
+            var bgcManager = new BgcUserManager(
+                userStore: GetMockUserStore(permittedUser).Object,
+                roleRepository: GetMockRepository(new List<BgcRole>(new[] { nonInviteRole })).Object,
+                invitationsRepo: GetMockRepository(new List<Invitation>()).Object);
+
+            Assert.Throws<InvalidOperationException>(() => bgcManager.Invite(permittedUser, "email@provider.com", new[] { new BgcRole("Editor") }));
         }
     }
 }

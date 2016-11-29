@@ -90,6 +90,10 @@
       <Project>{e3cb843a-3420-4a76-91c8-e4db0688fef5}</Project>
       <Name>BGC.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{641df2ed-ce8c-4266-805e-b44ca073529f}</Project>
+      <Name>TestUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
