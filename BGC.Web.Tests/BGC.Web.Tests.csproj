@@ -187,6 +187,10 @@
       <Project>{692E9131-A0B6-427B-9600-34BE6777700F}</Project>
       <Name>BGC.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{641df2ed-ce8c-4266-805e-b44ca073529f}</Project>
+      <Name>TestUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />

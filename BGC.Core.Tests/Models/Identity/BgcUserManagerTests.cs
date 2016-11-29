@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Core.Tests.Models.Identity
 {
     [TestFixture]
-    public class BgcUserManagerTests
+    public class PasswordResetTests
     {
         public class BgcUserManagerProxy : BgcUserManager
         {
@@ -113,6 +113,15 @@ namespace BGC.Core.Tests.Models.Identity
             string encryptedToken = manager.GeneratePasswordResetToken(user.Id);
             IdentityResult resetResult = manager.ResetPasswordAsync(user.Id, encryptedToken + "corrupt", "new").Result;
             Assert.IsFalse(resetResult.Succeeded);
+        }
+    }
+
+    [TestFixture]
+    public class InvitationTests
+    {
+        [Test]
+        public void ChecksUserPermissions()
+        {
         }
     }
 }
