@@ -6,6 +6,14 @@
 
 <h2>SendInvite</h2>
 
+@if (Model.ErrorMessages.Any())
+{
+    foreach (string error in Model.ErrorMessages)
+    {
+        <div>@Localize(error)</div>
+    }
+}
+
 @if (Model.IsPreviousInvitationSent)
 {
     <div>@Localize(Administration.UserManagement.SendInvite.Invitation_sent)</div>

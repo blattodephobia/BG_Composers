@@ -53,6 +53,7 @@ public class SendInvite
 {
             public const string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
             public const string Roles = "Administration.UserManagement.SendInvite.Roles";
+            public const string UserExists = "Administration.UserManagement.SendInvite.UserExists";
 }
 }
 public class Authentication

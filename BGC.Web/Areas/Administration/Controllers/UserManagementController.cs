@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Exceptions;
 using BGC.Core.Services;
 using BGC.Utilities;
 using BGC.Web.Areas.Administration.ViewModels;
@@ -24,23 +25,60 @@ namespace BGC.Web.Areas.Administration.Controllers
         [HttpGet]
         public virtual ActionResult SendInvite(SendInvitePermissionViewModel vm = null)
         {
-            vm = vm ?? new SendInvitePermissionViewModel();
-            vm.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
-            return View(vm);
+            if (User.FindPermission<SendInvitePermission>() == null)
+            {
+                return new HttpUnauthorizedResult();
+            }
+            else
+            {
+                vm = vm ?? new SendInvitePermissionViewModel();
+                vm.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+                return View(vm);
+            }
         }
 
         [HttpPost]
         [ActionName(nameof(SendInvite))]
         public virtual ActionResult SendInvite_Post(SendInvitePermissionViewModel invitation)
         {
-            Invitation invitationResult = UserManager.Invite(User, invitation.Email, invitation.AvailableRoles.Select(s => new BgcRole(s)));
-            return SendInvite();
+            try
+            {
+                Invitation invitationResult = UserManager.Invite(User, invitation.Email, invitation.AvailableRoles.Select(s => new BgcRole(s)));
+                UserManager.EmailService.Send(new IdentityMessage()
+                {
+                    Destination = invitationResult.Email,
+                    Subject = "BG Composers invitation",
+                    Body = $"{Url.ActionAbsolute(MVC.AdministrationArea.UserManagement.Register())}?{Expressions.GetQueryString(() => Register(invitationResult.Id))}"
+                });
+                return SendInvite(new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return new HttpUnauthorizedResult();
+            }
+            catch (DuplicateEntityException)
+            {
+                return SendInvite(new SendInvitePermissionViewModel() { ErrorMessages = new[] { LocalizationKeys.Administration.UserManagement.SendInvite.UserExists } });
+            }
         }
 
         [AllowAnonymous]
         public virtual ActionResult Register(Guid invitation)
         {
-            return View(new RegisterViewModel() { InvitationId = invitation });
+            if (TempData.ContainsKey(nameof(RegisterViewModel)))
+            {
+                return View(TempData[nameof(RegisterViewModel)]);
+            }
+            
+            BgcUser user = UserManager.Create(invitation);
+            if (user != null)
+            {
+                return View(new RegisterViewModel() { InvitationId = invitation, Roles = user.Roles.Select(ur => ur.Role.Name).ToList() });
+            }
+            else
+            {
+                return HttpNotFound();
+            }
         }
 
         [AllowAnonymous]

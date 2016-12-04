@@ -103,6 +103,10 @@
           <Translation culture="en-US">Roles</Translation>
           <Translation culture="bg-BG">Роли</Translation>
         </LocalizedString>
+        <LocalizedString key="UserExists">
+          <Translation culture="en-US">A user with this email is already registered.</Translation>
+          <Translation culture="bg-BG">Вече е регистриран потребител с този имейл.</Translation>          
+        </LocalizedString>
       </SendInvite>
     </UserManagement>
     <Authentication>
