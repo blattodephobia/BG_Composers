@@ -97,6 +97,12 @@ namespace BGC.Core
                 throw new DuplicateEntityException($"A user with the email {email} already exists.");
             }
 
+            Invitation oldInvitation = InvitationsRepo.All().FirstOrDefault(i => i.Email == email);
+            if (oldInvitation != null)
+            {
+                InvitationsRepo.Delete(oldInvitation);
+            }
+
             var matchingRoles = from role in RoleRepo.All()
                                 join reqRole in from name in roles
                                                 select name.Name
@@ -107,8 +113,8 @@ namespace BGC.Core
                 Sender = sender,
                 AvailableRoles = new HashSet<BgcRole>(matchingRoles)
             };
-
             InvitationsRepo.Insert(result);
+
             InvitationsRepo.UnitOfWork.SaveChanges();
             return result;
         }
