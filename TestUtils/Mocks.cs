@@ -17,12 +17,22 @@ namespace TestUtils
         {
             var mockStore = chainMock?.As<IUserStore<BgcUser, long>>() ?? new Mock<IUserStore<BgcUser, long>>();
             mockStore
-                .Setup(store => store.FindByIdAsync(mockUser.Id))
+                .Setup(store => store.FindByIdAsync(It.Is<long>(u => u== mockUser.Id)))
                 .ReturnsAsync(mockUser);
 
             mockStore
-                .Setup(store => store.FindByNameAsync(mockUser.UserName))
+                .Setup(store => store.FindByNameAsync(It.Is<string>(s => s == mockUser.UserName)))
                 .ReturnsAsync(mockUser);
+
+            return mockStore;
+        }
+
+        public static Mock<IUserEmailStore<BgcUser, long>> GetMockEmailStore(List<BgcUser> users, Mock chainMock = null)
+        {
+            var mockStore = chainMock?.As<IUserEmailStore<BgcUser, long>>() ?? new Mock<IUserEmailStore<BgcUser, long>>();
+            mockStore
+                .Setup(store => store.FindByEmailAsync(It.IsAny<string>()))
+                .Returns((string email) => Task.Run(() => users.FirstOrDefault(u => u.Email == email)));
 
             return mockStore;
         }

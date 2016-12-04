@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions\BgcException.cs" />
+    <Compile Include="Exceptions\DuplicateEntityException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />

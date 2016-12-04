@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core.Exceptions;
+using BGC.Utilities;
 using CodeShield;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -52,16 +53,49 @@ namespace BGC.Core
             }
         }
 
+        public BgcUser Create(Guid invitationId)
+        {
+            BgcUser result = null;
+            Invitation invitation = InvitationsRepo.All().FirstOrDefault(i => i.Id == invitationId);
+            if (invitation != null)
+            {
+                result = new BgcUser();
+                foreach (BgcRole role in invitation.AvailableRoles)
+                {
+                    result.Roles.Add(new BgcUserRole() { Role = role, User = result });
+                }
+            }
+
+            return result;
+        }
+
         public TimeSpan InvitationExpiration { get; set; }
 
         public IEnumerable<BgcUser> GetUsers() => Users.ToList();
 
+        /// <summary>
+        /// Generates an <see cref="Invitation"/> object that will be used to create a new user, once that user has received the invitation in their email.
+        /// </summary>
+        /// <param name="sender">The user sending the inviation. He or she must have a <see cref="SendInvitePermission"/>.</param>
+        /// <param name="email">The email that will be used for the user's account. Use the same one where the invitation will be delivered.</param>
+        /// <param name="roles">The roles that the user will participate in, once registered.</param>
+        /// <exception cref="UnauthorizedAccessException">The <paramref name="sender"/> doesn't have the necessary permissions to invite others.</exception>
+        /// <returns></returns>
         public Invitation Invite(BgcUser sender, string email, IEnumerable<BgcRole> roles)
         {
             Shield.ArgumentNotNull(sender).ThrowOnError();
             Shield.IsNotNullOrEmpty(email).ThrowOnError();
             Shield.IsNotNullOrEmpty(roles).ThrowOnError();
-            Shield.AssertOperation(sender, s => s.FindPermission<SendInvitePermission>() != null, $"The user {sender.UserName} does not have permissions to send invites.").ThrowOnError();
+            Shield.Assert(
+                value: sender,
+                predicate: s => s.FindPermission<SendInvitePermission>() != null,
+                exceptionProvider: (s) => new UnauthorizedAccessException($"The user {sender.UserName} does not have permissions to send invites."))
+                .ThrowOnError();
+            
+            if (FindByEmailAsync(email).Result != null)
+            {
+                throw new DuplicateEntityException($"A user with the email {email} already exists.");
+            }
 
             var matchingRoles = from role in RoleRepo.All()
                                 join reqRole in from name in roles

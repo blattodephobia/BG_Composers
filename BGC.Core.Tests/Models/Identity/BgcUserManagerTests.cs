@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BGC.Core.Exceptions;
+using Microsoft.AspNet.Identity;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -135,7 +136,7 @@ namespace BGC.Core.Tests.Models.Identity
             });
 
             var bgcManager = new BgcUserManager(
-                userStore:       GetMockUserStore(permittedUser).Object,
+                userStore:       GetMockUserStore(permittedUser, GetMockEmailStore(new List<BgcUser>() { permittedUser })).Object,
                 roleRepository:  GetMockRepository(new List<BgcRole>(new[] { inviteRole, new BgcRole("Editor") })).Object,
                 invitationsRepo: GetMockRepository(new List<Invitation>()).Object);
 
@@ -143,6 +144,28 @@ namespace BGC.Core.Tests.Models.Identity
             Assert.AreEqual("email@provider.com", result.Email);
             Assert.AreEqual("Editor", result.AvailableRoles.Single().Name);
             Assert.AreEqual(permittedUser.UserName, result.Sender.UserName);
+        }
+
+        [Test]
+        public void ThrowsWhenUserIsAlreadyRegistered()
+        {
+            var inviteRole = new BgcRole()
+            {
+                Permissions = new List<Permission>() { new SendInvitePermission() }
+            };
+
+            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            permittedUser.Roles.Add(new BgcUserRole()
+            {
+                Role = inviteRole
+            });
+            var existingUser = new BgcUser() { UserName = "test2", Email = "email@provider.com" };
+            var bgcManager = new BgcUserManager(
+                userStore:       GetMockUserStore(permittedUser, GetMockEmailStore(new List<BgcUser>() { permittedUser, existingUser })).Object,
+                roleRepository:  GetMockRepository(new List<BgcRole>(new[] { inviteRole, new BgcRole("Editor") })).Object,
+                invitationsRepo: GetMockRepository(new List<Invitation>()).Object);
+
+            Assert.Throws<DuplicateEntityException>(() => bgcManager.Invite(permittedUser, existingUser.Email, new[] { new BgcRole("Editor") }));
         }
 
         [Test]
@@ -164,7 +187,7 @@ namespace BGC.Core.Tests.Models.Identity
                 roleRepository: GetMockRepository(new List<BgcRole>(new[] { nonInviteRole })).Object,
                 invitationsRepo: GetMockRepository(new List<Invitation>()).Object);
 
-            Assert.Throws<InvalidOperationException>(() => bgcManager.Invite(permittedUser, "email@provider.com", new[] { new BgcRole("Editor") }));
+            Assert.Throws<UnauthorizedAccessException>(() => bgcManager.Invite(permittedUser, "email@provider.com", new[] { new BgcRole("Editor") }));
         }
     }
 }
