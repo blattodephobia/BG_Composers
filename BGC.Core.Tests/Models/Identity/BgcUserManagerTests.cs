@@ -214,5 +214,31 @@ namespace BGC.Core.Tests.Models.Identity
             Assert.AreEqual("email@provider.com", secondInvitation.Email);
             Assert.AreSame(mockInvitationRepo.All().Single(), secondInvitation);
         }
+
+        [Test]
+        public void DoesntFindExpiredInvitation()
+        {
+            var inviteRole = new BgcRole()
+            {
+                Permissions = new List<Permission>() { new SendInvitePermission() }
+            };
+
+            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            permittedUser.Roles.Add(new BgcUserRole()
+            {
+                Role = inviteRole
+            });
+            var mockInvitationRepo = GetMockRepository(new List<Invitation>()).Object;
+
+            var bgcManager = new BgcUserManager(
+                userStore: GetMockUserStore(permittedUser, GetMockEmailStore(new List<BgcUser>() { permittedUser })).Object,
+                roleRepository: GetMockRepository(new List<BgcRole>(new[] { inviteRole, new BgcRole("Editor") })).Object,
+                invitationsRepo: mockInvitationRepo);
+
+            Guid invitationId = new Guid(0, 0, 8, new byte[8]);
+            mockInvitationRepo.Insert(new Invitation("sample@mail.com", DateTime.UtcNow.Subtract(bgcManager.InvitationExpiration)) { Id = invitationId });
+
+            Assert.IsNull(bgcManager.FindInvitation(invitationId));
+        }
     }
 }

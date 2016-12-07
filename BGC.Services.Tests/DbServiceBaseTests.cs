@@ -7,6 +7,7 @@ using BGC.Core.Services;
 using Moq;
 using System.Runtime.CompilerServices;
 using BGC.Services;
+using System.Data.Entity;
 
 namespace BGC.Core.Tests
 {
@@ -55,6 +56,11 @@ namespace BGC.Core.Tests
         {
             throw new NotImplementedException();
         }
+
+        public void SetState<T>(T entity, EntityState state) where T : class
+        {
+            throw new NotImplementedException();
+        }
     }
 
     internal class MockUnitOfWorkThrowsOnGetHashCode : IUnitOfWork
@@ -75,6 +81,11 @@ namespace BGC.Core.Tests
         }
 
         public IRepository<T> GetRepository<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetState<T>(T entity, EntityState state) where T : class
         {
             throw new NotImplementedException();
         }
