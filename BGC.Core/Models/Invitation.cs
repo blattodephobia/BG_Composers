@@ -37,7 +37,7 @@ namespace BGC.Core
         /// <summary>
         /// Returns true if the <see cref="ExpirationDate"/> is in the future.
         /// </summary>
-        public bool IsValid => DateTime.Now < ExpirationDate;
+        public bool IsValid => DateTime.UtcNow < ExpirationDate;
 
         protected Invitation()
         {

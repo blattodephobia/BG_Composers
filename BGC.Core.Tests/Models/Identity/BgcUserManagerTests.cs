@@ -119,6 +119,23 @@ namespace BGC.Core.Tests.Models.Identity
     }
 
     [TestFixture]
+    public class CreateUserTests
+    {
+        [Test]
+        public void ThrowsExceptionOnUserAlreadyExisting()
+        {
+            Guid invitationId = new Guid(0, 8, 0, new byte[8]);
+            var user = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var bgcManager = new BgcUserManager(
+                userStore:       GetMockUserStore(user, GetMockEmailStore(new List<BgcUser>() { user })).Object,
+                roleRepository:  GetMockRepository(new List<BgcRole>()).Object,
+                invitationsRepo: GetMockRepository(new List<Invitation>(new[] { new Invitation("sdf", DateTime.MaxValue) { Id = invitationId } })).Object);
+
+            Assert.Throws<DuplicateEntityException>(() => bgcManager.Create(invitationId, "test", "asdasdasd"));
+        }
+    }
+
+    [TestFixture]
     public class InvitationTests
     {
         [Test]
