@@ -97,6 +97,10 @@
           <Translation culture="en-US">User name is required.</Translation>
           <Translation culture="bg-BG">Потребителското име е задължително.</Translation>
         </LocalizedString>
+        <LocalizedString key="UserNameInUse">
+          <Translation culture="en-US">A user with that name already exists.</Translation>
+          <Translation culture="bg-BG">Това потребителско име е заето.</Translation>
+        </LocalizedString>
       </Register>
       <SendInvite>
         <LocalizedString key="invitation_sent">

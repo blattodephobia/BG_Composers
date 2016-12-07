@@ -31,8 +31,11 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
             else
             {
-                vm = vm ?? new SendInvitePermissionViewModel();
-                vm.AvailableRoles = _roleManager.Roles.Select(r => r.Name).ToList();
+                vm =
+                    vm ??
+                    TempData[nameof(SendInvitePermissionViewModel)] as SendInvitePermissionViewModel ??
+                    new SendInvitePermissionViewModel();
+                vm.AvailableRoles = vm.AvailableRoles ?? _roleManager.Roles.Select(r => r.Name).ToList();
                 return View(vm);
             }
         }
@@ -50,7 +53,8 @@ namespace BGC.Web.Areas.Administration.Controllers
                     Subject = "BG Composers invitation",
                     Body = $"{Url.ActionAbsolute(MVC.AdministrationArea.UserManagement.Register())}?{Expressions.GetQueryString(() => Register(invitationResult.Id))}"
                 });
-                return SendInvite(new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
+                TempData.Add(nameof(SendInvitePermissionViewModel), new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
+                return RedirectToAction(nameof(SendInvite));
             }
             catch (UnauthorizedAccessException)
             {
@@ -70,10 +74,14 @@ namespace BGC.Web.Areas.Administration.Controllers
                 return View(TempData[nameof(RegisterViewModel)]);
             }
             
-            BgcUser user = UserManager.Create(invitation);
-            if (user != null)
+            Invitation dbInvitation = UserManager.FindInvitation(invitation);
+            if (dbInvitation != null)
             {
-                return View(new RegisterViewModel() { InvitationId = invitation, Roles = user.Roles.Select(ur => ur.Role.Name).ToList() });
+                return View(new RegisterViewModel()
+                {
+                    InvitationId = invitation,
+                    Roles = dbInvitation.AvailableRoles.Select(s => s.Name).ToList()
+                });
             }
             else
             {
@@ -88,14 +96,27 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData.Add(nameof(RegisterViewModel), vm);
+                TempData.Add(nameof(RegisterViewModel), vm.WithModelStateErrors(ModelState));
                 return RedirectToAction(nameof(Register), new { invitation = vm.InvitationId });
             }
 
-            var user = new BgcUser(vm.UserName);
-            UserManager.Create(user, vm.NewPassword);
-            SignInManager.SignIn(user, false, false);
-            return RedirectToAction(MVC.AdministrationArea.Account.Activities());
+            try
+            {
+                var user = UserManager.Create(vm.InvitationId, vm.UserName, vm.NewPassword);
+                SignInManager.SignIn(user, false, false);
+                return RedirectToAction(MVC.AdministrationArea.Account.Activities());
+            }
+            catch (EntityNotFoundException)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+            }
+            catch (DuplicateEntityException)
+            {
+                vm.ErrorMessages = new[] { LocalizationKeys.Administration.UserManagement.Register.UserNameInUse };
+                TempData.Add(nameof(RegisterViewModel), vm.WithModelStateErrors(ModelState));
+
+                return RedirectToAction(nameof(Register), new { invitation = vm.InvitationId });
+            }
         }
 
         public UserManagementController(BgcRoleManager roleManager, SignInManager<BgcUser, long> signInManager) :

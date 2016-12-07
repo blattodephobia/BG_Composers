@@ -9,12 +9,13 @@
 {
     @if (Model.ErrorMessages.Any())
     {
-        <div>@Model.ErrorMessages.First()</div>
+        <div>@Localize(Model.ErrorMessages.First())</div>
     }
 }
 
 @using (Html.BeginForm(MVC.AdministrationArea.UserManagement.Register_Post()))
 {
+    @Html.HiddenFor(m => m.InvitationId)
     <table>
         <tbody>
             <tr>

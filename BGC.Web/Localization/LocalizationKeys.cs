@@ -49,6 +49,7 @@ public class UserManagement
         public class Register
         {
                     public const string UserNameRequired = "Administration.UserManagement.Register.UserNameRequired";
+                    public const string UserNameInUse = "Administration.UserManagement.Register.UserNameInUse";
 }
 public class SendInvite
 {
