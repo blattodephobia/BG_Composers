@@ -40,6 +40,7 @@ public class ChangePassword
             public const string CurrentPassword = "Administration.Account.ChangePassword.CurrentPassword";
             public const string NewPassword = "Administration.Account.ChangePassword.NewPassword";
             public const string ConfirmNewPassword = "Administration.Account.ChangePassword.ConfirmNewPassword";
+            public const string PasswordRequired = "Administration.Account.ChangePassword.PasswordRequired";
 }
 }
 public class UserManagement

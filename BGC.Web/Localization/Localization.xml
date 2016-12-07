@@ -81,6 +81,10 @@
           <Translation culture="en-US">Confirm new password</Translation>
           <Translation culture="bg-BG">Потвърждаване на нова парола</Translation>
         </LocalizedString>
+        <LocalizedString key="PasswordRequired">
+          <Translation culture="en-US">The password is required.</Translation>
+          <Translation culture="bg-BG">Въвеждането на парола е задължително.</Translation>
+        </LocalizedString>
       </ChangePassword>
     </Account>
     <UserManagement>

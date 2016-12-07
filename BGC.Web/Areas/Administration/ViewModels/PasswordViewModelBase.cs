@@ -11,7 +11,7 @@ namespace BGC.Web.Areas.Administration.ViewModels
     {
         private const int PASSWORD_MIN_LENGTH = 8;
 
-        [Required]
+        [Required(ErrorMessage = LocalizationKeys.Administration.Account.ChangePassword.PasswordRequired)]
         [DataType(DataType.Password)]
         [MinLength(PASSWORD_MIN_LENGTH, ErrorMessage = LocalizationKeys.Administration.Account.ChangePassword.PasswordTooShort)]
         public string NewPassword { get; set; }
