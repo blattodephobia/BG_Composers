@@ -13,7 +13,7 @@ namespace BGC.Data.Migrations
 {
     internal sealed class Configuration : DbMigrationsConfiguration<ComposersDbContext>
     {
-        private void SeedPermissions(ComposersDbContext context)
+        private static void SeedPermissions(ComposersDbContext context)
         {
             DiscoveredTypes permissionDiscovery = TypeDiscovery.Discover(mode: TypeDiscoveryMode.Strict, consumingType: typeof(BgcRoleManager));
             IEnumerable<Permission> discoveredPermissions = from permission in permissionDiscovery.DiscoveredTypesInheritingFrom<Permission>()
@@ -30,10 +30,37 @@ namespace BGC.Data.Migrations
             context.SaveChanges();
         }
 
+        private static void SeedRoles(ComposersDbContext context, BgcRoleManager roleManager)
+        {
+            if (!roleManager.RoleExists(nameof(EditorRole)))
+            {
+                roleManager.Create(new EditorRole());
+            }
+
+            if (!roleManager.RoleExists(nameof(AdministratorRole)))
+            {
+                var adminRole = new AdministratorRole();
+                roleManager.Create(adminRole);
+            }
+            else
+            {
+                BgcRole adminRole = roleManager.FindByName(nameof(AdministratorRole));
+                HashSet<Permission> adminPermissions = new HashSet<Permission>(adminRole.Permissions);
+                foreach (Permission permission in context.Permissions)
+                {
+                    if (!adminPermissions.Contains(permission))
+                    {
+                        adminRole.Permissions.Add(permission);
+                    }
+                }
+            }
+        }
+
         protected override void Seed(ComposersDbContext context)
         {
             try
             {
+                System.Diagnostics.Debugger.Launch();
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
                 var userManager = new BgcUserManager(
                     new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context),
@@ -42,23 +69,7 @@ namespace BGC.Data.Migrations
 
                 SeedPermissions(context);
 
-                if (!roleManager.RoleExists(nameof(AdministratorRole)))
-                {
-                    var adminRole = new AdministratorRole();
-                    roleManager.Create(adminRole);
-                }
-                else
-                {
-                    BgcRole adminRole = roleManager.FindByName(nameof(AdministratorRole));
-                    HashSet<Permission> adminPermissions = new HashSet<Permission>(adminRole.Permissions);
-                    foreach (Permission permission in context.Permissions)
-                    {
-                        if (!adminPermissions.Contains(permission))
-                        {
-                            adminRole.Permissions.Add(permission);
-                        }
-                    }
-                }
+                SeedRoles(context, roleManager);
                 context.SaveChanges();
 
                 if (userManager.FindByName(BgcUser.AdministratorUserName) == null)

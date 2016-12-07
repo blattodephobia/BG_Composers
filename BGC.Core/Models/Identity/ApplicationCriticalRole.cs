@@ -10,8 +10,9 @@ namespace BGC.Core
     {
         public sealed override bool CanDelete => false;
 
-        internal ApplicationCriticalRole()
+        protected ApplicationCriticalRole()
         {
+            Name = GetType().Name;
         }
     }
 }

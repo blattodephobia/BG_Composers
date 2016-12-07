@@ -19,21 +19,21 @@ namespace BGC.Core
         }
 
         /// <summary>
-        /// Determines whether this role can be deleted from the data store or not; crucial, compile-time known roles cannot be deleted.
+        /// Determines whether this role can be deleted from the data store or not; crucial, compile-time known roles except <see cref="BgcRole"/> cannot be deleted.
         /// </summary>
         public virtual bool CanDelete => true;
 
-        private ICollection<Permission> permissions;
+        private ICollection<Permission> _permissions;
         public virtual ICollection<Permission> Permissions
         {
             get
             {
-                return this.permissions ?? (this.permissions = new HashSet<Permission>());
+                return _permissions ?? (_permissions = new HashSet<Permission>());
             }
 
             set
             {
-                this.permissions = value;
+                _permissions = value;
             }
         }
 

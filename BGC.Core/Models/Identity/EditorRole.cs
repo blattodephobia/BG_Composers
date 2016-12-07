@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class EditorRole : BgcRole
+    public class EditorRole : ApplicationCriticalRole
     {
     }
 }

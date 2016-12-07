@@ -22,7 +22,6 @@ namespace BGC.Core
 
         public AdministratorRole()
         {
-            Name = nameof(AdministratorRole);
             Permissions = new HashSet<Permission>(ApplicationPermissions);
         }
     }
