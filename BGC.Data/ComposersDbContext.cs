@@ -101,6 +101,12 @@ namespace BGC.Data
 		{
 			return new MySqlRepository<T>(this);
 		}
-	}
+
+        public void SetState<T>(T entity, EntityState state)
+            where T : class
+        {
+            Entry(entity).State = state;
+        }
+    }
 }
 
