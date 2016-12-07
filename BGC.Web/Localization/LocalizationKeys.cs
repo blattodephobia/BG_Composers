@@ -62,6 +62,7 @@ public class Authentication
 {
         public class Login
         {
+                    public const string LoginButton = "Administration.Authentication.Login.LoginButton";
                     public const string Password = "Administration.Authentication.Login.Password";
                     public const string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
                     public const string Forgot_password = "Administration.Authentication.Login.Forgot_password";
@@ -73,6 +74,7 @@ public class Public
 }
 public class Global
 {
+    public const string Send = "Global.Send";
     public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";
     public const string Ok = "Global.Ok";

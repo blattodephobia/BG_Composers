@@ -119,6 +119,10 @@
     </UserManagement>
     <Authentication>
       <Login>
+        <LocalizedString key="LoginButton">
+          <Translation culture="en-US">Login</Translation>
+          <Translation culture="bg-BG">Вход</Translation>
+        </LocalizedString>
         <LocalizedString key="Password">
           <Translation culture="en-US">Password</Translation>
           <Translation culture="bg-BG">Парола</Translation>
@@ -138,6 +142,10 @@
 
   </Public>
   <Global>
+    <LocalizedString key="Send">
+      <Translation culture="en-US">Send</Translation>
+      <Translation culture="bg-BG">Изпращане</Translation>
+    </LocalizedString>
     <LocalizedString key="InvitationEmailFormat">
       <Translation culture="en-US">You have been invited to participate in the devlopment of the website &quot;Composers from Bulgaria&quot;. Click the link to register. {0}</Translation>
       <Translation culture="bg-BG">Поканени сте да участвате в изграждането на уебсайта &quot;Композитори от България&quot;. Кликнете върху линка, за да се регистрирате. {0}</Translation>

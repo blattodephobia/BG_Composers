@@ -23,5 +23,5 @@
 {
     <span>@Localize(Global.Email): @Html.TextBoxFor(m => m.Email)</span>
     <span>@Localize(Administration.UserManagement.SendInvite.Roles): @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }), new { multiple = "" })</span>
-    <input type="submit"/>
+    <input type="submit" value="@Localize(Global.Send)"/>
 }
