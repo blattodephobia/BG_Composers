@@ -127,9 +127,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             if (!ModelState.IsValid)
             {
-                vm.ErrorMessages = ModelState.Values.SelectMany(m => m.Errors).Select(err => err.ErrorMessage);
-                vm.LocalizeErrors(LocalizationService);
-                TempData.Add(nameof(PasswordResetViewModel), vm);
+                TempData.Add(nameof(PasswordResetViewModel), vm.WithModelStateErrors(ModelState));
                 return RedirectToAction(nameof(ResetPassword), new { referrer = Encrypt(vm.Email), token = vm.Token });
             }
 

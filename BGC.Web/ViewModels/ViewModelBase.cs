@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace BGC.Web.ViewModels
 {
@@ -32,13 +33,30 @@ namespace BGC.Web.ViewModels
             }
         }
 
-        public void LocalizeErrors(ILocalizationService localizationService)
+        public ViewModelBase WithModelStateErrors(ModelStateDictionary modelState)
         {
-            Shield.ArgumentNotNull(localizationService);
+            if (modelState != null)
+            {
+                var newErrorMessages = new List<string>(modelState?.Values.SelectMany(m => m.Errors).Select(err => err.ErrorMessage));
+                newErrorMessages.AddRange(ErrorMessages);
+                ErrorMessages = newErrorMessages;
+            }
 
-            ErrorMessages = ErrorMessages?.Select(s => localizationService.Localize(s));;
+            return this;
         }
 
-        public IEnumerable<string> ErrorMessages { get; set; }
+        private IEnumerable<string> _errorMessages;
+        public IEnumerable<string> ErrorMessages
+        {
+            get
+            {
+                return _errorMessages ?? (_errorMessages = Enumerable.Empty<string>());
+            }
+
+            set
+            {
+                _errorMessages = value;
+            }
+        }
     }
 }
