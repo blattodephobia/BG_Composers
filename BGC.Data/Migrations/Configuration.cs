@@ -37,30 +37,20 @@ namespace BGC.Data.Migrations
                 roleManager.Create(new EditorRole());
             }
 
-            if (!roleManager.RoleExists(nameof(AdministratorRole)))
+            BgcRole adminRole = roleManager.FindByName(nameof(AdministratorRole));
+            if (adminRole == null)
             {
-                var adminRole = new AdministratorRole();
+                adminRole = new BgcRole() { Name = nameof(AdministratorRole) };
                 roleManager.Create(adminRole);
             }
-            else
-            {
-                BgcRole adminRole = roleManager.FindByName(nameof(AdministratorRole));
-                HashSet<Permission> adminPermissions = new HashSet<Permission>(adminRole.Permissions);
-                foreach (Permission permission in context.Permissions)
-                {
-                    if (!adminPermissions.Contains(permission))
-                    {
-                        adminRole.Permissions.Add(permission);
-                    }
-                }
-            }
+            adminRole.Permissions = context.Permissions.ToList();
+            context.SaveChanges();
         }
 
         protected override void Seed(ComposersDbContext context)
         {
             try
             {
-                System.Diagnostics.Debugger.Launch();
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
                 var userManager = new BgcUserManager(
                     new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context),

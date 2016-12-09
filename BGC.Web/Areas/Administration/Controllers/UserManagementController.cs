@@ -31,10 +31,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
             else
             {
-                vm =
-                    vm ??
-                    TempData[nameof(SendInvitePermissionViewModel)] as SendInvitePermissionViewModel ??
-                    new SendInvitePermissionViewModel();
+                vm = vm ?? new SendInvitePermissionViewModel();
                 vm.AvailableRoles = vm.AvailableRoles ?? _roleManager.Roles.Select(r => r.Name).ToList();
                 return View(vm);
             }
@@ -53,7 +50,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                     Subject = "BG Composers invitation",
                     Body = $"{Url.ActionAbsolute(MVC.AdministrationArea.UserManagement.Register())}?{Expressions.GetQueryString(() => Register(invitationResult.Id))}"
                 });
-                TempData.Add(nameof(SendInvitePermissionViewModel), new SendInvitePermissionViewModel() { IsPreviousInvitationSent = true });
+                invitation.IsPreviousInvitationSent = true;
                 return RedirectToAction(nameof(SendInvite));
             }
             catch (UnauthorizedAccessException)
