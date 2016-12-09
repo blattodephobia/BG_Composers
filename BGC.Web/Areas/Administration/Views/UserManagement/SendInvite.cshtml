@@ -1,0 +1,27 @@
+﻿@model SendInvitePermissionViewModel
+
+@{
+    ViewBag.Title = "SendInvite";
+}
+
+<h2>SendInvite</h2>
+
+@if (Model.ErrorMessages.Any())
+{
+    foreach (string error in Model.ErrorMessages)
+    {
+        <div>@Localize(error)</div>
+    }
+}
+
+@if (Model.IsPreviousInvitationSent)
+{
+    <div>@Localize(Administration.UserManagement.SendInvite.Invitation_sent)</div>
+}
+
+@using (Html.BeginForm(MVC.AdministrationArea.UserManagement.SendInvite_Post(), FormMethod.Post))
+{
+    <span>@Localize(Global.Email): @Html.TextBoxFor(m => m.Email)</span>
+    <span>@Localize(Administration.UserManagement.SendInvite.Roles): @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }), new { multiple = "" })</span>
+    <input type="submit" value="@Localize(Global.Send)"/>
+}

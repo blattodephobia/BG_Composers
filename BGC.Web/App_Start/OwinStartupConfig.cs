@@ -14,17 +14,11 @@ namespace BGC.Web.App_Start
 	{
 		public void Configuration(IAppBuilder app)
 		{
-			app.UseCookieAuthentication(new CookieAuthenticationOptions()
-			{
-				AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-				LoginPath = new PathString(string.Format(
-					"/{0}/{1}/{2}",
-					"admin",
-					AdministrationAreaRegistration.UrlPrefixToken,
-					MVC.AdministrationArea.Authentication.Name,
-					MVC.AdministrationArea.Authentication.ActionNames.Login)),
-				CookieName = "BGC.Auth"
-			});
-		}
+            app.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
+                CookieName = "BGC.Auth"
+            });
+        }
 	}
 }

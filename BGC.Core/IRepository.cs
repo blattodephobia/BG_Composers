@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	internal interface IRepository<T> : IDbConnect
+	public interface IRepository<T> : IDbConnect
 		where T : class
 	{
 		IQueryable<T> All();

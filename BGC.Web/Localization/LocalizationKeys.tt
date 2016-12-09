@@ -29,7 +29,7 @@ namespace BGC.Web.LocalizationKeys
     {
         if (node.Name == "LocalizedString")
         {
-            this.WriteLine("public static readonly string {0} = \"{1}.{2}\";",
+            this.WriteLine("public const string {0} = \"{1}.{2}\";",
                 WithFirstUpper(node.Attributes["key"].Value),
                 this.GetNodePath(node.ParentNode),
                 WithFirstUpper(node.Attributes["key"].Value));

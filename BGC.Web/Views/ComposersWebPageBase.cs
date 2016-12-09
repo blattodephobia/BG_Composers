@@ -11,18 +11,22 @@ namespace BGC.Web.Views
 {
     public class ComposersWebPageBase<T> : WebViewPage<T>
     {
-        private ILocalizationService localizationService;
+        private ILocalizationService _localizationService;
         [Dependency]
         public ILocalizationService LocalizationService
         {
             get
             {
-                return this.localizationService;
+                // Instantiating the localization service like this is an anti-pattern.
+                // However, Unity cannot inject the property when the current web page is a layout page - which is not supported
+                // in ASP.NET MVC 3 by design (great idea, Microsoft). For the moment, the service will be instantiated like this
+                // when it's null. For normal pages DI works as expected. 
+                return _localizationService ?? (_localizationService = DependencyResolver.Current.GetService<ILocalizationService>());
             }
 
             set
             {
-                this.localizationService = value.ValueNotNull(nameof(LocalizationService)).GetValueOrThrow();
+                _localizationService = value.ValueNotNull(nameof(LocalizationService)).GetValueOrThrow();
             }
         }
 
@@ -30,7 +34,7 @@ namespace BGC.Web.Views
         {
         }
 
-        public string Localize(string key) => this.localizationService.Localize(key);
+        public string Localize(string key) => LocalizationService.Localize(key);
 
         public bool IsDebugBuild
         {

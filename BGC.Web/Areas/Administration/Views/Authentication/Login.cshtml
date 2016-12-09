@@ -1,11 +1,20 @@
-﻿@{
+﻿@model LoginViewModel
+
+@{
     ViewBag.Title = "Login";
 }
 
 <h2>Login</h2>
+@if (Model.AuthenticationFailure)
+{
+    <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
+}
+
 @using (Html.BeginForm(MVC.AdministrationArea.Authentication.ActionNames.Login, MVC.AdministrationArea.Authentication.Name, FormMethod.Post))
 {
-    <input type="text" name="username"/>
-    <input type="password" name="password"/>
-    <input type="submit"/>
+    @Html.TextBoxFor(m => m.UserName)
+    @Html.PasswordFor(m => m.Password)
+    <input type="submit" value="@Localize(Administration.Authentication.Login.LoginButton)"/>
 }
+
+<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.AdministrationArea.Account.RequestPasswordReset())</div>

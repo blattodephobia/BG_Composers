@@ -21,7 +21,6 @@ namespace BGC.Data.Migrations
                 .ForeignKey("dbo.Composers", t => t.Composer_Id, cascadeDelete: true)
                 .ForeignKey("dbo.ComposerNames", t => t.LocalizedName_Id, cascadeDelete: true)
                 .Index(t => t.StorageId)
-                .Index(t => new { t.Composer_Id, t.Language }, name: "IX_LanguageUnique", unique: true)
                 .Index(t => t.Composer_Id)
                 .Index(t => t.LocalizedName_Id);
             
@@ -46,7 +45,6 @@ namespace BGC.Data.Migrations
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Composers", t => t.Composer_Id, cascadeDelete: true)
-                .Index(t => new { t.Composer_Id, t.Language }, name: "IX_LanguageUnique", unique: true)
                 .Index(t => t.FirstName)
                 .Index(t => t.LastName)
                 .Index(t => t.FullName)
@@ -65,11 +63,26 @@ namespace BGC.Data.Migrations
                 .Index(t => t.StorageId);
             
             CreateTable(
+                "dbo.Invitations",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                        Email = c.String(nullable: false, unicode: false),
+                        ExpirationDate = c.DateTime(nullable: false, precision: 0),
+                        IsObsolete = c.Boolean(nullable: false),
+                        Sender_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AspNetUsers", t => t.Sender_Id, cascadeDelete: true)
+                .Index(t => t.Sender_Id);
+            
+            CreateTable(
                 "dbo.AspNetRoles",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 64, storeType: "nvarchar"),
+                        Discriminator = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
@@ -79,7 +92,7 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(unicode: false),
+                        Name = c.String(nullable: false, unicode: false),
                         Discriminator = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id);
@@ -103,6 +116,7 @@ namespace BGC.Data.Migrations
                     {
                         Id = c.Long(nullable: false, identity: true),
                         MustChangePassword = c.Boolean(nullable: false),
+                        PasswordResetTokenHash = c.String(maxLength: 44, unicode: false),
                         Email = c.String(maxLength: 256, storeType: "nvarchar"),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(unicode: false),
@@ -171,7 +185,7 @@ namespace BGC.Data.Migrations
                 .Index(t => t.ComposerArticle_Id);
             
             CreateTable(
-                "dbo.BgcRolePermissions",
+                "dbo.BgcRolePermission",
                 c => new
                     {
                         BgcRole_Id = c.Long(nullable: false),
@@ -196,27 +210,45 @@ namespace BGC.Data.Migrations
                 .Index(t => t.BgcUser_Id)
                 .Index(t => t.Setting_Id);
             
+            CreateTable(
+                "dbo.InvitationBgcRoles",
+                c => new
+                    {
+                        Invitation_Id = c.Guid(nullable: false),
+                        BgcRole_Id = c.Long(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Invitation_Id, t.BgcRole_Id })
+                .ForeignKey("dbo.Invitations", t => t.Invitation_Id, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.BgcRole_Id, cascadeDelete: true)
+                .Index(t => t.Invitation_Id)
+                .Index(t => t.BgcRole_Id);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.Invitations", "Sender_Id", "dbo.AspNetUsers");
+            DropForeignKey("dbo.InvitationBgcRoles", "BgcRole_Id", "dbo.AspNetRoles");
+            DropForeignKey("dbo.InvitationBgcRoles", "Invitation_Id", "dbo.Invitations");
             DropForeignKey("dbo.BgcUserSettings", "Setting_Id", "dbo.Settings");
             DropForeignKey("dbo.BgcUserSettings", "BgcUser_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.BgcRolePermissions", "Permission_Id", "dbo.Permissions");
-            DropForeignKey("dbo.BgcRolePermissions", "BgcRole_Id", "dbo.AspNetRoles");
+            DropForeignKey("dbo.BgcRolePermission", "Permission_Id", "dbo.Permissions");
+            DropForeignKey("dbo.BgcRolePermission", "BgcRole_Id", "dbo.AspNetRoles");
             DropForeignKey("dbo.MediaTypeInfoComposerArticles", "ComposerArticle_Id", "dbo.ComposerArticles");
             DropForeignKey("dbo.MediaTypeInfoComposerArticles", "MediaTypeInfo_Id", "dbo.MediaTypeInfos");
             DropForeignKey("dbo.ComposerArticles", "LocalizedName_Id", "dbo.ComposerNames");
             DropForeignKey("dbo.ComposerArticles", "Composer_Id", "dbo.Composers");
             DropForeignKey("dbo.ComposerNames", "Composer_Id", "dbo.Composers");
+            DropIndex("dbo.InvitationBgcRoles", new[] { "BgcRole_Id" });
+            DropIndex("dbo.InvitationBgcRoles", new[] { "Invitation_Id" });
             DropIndex("dbo.BgcUserSettings", new[] { "Setting_Id" });
             DropIndex("dbo.BgcUserSettings", new[] { "BgcUser_Id" });
-            DropIndex("dbo.BgcRolePermissions", new[] { "Permission_Id" });
-            DropIndex("dbo.BgcRolePermissions", new[] { "BgcRole_Id" });
+            DropIndex("dbo.BgcRolePermission", new[] { "Permission_Id" });
+            DropIndex("dbo.BgcRolePermission", new[] { "BgcRole_Id" });
             DropIndex("dbo.MediaTypeInfoComposerArticles", new[] { "ComposerArticle_Id" });
             DropIndex("dbo.MediaTypeInfoComposerArticles", new[] { "MediaTypeInfo_Id" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -225,6 +257,7 @@ namespace BGC.Data.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
+            DropIndex("dbo.Invitations", new[] { "Sender_Id" });
             DropIndex("dbo.MediaTypeInfos", new[] { "StorageId" });
             DropIndex("dbo.ComposerNames", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerNames", new[] { "FullName" });
@@ -233,8 +266,9 @@ namespace BGC.Data.Migrations
             DropIndex("dbo.ComposerArticles", new[] { "LocalizedName_Id" });
             DropIndex("dbo.ComposerArticles", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerArticles", new[] { "StorageId" });
+            DropTable("dbo.InvitationBgcRoles");
             DropTable("dbo.BgcUserSettings");
-            DropTable("dbo.BgcRolePermissions");
+            DropTable("dbo.BgcRolePermission");
             DropTable("dbo.MediaTypeInfoComposerArticles");
             DropTable("dbo.Settings");
             DropTable("dbo.AspNetUserLogins");
@@ -243,6 +277,7 @@ namespace BGC.Data.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.Permissions");
             DropTable("dbo.AspNetRoles");
+            DropTable("dbo.Invitations");
             DropTable("dbo.MediaTypeInfos");
             DropTable("dbo.ComposerNames");
             DropTable("dbo.Composers");

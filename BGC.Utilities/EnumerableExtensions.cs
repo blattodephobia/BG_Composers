@@ -37,5 +37,16 @@ namespace BGC.Utilities
                 sb => sb.Length > 0 ? sb.Remove(sb.Length - delimiter?.Length ?? 0, delimiter?.Length ?? 0) : sb);
             return result.ToString();
         }
+
+        public static void AddRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            Shield.ArgumentNotNull(collection).ThrowOnError();
+            Shield.ArgumentNotNull(items).ThrowOnError();
+
+            foreach (T item in items)
+            {
+                collection.Add(item);
+            }
+        }
     }
 }

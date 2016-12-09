@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BGC.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,7 +8,8 @@ using System.Web.Routing;
 
 namespace BGC.Web.Areas.Administration
 {
-	public class AdminAreaAuthorizationAttribute : AuthorizeAttribute
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
+    public class AdminAreaAuthorizationAttribute : AuthorizeAttribute
 	{
 		protected string GetActionUrl(RequestContext context, ActionResult action)
 		{
@@ -27,5 +29,20 @@ namespace BGC.Web.Areas.Administration
 			filterContext.Controller.TempData.Add(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
 			filterContext.Result = new RedirectResult(loginUrl);
 		}
+
+        protected AdminAreaAuthorizationAttribute(IEnumerable<string> rolesCollection)
+        {
+            Roles = rolesCollection.ToStringAggregate(",");
+        }
+
+        public AdminAreaAuthorizationAttribute(params string[] roles) :
+            this(rolesCollection: roles)
+        {
+        }
+
+        public AdminAreaAuthorizationAttribute() :
+            base()
+        {
+        }
 	}
 }

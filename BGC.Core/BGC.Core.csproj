@@ -54,10 +54,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\BgcException.cs" />
+    <Compile Include="Exceptions\DuplicateEntityException.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Models\Identity\AdministratorRole.cs" />
+    <Compile Include="Models\Identity\ApplicationCriticalRole.cs" />
+    <Compile Include="Models\Identity\AuthorizedUserRole.cs" />
+    <Compile Include="Models\Identity\BgcRoleManager.cs" />
+    <Compile Include="Models\Identity\BgcUserManager.cs" />
+    <Compile Include="Models\Identity\BgcUserTokenProvider.cs" />
+    <Compile Include="Models\Identity\DynamicRole.cs" />
+    <Compile Include="Models\Identity\EditorRole.cs" />
+    <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
+    <Compile Include="Models\Settings\Setting.SettingDebugView.cs" />
+    <Compile Include="Models\Permissions\SendInvitePermission.cs" />
+    <Compile Include="SingletonRepository.cs" />
     <Compile Include="UnicodeAttribute.cs" />
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Models\IParameter.cs" />
@@ -87,6 +102,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Models\Identity\TokenPurposes.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

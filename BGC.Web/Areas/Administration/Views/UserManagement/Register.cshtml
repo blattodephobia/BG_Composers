@@ -1,0 +1,40 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>Register</h2>
+@section errors
+{
+    @if (Model.ErrorMessages.Any())
+    {
+        <div>@Localize(Model.ErrorMessages.First())</div>
+    }
+}
+
+@using (Html.BeginForm(MVC.AdministrationArea.UserManagement.Register_Post()))
+{
+    @Html.HiddenFor(m => m.InvitationId)
+    <table>
+        <tbody>
+            <tr>
+                <td>@Localize(Administration.UserManagement.UserName):</td>
+                <td>@Html.TextBoxFor(m => m.UserName)</td>
+            </tr>
+            <tr>
+                <td>@Localize(Administration.Authentication.Login.Password):</td>
+                <td>@Html.PasswordFor(m => m.NewPassword)</td>
+            </tr>
+            <tr>
+                <td>@Localize(Administration.Account.ChangePassword.ConfirmNewPassword):</td>
+                <td>@Html.PasswordFor(m => m.ConfirmPassword)</td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input type="submit" value="@Localize(Global.Submit)"/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}

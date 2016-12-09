@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
+using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -16,38 +17,72 @@ namespace BGC.Web.Areas.Administration.Controllers
 	{
 		public SignInManager<BgcUser, long> SignInManager { get; private set; }
 
+        private string GetAdminHomePageUrl()
+        {
+            string result = Url.RouteUrl(MVC.AdministrationArea.Name, MVC.AdministrationArea.Account.Activities().GetT4MVCResult().RouteValueDictionary);
+            return result;
+        }
+
 		[AllowAnonymous]
 		[HttpGet]
-		public virtual ActionResult Login()
+		public virtual ActionResult Login(LoginViewModel model = null)
 		{
-			if (this.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
-			{
-				this.TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
-			}
-			return this.View();
+            if (User != null)
+            {
+                return new RedirectResult(GetAdminHomePageUrl());
+            }
+            else
+            {
+                if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+                {
+                    TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+                }
+                return View(model);
+            }
 		}
 
 		[AllowAnonymous]
 		[HttpPost]
-		public virtual ActionResult Login(LoginViewModel model)
+        [ActionName(nameof(Login))]
+		public virtual ActionResult Login_Post(LoginViewModel model)
 		{
-			BgcUser user = this.UserManager.FindByNameAsync(model.UserName).Result;
-			bool success = user != null && this.SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
+            if (User != null)
+            {
+                return new HttpUnauthorizedResult("Duplicate login actions are not allowed");
+            }
+
+			BgcUser user = UserManager.FindByNameAsync(model.UserName).Result;
+			bool success = user != null && SignInManager.PasswordSignIn(user.UserName, model.Password, false, false) == SignInStatus.Success;
 			if (success)
 			{
 				object returnUrl;
-				this.TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
-				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? Url.Action(MVC.AdministrationArea.Account.Users()) : returnUrl as string);
+				TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
+				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? GetAdminHomePageUrl() : returnUrl as string);
 			}
 			else
 			{
-				return this.Login();
+			    if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+			    {
+				    TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+			    }
+				return Login(new LoginViewModel() { AuthenticationFailure = true });
 			}
 		}
 
+        [AllowAnonymous]
+        public virtual ActionResult LogOut()
+        {
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            return RedirectToAction(MVC.AdministrationArea.Authentication.Login());
+        }
+
 		public AuthenticationController(SignInManager<BgcUser, long> signInManager)
 		{
-			this.SignInManager = signInManager;
+			SignInManager = signInManager;
 		}
+
+        protected AuthenticationController()
+        {
+        }
     }
 }

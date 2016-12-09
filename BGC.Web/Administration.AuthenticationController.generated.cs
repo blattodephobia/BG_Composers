@@ -55,6 +55,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Login_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AuthenticationController Actions { get { return MVC.AdministrationArea.Authentication; } }
@@ -72,12 +78,16 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionNamesClass
         {
             public readonly string Login = "Login";
+            public readonly string Login_Post = nameof(Login);
+            public readonly string LogOut = "LogOut";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
             public const string Login = "Login";
+            public const string Login_Post = nameof(Login);
+            public const string LogOut = "LogOut";
         }
 
 
@@ -86,6 +96,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Login
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_Login_Post s_params_Login_Post = new ActionParamsClass_Login_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Login_Post Login_PostParams { get { return s_params_Login_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Login_Post
         {
             public readonly string model = "model";
         }
@@ -111,25 +129,37 @@ namespace BGC.Web.Areas.Administration.Controllers
         public T4MVC_AuthenticationController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Login()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            LoginOverride(callInfo);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.ViewModels.LoginViewModel model);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.Web.ViewModels.LoginViewModel model)
+        public override System.Web.Mvc.ActionResult Login(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
             LoginOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void Login_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Login_Post(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            Login_PostOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogOutOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogOut()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogOut);
+            LogOutOverride(callInfo);
             return callInfo;
         }
 

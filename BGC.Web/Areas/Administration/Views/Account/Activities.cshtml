@@ -1,0 +1,27 @@
+﻿@using BGC.Web.Areas.Administration.ViewModels.Permissions;
+
+@model ActivitiesViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>Profile</h2>
+@Html.ActionLink(Localize(Administration.Account.ChangePassword.ChangePasswordTitle), MVC.AdministrationArea.Account.ChangePassword())
+<ul>
+    @foreach (PermissionViewModelBase permission in Model.PermittedActions)
+    {
+        <li>
+            @if (!string.IsNullOrEmpty(permission.ActivityUrl))
+            {
+                <a href="@permission.ActivityUrl">
+                    @(Localize(permission.LocalizationKey))
+                </a>
+            }
+            else
+            {
+                @(Localize(permission.LocalizationKey))
+            }
+        </li>
+    }
+</ul>

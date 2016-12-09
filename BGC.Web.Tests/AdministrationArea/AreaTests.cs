@@ -3,6 +3,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
@@ -18,7 +19,7 @@ namespace BGC.Web.Tests.AdministrationArea
 			IEnumerable<Type> controllers = typeof(AdministrationAreaRegistration).Assembly.GetTypes()
 				.Where(t => t.Namespace != null && t.Namespace.StartsWith(typeof(BGC.Web.Areas.Administration.AdministrationAreaRegistration).Namespace))
 				.Where(t => typeof(Controller).IsAssignableFrom(t));
-			bool allControllersHaveAuthorization = controllers.All(t => t.GetCustomAttributes(true).Any(obj => obj is AuthorizeAttribute));
+			bool allControllersHaveAuthorization = controllers.All(t => t.GetCustomAttribute<AdminAreaAuthorizationAttribute>() != null);
 
 			Assert.IsTrue(allControllersHaveAuthorization || !controllers.Any());
 		}

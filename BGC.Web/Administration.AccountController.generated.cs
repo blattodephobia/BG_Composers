@@ -27,9 +27,6 @@ namespace BGC.Web.Areas.Administration.Controllers
     public partial class AccountController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public AccountController() { }
-
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected AccountController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -58,6 +55,40 @@ namespace BGC.Web.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangePassword_Post()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword_Post);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword_Post()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword_Post);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> RequestPasswordReset_Post()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RequestPasswordReset_Post);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Login_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AccountController Actions { get { return MVC.AdministrationArea.Account; } }
@@ -74,16 +105,99 @@ namespace BGC.Web.Areas.Administration.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
-            public readonly string Users = "Users";
+            public readonly string Activities = "Activities";
+            public readonly string ChangePassword = "ChangePassword";
+            public readonly string ChangePassword_Post = nameof(ChangePassword);
+            public readonly string ResetPassword = "ResetPassword";
+            public readonly string ResetPassword_Post = nameof(ResetPassword);
+            public readonly string RequestPasswordReset = "RequestPasswordReset";
+            public readonly string RequestPasswordReset_Post = nameof(RequestPasswordReset);
+            public readonly string Login = "Login";
+            public readonly string Login_Post = nameof(Login);
+            public readonly string LogOut = "LogOut";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
-            public const string Users = "Users";
+            public const string Activities = "Activities";
+            public const string ChangePassword = "ChangePassword";
+            public const string ChangePassword_Post = nameof(ChangePassword);
+            public const string ResetPassword = "ResetPassword";
+            public const string ResetPassword_Post = nameof(ResetPassword);
+            public const string RequestPasswordReset = "RequestPasswordReset";
+            public const string RequestPasswordReset_Post = nameof(RequestPasswordReset);
+            public const string Login = "Login";
+            public const string Login_Post = nameof(Login);
+            public const string LogOut = "LogOut";
         }
 
 
+        static readonly ActionParamsClass_ChangePassword s_params_ChangePassword = new ActionParamsClass_ChangePassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangePassword ChangePasswordParams { get { return s_params_ChangePassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangePassword
+        {
+            public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_ChangePassword_Post s_params_ChangePassword_Post = new ActionParamsClass_ChangePassword_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ChangePassword_Post ChangePassword_PostParams { get { return s_params_ChangePassword_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ChangePassword_Post
+        {
+            public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_ResetPassword s_params_ResetPassword = new ActionParamsClass_ResetPassword();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ResetPassword ResetPasswordParams { get { return s_params_ResetPassword; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ResetPassword
+        {
+            public readonly string referrer = "referrer";
+            public readonly string token = "token";
+        }
+        static readonly ActionParamsClass_ResetPassword_Post s_params_ResetPassword_Post = new ActionParamsClass_ResetPassword_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ResetPassword_Post ResetPassword_PostParams { get { return s_params_ResetPassword_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ResetPassword_Post
+        {
+            public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_RequestPasswordReset s_params_RequestPasswordReset = new ActionParamsClass_RequestPasswordReset();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RequestPasswordReset RequestPasswordResetParams { get { return s_params_RequestPasswordReset; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RequestPasswordReset
+        {
+            public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_RequestPasswordReset_Post s_params_RequestPasswordReset_Post = new ActionParamsClass_RequestPasswordReset_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_RequestPasswordReset_Post RequestPasswordReset_PostParams { get { return s_params_RequestPasswordReset_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_RequestPasswordReset_Post
+        {
+            public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_Login s_params_Login = new ActionParamsClass_Login();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Login
+        {
+            public readonly string model = "model";
+        }
+        static readonly ActionParamsClass_Login_Post s_params_Login_Post = new ActionParamsClass_Login_Post();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Login_Post Login_PostParams { get { return s_params_Login_Post; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Login_Post
+        {
+            public readonly string model = "model";
+        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -94,8 +208,16 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string Activities = "Activities";
+                public readonly string ChangePassword = "ChangePassword";
+                public readonly string RequestPasswordReset = "RequestPasswordReset";
+                public readonly string ResetPassword = "ResetPassword";
                 public readonly string Users = "Users";
             }
+            public readonly string Activities = "~/Areas/Administration/Views/Account/Activities.cshtml";
+            public readonly string ChangePassword = "~/Areas/Administration/Views/Account/ChangePassword.cshtml";
+            public readonly string RequestPasswordReset = "~/Areas/Administration/Views/Account/RequestPasswordReset.cshtml";
+            public readonly string ResetPassword = "~/Areas/Administration/Views/Account/ResetPassword.cshtml";
             public readonly string Users = "~/Areas/Administration/Views/Account/Users.cshtml";
         }
     }
@@ -106,13 +228,121 @@ namespace BGC.Web.Areas.Administration.Controllers
         public T4MVC_AccountController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void UsersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void ActivitiesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Users()
+        public override System.Web.Mvc.ActionResult Activities()
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Users);
-            UsersOverride(callInfo);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Activities);
+            ActivitiesOverride(callInfo);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangePasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.ChangePasswordViewModel vm);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ChangePassword(BGC.Web.Areas.Administration.ViewModels.ChangePasswordViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            ChangePasswordOverride(callInfo, vm);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ChangePassword_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.ChangePasswordViewModel vm);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ChangePassword_Post(BGC.Web.Areas.Administration.ViewModels.ChangePasswordViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ChangePassword_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            ChangePassword_PostOverride(callInfo, vm);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ResetPasswordOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string referrer, string token);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword(string referrer, string token)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "referrer", referrer);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "token", token);
+            ResetPasswordOverride(callInfo, referrer, token);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void ResetPassword_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword_Post(BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            ResetPassword_PostOverride(callInfo, vm);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void RequestPasswordResetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.RequestPasswordResetViewModel vm);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult RequestPasswordReset(BGC.Web.Areas.Administration.ViewModels.RequestPasswordResetViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RequestPasswordReset);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            RequestPasswordResetOverride(callInfo, vm);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void RequestPasswordReset_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm);
+
+        [NonAction]
+        public override System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> RequestPasswordReset_Post(BGC.Web.Areas.Administration.ViewModels.PasswordResetViewModel vm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RequestPasswordReset_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
+            RequestPasswordReset_PostOverride(callInfo, vm);
+            return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Login(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            LoginOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void Login_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Login_Post(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
+            Login_PostOverride(callInfo, model);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void LogOutOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult LogOut()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogOut);
+            LogOutOverride(callInfo);
             return callInfo;
         }
 

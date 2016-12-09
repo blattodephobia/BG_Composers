@@ -11,7 +11,7 @@ namespace BGC.Utilities
 {
 	public static class Expressions
 	{
-        private static readonly Dictionary<Type, IDynamicMemberGetter> CachedGetters = new Dictionary<Type, IDynamicMemberGetter>();
+        private static readonly Dictionary<Type, WeakReference<IDynamicMemberGetter>> CachedGetters = new Dictionary<Type, WeakReference<IDynamicMemberGetter>>();
 
 		private static Expression RemoveConvert(Expression expression)
 		{
@@ -48,23 +48,56 @@ namespace BGC.Utilities
                 (argumentExpression is ConstantExpression) || (argumentExpression is MemberExpression),
                 "The expression's value cannot be determined");
 
-            ConstantExpression argument = RemoveMemberAccess(argumentExpression) as ConstantExpression;
-            object result = null;
-            if (argumentExpression is MemberExpression)
-            {
-                MemberExpression targetMember = argumentExpression as MemberExpression;
-                if (!CachedGetters.ContainsKey(argument.Type))
-                {
-                    CachedGetters.Add(argument.Type, Activator.CreateInstance(typeof(LambdaCaptureFieldAccessor<>).MakeGenericType(argument.Type)) as IDynamicMemberGetter);
-                }
-                result = CachedGetters[argument.Type].GetMemberValue(argument.Value, targetMember.Member.Name);
-            }
-            else
-            {
-                result = (argumentExpression as ConstantExpression).Value;
-            }
+            MemberExpression memberAccess = argumentExpression as MemberExpression;
+            return ResolveMemberAccessRecursively(memberAccess, memberAccess?.Expression ?? argumentExpression);
+        }
+
+        /* Expressions such as () => obj.Property1.Property2; are transformed in the following Expression tree: 
+         * 
+         *      MemberExpression:
+         *      +---Member:     Property2
+         *      +---Expression: MemberExpression:
+         *                      +---Member:     Property1
+         *                      +---Expression: MemberExpression:
+         *                                      +---Member: obj
+         *                                      +----Expression: ConstantExpression:
+         *                                                       +--- Value: <>AnonymousType
+         *                                                       
+         * Therefore, we recursively have to get the member of the value in the Expression property.
+         * The very last Expression node is of type MemberExpression with a concrete, immediately
+         * available value. That's where the bottom of the recursion is. */
+        private static object ResolveMemberAccessRecursively(MemberExpression targetMember, Expression subExpression)
+        {
+            object result = !(subExpression is ConstantExpression)
+                ? GetValue(memberName: targetMember.Member.Name,
+                           obj:        ResolveMemberAccessRecursively(targetMember.Expression as MemberExpression, (targetMember as MemberExpression).Expression))
+                : GetValue(memberName: targetMember?.Member.Name, // return <ConstantExpression> if targetMember is null, otherwise <ConstantExpression>.targetMember;
+                           obj: (subExpression as ConstantExpression).Value);
 
             return result;
+        }
+
+        private static object GetValue(object obj, string memberName)
+        {
+            if (string.IsNullOrEmpty(memberName))
+            {
+                return obj;
+            }
+
+            Type objType = obj.GetType();
+            IDynamicMemberGetter valueGetter = null;
+            if (!CachedGetters.ContainsKey(objType))
+            {
+                valueGetter = Activator.CreateInstance(typeof(LambdaCaptureFieldAccessor<>).MakeGenericType(objType)) as IDynamicMemberGetter;
+                var reference = new WeakReference<IDynamicMemberGetter>(valueGetter);
+                CachedGetters.Add(objType, reference);
+            }
+            else if (!CachedGetters[objType].TryGetTarget(out valueGetter))
+            {
+                valueGetter = Activator.CreateInstance(typeof(LambdaCaptureFieldAccessor<>).MakeGenericType(objType)) as IDynamicMemberGetter;
+                CachedGetters[objType].SetTarget(valueGetter);
+            }
+            return valueGetter.GetMemberValue(obj, memberName);
         }
 
         private static string GetQueryStringInternal(MethodCallExpression call, bool includeNullValueParams)

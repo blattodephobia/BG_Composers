@@ -38,7 +38,7 @@ namespace BGC.Data
 
         public void Delete(T entity)
         {
-            this.DataSet.Remove(entity);
+            UnitOfWork.SetState(entity, EntityState.Deleted);
         }
     }
 }
