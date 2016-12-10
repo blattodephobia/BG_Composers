@@ -29,7 +29,7 @@
     <OldToolsVersion>12.0</OldToolsVersion>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -385,10 +385,6 @@
       <LastGenOutput>LocalizationKeys.cs</LastGenOutput>
     </Content>
     <None Include="T4MVC.tt.settings.xml" />
-    <Content Include="ViewModels\ViewModelTypeSync.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ViewModelTypeSync.ts</LastGenOutput>
-    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -456,13 +452,6 @@
       <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
       <Name>CodeShield</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="ViewModels\ViewModelTypeSync.ts">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ViewModelTypeSync.tt</DependentUpon>
-    </TypeScriptCompile>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
