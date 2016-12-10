@@ -189,3 +189,4 @@ _Pvt_Extensions/
 ModelManifest.xml
 /BGC.Web/App_Data
 /.vs/config
+/.vs/config/*
