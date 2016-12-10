@@ -10,14 +10,14 @@ namespace BGC.Utilities
     /// Specifies the priority of a <see cref="DependencySource{T}"/> declared in a <see cref="DependencyValue{T}"/>.
     /// Properties with higher <see cref="Priority"/> override those with a lower one.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public sealed class DependencyPrecedenceAttribute : Attribute
     {
         public uint Priority { get; private set; }
 
         public DependencyPrecedenceAttribute(uint priority)
         {
-            this.Priority = priority;
+            Priority = priority;
         }
     }
 }

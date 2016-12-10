@@ -193,25 +193,91 @@ namespace BGC.Utilities
 
             return result.Uri;
         }
-        
+
         /// <summary>
         /// Dynamically generates a method that will select the values of all properties of a given type <typeparamref name="TPropertyType"/> in
         /// an <see cref="IEnumerable{TPropertyType}"/>.
-        /// For example, when invoked with <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple&lt;double, double&gt;"/>)
+        /// For example, when invoked with <typeparamref name="TDeclaringType"/> is <see cref="System.Tuple&lt;double, double&gt;"/>
         /// and <typeparamref name="TPropertyType"/> is <see cref="double"/> the generated method will return an <see cref="IEnumerable{double}"/>
         /// with the values of the Item1 and Item2 properties.
-        /// If, however, <paramref name="propertyDeclaringType"/> = typeof(<see cref="System.Tuple{double, double}"/>)
-        /// and <typeparamref name="TPropertyType"/> is <see cref="int" an empty collection will be returned./>
+        /// If, however, <typeparamref name="TDeclaringType"/> is <see cref="System.Tuple{double, double}"/>
+        /// and <typeparamref name="TPropertyType"/> is <see cref="int"/> an empty collection will be returned.
         /// </summary>
         /// <typeparam name="TPropertyType"></typeparam>
-        /// <param name="propertyDeclaringType">The delcaring type. Must be a reference type.</param>
+        /// <typeparam name="TDeclaringType">The delcaring type.</param>
         /// <returns></returns>		
+        public static Func<TDeclaringType, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TDeclaringType, TPropertyType>()
+        {
+            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            IEnumerable<PropertyInfo> matchingProperties = from property in typeof(TDeclaringType).GetProperties(flags)
+                                                           where typeof(TPropertyType).IsAssignableFrom(property.PropertyType)
+                                                           select property;
+
+            return GetPropertyValuesOfTypeAccessor<TDeclaringType, TPropertyType>(matchingProperties);
+        }
+
+        /// <summary>
+        /// Dynamically generates a method that will select the values of all specified properties of type <typeparamref name="TPropertyType"/> in
+        /// an <see cref="IEnumerable{TPropertyType}"/>.
+        /// </summary>
+        /// <typeparam name="TPropertyType"></typeparam>
+        /// <typeparam name="TDeclaringType">The delcaring type.</param>
+        /// <returns></returns>		
+        public static Func<TDeclaringType, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TDeclaringType, TPropertyType>(IEnumerable<PropertyInfo> properties)
+        {
+            Shield.ArgumentNotNull(properties).ThrowOnError();
+
+            ParameterExpression parameter = Expression.Parameter(typeof(TDeclaringType));
+            var lambda = Expression.Lambda<Func<TDeclaringType, IEnumerable<TPropertyType>>>
+            (
+                parameters: parameter,
+                body: Expression.NewArrayInit
+                (
+                    type: typeof(TPropertyType),
+                    initializers: properties.Select(property =>
+                    {
+                        return Expression.Property(parameter, property); // ((<propertyDeclaringType>)<parameter>).property
+                    })
+                )
+            );
+
+            return lambda.Compile();
+        }
+
+        /// <summary>
+        /// Dynamically generates a method that will select the values of all specified properties of type <typeparamref name="TPropertyType"/> in
+        /// an <see cref="IEnumerable{TPropertyType}"/>.
+        /// </summary>
+        /// <typeparam name="TPropertyType"></typeparam>
+        /// <returns></returns>		
+        public static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type declaringType, IEnumerable<PropertyInfo> properties)
+        {
+            Shield.ArgumentNotNull(properties).ThrowOnError();
+
+            ParameterExpression parameter = Expression.Parameter(typeof(object));
+            var lambda = Expression.Lambda<Func<object, IEnumerable<TPropertyType>>>
+            (
+                parameters: parameter,
+                body: Expression.NewArrayInit
+                (
+                    type: typeof(TPropertyType),
+                    initializers: properties.Select(property =>
+                    {
+                        return Expression.Property(Expression.Convert(parameter, declaringType), property); // ((<propertyDeclaringType>)<parameter>).property
+                    })
+                )
+            );
+
+            return lambda.Compile();
+        }
+
         public static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type propertyDeclaringType)
         {
-            IEnumerable<PropertyInfo> matchingProperties =
-                propertyDeclaringType
-                .GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance)
-                .Where(property => typeof(TPropertyType).IsAssignableFrom(property.PropertyType));
+            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
+            IEnumerable<PropertyInfo> matchingProperties = from property in propertyDeclaringType.GetProperties(flags)
+                                                           where typeof(TPropertyType).IsAssignableFrom(property.PropertyType)
+                                                           select property;
+
             ParameterExpression parameter = Expression.Parameter(typeof(object));
             var lambda = Expression.Lambda<Func<object, IEnumerable<TPropertyType>>>
             (
@@ -221,11 +287,11 @@ namespace BGC.Utilities
                     type: typeof(TPropertyType),
                     initializers: matchingProperties.Select(property =>
                     {
-                        Expression typeConvert = Expression.Convert(parameter, propertyDeclaringType);
-                        return Expression.Property(typeConvert, property); // ((<propertyDeclaringType>)<parameter>).property
+                        return Expression.Property(Expression.Convert(parameter, propertyDeclaringType), property); // ((<propertyDeclaringType>)<parameter>).property
                     })
                 )
             );
+
             return lambda.Compile();
         }
     }

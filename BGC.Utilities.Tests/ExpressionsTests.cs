@@ -202,21 +202,21 @@ namespace BGC.Utilities.Tests
         [Test]
         public void ShouldReturnAllMatchingProperties()
         {
-            Func<object, IEnumerable<IEnumerable<int>>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<IEnumerable<int>>(typeof(CustomNonEmptyService));
+            Func<CustomNonEmptyService, IEnumerable<IEnumerable<int>>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<CustomNonEmptyService, IEnumerable<int>>();
             Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyService()).Count());
         }
 
         [Test]
         public void ShouldReturnAllMatchingPropertiesForValueTypes()
         {
-            Func<object, IEnumerable<double>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<double>(typeof(CustomNonEmptyStructService));
+            Func<CustomNonEmptyStructService, IEnumerable<double>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<CustomNonEmptyStructService, double>();
             Assert.AreEqual(2, accessor.Invoke(new CustomNonEmptyStructService()).Count());
         }
 
         [Test]
         public void ShouldReturnEmptyEnumerable()
         {
-            Func<object, IEnumerable<object>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<object>(typeof(CustomEmptyService));
+            Func<CustomEmptyService, IEnumerable<object>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<CustomEmptyService, object>();
             Assert.AreEqual(0, accessor.Invoke(new CustomEmptyService()).Count());
         }
     }

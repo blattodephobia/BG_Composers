@@ -12,18 +12,36 @@ namespace BGC.Utilities.Tests
     {
         private class DependencyValueProxy : DependencyValue<int>
         {
+            [DependencyPrecedence(0)]
             public DependencySource<int> Source1 { get; private set; }
 
+            [DependencyPrecedence(1)]
             public DependencySource<int> Source2 { get; private set; }
 
             public IEnumerable<DependencySource<int>> GetDependencySourcesProxy() => GetDependencySources();
+
+            public DependencyValueProxy()
+            {
+                Source1 = new SingleValueDependencySource<int>();
+                Source2 = new MultiValueFifoDependencySource<int>();
+            }
         }
 
         [Test]
-        public void EnumeratesInternalDependencySources()
+        public void ReturnsCorrectNumberOfDependencySources()
         {
             DependencyValueProxy proxy = new DependencyValueProxy();
             Assert.AreEqual(3, proxy.GetDependencySourcesProxy().Count());
+        }
+
+        [Test]
+        public void ReturnsDependencySourcesInCorrectOrder()
+        {
+            DependencyValueProxy proxy = new DependencyValueProxy();
+            List<DependencySource<int>> sources = proxy.GetDependencySourcesProxy().ToList();
+            Assert.IsTrue(sources[0] is MultiValueFifoDependencySource<int>);
+            Assert.IsTrue(sources[1] is SingleValueDependencySource<int>);
+            Assert.IsTrue(sources[2] is DefaultValueDependencySource<int>);
         }
     }
 }
