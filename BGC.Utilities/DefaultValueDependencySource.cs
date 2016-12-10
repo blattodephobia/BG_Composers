@@ -13,6 +13,8 @@ namespace BGC.Utilities
     /// <typeparam name="T"></typeparam>
     public class DefaultValueDependencySource<T> : DependencySource<T>
     {
+        public static readonly DefaultValueDependencySource<T> DefaultTValueSource = new DefaultValueDependencySource<T>();
+
         private T value;
         private Func<T> valueProvider;
         private bool isInitialized;
