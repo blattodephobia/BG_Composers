@@ -46,16 +46,25 @@
     <Compile Include="DiscoverableHierarchyAttribute.cs" />
     <Compile Include="EncryptionExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="DefaultValueDependencySource.cs" />
+    <Compile Include="DependencyPrecedenceAttribute.cs" />
+    <Compile Include="DependencyValue.cs" />
+    <Compile Include="DependencySource.cs" />
+    <Compile Include="EffectiveValueChangedEventArgs.cs" />
     <Compile Include="Expressions.cs" />
     <Compile Include="IDynamicMemberGetter.cs" />
     <Compile Include="LambdaCaptureFieldAccessor.cs" />
     <Compile Include="MappableWithAttribute.cs" />
+    <Compile Include="MultiValueFifoDependencySource.cs" />
+    <Compile Include="MultiValueLifoDependencySource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeDiscovery.cs" />
     <Compile Include="TypeDiscoveryAttribute.cs" />
     <Compile Include="TypeDiscoveryCacheKey.cs" />
     <Compile Include="TypeDiscoveryMode.cs" />
     <Compile Include="DiscoveredTypes.cs" />
+    <Compile Include="SingleValueDependencySource.cs" />
+    <Compile Include="SingleValueNonOverridableDependencySource.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CodeShield\CodeShield.csproj">

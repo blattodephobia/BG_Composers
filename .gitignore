@@ -190,3 +190,5 @@ ModelManifest.xml
 /BGC.Web/App_Data
 /.vs/config
 /.vs/config/*
+ModelManifest.xml
+/.vs/config/applicationhost.config
