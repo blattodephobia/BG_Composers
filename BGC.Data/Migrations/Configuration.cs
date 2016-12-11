@@ -1,4 +1,4 @@
-using BGC.Core;
+п»їusing BGC.Core;
 using BGC.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -89,7 +89,7 @@ namespace BGC.Data.Migrations
                     {
                         Composer = pStupel
                     },
-                    new ComposerName("Петър Ступел", "bg-BG")
+                    new ComposerName("РџРµС‚СЉСЂ РЎС‚СѓРїРµР»", "bg-BG")
                     {
                         Composer = pStupel
                     }
