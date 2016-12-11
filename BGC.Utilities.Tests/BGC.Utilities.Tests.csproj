@@ -58,6 +58,7 @@
     <Compile Include="ExpressionsTests.cs" />
     <Compile Include="LambdaCaptureFieldAccessorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SingleValueDependencySourceTests.cs" />
     <Compile Include="TypeDiscoveryTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,27 +12,27 @@ namespace BGC.Utilities
     /// <typeparam name="T"></typeparam>
     public class SingleValueDependencySource<T> : DependencySource<T>
     {
-        private T value;
-        private bool hasValue;
+        private T _value;
+        private bool _hasValue;
 
-        public override bool HasValue => this.hasValue;
+        public override bool HasValue => _hasValue;
 
-        public override T GetEffectiveValue()
-        {
-            return this.hasValue ? this.value : default(T);
-        }
+        public override T GetEffectiveValue() => _hasValue ? _value : default(T);
 
         public override void SetValue(T value)
         {
-            this.value = value;
-            this.hasValue = true;
+            T oldValue = _value;
+            _value = value;
+            _hasValue = true;
+
+            OnEffectiveValueChanged(oldValue);
         }
 
         public override void UnsetValue()
         {
-            T oldValue = this.value;
-            this.value = default(T);
-            this.hasValue = false;
+            T oldValue = _value;
+            _value = default(T);
+            _hasValue = false;
 
             OnEffectiveValueChanged(oldValue);
         }

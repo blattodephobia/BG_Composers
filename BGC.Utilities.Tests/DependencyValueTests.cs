@@ -54,8 +54,11 @@ namespace BGC.Utilities.Tests
     {
         private class DependencyValueTestHelper : DependencyValue<int>
         {
-            [DependencyPrecedence(0)]
+            [DependencyPrecedence(1)]
             public SingleValueDependencySource<int> Source1 { get; private set; }
+
+            [DependencyPrecedence(0)]
+            public SingleValueDependencySource<int> Source2 { get; private set; }
 
             public DependencyValueTestHelper() :
                 this(0)
@@ -66,13 +69,23 @@ namespace BGC.Utilities.Tests
                 base(defaultValue)
             {
                 Source1 = new SingleValueDependencySource<int>();
+                Source2 = new SingleValueDependencySource<int>();
             }
         }
 
         [Test]
-        public void GetsHighestPriorityValueFirst()
+        public void GetsHighestPriorityValueFirst1()
         {
             DependencyValueTestHelper val = new DependencyValueTestHelper();
+            val.Source1.SetValue(23);
+            Assert.AreEqual(23, val.EffectiveValue);
+        }
+
+        [Test]
+        public void GetsHighestPriorityValueFirst2()
+        {
+            DependencyValueTestHelper val = new DependencyValueTestHelper();
+            val.Source2.SetValue(10);
             val.Source1.SetValue(23);
             Assert.AreEqual(23, val.EffectiveValue);
         }
