@@ -19,7 +19,7 @@ namespace BGC.Web.Areas.Administration
 		protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
 		{
 			string returnUrl = filterContext.RequestContext.HttpContext.Request.CurrentExecutionFilePath;
-			string loginUrl = this.GetActionUrl(filterContext.RequestContext, MVC.AdministrationArea.Authentication.Login());
+			string loginUrl = this.GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login());
 			
 			if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
 			{

@@ -12,7 +12,7 @@ namespace BGC.Web.Areas.Administration.ViewModels.Permissions
 
         public string Email { get; set; }
 
-        internal override ActionResult ActivityAction => MVC.AdministrationArea.UserManagement.SendInvite();
+        internal override ActionResult ActivityAction => MVC.Administration.UserManagement.SendInvite();
 
         public List<string> AvailableRoles { get; set; }
 

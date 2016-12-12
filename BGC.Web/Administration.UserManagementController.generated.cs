@@ -109,7 +109,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public UserManagementController Actions { get { return MVC.AdministrationArea.UserManagement; } }
+        public UserManagementController Actions { get { return MVC.Administration.UserManagement; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "Administration";
         [GeneratedCode("T4MVC", "2.0")]

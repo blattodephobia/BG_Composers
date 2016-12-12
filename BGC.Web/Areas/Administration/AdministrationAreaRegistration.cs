@@ -11,7 +11,7 @@ namespace BGC.Web.Areas.Administration
 	{
 		public override string AreaName
 		{
-			get { return MVC.AdministrationArea.Name; }
+			get { return MVC.Administration.Name; }
 		}
 
 		public override void RegisterArea(AreaRegistrationContext context)
@@ -22,7 +22,7 @@ namespace BGC.Web.Areas.Administration
                     name: $"{AreaName}",
                     url: $"{AreaName}/{{controller}}/{{action}}",
                     namespaces: new[] { typeof(AdministrationControllerBase).Namespace },
-                    defaults: new { controller = MVC.AdministrationArea.Account.Name, action = MVC.AdministrationArea.Account.ActionNames.Activities })
+                    defaults: new { controller = MVC.Administration.Account.Name, action = MVC.Administration.Account.ActionNames.Activities })
                 .DataTokens.Add("area", AreaName);
         }
 	}

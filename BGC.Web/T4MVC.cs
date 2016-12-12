@@ -38,10 +38,9 @@ public static partial class MVC
 		}
 	}
     static readonly AdministrationClass s_Administration = new AdministrationClass();
-    public static AdministrationClass AdministrationArea { get { return s_Administration; } }
+    public static AdministrationClass Administration { get { return s_Administration; } }
     static readonly PublicClass s_Public = new PublicClass();
     public static PublicClass Public { get { return s_Public; } }
-    public static T4MVC.AdministrationController Administration = new T4MVC.AdministrationController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }
 

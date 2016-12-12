@@ -48,7 +48,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 {
                     Destination = invitationResult.Email,
                     Subject = "BG Composers invitation",
-                    Body = $"{Url.ActionAbsolute(MVC.AdministrationArea.UserManagement.Register())}?{Expressions.GetQueryString(() => Register(invitationResult.Id))}"
+                    Body = $"{Url.ActionAbsolute(MVC.Administration.UserManagement.Register())}?{Expressions.GetQueryString(() => Register(invitationResult.Id))}"
                 });
                 invitation.IsPreviousInvitationSent = true;
                 return RedirectToAction(nameof(SendInvite));
@@ -101,7 +101,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 var user = UserManager.Create(vm.InvitationId, vm.UserName, vm.NewPassword);
                 SignInManager.SignIn(user, false, false);
-                return RedirectToAction(MVC.AdministrationArea.Account.Activities());
+                return RedirectToAction(MVC.Administration.Account.Activities());
             }
             catch (EntityNotFoundException)
             {

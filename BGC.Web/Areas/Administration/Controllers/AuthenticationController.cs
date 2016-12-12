@@ -19,7 +19,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         private string GetAdminHomePageUrl()
         {
-            string result = Url.RouteUrl(MVC.AdministrationArea.Name, MVC.AdministrationArea.Account.Activities().GetT4MVCResult().RouteValueDictionary);
+            string result = Url.RouteUrl(MVC.Administration.Name, MVC.Administration.Account.Activities().GetT4MVCResult().RouteValueDictionary);
             return result;
         }
 
@@ -73,7 +73,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         public virtual ActionResult LogOut()
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
-            return RedirectToAction(MVC.AdministrationArea.Authentication.Login());
+            return RedirectToAction(MVC.Administration.Authentication.Login());
         }
 
 		public AuthenticationController(SignInManager<BgcUser, long> signInManager)

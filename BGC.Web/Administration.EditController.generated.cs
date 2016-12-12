@@ -57,7 +57,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public EditController Actions { get { return MVC.AdministrationArea.Edit; } }
+        public EditController Actions { get { return MVC.Administration.Edit; } }
         [GeneratedCode("T4MVC", "2.0")]
         public readonly string Area = "Administration";
         [GeneratedCode("T4MVC", "2.0")]
