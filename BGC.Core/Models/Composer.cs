@@ -44,11 +44,14 @@ namespace BGC.Core
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
 
             ComposerArticle result = Articles.FirstOrDefault(article => article.LanguageInternal == language.Name);
-            if (result == null)
-            {
-                throw new InvalidOperationException($"There is no article in {language.EnglishName} for composer with Id = {Id}.");
-            }
+            return result;
+        }
 
+        public ComposerName GetName(CultureInfo language)
+        {
+            Shield.ArgumentNotNull(language).ThrowOnError();
+
+            ComposerName result = LocalizedNames?.FirstOrDefault(name => name.Language == language);
             return result;
         }
 

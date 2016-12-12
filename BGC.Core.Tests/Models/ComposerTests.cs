@@ -12,11 +12,11 @@ namespace BGC.Core.Tests.Models
     public class GetArticleTests
     {
         [Test]
-        public void ThrowsExceptionIfArticleNotFound()
+        public void ReturnsNullIfArticleNotFound()
         {
             Composer c = new Composer();
             c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
-            Assert.Throws<InvalidOperationException>(() => c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
+            Assert.IsNull(c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
         }
     }
 }
