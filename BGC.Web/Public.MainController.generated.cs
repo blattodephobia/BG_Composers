@@ -61,6 +61,12 @@ namespace BGC.Web.Areas.Public.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Read);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Search()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public MainController Actions { get { return MVC.Public.Main; } }
@@ -79,6 +85,7 @@ namespace BGC.Web.Areas.Public.Controllers
         {
             public readonly string Index = "Index";
             public readonly string Read = "Read";
+            public readonly string Search = "Search";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -86,6 +93,7 @@ namespace BGC.Web.Areas.Public.Controllers
         {
             public const string Index = "Index";
             public const string Read = "Read";
+            public const string Search = "Search";
         }
 
 
@@ -96,6 +104,14 @@ namespace BGC.Web.Areas.Public.Controllers
         public class ActionParamsClass_Read
         {
             public readonly string article = "article";
+        }
+        static readonly ActionParamsClass_Search s_params_Search = new ActionParamsClass_Search();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Search SearchParams { get { return s_params_Search; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Search
+        {
+            public readonly string query = "query";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -109,9 +125,11 @@ namespace BGC.Web.Areas.Public.Controllers
             {
                 public readonly string Index = "Index";
                 public readonly string Read = "Read";
+                public readonly string Search = "Search";
             }
             public readonly string Index = "~/Areas/Public/Views/Main/Index.cshtml";
             public readonly string Read = "~/Areas/Public/Views/Main/Read.cshtml";
+            public readonly string Search = "~/Areas/Public/Views/Main/Search.cshtml";
         }
     }
 
@@ -140,6 +158,18 @@ namespace BGC.Web.Areas.Public.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Read);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "article", article);
             ReadOverride(callInfo, article);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string query);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Search(string query)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "query", query);
+            SearchOverride(callInfo, query);
             return callInfo;
         }
 

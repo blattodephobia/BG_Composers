@@ -139,7 +139,12 @@
     </Authentication>
   </Administration>
   <Public>
-
+    <Main>
+      <LocalizedString key="Search">
+        <Translation culture="en-US">Search</Translation>
+        <Translation culture="bg-BG">Търси</Translation>
+      </LocalizedString>
+    </Main>
   </Public>
   <Global>
     <LocalizedString key="Send">

@@ -71,6 +71,10 @@ public class Authentication
 }
 public class Public
 {
+    public class Main
+    {
+            public const string Search = "Public.Main.Search";
+}
 }
 public class Global
 {

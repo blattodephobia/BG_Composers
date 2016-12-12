@@ -7,6 +7,11 @@
 </head>
 <body>
     <header></header>
+    @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { target = "_self" }))
+    {
+        <input name="query"/>
+        <input type="submit" value="@Localize(Public.Main.Search)"/>
+    }
     @RenderBody()
 	<footer></footer>
     @Scripts.Render("~/bundles/jquery")
