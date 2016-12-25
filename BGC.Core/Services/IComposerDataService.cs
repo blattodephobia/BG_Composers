@@ -15,6 +15,9 @@ namespace BGC.Core.Services
 		IList<Composer> GetAllComposers();
 
         [OperationContract]
+        Composer FindComposer(long id);
+
+        [OperationContract]
         IList<ComposerName> GetNames(CultureInfo culture);
 
         [OperationContract]

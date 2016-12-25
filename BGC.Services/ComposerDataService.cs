@@ -53,5 +53,7 @@ namespace BGC.Services
                 .ArgumentNotNull().GetValueOrThrow()
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim()));
+
+        public Composer FindComposer(long id) => Composers.All().FirstOrDefault(c => c.Id == id);
     }
 }
