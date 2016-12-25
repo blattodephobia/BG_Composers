@@ -73,7 +73,11 @@ public class Public
 {
     public class Main
     {
-            public const string Search = "Public.Main.Search";
+            public const string SearchCaption = "Public.Main.SearchCaption";
+            public class Search
+            {
+                        public const string NoResults = "Public.Main.Search.NoResults";
+}
 }
 }
 public class Global

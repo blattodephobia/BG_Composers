@@ -3,6 +3,7 @@ using BGC.Core.Services;
 using BGC.Web.Areas.Public.ViewModels;
 using BGC.Web.Controllers;
 using CodeShield;
+using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -14,14 +15,16 @@ namespace BGC.Web.Areas.Public.Controllers
 {
 	public partial class MainController : BgcControllerBase
     {
-        private IComposerDataService _composersService;
-        private IArticleContentService articlesStorageService;
+        private readonly IComposerDataService _composersService;
+        private readonly IArticleContentService _articleStorageService;
+        private readonly ISearchService _searchService;
 
-		public MainController(IComposerDataService composersService, IArticleContentService articlesStorageService)
-		{
+        public MainController(IComposerDataService composersService, IArticleContentService articleStorageService, [Dependency(nameof(Composer))] ISearchService composerSearchService)
+        {
 			_composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
-            this.articlesStorageService = articlesStorageService.ArgumentNotNull(nameof(articlesStorageService)).GetValueOrThrow();
-		}
+            _articleStorageService = articleStorageService.ArgumentNotNull(nameof(_articleStorageService)).GetValueOrThrow();
+            _searchService = composerSearchService.ArgumentNotNull(nameof(composerSearchService)).GetValueOrThrow();
+        }
 
 		public virtual ActionResult Index()
         {
@@ -33,20 +36,18 @@ namespace BGC.Web.Areas.Public.Controllers
 
         public virtual ActionResult Read(Guid article)
         {
-            return View(new ArticleViewModel() { Text = this.articlesStorageService.GetEntry(article) });
+            return View(new ArticleViewModel() { Text = this._articleStorageService.GetEntry(article) });
         }
 
         public virtual ActionResult Search(string query)
         {
-            string[] keywords = query.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var foundEntities = from composer in _composersService.GetAllComposers()
-                                from name in composer.LocalizedNames
-                                from keyword in keywords
-                                where name.Language == CurrentLocale && name.FullName.Contains(keyword)
-                                select composer;
-            SearchResultViewModel vm = new SearchResultViewModel()
+            var vm = new SearchResultViewModel()
             {
-                Results = foundEntities.ToDictionary(c => c.GetArticle(CurrentLocale).StorageId, c => c.GetName(CurrentLocale).GetEasternOrderFullName())
+                Results = (from result in _searchService.Search(query)
+                           let composer = _composersService.FindComposer(result.IdAsLong())
+                           where composer != null
+                           select composer.GetArticle(CurrentLocale))
+                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale).FullName)
             };
             return View(vm);
         }
