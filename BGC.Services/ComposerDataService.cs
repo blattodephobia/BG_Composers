@@ -16,13 +16,11 @@ namespace BGC.Services
         protected IRepository<ComposerName> Names { get; private set; }
 
         private IEnumerable<SearchResult> SearchInternal(IEnumerable<string> keywords) =>
-            from resultName in (from composer in Composers.All()
-                                from name in composer.LocalizedNames
-                                where keywords.Any(keyword => name.FullName.Contains(keyword))
-                                select name).ToList()
-            select new SearchResult(resultName.Composer.Id)
+            from name in Names.All().ToList()
+            where keywords.Any(keyword => name.FullName.Contains(keyword))
+            select new SearchResult(name.Composer.Id)
             {
-                Header = resultName.FullName,
+                Header = name.FullName,
                 ParsedResultXml = null
             };
 
