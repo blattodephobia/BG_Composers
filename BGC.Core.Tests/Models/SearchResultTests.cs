@@ -34,6 +34,20 @@ namespace BGC.Core.Tests.Models
             Assert.AreEqual(0xBB, result.Id[0]);
             Assert.AreEqual(0x0A, result.Id[3]);
         }
+
+        [Test]
+        public void InitializesWithInt64()
+        {
+            var result = new SearchResult(0x0ABBCC0000DDEEFFL);
+            Assert.AreEqual(0xFF, result.Id[0]);
+            Assert.AreEqual(0xEE, result.Id[1]);
+            Assert.AreEqual(0xDD, result.Id[2]);
+            Assert.AreEqual(0x00, result.Id[3]);
+            Assert.AreEqual(0x00, result.Id[4]);
+            Assert.AreEqual(0xCC, result.Id[5]);
+            Assert.AreEqual(0xBB, result.Id[6]);
+            Assert.AreEqual(0x0A, result.Id[7]);
+        }
     }
 
     [TestFixture]
@@ -84,6 +98,82 @@ namespace BGC.Core.Tests.Models
 
             result.ParsedResultXml = null;
             Assert.IsNull(result.ResultXml);
+        }
+    }
+
+    [TestFixture]
+    public class AsIntTests
+    {
+        [Test]
+        public void ConvertsIdToInt32Correctly()
+        {
+            var result = new SearchResult(0x0A0B0C0D);
+            Assert.AreEqual(0x0A0B0C0D, result.IdAsInt());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNull()
+        {
+            var result = new SearchResult();
+            Assert.Throws<InvalidOperationException>(() => result.IdAsInt());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNot4BytesLong()
+        {
+            var result = new SearchResult(new byte[3]);
+            Assert.Throws<InvalidOperationException>(() => result.IdAsInt());
+        }
+    }
+
+    [TestFixture]
+    public class AsLongTests
+    {
+        [Test]
+        public void ConvertsIdToInt64Correctly()
+        {
+            var result = new SearchResult(long.MaxValue);
+            Assert.AreEqual(long.MaxValue, result.IdAsLong());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNull()
+        {
+            var result = new SearchResult();
+            Assert.Throws<InvalidOperationException>(() => result.IdAsLong());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNot8BytesLong()
+        {
+            var result = new SearchResult(new byte[6]);
+            Assert.Throws<InvalidOperationException>(() => result.IdAsLong());
+        }
+    }
+
+    [TestFixture]
+    public class AsGuidTests
+    {
+        [Test]
+        public void ConvertsIdToGuidCorrectly()
+        {
+            var id = new Guid(14, 1024, 2056, new byte[8]);
+            var result = new SearchResult(id);
+            Assert.AreEqual(id, result.IdAsGuid());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNull()
+        {
+            var result = new SearchResult();
+            Assert.Throws<InvalidOperationException>(() => result.IdAsGuid());
+        }
+
+        [Test]
+        public void ThrowsExceptionIfIdIsNot16BytesLong()
+        {
+            var result = new SearchResult(new byte[3]);
+            Assert.Throws<InvalidOperationException>(() => result.IdAsGuid());
         }
     }
 }

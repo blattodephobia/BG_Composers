@@ -99,6 +99,40 @@ namespace BGC.Core
             Id = id.ToByteArray();
         }
 
+        public int IdAsInt()
+        {
+            Shield.ValueNotNull(Id, nameof(Id)).GetValueOrThrow();
+            Shield.AssertOperation(Id, Id.Length == sizeof(int), $"{nameof(Id)} must be exactly {sizeof(int)} bytes long.").ThrowOnError();
+
+            int result = Id[0] | (Id[1] << 8) | (Id[2] << 16) | (Id[3] << 24);
+            return result;
+        }
+
+        public long IdAsLong()
+        {
+            Shield.ValueNotNull(Id, nameof(Id)).GetValueOrThrow();
+            Shield.AssertOperation(Id, Id.Length == sizeof(long), $"{nameof(Id)} must be exactly {sizeof(long)} bytes long.").ThrowOnError();
+
+            long result =
+                 (Id[0]) |
+                ((long)(Id[1]) << 8) |
+                ((long)(Id[2]) << 16) |
+                ((long)(Id[3]) << 24) |
+                ((long)(Id[4]) << 32) |
+                ((long)(Id[5]) << 40) |
+                ((long)(Id[6]) << 48) |
+                ((long)(Id[7]) << 56);
+            return result;
+        }
+
+        public Guid IdAsGuid()
+        {
+            Shield.ValueNotNull(Id, nameof(Id)).GetValueOrThrow();
+            Shield.AssertOperation(Id, Id.Length == 16, $"{nameof(Id)} must be exactly {16} bytes long.").ThrowOnError();
+            
+            return new Guid(Id);
+        }
+
         public override string ToString() => Header;
     }
 }
