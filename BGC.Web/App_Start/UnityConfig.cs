@@ -63,7 +63,9 @@ namespace BGC.Web.App_Start
             serviceLayerDependencyRegistration.RegisterType(typeof(ISettingsService),       container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IArticleContentService), container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IMediaService),          container);
-            
+
+            container.RegisterType<ISearchService>(nameof(Composer), new InjectionFactory(c => c.Resolve<IComposerDataService>()));
+
             string dataStorageDir = ConfigurationManager.AppSettings[ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey];
             container.RegisterInstance(
                 ServiceLayerDependencyRegistration.DefaultDataStorageDirectoryKey,

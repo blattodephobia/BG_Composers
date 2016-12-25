@@ -52,8 +52,9 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net40\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1502.911, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1502.0911\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
@@ -74,6 +75,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="ComposersDataServiceTests.cs" />
     <Compile Include="EmailServiceTests.cs" />
     <Compile Include="FileSystemMediaStorageServiceTests.cs" />
     <Compile Include="FileSystemTextStorageServiceTests.cs" />
@@ -95,6 +97,10 @@
     <ProjectReference Include="..\BGC.Services\BGC.Services.csproj">
       <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
       <Name>BGC.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{641df2ed-ce8c-4266-805e-b44ca073529f}</Project>
+      <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

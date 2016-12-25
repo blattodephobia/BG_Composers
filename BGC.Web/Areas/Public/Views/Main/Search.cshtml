@@ -1,0 +1,22 @@
+﻿@model SearchResultViewModel
+
+@{
+    ViewBag.Title = "Search";
+}
+
+<h2>Search</h2>
+@if (Model.Results.Any())
+{
+    <ul>
+        @foreach (KeyValuePair<Guid, string> kvp in Model.Results)
+        {
+            <li>
+                @Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.article, kvp.Key))
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <span>@Localize(Public.Main.Search.NoResults)</span>
+}

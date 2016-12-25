@@ -162,7 +162,6 @@
   <ItemGroup>
     <Compile Include="AdministrationArea\AreaTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
-    <Compile Include="Mocks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicArea\Controllers\ResourcesControllerTests.cs" />
   </ItemGroup>

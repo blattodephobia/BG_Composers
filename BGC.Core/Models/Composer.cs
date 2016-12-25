@@ -10,19 +10,30 @@ namespace BGC.Core
 {
 	public class Composer : BgcEntity<long>
 	{
-        private ICollection<ComposerName> localizedNames;
+        private ICollection<ComposerName> _localizedNames;
         private ICollection<ComposerArticle> articles;
 
 		public virtual ICollection<ComposerName> LocalizedNames
         {
             get
             {
-                return this.localizedNames ?? (this.localizedNames = new HashSet<ComposerName>());
+                return _localizedNames ?? (_localizedNames = new HashSet<ComposerName>());
             }
 
             set
             {
-                this.localizedNames = value;
+                _localizedNames = value;
+                foreach (ComposerName name in _localizedNames ?? Enumerable.Empty<ComposerName>())
+                {
+                    if (name.Composer == null)
+                    {
+                        name.Composer = this;
+                    }
+                    else if (name.Composer != this)
+                    {
+                        throw new InvalidOperationException("Attempted to add a foreign composer's name");
+                    }
+                }
             }
         }
 

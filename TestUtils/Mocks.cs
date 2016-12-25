@@ -1,13 +1,17 @@
 ﻿using BGC.Core;
+using BGC.Core.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace TestUtils
 {
@@ -125,6 +129,56 @@ namespace TestUtils
             mockManager.Object.UserTokenProvider = mockTokenProvider;
 
             return mockManager;
+        }
+
+        public static Mock<IComposerDataService> GetMockComposerService(IList<Composer> composers)
+        {
+            Mock<IComposerDataService> mockService = new Mock<IComposerDataService>();
+            mockService
+                .Setup(s => s.GetAllComposers())
+                .Returns(composers);
+
+            mockService
+                .Setup(s => s.GetNames(It.IsAny<CultureInfo>()))
+                .Returns((CultureInfo language) => composers.SelectMany(c => c.LocalizedNames).Where(name => name.Language == language).ToList());
+
+            mockService
+                .Setup(s => s.Add(It.IsAny<Composer>()))
+                .Callback((Composer c) => composers.Add(c));
+
+            return mockService;
+        }
+
+        /// <summary>
+        /// Returns a mock of the <see cref="IArticleContentService"/>. Make sure the <see cref="ComposerArticle"/> instances override <see cref="object.ToString()"/>,
+        /// if comparing their text output will be required.
+        /// </summary>
+        /// <param name="articles"></param>
+        /// <returns></returns>
+        public static Mock<IArticleContentService> GetMockArticleService(IList<ComposerArticle> articles)
+        {
+            Mock<IArticleContentService> mockService = new Mock<IArticleContentService>();
+            mockService
+                .Setup(s => s.GetEntry(It.IsAny<Guid>()))
+                .Returns((Guid id) => articles.FirstOrDefault(a => a.StorageId == id)?.ToString());
+
+            mockService
+                .Setup(s => s.RemoveEntry(It.IsAny<Guid>()))
+                .Callback((Guid id) => articles.Remove(articles.First(a => a.StorageId == id)));
+
+            return mockService;
+        }
+
+        public static T GetActionResultModel<T>(this ActionResult result) where T : class => (result as ViewResultBase).Model as T;
+
+        public static Mock<HttpRequestBase> GetMockRequest()
+        {
+            return new Mock<HttpRequestBase>();
+        }
+
+        public static Mock<HttpContextBase> GetMockContext()
+        {
+            return new Mock<HttpContextBase>();
         }
     }
 }

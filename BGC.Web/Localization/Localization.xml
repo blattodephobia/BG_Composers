@@ -139,7 +139,18 @@
     </Authentication>
   </Administration>
   <Public>
-
+    <Main>
+      <LocalizedString key="SearchCaption">
+        <Translation culture="en-US">Search</Translation>
+        <Translation culture="bg-BG">Търси</Translation>
+      </LocalizedString>
+      <Search>
+        <LocalizedString key="NoResults">
+          <Translation culture="en-US">No results found.</Translation>
+          <Translation culture="bg-BG">Няма резултати от търсенето.</Translation>
+        </LocalizedString>
+      </Search>
+    </Main>
   </Public>
   <Global>
     <LocalizedString key="Send">

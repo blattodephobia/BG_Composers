@@ -71,6 +71,14 @@ public class Authentication
 }
 public class Public
 {
+    public class Main
+    {
+            public const string SearchCaption = "Public.Main.SearchCaption";
+            public class Search
+            {
+                        public const string NoResults = "Public.Main.Search.NoResults";
+}
+}
 }
 public class Global
 {
