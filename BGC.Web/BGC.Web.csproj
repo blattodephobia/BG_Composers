@@ -410,6 +410,9 @@
     <Content Include="Areas\Administration\Views\UserManagement\Register.cshtml" />
     <Content Include="Areas\Public\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Public\Views\Shared\PublicLayout.cshtml" />
+    <None Include="Localization\LocalizationSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">
