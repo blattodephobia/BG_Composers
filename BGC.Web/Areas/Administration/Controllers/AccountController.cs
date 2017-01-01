@@ -116,7 +116,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             return View(new PasswordResetViewModel()
             {
                 RenderErrorsOnly = true,
-                ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
+                ErrorMessages = new[] { LocalizationKeys.Administration.Account.ResetPassword.UnknownEmailError }
             });
         }
 
@@ -144,7 +144,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 {
                     return View(new PasswordResetViewModel()
                     {
-                        ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownError }
+                        ErrorMessages = new[] { LocalizationKeys.Administration.Account.ResetPassword.UnknownError }
                     });
                 }
             }
@@ -152,7 +152,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 return View(new PasswordResetViewModel()
                 {
-                    ErrorMessages = new[] { LocalizationKeys.Administration.Account.PasswordReset.UnknownEmailError }
+                    ErrorMessages = new[] { LocalizationKeys.Administration.Account.ResetPassword.UnknownEmailError }
                 });
             }
         }

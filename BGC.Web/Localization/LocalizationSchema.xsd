@@ -1,67 +1,88 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xs:schema id="LocalizationSchema"
-    targetNamespace="http://tempuri.org/LocalizationSchema.xsd"
-    elementFormDefault="qualified"
-    xmlns="http://tempuri.org/LocalizationSchema.xsd"
-    xmlns:mstns="http://tempuri.org/LocalizationSchema.xsd"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           targetNamespace="https://github.com/blattodephobia/BG_Composers"
+           elementFormDefault="qualified"
+           xmlns="https://github.com/blattodephobia/BG_Composers"
+           xmlns:mstns="https://github.com/blattodephobia/BG_Composers"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="LocalizationKeys">
     <xs:complexType>
-      <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="Administration" minOccurs="0" maxOccurs="1">
           <xs:complexType>
-            <xs:sequence>
-              <xs:element name="Edit">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="List" type="ViewElement"/>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:element name="Account">
                 <xs:complexType>
-                  <xs:sequence>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="Activities" type="ViewElement"/>
-                    <xs:element name="PasswordReset" type="ViewElement"/>
-                    <xs:element name="RequestPasswordReset" type="ViewElement"/>
                     <xs:element name="ChangePassword" type="ViewElement"/>
-                  </xs:sequence>
-                </xs:complexType>
-              </xs:element>
-              <xs:element name="UserManagement">
-                <xs:complexType>
-                  <xs:sequence>
-                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="Register" type="ViewElement"/>
-                    <xs:element name="SendInvite" type="ViewElement"/>
-                  </xs:sequence>
+                    <xs:element name="ResetPassword" type="ViewElement"/>
+                    <xs:element name="RequestPasswordReset" type="ViewElement"/>
+                    <xs:element name="Login" type="ViewElement"/>
+                    <xs:element name="LogOut" type="ViewElement"/>
+                  </xs:choice>
                 </xs:complexType>
               </xs:element>
               <xs:element name="Authentication">
                 <xs:complexType>
-                  <xs:sequence>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="Login" type="ViewElement"/>
-                  </xs:sequence>
+                    <xs:element name="LogOut" type="ViewElement"/>
+                  </xs:choice>
                 </xs:complexType>
               </xs:element>
-            </xs:sequence>
+              <xs:element name="Edit">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="List" type="ViewElement"/>
+                    <xs:element name="Add" type="ViewElement"/>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="UserManagement">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="SendInvite" type="ViewElement"/>
+                    <xs:element name="Register" type="ViewElement"/>
+                    <xs:element name="Activities" type="ViewElement"/>
+                    <xs:element name="ChangePassword" type="ViewElement"/>
+                    <xs:element name="ResetPassword" type="ViewElement"/>
+                    <xs:element name="RequestPasswordReset" type="ViewElement"/>
+                    <xs:element name="Login" type="ViewElement"/>
+                    <xs:element name="LogOut" type="ViewElement"/>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
           </xs:complexType>
         </xs:element>
         <xs:element name="Public" minOccurs="0" maxOccurs="1">
           <xs:complexType>
-            <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:element name="Main">
                 <xs:complexType>
-                  <xs:sequence>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="Index" type="ViewElement"/>
+                    <xs:element name="Read" type="ViewElement"/>
                     <xs:element name="Search" type="ViewElement"/>
-                  </xs:sequence>
+                  </xs:choice>
                 </xs:complexType>
               </xs:element>
-            </xs:sequence>
+              <xs:element name="Resources">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="Get" type="ViewElement"/>
+                    <xs:element name="Upload" type="ViewElement"/>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
           </xs:complexType>
         </xs:element>
         <xs:element name="Global" minOccurs="0" maxOccurs="1">
@@ -71,31 +92,19 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-      </xs:sequence>
+      </xs:choice>
     </xs:complexType>
   </xs:element>
 
   <xs:complexType name="LocalizedString">
     <xs:sequence>
-      <xs:element name="Translation" type="Translation"/>
+      <xs:element name="Translation" type="Translation" minOccurs="1" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="key"/>
   </xs:complexType>
 
-  <xs:complexType name="Translation">
+  <xs:complexType name="Translation" mixed="true">
     <xs:attribute name="culture" type="xs:string"/>
-  </xs:complexType>
-
-  <xs:complexType name="AreaElement">
-    <xs:sequence>
-      <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="ControllerElement">
-    <xs:sequence>
-      <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="ViewElement">

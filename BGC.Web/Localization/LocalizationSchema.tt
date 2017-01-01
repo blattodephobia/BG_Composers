@@ -1,0 +1,147 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ assembly name="EnvDTE.dll" #>
+<#@ assembly name="System.IO" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Text.Encoding" #>
+<#@ assembly name="System.Threading.Tasks" #>
+<#@ assembly name="Microsoft.CodeAnalysis" #>
+<#@ assembly name="Microsoft.CodeAnalysis.CSharp" #>
+<#@ assembly name="Microsoft.CodeAnalysis.CSharp.Workspaces" #>
+<#@ assembly name="Microsoft.CodeAnalysis.Workspaces.Desktop" #>
+<#@ assembly name="Microsoft.CodeAnalysis.Workspaces" #>
+<#@ assembly name="System.Runtime" #>
+<#@ import namespace="Microsoft.CodeAnalysis" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp" #>
+<#@ import namespace="Microsoft.CodeAnalysis.CSharp.Syntax" #>
+<#@ import namespace="Microsoft.CodeAnalysis.Emit" #>
+<#@ import namespace="Microsoft.CodeAnalysis.MSBuild" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Reflection" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".xsd" #>
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="LocalizationSchema"
+           targetNamespace="https://github.com/blattodephobia/BG_Composers"
+           elementFormDefault="qualified"
+           xmlns="https://github.com/blattodephobia/BG_Composers"
+           xmlns:mstns="https://github.com/blattodephobia/BG_Composers"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="LocalizationKeys">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+<#
+    EnvDTE.DTE dte = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+    DirectoryInfo projectDir = new DirectoryInfo(Path.GetDirectoryName(dte.Solution.FullName) + "\\BGC.Web");
+
+    List<ClassDeclarationSyntax> declaredClasses = new List<ClassDeclarationSyntax>();
+    var parsedTrees = from t4GenFile in projectDir.GetFiles("*generated.cs", SearchOption.TopDirectoryOnly)
+                      select CSharpSyntaxTree.ParseText(File.ReadAllText(t4GenFile.FullName));
+    foreach (var tree in parsedTrees)
+    {
+        declaredClasses.AddRange(GetSyntaxNodesOfType<ClassDeclarationSyntax>(tree.GetRoot()));
+    }
+    var mvcRoot = CSharpSyntaxTree.ParseText(File.ReadAllText(projectDir + "\\T4MVC.cs")).GetRoot();
+    declaredClasses.AddRange(GetSyntaxNodesOfType<ClassDeclarationSyntax>(mvcRoot));
+    var controllers = from _class in declaredClasses
+                      from field in _class.Members.OfType<FieldDeclarationSyntax>()
+                      let variable = field.Declaration.Variables.FirstOrDefault()
+                      where variable != null && variable.Identifier.Text == "Area"
+                      group _class by (variable.Initializer.Value as LiteralExpressionSyntax).Token.ValueText into x
+                      select x;
+    foreach (var group in controllers)
+    {
+#>
+        <xs:element name="<#=group.Key#>" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+<#
+        foreach (var controller in group)
+        {
+#>
+              <xs:element name="<#=controller.Identifier.Text.EndsWith("Controller") ? controller.Identifier.Text.Substring(0, controller.Identifier.Text.Length - "Controller".Length) : controller.Identifier.Text#>">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+<#
+            var actionNames = from constant in (from field in controller.Members.OfType<ClassDeclarationSyntax>().FirstOrDefault(c => c.Identifier.Text == "ActionNameConstants").Members.OfType<FieldDeclarationSyntax>()
+                                                select field.Declaration.Variables.First())
+                              let literalExpression = constant.Initializer.Value as LiteralExpressionSyntax
+                              let invocationExpression = constant.Initializer.Value as InvocationExpressionSyntax
+                              let token = literalExpression != null
+                                  ? literalExpression.Token
+                                  : (invocationExpression.ArgumentList.Arguments.First().Expression as IdentifierNameSyntax).Identifier
+                              where token != null
+                              select token.ValueText;
+            foreach (string actionName in actionNames.Distinct())
+            {
+#>
+                    <xs:element name="<#=actionName#>" type="ViewElement"/>
+<#
+            }
+#>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+<#
+        }
+#>
+            </xs:choice>
+          </xs:complexType>
+        </xs:element>
+<#
+    }
+#>
+        <xs:element name="Global" minOccurs="0" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="LocalizedString">
+    <xs:sequence>
+      <xs:element name="Translation" type="Translation" minOccurs="1" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="key"/>
+  </xs:complexType>
+
+  <xs:complexType name="Translation" mixed="true">
+    <xs:attribute name="culture" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="ViewElement">
+    <xs:sequence>
+      <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<#+
+    private IEnumerable<T> GetSyntaxNodesOfType<T>(SyntaxNode root) where T : SyntaxNode
+    {
+        List<T> result = new List<T>();
+        Queue<SyntaxNode> searchQueue = new Queue<SyntaxNode>();
+        searchQueue.Enqueue(root);
+        while (searchQueue.Any())
+        {
+            SyntaxNode current = searchQueue.Dequeue();
+            if (current is T)
+            {
+                result.Add(current as T);
+            }
+
+            foreach (SyntaxNode node in current.ChildNodes())
+            {
+                searchQueue.Enqueue(node);
+            }
+        }
+
+        return result;
+    }
+ #>

@@ -411,6 +411,9 @@
     <Content Include="Areas\Public\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Public\Views\Shared\PublicLayout.cshtml" />
     <None Include="Localization\LocalizationSchema.xsd">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationSchema.tt</DependentUpon>
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
@@ -419,6 +422,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Localization\LocalizationSchema.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LocalizationSchema.xsd</LastGenOutput>
+    </Content>
     <Content Include="Localization\LocalizationKeys.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LocalizationKeys.cs</LastGenOutput>

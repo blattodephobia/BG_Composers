@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<LocalizationKeys>
+<LocalizationKeys xmlns="https://github.com/blattodephobia/BG_Composers">
   <Administration>
     <Edit>
       <List>
@@ -34,7 +34,7 @@
           <Translation culture="bg-BG">Въведете си имейла тук и ще ви изпратим упътванията, за да си възстановите достъпа.</Translation>
         </LocalizedString>
       </RequestPasswordReset>
-      <PasswordReset>
+      <ResetPassword>
         <LocalizedString key="UnknownEmailError">
           <Translation culture="en-US">We can't reset your password. You may have followed a wrong or mistyped link.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим паролата. Възможно е да сте използвали грешен линк.</Translation>
@@ -43,7 +43,7 @@
           <Translation culture="en-US">We couldn't reset your password. An unknown error occurred.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим достъпа. Възникна неочаквана грешка.</Translation>
         </LocalizedString>
-      </PasswordReset>
+      </ResetPassword>
       <ChangePassword>
         <LocalizedString key="PasswordTooShort">
           <Translation culture="en-US">Password doesn't meet minimum length of 8 symbols.</Translation>

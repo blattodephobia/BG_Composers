@@ -24,10 +24,10 @@ public class RequestPasswordReset
             public const string PasswordResetEmailSent = "Administration.Account.RequestPasswordReset.PasswordResetEmailSent";
             public const string TypeEmailForPasswordReset = "Administration.Account.RequestPasswordReset.TypeEmailForPasswordReset";
 }
-public class PasswordReset
+public class ResetPassword
 {
-            public const string UnknownEmailError = "Administration.Account.PasswordReset.UnknownEmailError";
-            public const string UnknownError = "Administration.Account.PasswordReset.UnknownError";
+            public const string UnknownEmailError = "Administration.Account.ResetPassword.UnknownEmailError";
+            public const string UnknownError = "Administration.Account.ResetPassword.UnknownError";
 }
 public class ChangePassword
 {
