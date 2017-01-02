@@ -10,11 +10,11 @@
     <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
 }
 
-@using (Html.BeginForm(MVC.AdministrationArea.Authentication.ActionNames.Login, MVC.AdministrationArea.Authentication.Name, FormMethod.Post))
+@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post))
 {
     @Html.TextBoxFor(m => m.UserName)
     @Html.PasswordFor(m => m.Password)
     <input type="submit" value="@Localize(Administration.Authentication.Login.LoginButton)"/>
 }
 
-<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.AdministrationArea.Account.RequestPasswordReset())</div>
+<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())</div>

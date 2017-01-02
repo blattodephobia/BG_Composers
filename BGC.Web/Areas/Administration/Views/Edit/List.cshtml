@@ -12,4 +12,4 @@
     @(composer.LocalizedNames.FirstOrDefault(c => c.Language.Name == "bg-BG") ?? composer.LocalizedNames.First())
 }
 
-@Html.ActionLink(Localize(Administration.Edit.List.Add_entry), MVC.AdministrationArea.Edit.Add());
+@Html.ActionLink(Localize(Administration.Edit.List.Add_entry), MVC.Administration.Edit.Add());

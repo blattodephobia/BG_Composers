@@ -34,7 +34,7 @@
         {
             if (User.Identity.IsAuthenticated)
             {
-                <div>@Html.ActionLink(Localize(Global.Logout), MVC.AdministrationArea.Authentication.Actions.LogOut())</div>
+                <div>@Html.ActionLink(Localize(Global.Logout), MVC.Administration.Authentication.Actions.LogOut())</div>
             }
             @RenderBody()
         }
