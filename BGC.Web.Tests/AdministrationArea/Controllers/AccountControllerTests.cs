@@ -40,8 +40,9 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             mockManager.Object.EmailService = mService.Object;
             #endregion
 
-            AccountController ctrl = new AccountController(sm.Object)
+            AccountController ctrl = new AccountController()
             {
+                SignInManager = sm.Object,
                 UserManager = mockManager.Object,
                 EncryptionKey = "123"
             };
@@ -67,7 +68,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             mockHttpContext.SetupAllProperties();
             #endregion
 
-            AccountController ctrl = new AccountController(sm.Object) { UserManager = mockManager.Object };
+            AccountController ctrl = new AccountController() { SignInManager = sm.Object, UserManager = mockManager.Object };
             sm
                 .Setup(x => x.SignInAsync(It.IsAny<BgcUser>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Callback((BgcUser u, bool a, bool b) =>

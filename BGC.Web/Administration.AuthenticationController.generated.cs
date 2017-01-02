@@ -27,6 +27,9 @@ namespace BGC.Web.Areas.Administration.Controllers
     public partial class AuthenticationController
     {
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public AuthenticationController() { }
+
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         protected AuthenticationController(Dummy d) { }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]

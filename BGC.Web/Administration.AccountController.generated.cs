@@ -83,12 +83,6 @@ namespace BGC.Web.Areas.Administration.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.RequestPasswordReset_Post);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
         }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Login_Post()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
-        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public AccountController Actions { get { return MVC.Administration.Account; } }
@@ -112,9 +106,6 @@ namespace BGC.Web.Areas.Administration.Controllers
             public readonly string ResetPassword_Post = nameof(ResetPassword);
             public readonly string RequestPasswordReset = "RequestPasswordReset";
             public readonly string RequestPasswordReset_Post = nameof(RequestPasswordReset);
-            public readonly string Login = "Login";
-            public readonly string Login_Post = nameof(Login);
-            public readonly string LogOut = "LogOut";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -127,9 +118,6 @@ namespace BGC.Web.Areas.Administration.Controllers
             public const string ResetPassword_Post = nameof(ResetPassword);
             public const string RequestPasswordReset = "RequestPasswordReset";
             public const string RequestPasswordReset_Post = nameof(RequestPasswordReset);
-            public const string Login = "Login";
-            public const string Login_Post = nameof(Login);
-            public const string LogOut = "LogOut";
         }
 
 
@@ -181,22 +169,6 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionParamsClass_RequestPasswordReset_Post
         {
             public readonly string vm = "vm";
-        }
-        static readonly ActionParamsClass_Login s_params_Login = new ActionParamsClass_Login();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Login LoginParams { get { return s_params_Login; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Login
-        {
-            public readonly string model = "model";
-        }
-        static readonly ActionParamsClass_Login_Post s_params_Login_Post = new ActionParamsClass_Login_Post();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Login_Post Login_PostParams { get { return s_params_Login_Post; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Login_Post
-        {
-            public readonly string model = "model";
         }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -309,41 +281,6 @@ namespace BGC.Web.Areas.Administration.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
             RequestPasswordReset_PostOverride(callInfo, vm);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
-        }
-
-        [NonAction]
-        partial void LoginOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Login(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            LoginOverride(callInfo, model);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void Login_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.LoginViewModel model);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Login_Post(BGC.Web.Areas.Administration.ViewModels.LoginViewModel model)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Login_Post);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "model", model);
-            Login_PostOverride(callInfo, model);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void LogOutOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult LogOut()
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.LogOut);
-            LogOutOverride(callInfo);
-            return callInfo;
         }
 
     }

@@ -15,20 +15,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using static BGC.Core.BgcUserTokenProvider;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
-	public partial class AccountController : AuthenticationController
+	public partial class AccountController : AdministrationControllerBase
     {
         private DiscoveredTypes typeDiscovery;
-        
-        protected AccountController()
-        {
-        }
 
-        public AccountController(SignInManager<BgcUser, long> signInManager) :
-            base(signInManager)
+        public AccountController()
         {            
             this.typeDiscovery = TypeDiscovery.Discover(GetType(), a => a == Assembly.GetExecutingAssembly());
         }

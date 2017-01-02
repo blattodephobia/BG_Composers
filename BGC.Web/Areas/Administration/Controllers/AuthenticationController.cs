@@ -15,8 +15,6 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
 	public partial class AuthenticationController : AdministrationControllerBase
 	{
-		public SignInManager<BgcUser, long> SignInManager { get; private set; }
-
         private string GetAdminHomePageUrl()
         {
             string result = Url.RouteUrl(MVC.Administration.Name, MVC.Administration.Account.Activities().GetT4MVCResult().RouteValueDictionary);
@@ -74,15 +72,6 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             HttpContext.GetOwinContext().Authentication.SignOut();
             return RedirectToAction(MVC.Administration.Authentication.Login());
-        }
-
-		public AuthenticationController(SignInManager<BgcUser, long> signInManager)
-		{
-			SignInManager = signInManager;
-		}
-
-        protected AuthenticationController()
-        {
         }
     }
 }

@@ -18,7 +18,7 @@ using System.Web.Mvc;
 namespace BGC.Web.Areas.Administration.Controllers
 {
     [AdminAreaAuthorization(nameof(AdministratorRole))]
-    public partial class UserManagementController : AccountController
+    public partial class UserManagementController : AdministrationControllerBase
     {
         private BgcRoleManager _roleManager;
 
@@ -116,8 +116,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
         }
 
-        public UserManagementController(BgcRoleManager roleManager, SignInManager<BgcUser, long> signInManager) :
-            base(signInManager)
+        public UserManagementController(BgcRoleManager roleManager)
         {
             _roleManager = Shield.ArgumentNotNull(roleManager, nameof(roleManager)).GetValueOrThrow();
         }

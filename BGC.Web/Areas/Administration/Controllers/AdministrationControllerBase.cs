@@ -3,6 +3,7 @@ using BGC.Utilities;
 using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -60,6 +61,21 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 Shield.Assert(value, this.userManager == null, x => new InvalidOperationException("User Manager cannot be set more than once"));
                 this.userManager = value;
+            }
+        }
+
+        private SignInManager<BgcUser, long> _signInManager;
+        [Dependency]
+        public SignInManager<BgcUser, long> SignInManager
+        {
+            get
+            {
+                return _signInManager;
+            }
+
+            set
+            {
+                _signInManager = value.ValueNotNull(nameof(SignInManager)).GetValueOrThrow();
             }
         }
 
