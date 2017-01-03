@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -26,8 +27,8 @@ namespace BGC.Web.Areas.Public
                 .Routes
                 .MapRoute(
                     name: "HomePage",
-                    url: "",
-                    defaults: new { controller = MVC.Public.Main.Name, action = MVC.Public.Main.ActionNames.Index })
+                    url: "{locale}",
+                    defaults: new { controller = MVC.Public.Main.Name, action = MVC.Public.Main.ActionNames.Index, locale = "en-US" })
                 .DataTokens.Add("area", AreaName);
         }
 	}

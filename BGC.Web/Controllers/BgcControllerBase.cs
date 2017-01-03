@@ -14,8 +14,22 @@ namespace BGC.Web.Controllers
         [Dependency]
         public ILocalizationService LocalizationService { get; set; }
 
-        private CultureInfo _currentLocale = CultureInfo.GetCultureInfo("bg-BG");
-        public CultureInfo CurrentLocale => _currentLocale;
+        private CultureInfo _currentLocale;
+        public CultureInfo CurrentLocale
+        {
+            get
+            {
+                if (_currentLocale == null)
+                {
+                    string routeLocale = RouteData.Values["locale"]?.ToString();
+                    _currentLocale = string.IsNullOrEmpty(routeLocale)
+                        ? CultureInfo.GetCultureInfo("bg-BG")
+                        : CultureInfo.GetCultureInfo(routeLocale);
+                }
+
+                return _currentLocale;
+            }
+        }
 
         public string Localize(string key) => LocalizationService?.Localize(key) ?? key;
     }

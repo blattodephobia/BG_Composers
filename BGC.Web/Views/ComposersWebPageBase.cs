@@ -1,4 +1,5 @@
 ﻿using BGC.Core.Services;
+using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
@@ -34,7 +35,7 @@ namespace BGC.Web.Views
         {
         }
 
-        public string Localize(string key) => LocalizationService.Localize(key);
+        public string Localize(string key) => LocalizationService.Localize(key, (ViewContext.Controller as BgcControllerBase).CurrentLocale);
 
         public bool IsDebugBuild
         {

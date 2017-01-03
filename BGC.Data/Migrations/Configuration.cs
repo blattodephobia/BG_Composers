@@ -76,7 +76,7 @@ namespace BGC.Data.Migrations
                         SupportedCultures = new[]
                         {
                             CultureInfo.GetCultureInfo("bg-BG"),
-                            CultureInfo.GetCultureInfo("de-DE"),
+                            CultureInfo.GetCultureInfo("en-US"),
                         }
                     });
 
@@ -85,7 +85,7 @@ namespace BGC.Data.Migrations
 
                 ComposerName[] names = new[]
                 {
-                    new ComposerName("Petar Stupel", "de-DE")
+                    new ComposerName("Petar Stupel", "en-US")
                     {
                         Composer = pStupel
                     },
