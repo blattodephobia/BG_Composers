@@ -77,6 +77,7 @@ namespace BGC.Data.Migrations
                         {
                             CultureInfo.GetCultureInfo("bg-BG"),
                             CultureInfo.GetCultureInfo("en-US"),
+                            CultureInfo.GetCultureInfo("de-DE"),
                         }
                     });
 
@@ -92,6 +93,10 @@ namespace BGC.Data.Migrations
                     new ComposerName("Петър Ступел", "bg-BG")
                     {
                         Composer = pStupel
+                    },
+                    new ComposerName("Петър Ступел", "de-DE")
+                    {
+                        Composer = pStupel
                     }
                 };
 
@@ -101,16 +106,23 @@ namespace BGC.Data.Migrations
                     new ComposerArticle()
                     {
                         Composer = pStupel,
-                        LocalizedName = pStupel.LocalizedNames.First(),
-                        Language = pStupel.LocalizedNames.First().Language,
+                        LocalizedName = pStupel.LocalizedNames.ElementAt(0),
+                        Language = pStupel.LocalizedNames.ElementAt(0).Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000001")
                     },
                     new ComposerArticle()
                     {
                         Composer = pStupel,
-                        LocalizedName = pStupel.LocalizedNames.Last(),
-                        Language = pStupel.LocalizedNames.Last().Language,
+                        LocalizedName = pStupel.LocalizedNames.ElementAt(1),
+                        Language = pStupel.LocalizedNames.ElementAt(1).Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000002")
+                    },
+                    new ComposerArticle()
+                    {
+                        Composer = pStupel,
+                        LocalizedName = pStupel.LocalizedNames.ElementAt(2),
+                        Language = pStupel.LocalizedNames.ElementAt(2).Language,
+                        StorageId = Guid.Parse("00000000-0000-0000-0000-000000000003")
                     }
                 };
                 context.Composers.AddOrUpdate(composer => composer.Id, pStupel);
