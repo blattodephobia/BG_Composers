@@ -11,28 +11,45 @@ namespace BGC.Web.HttpHandlers
 {
     public class LocalizationHttpHandler : MvcHandler
     {
+        private static void UpdateOrAdd(RouteValueDictionary dict, string key, object value)
+        {
+            if (!dict.ContainsKey(key))
+            {
+                dict.Add(key, value);
+            }
+            else
+            {
+                dict[key] = value;
+            }
+        }
+
+        protected virtual string GetDefaulAction(string controllerName)
+        {
+            return MVC.Public.Controllers.ContainsKey(controllerName ?? string.Empty)
+                    ? (MVC.Public.Controllers[controllerName] as BgcControllerBase).DefaultActionName
+                    : null;
+        }
+
         protected RouteValueDictionary GetCompleteRoute(RouteValueDictionary route)
         {
             RouteValueDictionary completeRoute = null;
             if (string.IsNullOrEmpty(route["locale"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                completeRoute.Add("locale", "en-US");
+                UpdateOrAdd(completeRoute, "locale", "en-US");
             }
 
             if (string.IsNullOrEmpty(route["controller"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                completeRoute.Add("controller", MVC.Public.Main.Name);
+                UpdateOrAdd(completeRoute, "controller", MVC.Public.Main.Name);
             }
 
             if (string.IsNullOrEmpty(route["action"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                string actionName = MVC.Public.Controllers.ContainsKey(route["controller"]?.ToString() ?? string.Empty)
-                    ? (MVC.Public.Controllers[route["controller"].ToString()] as BgcControllerBase).DefaultActionName
-                    : null;
-                completeRoute["action"] = actionName;
+                string actionName = GetDefaulAction(route["controller"]?.ToString());
+                UpdateOrAdd(completeRoute, "action", actionName);
             }
 
             return completeRoute;
