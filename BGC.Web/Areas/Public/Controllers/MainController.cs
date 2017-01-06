@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
 using BGC.Web.Areas.Public.ViewModels;
+using BGC.Web.Attributes;
 using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.Practices.Unity;
@@ -26,6 +27,7 @@ namespace BGC.Web.Areas.Public.Controllers
             _searchService = composerSearchService.ArgumentNotNull(nameof(composerSearchService)).GetValueOrThrow();
         }
 
+        [DefaultAction]
 		public virtual ActionResult Index()
         {
             IEnumerable<ComposerArticle> articles = _composersService

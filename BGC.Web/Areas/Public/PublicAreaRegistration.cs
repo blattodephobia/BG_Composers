@@ -1,9 +1,11 @@
-﻿using System;
+﻿using BGC.Web.RouteHandlers;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace BGC.Web.Areas.Public
 {
@@ -16,20 +18,23 @@ namespace BGC.Web.Areas.Public
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
-			context
-                .Routes
-				.MapRoute(
-					name: "Standard",
-					url: "{controller}/{action}")
-				.DataTokens.Add("area", AreaName);
+            Route standardRoute = new Route("{locale}/{controller}/{action}", new LocalizationRouteHandler())
+            {
+                Defaults = new RouteValueDictionary() { { "controller", MVC.Public.Main.Name }, { "action", UrlParameter.Optional } },
+                DataTokens = new RouteValueDictionary() { { "area", AreaName } }
+            };
 
             context
                 .Routes
-                .MapRoute(
-                    name: "HomePage",
-                    url: "{locale}",
-                    defaults: new { controller = MVC.Public.Main.Name, action = MVC.Public.Main.ActionNames.Index, locale = "en-US" })
-                .DataTokens.Add("area", AreaName);
+                .Add(standardRoute);
+
+            Route incompleteRoute = new Route("", new LocalizationRouteHandler());
+            incompleteRoute.DataTokens = new RouteValueDictionary(new { area = AreaName });
+            context
+                .Routes
+                .Add(incompleteRoute);
+
+            context.Routes.AppendTrailingSlash = true;
         }
 	}
 }

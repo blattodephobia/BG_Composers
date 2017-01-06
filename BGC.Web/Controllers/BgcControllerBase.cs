@@ -1,9 +1,11 @@
 ﻿using BGC.Core.Services;
+using BGC.Web.Attributes;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -32,5 +34,8 @@ namespace BGC.Web.Controllers
         }
 
         public string Localize(string key) => LocalizationService?.Localize(key) ?? key;
+
+        private string _defaultActionName;
+        public virtual string DefaultActionName => _defaultActionName ?? (_defaultActionName = DefaultActionAttribute.GetDefaultActionName(GetType()));
     }
 }
