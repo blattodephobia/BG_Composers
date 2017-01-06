@@ -108,6 +108,12 @@ namespace <#=settings.T4MVCNamespace #>
 <#foreach (var controller in area.GetControllers()) { #>
         public <#=controller.FullClassName #> <#=controller.Name #> = new <#=controller.FullDerivedClassName #>();
 <#} #>
+        public Dictionary<string, ControllerBase> Controllers = new Dictionary<string, ControllerBase>()
+        {
+<#        foreach (var controller in area.GetControllers().Where(c => !c.NotRealController)) { #>
+           { "<#= controller.Name #>" , new <#=controller.FullDerivedClassName #>() },
+<#} #>
+        };
     }
 <#} #>
 }

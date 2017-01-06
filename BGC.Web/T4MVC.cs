@@ -55,6 +55,13 @@ namespace T4MVC
         public BGC.Web.Areas.Administration.Controllers.EditController Edit = new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController();
         public BGC.Web.Areas.Administration.Controllers.UserManagementController UserManagement = new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController();
         public T4MVC.Administration.SharedController Shared = new T4MVC.Administration.SharedController();
+        public Dictionary<string, ControllerBase> Controllers = new Dictionary<string, ControllerBase>()
+        {
+           { "Account" , new BGC.Web.Areas.Administration.Controllers.T4MVC_AccountController() },
+           { "Authentication" , new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController() },
+           { "Edit" , new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController() },
+           { "UserManagement" , new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController() },
+        };
     }
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class PublicClass
@@ -63,6 +70,11 @@ namespace T4MVC
         public BGC.Web.Areas.Public.Controllers.MainController Main = new BGC.Web.Areas.Public.Controllers.T4MVC_MainController();
         public BGC.Web.Areas.Public.Controllers.ResourcesController Resources = new BGC.Web.Areas.Public.Controllers.T4MVC_ResourcesController();
         public T4MVC.Public.SharedController Shared = new T4MVC.Public.SharedController();
+        public Dictionary<string, ControllerBase> Controllers = new Dictionary<string, ControllerBase>()
+        {
+           { "Main" , new BGC.Web.Areas.Public.Controllers.T4MVC_MainController() },
+           { "Resources" , new BGC.Web.Areas.Public.Controllers.T4MVC_ResourcesController() },
+        };
     }
 }
 
