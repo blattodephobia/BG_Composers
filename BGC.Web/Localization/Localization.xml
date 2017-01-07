@@ -5,6 +5,7 @@
       <List>
         <LocalizedString key="add_entry">
           <Translation culture="en-US">Add new entry</Translation>
+          <Translation culture="de-DE">Eintrag hinzufügen</Translation>
           <Translation culture="bg-BG">Добави нов</Translation>
         </LocalizedString>
       </List>
@@ -13,76 +14,93 @@
       <Activities>
         <LocalizedString key="SendInvite">
           <Translation culture="en-US">Invite users</Translation>
+          <Translation culture="de-DE">Benutzer einlanden</Translation>
           <Translation culture="bg-BG">Покани потребители</Translation>
         </LocalizedString>
         <LocalizedString key="UserSettings">
           <Translation culture="en-US">Settings</Translation>
+          <Translation culture="de-DE">Einstellungen</Translation>
           <Translation culture="bg-BG">Настройки</Translation>
         </LocalizedString>
         <LocalizedString key="ApplicationSettings">
           <Translation culture="en-US">Global settings</Translation>
+          <Translation culture="de-DE">Globale Einstellungen</Translation>
           <Translation culture="bg-BG">Глобални настройки</Translation>
         </LocalizedString>
       </Activities>
       <RequestPasswordReset>
         <LocalizedString key="PasswordResetEmailSent">
-          <Translation culture="en-US">A password reset email has been sent. If the email is valid, you'll be able to reset your password.</Translation>
-          <Translation culture="bg-BG">Беше изпратен имейл за възстановяване на парола. Ако имейлът е правилен, ще можете да си възстановите достъпа.</Translation>
+          <Translation culture="en-US">A password reset email has been sent.</Translation>
+          <Translation culture="de-DE">Wir haben Ihnen eine Email geschickt, damit Sie ihre Passwort zurücksetzen können.</Translation>
+          <Translation culture="bg-BG">Беше изпратен имейл за възстановяване на парола.</Translation>
         </LocalizedString>
         <LocalizedString key="TypeEmailForPasswordReset">
           <Translation culture="en-US">Enter your e-mail address here and we'll send you the instructions for resetting your password.</Translation>
+          <Translation culture="de-DE">Tragen Sie Ihre Emailadresse hier ein und wir werden Euch die Instruktionen zur Zurücksetzung Ihres Passworts senden.</Translation>
           <Translation culture="bg-BG">Въведете си имейла тук и ще ви изпратим упътванията, за да си възстановите достъпа.</Translation>
         </LocalizedString>
       </RequestPasswordReset>
       <ResetPassword>
         <LocalizedString key="UnknownEmailError">
           <Translation culture="en-US">We can't reset your password. You may have followed a wrong or mistyped link.</Translation>
+          <Translation culture="de-DE">Ihre Passwort kann nicht zurückgesetzt werden. Sie könnten einen falschen link gefolgt haben.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим паролата. Възможно е да сте използвали грешен линк.</Translation>
         </LocalizedString>
         <LocalizedString key="UnknownError">
           <Translation culture="en-US">We couldn't reset your password. An unknown error occurred.</Translation>
+          <Translation culture="de-DE">Wir konnten Ihre Passwort nicht zurücksetzen. Ein unbekannter Fehler ist aufgetreten.</Translation>
           <Translation culture="bg-BG">Не можем да ви възстановим достъпа. Възникна неочаквана грешка.</Translation>
         </LocalizedString>
       </ResetPassword>
       <ChangePassword>
         <LocalizedString key="PasswordTooShort">
           <Translation culture="en-US">Password doesn't meet minimum length of 8 symbols.</Translation>
+          <Translation culture="de-DE">Das Passwort muss mindestens 8 Symbolen lang sein.</Translation>
           <Translation culture="bg-BG">Паролата трябва да е дълга поне 8 знака.</Translation>
         </LocalizedString>        
         <LocalizedString key="ChangePasswordTitle">
           <Translation culture="en-US">Change password</Translation>
+          <Translation culture="de-DE">Passwort ändern</Translation>
           <Translation culture="bg-BG">Смяна на парола</Translation>
         </LocalizedString>
         <LocalizedString key="PasswordsMismatch">
           <Translation culture="en-US">Confirm password field must match the new password field.</Translation>
+          <Translation culture="de-DE">Das Textfeld zur Passwortbestätigung muss dem des neuen Passworts entsprechen.</Translation>
           <Translation culture="bg-BG">Полето за потвърждение на парола трябва да съотвества на новата парола.</Translation>
         </LocalizedString>
         <LocalizedString key="UnknownError">
           <Translation culture="en-US">An unknown error occurred when attempting to change the password.</Translation>
+          <Translation culture="de-DE">Ein unbekannter Fehler ist aufgetreten während wir das Passwort ändern versuchten.</Translation>
           <Translation culture="bg-BG">Възникна неочаквана грешка докато се опитвахме да ви сменим паролата.</Translation>
         </LocalizedString>
         <LocalizedString key="WrongPassword">
           <Translation culture="en-US">Current password is wrong.</Translation>
+          <Translation culture="de-DE">Das aktuelle Passwort ist falsch.</Translation>
           <Translation culture="bg-BG">Грешна текуща парола.</Translation>
         </LocalizedString>
         <LocalizedString key="ChangePasswordLabel">
           <Translation culture="en-US">Change password</Translation>
+          <Translation culture="de-DE">Passwort ändern</Translation>
           <Translation culture="bg-BG">Смяна на парола</Translation>
         </LocalizedString>
         <LocalizedString key="CurrentPassword">
           <Translation culture="en-US">Current password</Translation>
+          <Translation culture="de-DE">Aktuelle Passwort</Translation>
           <Translation culture="bg-BG">Текуща парола</Translation>
         </LocalizedString>
         <LocalizedString key="NewPassword">
           <Translation culture="en-US">New password</Translation>
+          <Translation culture="de-DE">Neue Passwort</Translation>
           <Translation culture="bg-BG">Нова парола</Translation>
         </LocalizedString>
         <LocalizedString key="ConfirmNewPassword">
           <Translation culture="en-US">Confirm new password</Translation>
+          <Translation culture="de-DE">Neues Passwort bestätigen</Translation>
           <Translation culture="bg-BG">Потвърждаване на нова парола</Translation>
         </LocalizedString>
         <LocalizedString key="PasswordRequired">
           <Translation culture="en-US">The password is required.</Translation>
+          <Translation culture="de-DE">Das Password ist erforderlich.</Translation>
           <Translation culture="bg-BG">Въвеждането на парола е задължително.</Translation>
         </LocalizedString>
       </ChangePassword>
@@ -90,29 +108,35 @@
     <UserManagement>
       <LocalizedString key="UserName">
         <Translation culture="en-US">User name</Translation>
+        <Translation culture="de-DE">Benutzername</Translation>
         <Translation culture="bg-BG">Потребителско име</Translation>
       </LocalizedString>
       <Register>
         <LocalizedString key="UserNameRequired">
           <Translation culture="en-US">User name is required.</Translation>
+          <Translation culture="de-DE">Benutzername ist erforderlich.</Translation>
           <Translation culture="bg-BG">Потребителското име е задължително.</Translation>
         </LocalizedString>
         <LocalizedString key="UserNameInUse">
           <Translation culture="en-US">A user with that name already exists.</Translation>
+          <Translation culture="de-DE">Ein Benutzer mit diesem Namen existiert schon.</Translation>
           <Translation culture="bg-BG">Това потребителско име е заето.</Translation>
         </LocalizedString>
       </Register>
       <SendInvite>
         <LocalizedString key="invitation_sent">
           <Translation culture="en-US">Invitation has been sent successfully.</Translation>
+          <Translation culture="de-DE">Die Einladung wurder erfolgreich geschickt.</Translation>
           <Translation culture="bg-BG">Поканата беше изпратена успешно.</Translation>
         </LocalizedString>
         <LocalizedString key="roles">
           <Translation culture="en-US">Roles</Translation>
+          <Translation culture="de-DE">Rollen</Translation>
           <Translation culture="bg-BG">Роли</Translation>
         </LocalizedString>
         <LocalizedString key="UserExists">
           <Translation culture="en-US">A user with this email is already registered.</Translation>
+          <Translation culture="de-DE">Ein Benutzer mit dieser Email existiert schon.</Translation>
           <Translation culture="bg-BG">Вече е регистриран потребител с този имейл.</Translation>          
         </LocalizedString>
       </SendInvite>
@@ -121,18 +145,22 @@
       <Login>
         <LocalizedString key="LoginButton">
           <Translation culture="en-US">Login</Translation>
+          <Translation culture="de-DE">Anmelden</Translation>
           <Translation culture="bg-BG">Вход</Translation>
         </LocalizedString>
         <LocalizedString key="Password">
           <Translation culture="en-US">Password</Translation>
+          <Translation culture="de-DE">Passwort</Translation>
           <Translation culture="bg-BG">Парола</Translation>
         </LocalizedString>
         <LocalizedString key="authentication_failure">
           <Translation culture="en-US">User and/or password incorrect.</Translation>
+          <Translation culture="de-DE">Benutzername und/oder Password sind falsch.</Translation>
           <Translation culture="bg-BG">Грешно потребителско име и/или парола.</Translation>
         </LocalizedString>
         <LocalizedString key="Forgot_password">
           <Translation culture="en-US">Forgot your password?</Translation>
+          <Translation culture="de-DE">Passwort vergessen?</Translation>
           <Translation culture="bg-BG">Забравили сте си паролата?</Translation>
         </LocalizedString>
       </Login>
@@ -142,11 +170,13 @@
     <Main>
       <LocalizedString key="SearchCaption">
         <Translation culture="en-US">Search</Translation>
+        <Translation culture="de-DE">Suchen</Translation>
         <Translation culture="bg-BG">Търси</Translation>
       </LocalizedString>
       <Search>
         <LocalizedString key="NoResults">
           <Translation culture="en-US">No results found.</Translation>
+          <Translation culture="de-DE">Keine Suchergebnisse.</Translation>
           <Translation culture="bg-BG">Няма резултати от търсенето.</Translation>
         </LocalizedString>
       </Search>
@@ -155,30 +185,37 @@
   <Global>
     <LocalizedString key="Send">
       <Translation culture="en-US">Send</Translation>
+      <Translation culture="de-DE">Verschicken</Translation>
       <Translation culture="bg-BG">Изпращане</Translation>
     </LocalizedString>
     <LocalizedString key="InvitationEmailFormat">
       <Translation culture="en-US">You have been invited to participate in the devlopment of the website &quot;Composers from Bulgaria&quot;. Click the link to register. {0}</Translation>
+      <Translation culture="de-DE">Sie sind zur Entwicklund der Webseite &quot;Komponisten aus Bulgarien&quot; eingeladen worden. Klicken Sie auf das Link um Ihre Konto einzustellen. {0}</Translation>
       <Translation culture="bg-BG">Поканени сте да участвате в изграждането на уебсайта &quot;Композитори от България&quot;. Кликнете върху линка, за да се регистрирате. {0}</Translation>
     </LocalizedString>
     <LocalizedString key="email">
       <Translation culture="en-US">Email</Translation>
+      <Translation culture="de-DE">Email</Translation>
       <Translation culture="bg-BG">Е-мейл</Translation>
     </LocalizedString>
     <LocalizedString key="ok">
       <Translation culture="en-US">OK</Translation>
+      <Translation culture="de-DE">OK</Translation>
       <Translation culture="bg-BG">ОК</Translation>
     </LocalizedString>
     <LocalizedString key="submit">
       <Translation culture="en-US">Submit</Translation>
+      <Translation culture="de-DE">Einsenden</Translation>
       <Translation culture="bg-BG">Добави</Translation>
     </LocalizedString>
     <LocalizedString key="name">
       <Translation culture="en-US">Name</Translation>
+      <Translation culture="de-DE">Name</Translation>
       <Translation culture="bg-BG">Име</Translation>
     </LocalizedString>
     <LocalizedString key="logout">
       <Translation culture="en-US">Log out</Translation>
+      <Translation culture="de-DE">Abmelden</Translation>
       <Translation culture="bg-BG">Изход</Translation>
     </LocalizedString>
   </Global>
