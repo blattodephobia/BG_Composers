@@ -36,6 +36,11 @@ namespace BGC.Utilities
         public abstract bool HasValue { get; }
 
         /// <summary>
+        /// Specifies whether the default value (null for reference types) will be considered as a valid value for this source.
+        /// </summary>
+        public bool IsDefaultValueValid { get; protected set; }
+
+        /// <summary>
         /// Raised when a set/unset operation has resulted in the effective value of
         /// the current <see cref="DependencySource{T}"/> being changed.
         /// </summary>
@@ -49,6 +54,11 @@ namespace BGC.Utilities
         protected virtual void OnEffectiveValueChanged(T oldValue, T newValue)
         {
             EffectiveValueChanged?.Invoke(this, new EffectiveValueChangedEventArgs<T>(oldValue, newValue));
+        }
+
+        protected DependencySource(bool isDefaultValueValid = true)
+        {
+            IsDefaultValueValid = isDefaultValueValid;
         }
     }
 }

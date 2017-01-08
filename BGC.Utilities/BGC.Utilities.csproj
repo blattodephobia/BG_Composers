@@ -55,6 +55,7 @@
     <Compile Include="IDynamicMemberGetter.cs" />
     <Compile Include="LambdaCaptureFieldAccessor.cs" />
     <Compile Include="MappableWithAttribute.cs" />
+    <Compile Include="MultiValueDependencySource.cs" />
     <Compile Include="MultiValueFifoDependencySource.cs" />
     <Compile Include="MultiValueLifoDependencySource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

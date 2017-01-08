@@ -23,7 +23,7 @@ namespace BGC.Utilities
         {
             T oldValue = _value;
             _value = value;
-            _hasValue = true;
+            _hasValue = IsDefaultValueValid || (!_value?.Equals(default(T)) ?? false);
 
             OnEffectiveValueChanged(oldValue);
         }
@@ -35,6 +35,16 @@ namespace BGC.Utilities
             _hasValue = false;
 
             OnEffectiveValueChanged(oldValue);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the <see cref="SingleValueDependencySource{T}"/> class.
+        /// </summary>
+        /// <param name="isDefaultValueAllowed">Specifies whether the default value (null for reference types) will be considered as a valid value for this source.</param>
+        public SingleValueDependencySource(bool isDefaultValueAllowed = true) :
+            base(isDefaultValueAllowed)
+        {
+
         }
     }
 }

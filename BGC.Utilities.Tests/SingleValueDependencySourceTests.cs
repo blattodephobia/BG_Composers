@@ -68,4 +68,44 @@ namespace BGC.Utilities.Tests
             Assert.IsFalse(src.HasValue);
         }
     }
+
+    [TestFixture]
+    public class DefaultValueAllowedTests
+    {
+        [Test]
+        public void HasValueIfDefaultValueIsAllowedAndSet_ValueType()
+        {
+            SingleValueDependencySource<int> src = new SingleValueDependencySource<int>(true);
+            Assert.IsFalse(src.HasValue);
+            src.SetValue((default(int)));
+            Assert.IsTrue(src.HasValue);
+        }
+
+        [Test]
+        public void HasNoValueIfDefaultIsNotAllowedAndSet_ValueType()
+        {
+            SingleValueDependencySource<int> src = new SingleValueDependencySource<int>(false);
+            Assert.IsFalse(src.HasValue);
+            src.SetValue((default(int)));
+            Assert.IsFalse(src.HasValue);
+        }
+
+        [Test]
+        public void HasValueIfDefaultValueIsAllowedAndSet_ReferenceType()
+        {
+            SingleValueDependencySource<string> src = new SingleValueDependencySource<string>(true);
+            Assert.IsFalse(src.HasValue);
+            src.SetValue((default(string)));
+            Assert.IsTrue(src.HasValue);
+        }
+
+        [Test]
+        public void HasNoValueIfDefaultIsNotAllowedAndSet_ReferenceType()
+        {
+            SingleValueDependencySource<string> src = new SingleValueDependencySource<string>(false);
+            Assert.IsFalse(src.HasValue);
+            src.SetValue((default(string)));
+            Assert.IsFalse(src.HasValue);
+        }
+    }
 }
