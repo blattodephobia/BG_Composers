@@ -1,16 +1,37 @@
-﻿using BGC.Web.Controllers;
+﻿using BGC.Utilities;
+using BGC.Web.Controllers;
+using BGC.Web.Models;
+using BGC.Web.Services;
 using CodeShield;
+using MaxMind.Db;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
 namespace BGC.Web.HttpHandlers
 {
-    public class LocalizationHttpHandler : MvcHandler
+    public partial class LocalizationHttpHandler : MvcHandler
     {
+        static LocalizationHttpHandler()
+        {
+            SupportedCultures = new[]
+            {
+                CultureInfo.GetCultureInfo("en-US"),
+                CultureInfo.GetCultureInfo("bg-BG"),
+                CultureInfo.GetCultureInfo("de-DE"),
+            };
+        }
+
+        private static readonly string LocaleCookieName = LocaleRouteTokenName;
+        private static readonly string LocaleRouteTokenName = "locale";
+        private static readonly IEnumerable<CultureInfo> SupportedCultures;
+
         private static void UpdateOrAdd(RouteValueDictionary dict, string key, object value)
         {
             if (!dict.ContainsKey(key))
@@ -23,7 +44,7 @@ namespace BGC.Web.HttpHandlers
             }
         }
 
-        protected virtual string GetDefaulAction(string controllerName)
+        protected virtual string GetDefaultAction(string controllerName)
         {
             return MVC.Public.Controllers.ContainsKey(controllerName ?? string.Empty)
                     ? (MVC.Public.Controllers[controllerName] as BgcControllerBase).DefaultActionName
@@ -33,10 +54,10 @@ namespace BGC.Web.HttpHandlers
         protected RouteValueDictionary GetCompleteRoute(RouteValueDictionary route)
         {
             RouteValueDictionary completeRoute = null;
-            if (string.IsNullOrEmpty(route["locale"]?.ToString()))
+            if (Locale.EffectiveValue.Name != route[LocaleRouteTokenName]?.ToString())
             {
-                completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                UpdateOrAdd(completeRoute, "locale", "en-US");
+                completeRoute = new RouteValueDictionary(route);
+                UpdateOrAdd(completeRoute, LocaleRouteTokenName, Locale.EffectiveValue.Name);
             }
 
             if (string.IsNullOrEmpty(route["controller"]?.ToString()))
@@ -48,7 +69,7 @@ namespace BGC.Web.HttpHandlers
             if (string.IsNullOrEmpty(route["action"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                string actionName = GetDefaulAction(route["controller"]?.ToString());
+                string actionName = GetDefaultAction(route["controller"]?.ToString());
                 UpdateOrAdd(completeRoute, "action", actionName);
             }
 
@@ -90,8 +111,26 @@ namespace BGC.Web.HttpHandlers
             }
         }
 
-        public LocalizationHttpHandler(RequestContext context) :
+        public RequestContextLocale Locale { get; private set; }
+
+        protected LocalizationHttpHandler(RequestContext context, RequestContextLocale locale) :
             base(context)
+        {
+            Locale = locale;
+        }
+
+        public LocalizationHttpHandler(RequestContext context) :
+            this(context, new MaxMindGeoLocationService(File.OpenRead(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb")))
+        {
+        }
+
+        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc) :
+            this(
+                context: context,
+                locale: new RequestContextLocale(
+                    request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
+                    supportedCultures: SupportedCultures,
+                    geoLocationService: svc.ArgumentNotNull().GetValueOrThrow()))
         {
         }
     }

@@ -1,32 +1,45 @@
 ﻿using BGC.Web.HttpHandlers;
+using BGC.Web.Services;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Routing;
+using TestUtils;
 
 namespace BGC.Web.Tests.HttpHandlers
 {
     [TestFixture]
     public class GetCompleteRouteTests
     {
-        private class LocalizationHttpHanlderProxy : LocalizationHttpHandler
+        private class RequestContextLocaleProxy : LocalizationHttpHandler.RequestContextLocale
+        {
+            public RequestContextLocaleProxy(List<CultureInfo> supportedCultures, IGeoLocationService svc) :
+                base(supportedCultures, svc)
+            {
+
+            }
+        }
+        private class LocalizationHttpHandlerProxy : LocalizationHttpHandler
         {
             public RouteValueDictionary GetCompleteRouteProxy(RouteValueDictionary route) => GetCompleteRoute(route);
 
             public string DefaultAction { get; set; } = "ACTION";
 
-            protected override string GetDefaulAction(string controllerName) => DefaultAction;
+            protected override string GetDefaultAction(string controllerName) => DefaultAction;
 
-            public LocalizationHttpHanlderProxy() :
-                base(new RequestContext())
+            public LocalizationHttpHandlerProxy(HttpRequestBase request, List<CultureInfo> supportedCultures) :
+                base(new RequestContext(), new RequestContextLocaleProxy(supportedCultures, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object))
             {
             }
         }
 
-        private readonly LocalizationHttpHanlderProxy _handler = new LocalizationHttpHanlderProxy();
+        private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(Mocks.GetMockRequest().Object, new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US") });
 
         [Test]
         public void PopulatesMissingLocaleToken_KeyMissing()

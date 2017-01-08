@@ -1,5 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Web.Models;
+using BGC.Web.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -8,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -179,6 +182,13 @@ namespace TestUtils
         public static Mock<HttpContextBase> GetMockContext()
         {
             return new Mock<HttpContextBase>();
+        }
+
+        public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db)
+        {
+            var mockService = new Mock<IGeoLocationService>();
+            mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            return mockService;
         }
     }
 }

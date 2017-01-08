@@ -56,6 +56,10 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="MaxMind.Db, Version=2.0.0.0, Culture=neutral, PublicKeyToken=66afa4cc5ae853ac, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaxMind.Db.2.1.3\lib\net45\MaxMind.Db.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
@@ -141,6 +145,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Reflection.Metadata, Version=1.0.21.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
@@ -309,6 +314,12 @@
       <DependentUpon>LocalizationKeys.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Models\ContinentInfo.cs" />
+    <Compile Include="Models\CountryInfo.cs" />
+    <Compile Include="Models\GeoLocation.cs" />
+    <Compile Include="Services\IGeoLocationService.cs" />
+    <Compile Include="Models\IpAddressInfo.cs" />
+    <Compile Include="HttpHandlers\LocalizationHttpHandler.RequestContextLocale.cs" />
     <Compile Include="Public.MainController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -319,6 +330,7 @@
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
     <Compile Include="RouteHandlers\LocalizationRouteHandler.cs" />
+    <Compile Include="Services\MaxMindGeoLocationService.cs" />
     <Compile Include="SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -413,6 +425,8 @@
     <Content Include="Areas\Administration\Views\UserManagement\Register.cshtml" />
     <Content Include="Areas\Public\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Public\Views\Shared\PublicLayout.cshtml" />
+    <Content Include="App_Data\Geolocation\GeoLite2-Country.mmdb" />
+    <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000003" />
     <None Include="Localization\LocalizationSchema.xsd">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -469,7 +483,6 @@
   <ItemGroup>
     <Folder Include="App_Data\Media\" />
     <Folder Include="Areas\Public\Scripts\" />
-    <Folder Include="Models\" />
     <Folder Include="Scripts\" />
   </ItemGroup>
   <ItemGroup>

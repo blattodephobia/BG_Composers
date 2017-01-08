@@ -28,11 +28,11 @@ namespace BGC.Web.Areas.Public
                 .Routes
                 .Add(standardRoute);
 
-            Route incompleteRoute = new Route("", new LocalizationRouteHandler());
-            incompleteRoute.DataTokens = new RouteValueDictionary(new { area = AreaName });
+            Route siteNameRoute = new Route("", new LocalizationRouteHandler());
+            siteNameRoute.DataTokens = new RouteValueDictionary(new { area = AreaName });
             context
                 .Routes
-                .Add(incompleteRoute);
+                .Add(siteNameRoute);
 
             context.Routes.AppendTrailingSlash = true;
         }
