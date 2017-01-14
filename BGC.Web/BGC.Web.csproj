@@ -317,6 +317,7 @@
     <Compile Include="Models\ContinentInfo.cs" />
     <Compile Include="Models\CountryInfo.cs" />
     <Compile Include="Models\GeoLocation.cs" />
+    <Compile Include="Services\DynamicMaxMinServiceProvider.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Models\IpAddressInfo.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandler.RequestContextLocale.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Views\ComposersWebPageBase.cs" />
+    <Compile Include="WebExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />

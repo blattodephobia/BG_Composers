@@ -20,6 +20,7 @@ using System.Configuration;
 using System.Web.Hosting;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using BGC.Web.Services;
 
 namespace BGC.Web.App_Start
 {
@@ -101,6 +102,8 @@ namespace BGC.Web.App_Start
                     }
                 })
             );
+
+            container.RegisterInstance<IGeoLocationService>(new DynamicMaxMinServiceProvider(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb"));
         }
     }
 }

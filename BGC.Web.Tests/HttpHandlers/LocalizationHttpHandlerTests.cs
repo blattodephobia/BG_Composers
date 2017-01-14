@@ -4,6 +4,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -14,30 +15,38 @@ using TestUtils;
 
 namespace BGC.Web.Tests.HttpHandlers
 {
+    public class RequestContextLocaleProxy : LocalizationHttpHandler.RequestContextLocale
+    {
+        public RequestContextLocaleProxy(List<CultureInfo> supportedCultures, IGeoLocationService svc) :
+            base(supportedCultures, svc)
+        {
+
+        }
+    }
+
+    public class LocalizationHttpHandlerProxy : LocalizationHttpHandler
+    {
+        public RouteValueDictionary GetCompleteRouteProxy(RouteValueDictionary route) => GetCompleteRoute(route);
+
+        public string DefaultAction { get; set; } = "ACTION";
+
+        public string LocaleRouteTokenNameProxy => LocaleRouteTokenName;
+
+        public HttpCookie GetLocaleCookie() => new HttpCookie(LocaleCookieName);
+
+        protected override string GetDefaultAction(string controllerName) => DefaultAction;
+
+        public RouteValueDictionary ProcessRouteProxy(HttpCookie cookie) => ProcessRoute(cookie);
+
+        public LocalizationHttpHandlerProxy(HttpRequestBase request, List<CultureInfo> supportedCultures) :
+            base(new RequestContext(), new RequestContextLocaleProxy(supportedCultures, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object))
+        {
+        }
+    }
+
     [TestFixture]
     public class GetCompleteRouteTests
     {
-        private class RequestContextLocaleProxy : LocalizationHttpHandler.RequestContextLocale
-        {
-            public RequestContextLocaleProxy(List<CultureInfo> supportedCultures, IGeoLocationService svc) :
-                base(supportedCultures, svc)
-            {
-
-            }
-        }
-        private class LocalizationHttpHandlerProxy : LocalizationHttpHandler
-        {
-            public RouteValueDictionary GetCompleteRouteProxy(RouteValueDictionary route) => GetCompleteRoute(route);
-
-            public string DefaultAction { get; set; } = "ACTION";
-
-            protected override string GetDefaultAction(string controllerName) => DefaultAction;
-
-            public LocalizationHttpHandlerProxy(HttpRequestBase request, List<CultureInfo> supportedCultures) :
-                base(new RequestContext(), new RequestContextLocaleProxy(supportedCultures, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object))
-            {
-            }
-        }
 
         private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(Mocks.GetMockRequest().Object, new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US") });
 
@@ -122,6 +131,22 @@ namespace BGC.Web.Tests.HttpHandlers
             Assert.IsNotNull(completeRoute);
             Assert.IsTrue(completeRoute.ContainsKey("action"));
             Assert.IsFalse(string.IsNullOrEmpty(completeRoute["action"]?.ToString()));
+        }
+    }
+
+    [TestFixture]
+    public class LocaleCookieTests
+    {
+        [Test]
+        public void SetsCookieWithLastUsedLocale()
+        {
+            var req = Mocks.GetMockRequest();
+            CultureInfo supportedLocale = CultureInfo.GetCultureInfo("en-US");
+            LocalizationHttpHandlerProxy handler = new LocalizationHttpHandlerProxy(req.Object, new List<CultureInfo>() { supportedLocale });
+            HttpCookie cookie = handler.GetLocaleCookie();
+            handler.ProcessRouteProxy(cookie);
+
+            Assert.AreEqual(supportedLocale.Name, cookie.Values[handler.LocaleRouteTokenNameProxy]);
         }
     }
 }

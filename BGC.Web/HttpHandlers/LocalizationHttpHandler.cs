@@ -28,9 +28,9 @@ namespace BGC.Web.HttpHandlers
             };
         }
 
-        private static readonly string LocaleCookieName = LocaleRouteTokenName;
-        private static readonly string LocaleRouteTokenName = "locale";
         private static readonly IEnumerable<CultureInfo> SupportedCultures;
+        protected static readonly string LocaleRouteTokenName = "locale";
+        protected static readonly string LocaleCookieName = LocaleRouteTokenName;
 
         private static void UpdateOrAdd(RouteValueDictionary dict, string key, object value)
         {
@@ -43,6 +43,11 @@ namespace BGC.Web.HttpHandlers
                 dict[key] = value;
             }
         }
+        
+        private static void UpdateOrAdd(HttpCookieCollection cookies, string cookieName, TimeSpan expiration = default(TimeSpan))
+        {
+
+        }
 
         protected virtual string GetDefaultAction(string controllerName)
         {
@@ -54,22 +59,24 @@ namespace BGC.Web.HttpHandlers
         protected RouteValueDictionary GetCompleteRoute(RouteValueDictionary route)
         {
             RouteValueDictionary completeRoute = null;
-            if (Locale.EffectiveValue.Name != route[LocaleRouteTokenName]?.ToString())
+            if (Locale.EffectiveValue.Name != route?[LocaleRouteTokenName]?.ToString())
             {
-                completeRoute = new RouteValueDictionary(route);
+                completeRoute = route != null
+                    ? new RouteValueDictionary(route)
+                    : new RouteValueDictionary();
                 UpdateOrAdd(completeRoute, LocaleRouteTokenName, Locale.EffectiveValue.Name);
             }
 
-            if (string.IsNullOrEmpty(route["controller"]?.ToString()))
+            if (string.IsNullOrEmpty(route?["controller"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
                 UpdateOrAdd(completeRoute, "controller", MVC.Public.Main.Name);
             }
 
-            if (string.IsNullOrEmpty(route["action"]?.ToString()))
+            if (string.IsNullOrEmpty(route?["action"]?.ToString()))
             {
                 completeRoute = completeRoute ?? new RouteValueDictionary(route);
-                string actionName = GetDefaultAction(route["controller"]?.ToString());
+                string actionName = GetDefaultAction(route?["controller"]?.ToString());
                 UpdateOrAdd(completeRoute, "action", actionName);
             }
 
@@ -78,7 +85,7 @@ namespace BGC.Web.HttpHandlers
 
         protected override IAsyncResult BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, object state)
         {
-            RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData.Values);
+            RouteValueDictionary validRouteTokens = ProcessRoute(httpContext.Response.Cookies.InitGet(LocaleCookieName));
             if (validRouteTokens != null)
             {
                 Action<RouteValueDictionary> redirectAction = httpContext.Response.RedirectToRoute;
@@ -88,6 +95,14 @@ namespace BGC.Web.HttpHandlers
             {
                 return base.BeginProcessRequest(httpContext, callback, state);
             }
+        }
+
+        protected RouteValueDictionary ProcessRoute(HttpCookie outputCookie)
+        {
+            RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData?.Values);
+            string locale = (validRouteTokens ?? RequestContext.RouteData.Values)["locale"] as string;
+            outputCookie.Values["locale"] = locale;
+            return validRouteTokens;
         }
 
         protected override void EndProcessRequest(IAsyncResult asyncResult)
@@ -100,7 +115,7 @@ namespace BGC.Web.HttpHandlers
 
         protected override void ProcessRequest(HttpContext context)
         {
-            RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData.Values);
+            RouteValueDictionary validRouteTokens = ProcessRoute(context.Request.Cookies.InitGet(LocaleCookieName));
             if (validRouteTokens != null)
             {
                 context.Response.RedirectToRoute(validRouteTokens);
@@ -120,7 +135,7 @@ namespace BGC.Web.HttpHandlers
         }
 
         public LocalizationHttpHandler(RequestContext context) :
-            this(context, new MaxMindGeoLocationService(File.OpenRead(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb")))
+            this(context, DependencyResolver.Current.GetService<IGeoLocationService>())
         {
         }
 
