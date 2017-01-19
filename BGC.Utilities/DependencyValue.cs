@@ -32,8 +32,15 @@ namespace BGC.Utilities
         private List<DependencySource<T>> _sources;
         private void SetEffectiveValue()
         {
-            _effectiveValue = _sources.First(src => src.HasValue).GetEffectiveValue();
+            DependencySource<T> validSource = (from source in _sources
+                                               where source.HasValue && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false)
+                                               select source).FirstOrDefault();
+            _effectiveValue = (validSource ?? DefaultValue).GetEffectiveValue();
+        }
 
+        protected virtual T CoerceValue(T value)
+        {
+            return value;
         }
 
         protected List<DependencySource<T>> GetDependencySources()

@@ -7,29 +7,34 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities.Tests
 {
+    internal class DependencyValueProxy : DependencyValue<int>
+    {
+        private readonly Func<int, int> _coerceCallback;
+
+        [DependencyPrecedence(0)]
+        public SingleValueDependencySource<int> Source1 { get; private set; } = new SingleValueDependencySource<int>();
+
+        [DependencyPrecedence(1)]
+        public DependencySource<int> Source2 { get; private set; } = new MultiValueFifoDependencySource<int>();
+
+        public DependencySource<int> NoPrecedenceSource { get; private set; }
+        
+        public DependencySource<bool> WrongSourceType { get; private set; }
+
+        public IEnumerable<DependencySource<int>> GetDependencySourcesProxy() => GetDependencySources();
+
+        protected override int CoerceValue(int value) => _coerceCallback?.Invoke(value) ?? value;
+
+        public DependencyValueProxy(Func<int, int> coerceCallback = null, int defaultValue = 0) :
+            base(defaultValue)
+        {
+            _coerceCallback = coerceCallback;
+        }
+    }
+
     [TestFixture]
     public class GetDependencySourcesTests
     {
-        private class DependencyValueProxy : DependencyValue<int>
-        {
-            [DependencyPrecedence(0)]
-            public SingleValueDependencySource<int> Source1 { get; private set; }
-
-            [DependencyPrecedence(1)]
-            public DependencySource<int> Source2 { get; private set; }
-
-            public DependencySource<int> NoPrecedenceSource { get; private set; }
-
-            public DependencySource<bool> WrongSourceType { get; private set; }
-
-            public IEnumerable<DependencySource<int>> GetDependencySourcesProxy() => GetDependencySources();
-
-            public DependencyValueProxy()
-            {
-                Source1 = new SingleValueDependencySource<int>();
-                Source2 = new MultiValueFifoDependencySource<int>();
-            }
-        }
 
         [Test]
         public void ReturnsCorrectNumberOfDependencySources()
@@ -105,6 +110,40 @@ namespace BGC.Utilities.Tests
             Assert.AreEqual(2, val.EffectiveValue);
             val.Source1.UnsetValue();
             Assert.AreEqual(17, val.EffectiveValue);
+        }
+    }
+
+    [TestFixture]
+    public class CoercionTests
+    {
+        [Test]
+        public void EffectiveValueIsCoerced()
+        {
+            var test = new DependencyValueProxy((int i) => Math.Min(i, 100));
+            test.Source1.SetValue(34);
+            test.Source2.SetValue(200);
+
+            Assert.AreEqual(34, test.EffectiveValue);
+        }
+
+        [Test]
+        public void EffectiveValueIsCoercedToDefaultValue_DefaultValueIsNotCoercable()
+        {
+            var test = new DependencyValueProxy((int i) => Math.Min(i, 100), 20);
+            test.Source1.SetValue(340);
+            test.Source2.SetValue(200);
+
+            Assert.AreEqual(20, test.EffectiveValue);
+        }
+
+        [Test]
+        public void EffectiveValueIsCoercedToDefaultValue_DefaultValueIsCoercable()
+        {
+            var test = new DependencyValueProxy((int i) => Math.Min(i, 100), 200);
+            test.Source1.SetValue(340);
+            test.Source2.SetValue(400);
+
+            Assert.AreEqual(200, test.EffectiveValue);
         }
     }
 }
