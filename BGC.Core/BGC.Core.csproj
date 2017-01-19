@@ -71,8 +71,10 @@
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
     <Compile Include="Models\SearchResult.cs" />
+    <Compile Include="Models\Settings\CultureInfoSetting.cs" />
     <Compile Include="Models\Settings\Setting.SettingDebugView.cs" />
     <Compile Include="Models\Permissions\SendInvitePermission.cs" />
+    <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Services\ISearchService.cs" />
     <Compile Include="SingletonRepository.cs" />
     <Compile Include="UnicodeAttribute.cs" />

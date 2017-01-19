@@ -79,6 +79,7 @@
     <Compile Include="Models\Media\MediaTypeInfoTests.cs" />
     <Compile Include="Models\PermissionTests.cs" />
     <Compile Include="Models\SearchResultTests.cs" />
+    <Compile Include="Models\UserProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
