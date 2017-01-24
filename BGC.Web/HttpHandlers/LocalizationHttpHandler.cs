@@ -18,17 +18,6 @@ namespace BGC.Web.HttpHandlers
 {
     public partial class LocalizationHttpHandler : MvcHandler
     {
-        static LocalizationHttpHandler()
-        {
-            SupportedCultures = new[]
-            {
-                CultureInfo.GetCultureInfo("en-US"),
-                CultureInfo.GetCultureInfo("bg-BG"),
-                CultureInfo.GetCultureInfo("de-DE"),
-            };
-        }
-
-        private static readonly IEnumerable<CultureInfo> SupportedCultures;
         protected static readonly string LocaleRouteTokenName = "locale";
         protected static readonly string LocaleCookieName = LocaleRouteTokenName;
 
@@ -144,7 +133,7 @@ namespace BGC.Web.HttpHandlers
                 context: context,
                 locale: new RequestContextLocale(
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
-                    supportedCultures: SupportedCultures,
+                    supportedCultures: WebApiApplication.SupportedCultures,
                     geoLocationService: svc.ArgumentNotNull().GetValueOrThrow()))
         {
         }

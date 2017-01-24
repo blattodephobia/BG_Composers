@@ -2,6 +2,7 @@
 using RouteDebug;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -32,6 +33,12 @@ namespace BGC.Web
 			}
 		}
 
+        public static readonly IEnumerable<CultureInfo> SupportedCultures = new CultureInfo[]
+        {
+            CultureInfo.GetCultureInfo("en-US"),
+            CultureInfo.GetCultureInfo("bg-BG"),
+            CultureInfo.GetCultureInfo("de-DE"),
+        };
 
 		protected void Application_Start()
 		{
