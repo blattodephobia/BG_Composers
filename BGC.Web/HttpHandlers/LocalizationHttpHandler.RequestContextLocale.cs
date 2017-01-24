@@ -36,7 +36,7 @@ namespace BGC.Web.HttpHandlers
             {
                 try
                 {
-                    return GetValidCultureInfoOrDefault(CultureInfo.GetCultureInfo(cultureCode));
+                    return CoerceValue(CultureInfo.GetCultureInfo(cultureCode));
                 }
                 catch (CultureNotFoundException)
                 {
@@ -48,12 +48,10 @@ namespace BGC.Web.HttpHandlers
                 }
             }
 
-            private CultureInfo GetValidCultureInfoOrDefault(CultureInfo culture)
+            protected override CultureInfo CoerceValue(CultureInfo culture)
             {
                 return culture != null
-                    ? _supportedCultures.Contains(culture)
-                        ? culture
-                        : null
+                    ? _supportedCultures.Contains(culture) ? culture : null
                     : null;
             }
 
@@ -84,7 +82,7 @@ namespace BGC.Web.HttpHandlers
                 CookieLocale.SetValue(GetValidCultureInfoOrDefault(request.Cookies[LocaleCookieName]?.Values[LocaleRouteTokenName]));
                 IPAddress ip = GetIpFromRequest(request);
                 IEnumerable<CultureInfo> validIpLocales = ip != null
-                    ? _locationService.GetCountry(ip).LocalCultures.Select(c => GetValidCultureInfoOrDefault(c))
+                    ? _locationService.GetCountry(ip).LocalCultures.Select(c => CoerceValue(c))
                     : Enumerable.Empty<CultureInfo>();
                 ValidIpLocales.SetValueRange(validIpLocales);
 
