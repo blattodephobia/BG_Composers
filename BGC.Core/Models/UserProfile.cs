@@ -13,7 +13,7 @@ namespace BGC.Core
         private static readonly string LocaleSettingName = "Locale";
         private readonly BgcUser _user;
 
-        private CultureInfoSetting FindSetting() => _user.UserSettings.OfType<CultureInfoSetting>().FirstOrDefault(c => c.Name == LocaleSettingName);
+        private CultureInfoSetting FindSetting() => _user.UserSettings?.OfType<CultureInfoSetting>().FirstOrDefault(c => c.Name == LocaleSettingName);
 
         private void SetLocale(CultureInfo locale)
         {
@@ -44,7 +44,7 @@ namespace BGC.Core
 
         public UserProfile(BgcUser user)
         {
-            Shield.ArgumentNotNull(user);
+            Shield.ArgumentNotNull(user).ThrowOnError();
 
             _user = user;
         }
