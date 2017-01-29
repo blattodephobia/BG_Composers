@@ -13,14 +13,12 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.HttpHandlers
 {
     public partial class LocalizationHttpHandler : MvcHandler
     {
-        protected static readonly string LocaleRouteTokenName = "locale";
-        protected static readonly string LocaleCookieName = LocaleRouteTokenName;
-
         private static void UpdateOrAdd(RouteValueDictionary dict, string key, object value)
         {
             if (!dict.ContainsKey(key))

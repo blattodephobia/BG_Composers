@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Routing;
+using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.HttpHandlers
 {

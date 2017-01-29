@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 using TestUtils;
+using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.Tests.HttpHandlers
 {

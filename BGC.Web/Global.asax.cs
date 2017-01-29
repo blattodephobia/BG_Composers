@@ -31,7 +31,10 @@ namespace BGC.Web
 			{
 				return 0;
 			}
-		}
+        }
+
+        public static readonly string LocaleRouteTokenName = "locale";
+        public static readonly string LocaleCookieName = LocaleRouteTokenName;
 
         public static readonly IEnumerable<CultureInfo> SupportedCultures = new CultureInfo[]
         {
