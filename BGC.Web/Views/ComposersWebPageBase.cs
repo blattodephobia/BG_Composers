@@ -1,12 +1,15 @@
 ﻿using BGC.Core.Services;
+using BGC.Utilities;
 using BGC.Web.Controllers;
 using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace BGC.Web.Views
 {
@@ -37,16 +40,15 @@ namespace BGC.Web.Views
 
         public string Localize(string key) => LocalizationService.Localize(key, (ViewContext.Controller as BgcControllerBase).CurrentLocale);
 
-        public bool IsDebugBuild
+
+        public RouteValueDictionary GetRouteValuesFor(Expression<Action> method)
         {
-            get
-            {
-#if DEBUG
-                return true;
-#else
-                return false;
-#endif
-            }
+            var result = new RouteValueDictionary(ViewContext.RouteData);
+            result.AddRange(items: from paramValuePair in Expressions.GetUri(method).Query?.Split(new[] { '&', '?' }, StringSplitOptions.RemoveEmptyEntries)
+                                   let splitParam = paramValuePair.Split(new[] { '=' }, StringSplitOptions.RemoveEmptyEntries)
+                                   select new KeyValuePair<string, object>(splitParam[0], splitParam[1]));
+
+            return result;
         }
     }
 

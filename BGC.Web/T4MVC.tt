@@ -71,7 +71,7 @@ using <#=referencedNamespace #>;
 [<#= GeneratedCode #>, DebuggerNonUserCode]
 public static partial class <#=settings.HelpersPrefix #>
 {
-	internal static bool Debugging
+	public static bool Debugging
 	{
 		get
 		{

@@ -64,6 +64,12 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult SetLocale()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetLocale);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Threading.Tasks.Task<System.Web.Mvc.ActionResult> ResetPassword()
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ResetPassword);
@@ -102,6 +108,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             public readonly string Activities = "Activities";
             public readonly string ChangePassword = "ChangePassword";
             public readonly string ChangePassword_Post = nameof(ChangePassword);
+            public readonly string SetLocale = "SetLocale";
             public readonly string ResetPassword = "ResetPassword";
             public readonly string ResetPassword_Post = nameof(ResetPassword);
             public readonly string RequestPasswordReset = "RequestPasswordReset";
@@ -114,6 +121,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             public const string Activities = "Activities";
             public const string ChangePassword = "ChangePassword";
             public const string ChangePassword_Post = nameof(ChangePassword);
+            public const string SetLocale = "SetLocale";
             public const string ResetPassword = "ResetPassword";
             public const string ResetPassword_Post = nameof(ResetPassword);
             public const string RequestPasswordReset = "RequestPasswordReset";
@@ -136,6 +144,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionParamsClass_ChangePassword_Post
         {
             public readonly string vm = "vm";
+        }
+        static readonly ActionParamsClass_SetLocale s_params_SetLocale = new ActionParamsClass_SetLocale();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_SetLocale SetLocaleParams { get { return s_params_SetLocale; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_SetLocale
+        {
+            public readonly string locale = "locale";
         }
         static readonly ActionParamsClass_ResetPassword s_params_ResetPassword = new ActionParamsClass_ResetPassword();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -232,6 +248,18 @@ namespace BGC.Web.Areas.Administration.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "vm", vm);
             ChangePassword_PostOverride(callInfo, vm);
             return System.Threading.Tasks.Task.FromResult(callInfo as ActionResult);
+        }
+
+        [NonAction]
+        partial void SetLocaleOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string locale);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult SetLocale(string locale)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.SetLocale);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "locale", locale);
+            SetLocaleOverride(callInfo, locale);
+            return callInfo;
         }
 
         [NonAction]

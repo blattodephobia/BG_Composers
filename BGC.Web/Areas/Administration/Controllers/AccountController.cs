@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
@@ -79,6 +80,26 @@ namespace BGC.Web.Areas.Administration.Controllers
                     ErrorMessages = new[] { Localize(LocalizationKeys.Administration.Account.ChangePassword.UnknownError) }
                 });
             }
+        }
+        
+        public virtual ActionResult SetLocale(string locale)
+        {
+            CultureInfo newLocale = null;
+            try
+            {
+                newLocale = CultureInfo.GetCultureInfo(locale);
+
+                UserProfile.PreferredLocale = newLocale;
+                UserLocale.DbSetting.SetValue(newLocale);
+                UserLocale.CookieSetting.SetValue(newLocale);
+
+                UserManager.Update(User);
+            }
+            catch (CultureNotFoundException)
+            {
+            }
+
+            return Redirect(Request.UrlReferrer.AbsolutePath);
         }
 
         [AllowAnonymous]

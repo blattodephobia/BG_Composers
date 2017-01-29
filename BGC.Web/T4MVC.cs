@@ -26,7 +26,7 @@ using T4MVC;
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static partial class MVC
 {
-	internal static bool Debugging
+	public static bool Debugging
 	{
 		get
 		{

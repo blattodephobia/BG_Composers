@@ -1,5 +1,7 @@
 ﻿@model BGC.Web.ViewModels.ViewModelBase
 
+@using System.Globalization;
+
 @{
     Layout = null;
 }
@@ -9,7 +11,7 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    @if (IsDebugBuild)
+    @if (MVC.Debugging)
     {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" integrity="sha384-12jyvLdRujy7xPBSEsRChlYNcKKODOnVcrqexeULMkmGGzBmM9ms6CT1HGxtu96M" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
@@ -34,6 +36,12 @@
         {
             if (User.Identity.IsAuthenticated)
             {
+                <ul>
+                    @foreach (CultureInfo supportedCulture in WebApiApplication.SupportedCultures)
+                    {
+                        <li>@Html.ActionLink(supportedCulture.DisplayName, MVC.Administration.Account.ActionNames.SetLocale, MVC.Administration.Account.Name, new { locale = supportedCulture.Name }, null)</li>
+                    }
+                </ul>
                 <div>@Html.ActionLink(Localize(Global.Logout), MVC.Administration.Authentication.Actions.LogOut())</div>
             }
             @RenderBody()

@@ -20,7 +20,7 @@ namespace BGC.Web.Areas.Administration
                 .Routes
                 .MapRoute(
                     name: $"{AreaName}",
-                    url: $"{AreaName}/{{controller}}/{{action}}",
+                    url: $"areas/{AreaName}/{{controller}}/{{action}}",
                     namespaces: new[] { typeof(AdministrationControllerBase).Namespace },
                     defaults: new { controller = MVC.Administration.Account.Name, action = MVC.Administration.Account.ActionNames.Activities })
                 .DataTokens.Add("area", AreaName);
