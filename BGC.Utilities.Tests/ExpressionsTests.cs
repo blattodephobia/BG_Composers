@@ -88,6 +88,10 @@ namespace BGC.Utilities.Tests
         private class CaptureClass2
         {
             public CaptureClass NestedProperty { get; set; }
+
+            public static string StaticProperty => "StaticFieldProperty";
+
+            public static readonly string StaticField = "StaticFieldValue";
         }
 
         private static void MockActionMethod1(int param1, string param2)
@@ -160,6 +164,20 @@ namespace BGC.Utilities.Tests
         {
             CaptureClass2 cc2 = new CaptureClass2() { NestedProperty = new CaptureClass() { Property = "1" } };
             Assert.AreEqual("param1=2&param2=1", Expressions.GetQueryString(() => MockActionMethod2(2, cc2.NestedProperty.Property)));
+        }
+
+        [Test]
+        public void GeneratesCorrectStringWithStaticProperty()
+        {
+            string actual = Expressions.GetQueryString(() => MockActionMethod2(2, CaptureClass2.StaticProperty));
+            Assert.AreEqual($"param1=2&param2={CaptureClass2.StaticProperty}", actual);
+        }
+
+        [Test]
+        public void GeneratesCorrectStringWithStaticField()
+        {
+            string actual = Expressions.GetQueryString(() => MockActionMethod2(2, CaptureClass2.StaticField));
+            Assert.AreEqual($"param1=2&param2={CaptureClass2.StaticField}", actual);
         }
 
         [Test]

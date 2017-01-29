@@ -15,23 +15,36 @@ namespace BGC.Utilities
         private T _value;
         private bool _hasValue;
 
+        protected T ValueInternal
+        {
+            get
+            {
+                return _value;
+            }
+
+            set
+            {
+                _value = value;
+            }
+        }
+
         public override bool HasValue => _hasValue;
 
-        public override T GetEffectiveValue() => _hasValue ? _value : default(T);
+        public override T GetEffectiveValue() => HasValue ? ValueInternal : default(T);
 
         public override void SetValue(T value)
         {
-            T oldValue = _value;
-            _value = value;
-            _hasValue = IsDefaultValueValid || (!_value?.Equals(default(T)) ?? false);
+            T oldValue = ValueInternal;
+            ValueInternal = value;
+            _hasValue = IsDefaultValueValid || (!ValueInternal?.Equals(default(T)) ?? false);
 
             OnEffectiveValueChanged(oldValue);
         }
 
         public override void UnsetValue()
         {
-            T oldValue = _value;
-            _value = default(T);
+            T oldValue = ValueInternal;
+            ValueInternal = default(T);
             _hasValue = false;
 
             OnEffectiveValueChanged(oldValue);

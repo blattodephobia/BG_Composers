@@ -68,23 +68,23 @@ namespace BGC.Utilities
          * available value. That's where the bottom of the recursion is. */
         private static object ResolveMemberAccessRecursively(MemberExpression targetMember, Expression subExpression)
         {
-            object result = !(subExpression is ConstantExpression)
-                ? GetValue(memberName: targetMember.Member.Name,
-                           obj:        ResolveMemberAccessRecursively(targetMember.Expression as MemberExpression, (targetMember as MemberExpression).Expression))
-                : GetValue(memberName: targetMember?.Member.Name, // return <ConstantExpression> if targetMember is null, otherwise <ConstantExpression>.targetMember;
-                           obj: (subExpression as ConstantExpression).Value);
+            object result = !(subExpression is ConstantExpression) && targetMember.Expression != null
+                ? GetValue(member: targetMember.Member,
+                           obj:    ResolveMemberAccessRecursively(targetMember.Expression as MemberExpression, (targetMember as MemberExpression).Expression))
+                : GetValue(member: targetMember?.Member, // return <ConstantExpression> if targetMember is null, otherwise <ConstantExpression>.targetMember;
+                           obj:    (subExpression as ConstantExpression)?.Value);
 
             return result;
         }
 
-        private static object GetValue(object obj, string memberName)
+        private static object GetValue(object obj, MemberInfo member)
         {
-            if (string.IsNullOrEmpty(memberName))
+            if (string.IsNullOrEmpty(member?.Name))
             {
                 return obj;
             }
 
-            Type objType = obj.GetType();
+            Type objType = member.DeclaringType;
             IDynamicMemberGetter valueGetter = null;
             if (!CachedGetters.ContainsKey(objType))
             {
@@ -97,7 +97,7 @@ namespace BGC.Utilities
                 valueGetter = Activator.CreateInstance(typeof(LambdaCaptureFieldAccessor<>).MakeGenericType(objType)) as IDynamicMemberGetter;
                 CachedGetters[objType].SetTarget(valueGetter);
             }
-            return valueGetter.GetMemberValue(obj, memberName);
+            return valueGetter.GetMemberValue(obj, member.Name);
         }
 
         private static string GetQueryStringInternal(MethodCallExpression call, bool includeNullValueParams)
