@@ -17,7 +17,7 @@ namespace BGC.Web.Controllers
         public ILocalizationService LocalizationService { get; set; }
 
         private CultureInfo _currentLocale;
-        public CultureInfo CurrentLocale
+        public virtual CultureInfo CurrentLocale
         {
             get
             {

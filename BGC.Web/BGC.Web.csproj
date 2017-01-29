@@ -281,6 +281,7 @@
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
+    <Compile Include="Areas\Administration\Models\UserLocaleDependencyValue.cs" />
     <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
@@ -410,7 +411,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Areas\Public\Views\Main\Index.cshtml" />
-    <Content Include="Areas\Administration\Views\Web.config" />
+    <Content Include="Areas\Administration\Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Areas\Public\Views\Web.config" />
     <Content Include="Areas\Administration\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Administration\Views\Shared\AdminLayout.cshtml" />
