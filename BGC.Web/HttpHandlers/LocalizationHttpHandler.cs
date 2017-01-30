@@ -87,8 +87,7 @@ namespace BGC.Web.HttpHandlers
         protected RouteValueDictionary ProcessRoute(HttpCookie outputCookie)
         {
             RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData?.Values);
-            string locale = (validRouteTokens ?? RequestContext.RouteData.Values)["locale"] as string;
-            outputCookie.Values["locale"] = locale;
+            Locale.CookieLocale.SetValue((validRouteTokens ?? RequestContext.RouteData.Values)[LocaleRouteTokenName] as string);
             return validRouteTokens;
         }
 
@@ -130,9 +129,10 @@ namespace BGC.Web.HttpHandlers
             this(
                 context: context,
                 locale: new RequestContextLocale(
+                    supportedCultures: SupportedCultures,
+                    geoLocationService: svc.ArgumentNotNull().GetValueOrThrow(),
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
-                    supportedCultures: WebApiApplication.SupportedCultures,
-                    geoLocationService: svc.ArgumentNotNull().GetValueOrThrow()))
+                    cookie: context.HttpContext.Response.Cookies[LocaleCookieName]))
         {
         }
     }

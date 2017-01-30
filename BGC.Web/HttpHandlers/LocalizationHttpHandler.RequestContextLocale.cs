@@ -4,6 +4,7 @@ using BGC.Web.Services;
 using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -17,6 +18,8 @@ namespace BGC.Web.HttpHandlers
     {
         public class RequestContextLocale : DependencyValue<CultureInfo>
         {
+            private static readonly TypeConverter CultureConverter = new CultureInfoConverter();
+
             private static IPAddress GetIpFromRequest(HttpRequestBase context)
             {
                 try
@@ -60,26 +63,28 @@ namespace BGC.Web.HttpHandlers
             public MultiValueFifoDependencySource<CultureInfo> ValidIpLocales { get; private set; } = new MultiValueFifoDependencySource<CultureInfo>();
 
             [DependencyPrecedence(1)]
-            public SingleValueDependencySource<CultureInfo> CookieLocale { get; private set; } = new SingleValueDependencySource<CultureInfo>(false);
+            public HttpCookieSingleValueDependencySource<CultureInfo> CookieLocale { get; private set; }
 
             [DependencyPrecedence(2)]
             public SingleValueDependencySource<CultureInfo> ValidRouteLocale { get; private set; } = new SingleValueDependencySource<CultureInfo>(false);
 
-            protected RequestContextLocale(IEnumerable<CultureInfo> supportedCultures, IGeoLocationService geoLocationService) :
+            protected RequestContextLocale(IEnumerable<CultureInfo> supportedCultures, IGeoLocationService geoLocationService, HttpCookie cookie) :
                 base(Shield.ArgumentNotNull(supportedCultures).GetValueOrThrow().First())
             {
+                Shield.ArgumentNotNull(cookie).ThrowOnError();
                 Shield.ArgumentNotNull(geoLocationService).ThrowOnError();
 
+                CookieLocale = new HttpCookieSingleValueDependencySource<CultureInfo>(cookie, LocaleRouteTokenName, CultureConverter);
                 _supportedCultures = new HashSet<CultureInfo>(supportedCultures);
                 _locationService = geoLocationService;
             }
 
-            public RequestContextLocale(HttpRequestBase request, IEnumerable<CultureInfo> supportedCultures, IGeoLocationService geoLocationService) :
-                    this(supportedCultures, geoLocationService)
+            public RequestContextLocale(IEnumerable<CultureInfo> supportedCultures, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookie) :
+                    this(supportedCultures, geoLocationService, cookie)
             {
                 Shield.ArgumentNotNull(request).ThrowOnError();
                 Shield.ArgumentNotNull(supportedCultures).ThrowOnError();
-
+                
                 CookieLocale.SetValue(GetValidCultureInfoOrDefault(request.Cookies[LocaleCookieName]?.Values[LocaleRouteTokenName]));
                 IPAddress ip = GetIpFromRequest(request);
                 IEnumerable<CultureInfo> validIpLocales = ip != null
