@@ -25,7 +25,13 @@ namespace BGC.Utilities
             _cookieStore[_keyName] = _typeConverter.ConvertToString(value);
         }
 
-        public override bool HasValue => _cookieStore[_keyName] != null;
+        public void SetValue(string value)
+        {
+            base.SetValue((T)_typeConverter.ConvertFromString(value));
+            _cookieStore[_keyName] = value;
+        }
+
+        public override bool HasValue => _cookieStore[_keyName] != null || base.HasValue;
 
         public override T GetEffectiveValue()
         {
@@ -51,7 +57,8 @@ namespace BGC.Utilities
         /// </summary>
         /// <param name="cookie">The cookie to use as a backing store.</param>
         /// <param name="keyName">The name of the key under which values will be stored.</param>
-        public HttpCookieSingleValueDependencySource(HttpCookie cookie, string keyName, TypeConverter typeToStringConverter)
+        public HttpCookieSingleValueDependencySource(HttpCookie cookie, string keyName, TypeConverter typeToStringConverter) :
+            base(false)
         {
             Shield.ArgumentNotNull(cookie).ThrowOnError();
             Shield.ArgumentNotNull(typeToStringConverter).ThrowOnError();

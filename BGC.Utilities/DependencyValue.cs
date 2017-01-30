@@ -33,7 +33,7 @@ namespace BGC.Utilities
         private void SetEffectiveValue()
         {
             DependencySource<T> validSource = (from source in _sources
-                                               where source.HasValue && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false)
+                                               where (source?.HasValue ?? false) && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false) // ignore sources that are null, empty or contain invalid values
                                                select source).FirstOrDefault();
             _effectiveValue = (validSource ?? DefaultValue).GetEffectiveValue();
         }
@@ -71,7 +71,10 @@ namespace BGC.Utilities
                     _sources = GetDependencySources().ToList();
                     for (int i = 0; i < _sources.Count; i++)
                     {
-                        _sources[i].EffectiveValueChanged += OnDependencySourceValueChanged;
+                        if (_sources[i] != null)
+                        {
+                            _sources[i].EffectiveValueChanged += OnDependencySourceValueChanged;
+                        }
                     }
                     SetEffectiveValue();
                     return _effectiveValue;

@@ -88,6 +88,17 @@ namespace BGC.Utilities.Tests
             cookie["key"] = null;
             Assert.IsFalse(localeValue.HasValue);
         }
+
+        [Test]
+        public void HasValueWithValueType()
+        {
+            HttpCookie cookie = new HttpCookie("int");
+            SingleValueDependencySource<int> intSource = new HttpCookieSingleValueDependencySource<int>(cookie, "key", new Int32Converter());
+            intSource.SetValue(5);
+            intSource.UnsetValue();
+
+            Assert.IsFalse(intSource.HasValue);
+        }
     }
 
     [TestFixture]

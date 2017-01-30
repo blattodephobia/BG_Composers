@@ -12,10 +12,10 @@ namespace BGC.Utilities.Tests
         private readonly Func<int, int> _coerceCallback;
 
         [DependencyPrecedence(0)]
-        public SingleValueDependencySource<int> Source1 { get; private set; } = new SingleValueDependencySource<int>();
+        public SingleValueDependencySource<int> Source1 { get; set; } = new SingleValueDependencySource<int>();
 
         [DependencyPrecedence(1)]
-        public DependencySource<int> Source2 { get; private set; } = new MultiValueFifoDependencySource<int>();
+        public DependencySource<int> Source2 { get; set; } = new MultiValueFifoDependencySource<int>();
 
         public DependencySource<int> NoPrecedenceSource { get; private set; }
         
@@ -110,6 +110,16 @@ namespace BGC.Utilities.Tests
             Assert.AreEqual(2, val.EffectiveValue);
             val.Source1.UnsetValue();
             Assert.AreEqual(17, val.EffectiveValue);
+        }
+
+        [Test]
+        public void IgnoresNullSources()
+        {
+            DependencyValueProxy proxy = new DependencyValueProxy();
+            proxy.Source1 = null;
+            proxy.Source2.SetValue(12);
+
+            Assert.AreEqual(12, proxy.EffectiveValue);
         }
     }
 
