@@ -60,6 +60,7 @@
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="Models\ApplicationProfile.cs" />
     <Compile Include="Models\Identity\AdministratorRole.cs" />
     <Compile Include="Models\Identity\ApplicationCriticalRole.cs" />
     <Compile Include="Models\Identity\AuthorizedUserRole.cs" />

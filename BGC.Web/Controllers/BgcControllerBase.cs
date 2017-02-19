@@ -1,5 +1,7 @@
-﻿using BGC.Core.Services;
+﻿using BGC.Core;
+using BGC.Core.Services;
 using BGC.Web.Attributes;
+using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,22 @@ namespace BGC.Web.Controllers
     {
         [Dependency]
         public ILocalizationService LocalizationService { get; set; }
+
+        private ApplicationProfile _appProfile;
+        [Dependency]
+        public ApplicationProfile ApplicationProfile
+        {
+            get
+            {
+                return _appProfile;
+            }
+
+            set
+            {
+                Shield.ValueNotNull(value).ThrowOnError();
+                _appProfile = value;
+            }
+        }
 
         private CultureInfo _currentLocale;
         public virtual CultureInfo CurrentLocale

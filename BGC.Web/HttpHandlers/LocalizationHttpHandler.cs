@@ -120,16 +120,16 @@ namespace BGC.Web.HttpHandlers
             Locale = locale;
         }
 
-        public LocalizationHttpHandler(RequestContext context) :
-            this(context, DependencyResolver.Current.GetService<IGeoLocationService>())
+        public LocalizationHttpHandler(RequestContext context, IEnumerable<CultureInfo> supportedLanguages) :
+            this(context, DependencyResolver.Current.GetService<IGeoLocationService>(), supportedLanguages)
         {
         }
 
-        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc) :
+        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, IEnumerable<CultureInfo> supportedLanguages) :
             this(
                 context: context,
                 locale: new RequestContextLocale(
-                    supportedCultures: SupportedCultures,
+                    supportedCultures: supportedLanguages,
                     geoLocationService: svc.ArgumentNotNull().GetValueOrThrow(),
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
                     cookie: context.HttpContext.Response.Cookies[LocaleCookieName]))

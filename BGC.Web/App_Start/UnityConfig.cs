@@ -50,7 +50,7 @@ namespace BGC.Web.App_Start
         /// <param name="container">The unity container to configure.</param>
         /// <remarks>There is no need to register concrete types such as controllers or API controllers (unless you want to 
         /// change the defaults), as Unity allows resolving a concrete type even if it was not previously registered.</remarks>
-        public static void RegisterTypes(IUnityContainer container)
+        public static void RegisterTypes(UnityContainer container)
         {
             var dataLayerDependencyRegistration = new DataLayerDependencyRegistration(container);
             dataLayerDependencyRegistration.RegisterType(typeof(IRepository<>));
@@ -102,6 +102,12 @@ namespace BGC.Web.App_Start
                     }
                 })
             );
+
+            IUnityContainer tempContainer = new UnityContainer();
+            dataLayerDependencyRegistration.RegisterType(typeof(DbContext), tempContainer, new PerResolveLifetimeManager());
+            dataLayerDependencyRegistration.RegisterType(typeof(IRepository<>), tempContainer, new PerResolveLifetimeManager());
+            dataLayerDependencyRegistration.RegisterType(typeof(IUnitOfWork), tempContainer, new PerResolveLifetimeManager());
+            container.RegisterInstance(new ApplicationProfile(tempContainer.Resolve<IRepository<Setting>>().All()));
 
             container.RegisterInstance<IGeoLocationService>(new DynamicMaxMinServiceProvider(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb"));
         }

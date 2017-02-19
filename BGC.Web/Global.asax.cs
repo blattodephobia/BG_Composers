@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core;
+using BGC.Utilities;
 using RouteDebug;
 using System;
 using System.Collections.Generic;
@@ -25,23 +26,8 @@ namespace BGC.Web
 			}
 		}
 
-		public class ASF<T> : IComparable<T>
-		{
-			public int CompareTo(T other)
-			{
-				return 0;
-			}
-        }
-
         public static readonly string LocaleRouteTokenName = "locale";
         public static readonly string LocaleCookieName = LocaleRouteTokenName;
-
-        public static readonly IEnumerable<CultureInfo> SupportedCultures = new CultureInfo[]
-        {
-            CultureInfo.GetCultureInfo("en-US"),
-            CultureInfo.GetCultureInfo("bg-BG"),
-            CultureInfo.GetCultureInfo("de-DE"),
-        };
 
 		protected void Application_Start()
 		{

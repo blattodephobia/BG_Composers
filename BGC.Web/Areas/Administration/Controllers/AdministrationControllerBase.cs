@@ -46,7 +46,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 if (_userLocale == null)
                 {
                     HttpContext.Response.Cookies[LocaleCookieName][LocaleRouteTokenName] = HttpContext.Request.Cookies[LocaleCookieName][LocaleRouteTokenName];
-                    _userLocale = new UserLocaleDependencyValue(SupportedCultures, HttpContext.Response.Cookies[LocaleCookieName], LocaleRouteTokenName);
+                    _userLocale = new UserLocaleDependencyValue(ApplicationProfile.SupportedLanguages, HttpContext.Response.Cookies[LocaleCookieName], LocaleRouteTokenName);
                     _userLocale.DbSetting.SetValue(UserProfile?.PreferredLocale);
                 }
 
