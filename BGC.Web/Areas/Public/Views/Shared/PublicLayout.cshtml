@@ -4,17 +4,42 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width" />
         <title>@ViewBag.Title</title>
+        @if (MVC.Debugging)
+        {
+            <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" integrity="sha384-nbu0EcklP74/4DaTXgE8DZcxAX458y/YsSqsK9R31nCkAtdJC5tHRoMsGlNqpo2H" crossorigin="anonymous"></script>
+        }
+        else
+        {
+            <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        }
+        <link href="~/Areas/Public/Resources/css/bt-themes/paper/bootstrap-paper.css" rel="stylesheet" />
+        <link href="~/Areas/Public/Resources/css/bt-themes/paper/variables.less" rel="stylesheet"/>
+        <link href="~/Areas/Public/Resources/css/public.less" rel="stylesheet"/>
     </head>
-    <body>
-        <header>
-            @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { target = "_self" }))
+    <body class="container-fluid">
+        <nav class="navbar navbar-default">
+            @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { target = "_self", @class = "pull-right navbar-form", role = "search" }))
             {
-                <input name="query" />
-                <input type="submit" value="@Localize(Public.Main.SearchCaption)" />
+                <input name="query" class="input-sm" />
+                <input type="submit" class="navbar-btn btn-primary" value="@Localize(Public.Main.SearchCaption)" />
             }
-        </header>
-        @RenderBody()
+        </nav>
+
+        @if (IsSectionDefined("additionalContent"))
+        {
+            <section id="additionalContent">
+                @RenderSection("additionalContent")
+            </section>
+        }
+
+        <section id="content">
+            @RenderBody()
+        </section>
+
         <footer></footer>
+
         @RenderSection("scripts", required: false)
     </body>
 </html>

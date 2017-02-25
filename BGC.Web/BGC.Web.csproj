@@ -355,6 +355,8 @@
       <LastGenOutput>PermissionsViewModelGen1.cs</LastGenOutput>
     </Content>
     <Content Include="Areas\Administration\Views\Account\ChangePassword.cshtml" />
+    <Content Include="Areas\Public\Resources\css\bt-themes\paper\bootstrap-paper.css" />
+    <None Include="Areas\Public\Resources\css\public.less" />
     <Content Include="Areas\Public\Views\Main\Search.cshtml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -434,6 +436,8 @@
     <Content Include="Areas\Public\Views\Shared\PublicLayout.cshtml" />
     <Content Include="App_Data\Geolocation\GeoLite2-Country.mmdb" />
     <Content Include="App_Data\Data\00000000-0000-0000-0000-000000000003" />
+    <Content Include="Areas\Public\Resources\css\bt-themes\paper\bootswatch.less" />
+    <Content Include="Areas\Public\Resources\css\bt-themes\paper\variables.less" />
     <None Include="Localization\LocalizationSchema.xsd">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
