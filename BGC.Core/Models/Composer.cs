@@ -11,7 +11,7 @@ namespace BGC.Core
 	public class Composer : BgcEntity<long>
 	{
         private ICollection<ComposerName> _localizedNames;
-        private ICollection<ComposerArticle> articles;
+        private ICollection<ComposerArticle> _articles;
 
 		public virtual ICollection<ComposerName> LocalizedNames
         {
@@ -41,12 +41,12 @@ namespace BGC.Core
         {
             get
             {
-                return this.articles ?? (this.articles = new HashSet<ComposerArticle>());
+                return _articles ?? (_articles = new HashSet<ComposerArticle>());
             }
 
             set
             {
-                this.articles = value;
+                _articles = value;
             }
         }
 
