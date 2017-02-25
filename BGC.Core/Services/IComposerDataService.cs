@@ -18,6 +18,9 @@ namespace BGC.Core.Services
         Composer FindComposer(long id);
 
         [OperationContract]
+        Composer FindComposerByArticle(Guid articleId);
+
+        [OperationContract]
         IList<ComposerName> GetNames(CultureInfo culture);
 
         [OperationContract]

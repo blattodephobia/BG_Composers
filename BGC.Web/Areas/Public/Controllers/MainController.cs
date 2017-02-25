@@ -38,7 +38,11 @@ namespace BGC.Web.Areas.Public.Controllers
 
         public virtual ActionResult Read(Guid article)
         {
-            return View(new ArticleViewModel() { Text = this._articleStorageService.GetEntry(article) });
+            return View(new ArticleViewModel()
+            {
+                Text = _articleStorageService.GetEntry(article),
+                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale).FullName
+            });
         }
 
         public virtual ActionResult Search(string query)

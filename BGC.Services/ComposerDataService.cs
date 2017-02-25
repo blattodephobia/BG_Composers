@@ -53,5 +53,13 @@ namespace BGC.Services
                 .Select(s => s.Trim()));
 
         public Composer FindComposer(long id) => Composers.All().FirstOrDefault(c => c.Id == id);
+
+        public Composer FindComposerByArticle(Guid articleId)
+        {
+            var composers = from composer in Composers.All()
+                            where composer.Articles.Any(a => a.StorageId == articleId)
+                            select composer;
+            return composers.FirstOrDefault();
+        }
     }
 }
