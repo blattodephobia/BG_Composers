@@ -4,17 +4,19 @@
     ViewBag.Title = "Login";
 }
 
-<h2>Login</h2>
 @if (Model.AuthenticationFailure)
 {
     <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
 }
 
-@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post))
+@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post, new { @class = "center-block" }))
 {
-    @Html.TextBoxFor(m => m.UserName)
-    @Html.PasswordFor(m => m.Password)
-    <input type="submit" value="@Localize(Administration.Authentication.Login.LoginButton)"/>
+    <div>@Html.TextBoxFor(m => m.UserName)</div>
+    <div>@Html.PasswordFor(m => m.Password)</div>
+    <div class="col-md-4 text-center">
+        <input type="submit" class="btn-primary" value="@Localize(Administration.Authentication.Login.LoginButton)" />
+        @Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())
+    </div>
 }
 
-<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())</div>
+<div></div>

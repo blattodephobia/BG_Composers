@@ -5,6 +5,7 @@ using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
@@ -40,6 +41,7 @@ namespace BGC.Web.Views
 
         public string Localize(string key) => LocalizationService.Localize(key, (ViewContext.Controller as BgcControllerBase).CurrentLocale);
 
+        public IEnumerable<CultureInfo> SupportedLanguages => (ViewContext.Controller as BgcControllerBase).ApplicationProfile.SupportedLanguages;
 
         public RouteValueDictionary GetRouteValuesFor(Expression<Action> method)
         {

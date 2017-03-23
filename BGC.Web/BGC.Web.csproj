@@ -349,6 +349,11 @@
     <Compile Include="WebExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-ie.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-part2.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-rtl.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-skins.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace.min.css" />
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />
     <Content Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
