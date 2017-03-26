@@ -9,14 +9,25 @@
     <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
 }
 
-@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post, new { @class = "center-block" }))
+<h1 class="text-center">@Localize(Administration.Name)</h1>
+
+@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post, new { @class = "text-center form-horizontal" }))
 {
-    <div>@Html.TextBoxFor(m => m.UserName)</div>
-    <div>@Html.PasswordFor(m => m.Password)</div>
-    <div class="col-md-4 text-center">
-        <input type="submit" class="btn-primary" value="@Localize(Administration.Authentication.Login.LoginButton)" />
-        @Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())
+    <div class="form-group-lg">
+        <i class="glyphicon glyphicon-user"></i>
+        @Html.TextBoxFor(m => m.UserName, new { @class = "input-lg" })
+    </div>
+    <div class="form-group-lg">
+        <i class="glyphicon glyphicon-lock"></i>
+        @Html.PasswordFor(m => m.Password, new { @class = "input-lg" })
+    </div>
+
+    <div class="form-group-lg">
+        <div>
+            <input type="submit" class="btn btn-primary btn-sm" value="@Localize(Administration.Authentication.Login.LoginButton)" />
+        </div>
+        <div>
+            @Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())
+        </div>
     </div>
 }
-
-<div></div>

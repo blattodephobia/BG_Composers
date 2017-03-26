@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizationKeys xmlns="https://github.com/blattodephobia/BG_Composers">
   <Administration>
+    <LocalizedString key="Name">
+      <Translation culture="en-US">BGC Administration area</Translation>
+      <Translation culture="de-DE">BGC Verwaltung</Translation>
+      <Translation culture="bg-BG">BGC Администрация</Translation>
+    </LocalizedString>
     <Edit>
       <List>
         <LocalizedString key="add_entry">

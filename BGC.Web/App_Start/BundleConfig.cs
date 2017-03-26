@@ -22,7 +22,7 @@ namespace BGC.Web
 				"~/Content/themes/base/jquery.ui.progressbar.css",
 				"~/Content/themes/base/jquery.ui.theme.css"));
 
-            bundles.Add(new StyleBundle("~/Areas/Administration/Resources/css").Include(
+            bundles.Add(new StyleBundle("~/admincss").Include(
                 "~/Areas/Administration/Resources/css/bt-themes/ace-master/ace.min.css",
                 "~/Areas/Administration/Resources/css/bt-themes/ace-master/ace-ie.min.css",
                 "~/Areas/Administration/Resources/css/bt-themes/ace-master/ace-part2.min.css",

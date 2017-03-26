@@ -4,6 +4,7 @@ namespace BGC.Web.LocalizationKeys
 {
     public class Administration
 {
+    public const string Name = "Administration.Name";
     public class Edit
     {
             public class List
