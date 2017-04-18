@@ -10,25 +10,24 @@ namespace BGC.Core.Services
     public interface ILocalizationService
     {
         /// <summary>
-        /// Gets a translation corresponding to the <paramref name="key"/> given in the culture
-        /// specified by the <see cref="Culture"/> property.
+        /// Gets or sets the default culture in which translations will be given.
         /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        string Localize(string key);
+        CultureInfo DefaultCulture { get; set; }      
+          
+        /// <summary>
+        /// Gets a translation associated with a key.
+        /// </summary>
+        /// <param name="key">The <paramref name="key"/> that identifies a localized string.</param>
+        /// <param name="culture">The language to localize the key in. If <paramref name="culture"/> is null, the value of the <see cref="DefaultCulture"/> property will be used.</param>
+        /// <returns>A string localized in the specified language or the <paramref name="key"/>, if there is no applicable translation.</returns>
+        string Localize(string key, CultureInfo culture = null);
 
         /// <summary>
-        /// Gets a translation corresponding to the <paramref name="key"/> overriding the <see cref="Culture"/>
-        /// property.
+        /// Gets the set of a language's graphemes.
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="culture">The culture for the translation string to be returned.</param>
+        /// <param name="useUpperCase">Whether to return the graphemes in upper case where applicable.</param>
+        /// <param name="culture">The language for which an alphabet will be returned. Use null to imply the <see cref="DefaultCulture"/></param>
         /// <returns></returns>
-        string Localize(string key, CultureInfo culture);
-
-        /// <summary>
-        /// Gets or sets the culture in which translations will be given.
-        /// </summary>
-        CultureInfo Culture { get; set; }
+        char[] GetAlphabet(bool useUpperCase = true, CultureInfo culture = null);
     }
 }
