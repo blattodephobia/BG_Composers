@@ -28,12 +28,34 @@ namespace BGC.Web.Areas.Public.Controllers
         }
 
         [DefaultAction]
+#if !DEBUG
+        [OutputCache(Duration = 3600)]
+#endif
 		public virtual ActionResult Index()
         {
             IEnumerable<ComposerArticle> articles = _composersService
                 .GetAllComposers()
                 .Select(composer => composer.GetArticle(CurrentLocale));
-            return View(articles.GroupBy(article => article.LocalizedName.LastName[0]));
+
+            Dictionary<char, IList<ComposerArticle>> articlesIndex = new Dictionary<char, IList<ComposerArticle>>();
+            foreach (ComposerArticle article in articles)
+            {
+                char currentLeadingChar = char.ToUpper(article.LocalizedName.GetEasternOrderFullName()[0]);
+                if (!articlesIndex.ContainsKey(currentLeadingChar))
+                {
+                    articlesIndex.Add(currentLeadingChar, new List<ComposerArticle>());
+                }
+
+                articlesIndex[currentLeadingChar].Add(article);
+            }
+
+            IndexViewModel model = new IndexViewModel()
+            {
+                Alphabet = LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale),
+                Articles = articlesIndex,
+            };
+            
+            return View(model);
         }
 
         public virtual ActionResult Read(Guid article)

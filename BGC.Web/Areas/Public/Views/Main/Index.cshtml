@@ -1,22 +1,20 @@
-﻿@model IEnumerable<IGrouping<char, ComposerArticle>>
+﻿@model IndexViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<ol>
-    @foreach (IGrouping<char, ComposerArticle> group in Model)
+<div class="text-center">
+    @foreach (char group in Model.Alphabet)
     {
-        <li>
-            <span>@group.Key</span>
-            <ol>
-                @foreach (ComposerArticle link in group)
+        <div class="dropdown center">
+            <a class="dropbtn center text-primary">@group</a>
+            <div class="dropdown-content">
+                @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
                 {
-                    <li>@Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))</li>
+                    @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
                 }
-            </ol>
-        </li>
+            </div>
+        </div>
     }
-</ol>
+</div>
