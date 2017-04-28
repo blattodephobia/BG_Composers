@@ -9,17 +9,27 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace TestUtils
 {
     public static class Mocks
     {
+        static Mocks()
+        {
+            SampleLocalization = new XmlDocument();
+            var assemblyFileName = new FileInfo(typeof(Mocks).Assembly.Location);
+            SampleLocalization.Load(assemblyFileName.Directory.GetFiles(@"SampleLoc.xml").First().OpenRead());
+        }
+
+        public static readonly XmlDocument SampleLocalization;
         public static Mock<IUserStore<BgcUser, long>> GetMockUserStore(BgcUser mockUser, Mock chainMock = null)
         {
             var mockStore = chainMock?.As<IUserStore<BgcUser, long>>() ?? new Mock<IUserStore<BgcUser, long>>();
@@ -188,6 +198,14 @@ namespace TestUtils
         {
             var mockService = new Mock<IGeoLocationService>();
             mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            return mockService;
+        }
+
+        public static Mock<ISearchService> GetMockComposerSearchService(IList<Composer> composers)
+        {
+            var mockService = new Mock<ISearchService>();
+            mockService.Setup(s => s.Search(It.IsAny<string>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
+
             return mockService;
         }
     }

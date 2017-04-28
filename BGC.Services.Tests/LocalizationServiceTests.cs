@@ -5,27 +5,17 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Globalization;
+using TestUtils;
 
 namespace BGC.Services.Tests
 {
-    public class Helpers
-    {
-        public static readonly XmlDocument SampleLocalization;
-        static Helpers()
-        {
-            SampleLocalization = new XmlDocument();
-            var assemblyFileName = new FileInfo(typeof(Helpers).Assembly.Location);
-            SampleLocalization.Load(assemblyFileName.Directory.GetFiles(@"SampleLoc.xml").First().OpenRead());
-        }
-    }
-
     [TestFixture]
     public class LocalizeTests
     {
         [Test]
         public void LocalizesSimpleNodeCorrectly()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("bg-BG");
 
             // note: the expected string "ОК" is actually written using the cyrillic О and К;
@@ -36,7 +26,7 @@ namespace BGC.Services.Tests
         [Test]
         public void LocalizesKeysWithoutCaseSensitivity()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("bg-BG");
 
             // note: the expected string "ОК" is actually written using the cyrillic О and К;
@@ -48,7 +38,7 @@ namespace BGC.Services.Tests
         [Test]
         public void LocalizesComplexNodeCorrectly1()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("de-DE");
 
             Assert.AreEqual("Abbrechen", service.Localize("NodeB1.NodeB2.Cancel"));
@@ -57,7 +47,7 @@ namespace BGC.Services.Tests
         [Test]
         public void LocalizesComplexNodeCorrectly2()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("bg-BG");
 
             Assert.AreEqual("Приложи", service.Localize("NodeB1.NodeB3.NodeB4.Apply"));
@@ -66,7 +56,7 @@ namespace BGC.Services.Tests
         [Test]
         public void ReturnsLocalizationKeyIfNoLocalizationPresent1()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("bg-BG");
 
             Assert.AreEqual("[bg-bg]+nodeb2", service.Localize("NodeB2"));
@@ -76,7 +66,7 @@ namespace BGC.Services.Tests
         [Test]
         public void ReturnsLocalizationKeyIfNoLocalizationPresent2()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             service.DefaultCulture = CultureInfo.GetCultureInfo("de-DE");
 
             Assert.AreEqual("[de-de]+nodeb5.close", service.Localize("NodeB5.Close"));
@@ -85,7 +75,7 @@ namespace BGC.Services.Tests
         [Test]
         public void LocalizesWithCultureOverride()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             Assert.AreEqual("Abbrechen", service.Localize("NodeB1.NodeB2.Cancel", CultureInfo.GetCultureInfo("de-DE")));
         }
     }
@@ -107,21 +97,21 @@ namespace BGC.Services.Tests
         [Test]
         public void SetsToCurrentCultureByDefault()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             Assert.AreEqual(testCulture, service.DefaultCulture);
         }
 
         [Test]
         public void ThrowsIfCultureIsInvariant()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             Assert.Throws<InvalidOperationException>(() => service.DefaultCulture = CultureInfo.InvariantCulture);
         }
 
         [Test]
         public void ThrowsIfCultureIsNull()
         {
-            LocalizationService service = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService service = new LocalizationService(Mocks.SampleLocalization);
             Assert.Throws<InvalidOperationException>(() => service.DefaultCulture = null);
         }
 
@@ -143,7 +133,7 @@ namespace BGC.Services.Tests
         public void TestCopiesAreOfAlphabetsAreReturned()
         {
             CultureInfo testCulture = CultureInfo.GetCultureInfo("en-US");
-            LocalizationService svc = new LocalizationService(Helpers.SampleLocalization);
+            LocalizationService svc = new LocalizationService(Mocks.SampleLocalization);
             char[] alphabet = svc.GetAlphabet(culture: testCulture);
             string referenceAlphabet = new string(alphabet);
             for (int i = 0; i < alphabet.Length; i++)
