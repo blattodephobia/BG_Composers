@@ -324,7 +324,7 @@
     <Compile Include="Services\DynamicMaxMinServiceProvider.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Models\IpAddressInfo.cs" />
-    <Compile Include="HttpHandlers\LocalizationHttpHandler.RequestContextLocale.cs" />
+    <Compile Include="Models\RequestContextLocale.cs" />
     <Compile Include="Public.MainController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>

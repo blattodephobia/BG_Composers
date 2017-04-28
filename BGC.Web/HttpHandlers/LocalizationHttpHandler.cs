@@ -72,7 +72,7 @@ namespace BGC.Web.HttpHandlers
 
         protected override IAsyncResult BeginProcessRequest(HttpContextBase httpContext, AsyncCallback callback, object state)
         {
-            RouteValueDictionary validRouteTokens = ProcessRoute(httpContext.Response.Cookies.InitGet(LocaleCookieName));
+            RouteValueDictionary validRouteTokens = ProcessRoute();
             if (validRouteTokens != null)
             {
                 Action<RouteValueDictionary> redirectAction = httpContext.Response.RedirectToRoute;
@@ -84,7 +84,7 @@ namespace BGC.Web.HttpHandlers
             }
         }
 
-        protected RouteValueDictionary ProcessRoute(HttpCookie outputCookie)
+        protected RouteValueDictionary ProcessRoute()
         {
             RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData?.Values);
             Locale.CookieLocale.SetValue((validRouteTokens ?? RequestContext.RouteData.Values)[LocaleRouteTokenName] as string);
@@ -101,7 +101,7 @@ namespace BGC.Web.HttpHandlers
 
         protected override void ProcessRequest(HttpContext context)
         {
-            RouteValueDictionary validRouteTokens = ProcessRoute(context.Request.Cookies.InitGet(LocaleCookieName));
+            RouteValueDictionary validRouteTokens = ProcessRoute();
             if (validRouteTokens != null)
             {
                 context.Response.RedirectToRoute(validRouteTokens);
@@ -128,7 +128,7 @@ namespace BGC.Web.HttpHandlers
         public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, IEnumerable<CultureInfo> supportedLanguages) :
             this(
                 context: context,
-                locale: new RequestContextLocale(
+                locale: RequestContextLocale.FromRequest(
                     supportedCultures: supportedLanguages,
                     geoLocationService: svc.ArgumentNotNull().GetValueOrThrow(),
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,

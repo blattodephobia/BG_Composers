@@ -1,4 +1,5 @@
 ﻿using BGC.Web.HttpHandlers;
+using BGC.Web.Models;
 using BGC.Web.Services;
 using NUnit.Framework;
 using System;
@@ -16,15 +17,6 @@ using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.Tests.HttpHandlers
 {
-    public class RequestContextLocaleProxy : LocalizationHttpHandler.RequestContextLocale
-    {
-        public RequestContextLocaleProxy(IEnumerable<CultureInfo> supportedCultures, IGeoLocationService svc, HttpCookie cookie) :
-            base(supportedCultures: supportedCultures, geoLocationService: svc, cookie: cookie)
-        {
-
-        }
-    }
-
     public class LocalizationHttpHandlerProxy : LocalizationHttpHandler
     {
         public static HttpCookie GetLocaleCookie() => new HttpCookie(LocaleCookieName);
@@ -37,10 +29,10 @@ namespace BGC.Web.Tests.HttpHandlers
 
         protected override string GetDefaultAction(string controllerName) => DefaultAction;
 
-        public RouteValueDictionary ProcessRouteProxy(HttpCookie cookie) => ProcessRoute(cookie);
+        public RouteValueDictionary ProcessRouteProxy() => ProcessRoute();
 
         public LocalizationHttpHandlerProxy(RequestContext ctx, IEnumerable<CultureInfo> supportedCultures) :
-            base(ctx, new RequestContextLocaleProxy(supportedCultures, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, GetLocaleCookie()))
+            base(ctx, RequestContextLocale.FromCookie(supportedCultures, GetLocaleCookie()))
         {
         }
 
@@ -54,7 +46,6 @@ namespace BGC.Web.Tests.HttpHandlers
     [TestFixture]
     public class GetCompleteRouteTests
     {
-
         private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(new RequestContext(), new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US") });
 
         [Test]
@@ -148,15 +139,15 @@ namespace BGC.Web.Tests.HttpHandlers
         public void SetsCookieWithLastUsedLocale()
         {
             var req = new RequestContext() { RouteData = new RouteData() };
-            req.RouteData.Values.Add("locale", "de-DE");
+            req.RouteData.Values.Add(LocaleRouteTokenName, "de-DE");
             var supportedLocales = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") };
 
             HttpCookie localeCookie = new HttpCookie(LocaleCookieName);
-            RequestContextLocaleProxy reqLocale = new RequestContextLocaleProxy(supportedLocales, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, localeCookie);
-            reqLocale.ValidRouteLocale.SetValue(CultureInfo.GetCultureInfo(req.RouteData.Values["locale"] as string));
+            RequestContextLocale reqLocale = RequestContextLocale.FromCookie(supportedLocales, localeCookie);
+            reqLocale.ValidRouteLocale.SetValue(CultureInfo.GetCultureInfo(req.RouteData.Values[LocaleRouteTokenName] as string));
 
             LocalizationHttpHandlerProxy handler = new LocalizationHttpHandlerProxy(req, reqLocale);
-            handler.ProcessRouteProxy(localeCookie);
+            handler.ProcessRouteProxy();
 
             Assert.AreEqual("de-DE", localeCookie.Values[handler.LocaleRouteTokenNameProxy]);
         }
