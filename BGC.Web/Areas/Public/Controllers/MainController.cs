@@ -31,8 +31,11 @@ namespace BGC.Web.Areas.Public.Controllers
 #if !DEBUG
         [OutputCache(Duration = 3600)]
 #endif
-		public virtual ActionResult Index()
+		public virtual ActionResult Index(char group = '\0')
         {
+            group = char.ToUpper(group);
+            bool getSpecificGroupOnly = char.IsLetter(group);
+
             IEnumerable<ComposerArticle> articles = _composersService
                 .GetAllComposers()
                 .Select(composer => composer.GetArticle(CurrentLocale));
@@ -41,17 +44,20 @@ namespace BGC.Web.Areas.Public.Controllers
             foreach (ComposerArticle article in articles)
             {
                 char currentLeadingChar = char.ToUpper(article.LocalizedName.GetEasternOrderFullName()[0]);
-                if (!articlesIndex.ContainsKey(currentLeadingChar))
+                if (!getSpecificGroupOnly || currentLeadingChar == group)
                 {
-                    articlesIndex.Add(currentLeadingChar, new List<ComposerArticle>());
-                }
+                    if (!articlesIndex.ContainsKey(currentLeadingChar))
+                    {
+                        articlesIndex.Add(currentLeadingChar, new List<ComposerArticle>());
+                    }
 
-                articlesIndex[currentLeadingChar].Add(article);
+                    articlesIndex[currentLeadingChar].Add(article);
+                }
             }
 
             IndexViewModel model = new IndexViewModel()
             {
-                Alphabet = LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale),
+                Alphabet = getSpecificGroupOnly ? new[] { group }  : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale),
                 Articles = articlesIndex,
             };
             

@@ -41,9 +41,9 @@ namespace BGC.Web.Controllers
             {
                 if (_currentLocale == null)
                 {
-                    string routeLocale = RouteData.Values["locale"]?.ToString();
+                    string routeLocale = RouteData?.Values["locale"]?.ToString();
                     _currentLocale = string.IsNullOrEmpty(routeLocale)
-                        ? CultureInfo.GetCultureInfo("bg-BG")
+                        ? CultureInfo.GetCultureInfo("en-US")
                         : CultureInfo.GetCultureInfo(routeLocale);
                 }
 
