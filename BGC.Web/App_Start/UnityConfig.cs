@@ -107,7 +107,11 @@ namespace BGC.Web.App_Start
             dataLayerDependencyRegistration.RegisterType(typeof(DbContext), tempContainer, new PerResolveLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IRepository<>), tempContainer, new PerResolveLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IUnitOfWork), tempContainer, new PerResolveLifetimeManager());
-            container.RegisterInstance(new ApplicationProfile(tempContainer.Resolve<IRepository<Setting>>().All()));
+            ApplicationProfile profile = ApplicationProfile.FromApplicationSettings(tempContainer.Resolve<IRepository<Setting>>().All());
+            profile.LocaleCookieName = "locale";
+            profile.LocaleRouteTokenName = "locale";
+            profile.LocaleKey = "locale";
+            container.RegisterInstance(profile);
 
             container.RegisterInstance<IGeoLocationService>(new DynamicMaxMinServiceProvider(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb"));
         }

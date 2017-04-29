@@ -11,6 +11,6 @@ namespace BGC.Web.RouteHandlers
 {
     public class LocalizationRouteHandler : IRouteHandler
     {
-        public IHttpHandler GetHttpHandler(RequestContext requestContext) => new LocalizationHttpHandler(requestContext, DependencyResolver.Current.GetService<ApplicationProfile>().SupportedLanguages);
+        public IHttpHandler GetHttpHandler(RequestContext requestContext) => new LocalizationHttpHandler(requestContext, DependencyResolver.Current.GetService<ApplicationProfile>());
     }
 }

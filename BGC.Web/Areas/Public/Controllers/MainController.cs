@@ -38,7 +38,7 @@ namespace BGC.Web.Areas.Public.Controllers
 
             IEnumerable<ComposerArticle> articles = _composersService
                 .GetAllComposers()
-                .Select(composer => composer.GetArticle(CurrentLocale));
+                .Select(composer => composer.GetArticle(CurrentLocale.EffectiveValue));
 
             Dictionary<char, IList<ComposerArticle>> articlesIndex = new Dictionary<char, IList<ComposerArticle>>();
             foreach (ComposerArticle article in articles)
@@ -57,7 +57,7 @@ namespace BGC.Web.Areas.Public.Controllers
 
             IndexViewModel model = new IndexViewModel()
             {
-                Alphabet = getSpecificGroupOnly ? new[] { group }  : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale),
+                Alphabet = getSpecificGroupOnly ? new[] { group }  : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale.EffectiveValue),
                 Articles = articlesIndex,
             };
             
@@ -69,7 +69,7 @@ namespace BGC.Web.Areas.Public.Controllers
             return View(new ArticleViewModel()
             {
                 Text = _articleStorageService.GetEntry(article),
-                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale).FullName
+                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale.EffectiveValue).FullName
             });
         }
 
@@ -80,8 +80,8 @@ namespace BGC.Web.Areas.Public.Controllers
                 Results = (from result in _searchService.Search(query)
                            let composer = _composersService.FindComposer(result.IdAsLong())
                            where composer != null
-                           select composer.GetArticle(CurrentLocale))
-                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale).FullName)
+                           select composer.GetArticle(CurrentLocale.EffectiveValue))
+                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
             };
             return View(vm);
         }

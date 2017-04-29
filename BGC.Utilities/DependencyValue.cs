@@ -49,10 +49,10 @@ namespace BGC.Utilities
 
         private void SetEffectiveValue(IEnumerable<DependencySource<T>> sources)
         {
-            DependencySource<T> validSource = (from source in sources ?? Enumerable.Empty<DependencySource<T>>()
-                                               where source == DefaultValue || (source?.HasValue ?? false) && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false) // ignore sources that are null, empty or contain invalid values
-                                               select source).First();
-            _effectiveValue = validSource.GetEffectiveValue();
+            IEnumerable<DependencySource<T>> validSources = from source in sources ?? Enumerable.Empty<DependencySource<T>>()
+                                                            where source == DefaultValue || (source?.HasValue ?? false) && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false) // ignore sources that are null, empty or contain invalid values
+                                                            select source;
+            _effectiveValue = validSources.First().GetEffectiveValue();
             _hasEffectiveValue = true;
         }
 

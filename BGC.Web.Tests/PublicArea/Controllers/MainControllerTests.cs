@@ -1,5 +1,7 @@
 ﻿using BGC.Core;
+using BGC.Core.Services;
 using BGC.Services;
+using BGC.Utilities;
 using BGC.Web.Areas.Public.Controllers;
 using BGC.Web.Areas.Public.ViewModels;
 using NUnit.Framework;
@@ -14,6 +16,33 @@ using TestUtils;
 
 namespace BGC.Web.Tests.PublicArea.Controllers
 {
+    public class MainControllerProxy : MainController
+    {
+        private class DummyDependencyValue : DependencyValue<CultureInfo>
+        {
+            public DummyDependencyValue(CultureInfo value) :
+                base(value)
+            {
+            }
+        }
+
+        public MainControllerProxy(IComposerDataService composersService, IArticleContentService articleStorageService, ISearchService composerSearchService) :
+            base(composersService, articleStorageService, composerSearchService)
+        {
+
+        }
+
+        public void SetCurrentLocale(DependencyValue<CultureInfo> value)
+        {
+            CurrentLocale = value;
+        }
+
+        public void SetCurrentLocale(CultureInfo value)
+        {
+            CurrentLocale = new DummyDependencyValue(value);
+        }
+    }
+
     [TestFixture]
     public class IndexTests
     {
@@ -50,10 +79,11 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         public void ReturnsAllComposersIfGroupIsBlank()
         {
             var composers = GetComposers();
-            var mainCtrl = new MainController(
+            var mainCtrl = new MainControllerProxy(
                 composersService: Mocks.GetMockComposerService(composers).Object,
                 articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
                 composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
+            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
@@ -64,10 +94,11 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         public void ReturnsComposersAccordingToGroup()
         {
             var composers = GetComposers();
-            var mainCtrl = new MainController(
+            var mainCtrl = new MainControllerProxy(
                 composersService: Mocks.GetMockComposerService(composers).Object,
                 articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
                 composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
+            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
 
             var resultUpperCase = mainCtrl.Index('S') as ViewResult;
@@ -81,10 +112,11 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         public void ReturnsAllEntriesWithBlankParameter()
         {
             var composers = GetComposers();
-            var mainCtrl = new MainController(
+            var mainCtrl = new MainControllerProxy(
                 composersService: Mocks.GetMockComposerService(composers).Object,
                 articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
                 composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
+            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
@@ -96,10 +128,11 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         public void ReturnsAllEntriesWithInvalidCharacter()
         {
             var composers = GetComposers();
-            var mainCtrl = new MainController(
+            var mainCtrl = new MainControllerProxy(
                 composersService: Mocks.GetMockComposerService(composers).Object,
                 articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
                 composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
+            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
 
             var result = mainCtrl.Index('\t') as ViewResult;

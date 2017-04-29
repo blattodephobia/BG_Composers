@@ -1,4 +1,5 @@
-﻿using BGC.Web.HttpHandlers;
+﻿using BGC.Core;
+using BGC.Web.HttpHandlers;
 using BGC.Web.Models;
 using BGC.Web.Services;
 using NUnit.Framework;
@@ -13,40 +14,36 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
 using TestUtils;
-using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.Tests.HttpHandlers
 {
     public class LocalizationHttpHandlerProxy : LocalizationHttpHandler
     {
-        public static HttpCookie GetLocaleCookie() => new HttpCookie(LocaleCookieName);
-
         public RouteValueDictionary GetCompleteRouteProxy(RouteValueDictionary route) => GetCompleteRoute(route);
 
         public string DefaultAction { get; set; } = "ACTION";
-
-        public string LocaleRouteTokenNameProxy => LocaleRouteTokenName;
 
         protected override string GetDefaultAction(string controllerName) => DefaultAction;
 
         public RouteValueDictionary ProcessRouteProxy() => ProcessRoute();
 
-        public LocalizationHttpHandlerProxy(RequestContext ctx, IEnumerable<CultureInfo> supportedCultures) :
-            base(ctx, RequestContextLocale.FromCookie(supportedCultures, GetLocaleCookie()))
+        public LocalizationHttpHandlerProxy(RequestContext ctx, ApplicationProfile appProfile) :
+            this(ctx, new RequestContextLocale(appProfile, new HttpCookie(appProfile.LocaleCookieName)))
         {
         }
 
         public LocalizationHttpHandlerProxy(RequestContext ctx, RequestContextLocale locale) :
-            base(ctx, locale)
+            base(ctx, locale, Mocks.GetStandardAppProfile().LocaleRouteTokenName)
         {
-
         }
     }
 
     [TestFixture]
     public class GetCompleteRouteTests
     {
-        private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(new RequestContext(), new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US") });
+        private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(
+            ctx: new RequestContext(),
+            appProfile: Mocks.GetStandardAppProfile());
 
         [Test]
         public void PopulatesMissingLocaleToken_KeyMissing()
@@ -133,23 +130,53 @@ namespace BGC.Web.Tests.HttpHandlers
     }
 
     [TestFixture]
+    public class CtorTests
+    {
+        [Test]
+        public void ChecksAppProfileForValidRouteTokenName_1()
+        {
+            Assert.Throws<InvalidOperationException>(() => new LocalizationHttpHandler(
+                context: new RequestContext()
+                {
+                    HttpContext = Mocks.GetMockHttpContextBase(Mocks.GetMockRequestBase().Object, Mocks.GetMockResponseBase().Object).Object
+                },
+                svc: Mocks.GetMockGeoLocationService().Object,
+                appProfile: new ApplicationProfile()));
+        }
+
+        [Test]
+        public void ChecksAppProfileForValidRouteTokenName_2()
+        {
+            Assert.Throws<InvalidOperationException>(() => new LocalizationHttpHandler(
+                context: new RequestContext()
+                {
+                    HttpContext = Mocks.GetMockHttpContextBase(Mocks.GetMockRequestBase().Object, Mocks.GetMockResponseBase().Object).Object
+                },
+                svc: Mocks.GetMockGeoLocationService().Object,
+                appProfile: new ApplicationProfile() { LocaleRouteTokenName = "" }));
+        }
+    }
+
+    [TestFixture]
     public class LocaleCookieTests
     {
         [Test]
         public void SetsCookieWithLastUsedLocale()
         {
-            var req = new RequestContext() { RouteData = new RouteData() };
-            req.RouteData.Values.Add(LocaleRouteTokenName, "de-DE");
-            var supportedLocales = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") };
+            ApplicationProfile testProfile = Mocks.GetStandardAppProfile();
+            testProfile.Seal();
 
-            HttpCookie localeCookie = new HttpCookie(LocaleCookieName);
-            RequestContextLocale reqLocale = RequestContextLocale.FromCookie(supportedLocales, localeCookie);
-            reqLocale.ValidRouteLocale.SetValue(CultureInfo.GetCultureInfo(req.RouteData.Values[LocaleRouteTokenName] as string));
+            var req = new RequestContext() { RouteData = new RouteData() };
+            req.RouteData.Values.Add(testProfile.LocaleRouteTokenName, "de-DE");
+
+            HttpCookie localeCookie = new HttpCookie(testProfile.LocaleCookieName);
+            RequestContextLocale reqLocale = new RequestContextLocale(testProfile, localeCookie);
+            reqLocale.SetValidLocaleOrDefault(reqLocale.ValidRouteLocale, req.RouteData.Values[testProfile.LocaleRouteTokenName] as string);
 
             LocalizationHttpHandlerProxy handler = new LocalizationHttpHandlerProxy(req, reqLocale);
             handler.ProcessRouteProxy();
 
-            Assert.AreEqual("de-DE", localeCookie.Values[handler.LocaleRouteTokenNameProxy]);
+            Assert.AreEqual("de-DE", localeCookie.Values[testProfile.LocaleKey]);
         }
     }
 }

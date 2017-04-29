@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core;
+using BGC.Utilities;
 using CodeShield;
 using System;
 using System.Collections.Generic;
@@ -31,17 +32,16 @@ namespace BGC.Web.Areas.Administration.Models
         [DependencyPrecedence(1)]
         public SingleValueDependencySource<CultureInfo> DbSetting { get; private set; } = new SingleValueDependencySource<CultureInfo>(false);
 
-        public UserLocaleDependencyValue(IEnumerable<CultureInfo> supportedCultures, HttpCookie cookieStore, string localeKeyName) :
-            base(supportedCultures?.First())
+        public UserLocaleDependencyValue(ApplicationProfile appProfile, HttpCookie cookieStore) :
+            base(appProfile?.SupportedLanguages?.First())
         {
-            Shield.ArgumentNotNull(supportedCultures).ThrowOnError();
+            Shield.ArgumentNotNull(appProfile).ThrowOnError();
             Shield.ArgumentNotNull(cookieStore).ThrowOnError();
-            Shield.ArgumentNotNull(localeKeyName).ThrowOnError();
 
             try
             {
-                _supportedCultures = supportedCultures;
-                CookieSetting = new HttpCookieSingleValueDependencySource<CultureInfo>(cookieStore, localeKeyName, CultureConverter);
+                _supportedCultures = appProfile.SupportedLanguages;
+                CookieSetting = new HttpCookieSingleValueDependencySource<CultureInfo>(cookieStore, appProfile.LocaleCookieName, CultureConverter);
             }
             catch (ArgumentNullException)
             {

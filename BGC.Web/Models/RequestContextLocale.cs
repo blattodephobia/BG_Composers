@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core;
+using BGC.Utilities;
 using BGC.Web.Models;
 using BGC.Web.Services;
 using CodeShield;
@@ -31,34 +32,21 @@ namespace BGC.Web.Models
             }
         }
 
-        public static RequestContextLocale FromRequest(IEnumerable<CultureInfo> supportedCultures, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookie)
+        public static RequestContextLocale FromRequest(ApplicationProfile appProfile, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookie)
         {
             Shield.ArgumentNotNull(request).ThrowOnError();
-            Shield.ArgumentNotNull(supportedCultures).ThrowOnError();
+            Shield.ArgumentNotNull(appProfile).ThrowOnError();
             Shield.ArgumentNotNull(geoLocationService).ThrowOnError();
 
-            RequestContextLocale result = FromCookie(supportedCultures, cookie);
-            result.CookieLocale.SetValue(result.GetValidCultureInfoOrDefault(request.Cookies[LocaleCookieName]?.Values[LocaleRouteTokenName]));
+            RequestContextLocale result = new RequestContextLocale(appProfile, cookie);
             IPAddress ip = GetIpFromRequest(request);
             IEnumerable<CultureInfo> validIpLocales = ip != null
                 ? geoLocationService.GetCountry(ip).LocalCultures.Select(c => result.CoerceValue(c))
                 : Enumerable.Empty<CultureInfo>();
             result.ValidIpLocales.SetValueRange(validIpLocales);
 
-            CultureInfo routeLocale = result.GetValidCultureInfoOrDefault(request.RequestContext.RouteData.Values[LocaleRouteTokenName]?.ToString());
+            CultureInfo routeLocale = result.GetValidCultureInfoOrDefault(request.RequestContext.RouteData.Values[appProfile.LocaleRouteTokenName]?.ToString());
             result.ValidRouteLocale.SetValue(routeLocale);
-
-            return result;
-        }
-
-        public static RequestContextLocale FromCookie(IEnumerable<CultureInfo> supportedCultures, HttpCookie cookie)
-        {
-            Shield.ArgumentNotNull(supportedCultures).ThrowOnError();
-            Shield.ArgumentNotNull(cookie).ThrowOnError();
-
-            RequestContextLocale result = new RequestContextLocale(supportedCultures);
-            result.CookieLocale = new HttpCookieSingleValueDependencySource<CultureInfo>(cookie, LocaleRouteTokenName, CultureConverter);
-            result._supportedCultures = new HashSet<CultureInfo>(supportedCultures);
 
             return result;
         }
@@ -97,12 +85,39 @@ namespace BGC.Web.Models
         [DependencyPrecedence(2)]
         public SingleValueDependencySource<CultureInfo> ValidRouteLocale { get; private set; } = new SingleValueDependencySource<CultureInfo>(false);
 
-        public RequestContextLocale(IEnumerable<CultureInfo> supportedCultures) :
-            base(supportedCultures?.FirstOrDefault())
+        /// <summary>
+        /// Converts the <param name="source"></param> to a valid <see cref="CultureInfo"/> if that locale is supported by .NET or to null.
+        /// The converted value is then set on <param name="source"></param> source.
+        /// </summary>
+        /// <param name="cultureCode"></param>
+        public void SetValidLocaleOrDefault(DependencySource<CultureInfo> source, string cultureCode)
         {
-            Shield.ArgumentNotNull(supportedCultures);
+            Shield.ArgumentNotNull(source).ThrowOnError();
 
-            _supportedCultures = new HashSet<CultureInfo>(supportedCultures);
+            CultureInfo culture = null;
+            try
+            {
+                culture = new CultureInfo(cultureCode);
+            }
+            catch (CultureNotFoundException)
+            {
+            }
+            catch (ArgumentNullException)
+            {
+            }
+
+            source.SetValue(culture);
+        }
+        
+        public RequestContextLocale(ApplicationProfile appProfile, HttpCookie cookie) :
+            base(appProfile?.SupportedLanguages?.FirstOrDefault())
+        {
+            Shield.ArgumentNotNull(appProfile).ThrowOnError();
+            Shield.ArgumentNotNull(cookie).ThrowOnError();
+            Shield.IsNotNullOrEmpty(appProfile.SupportedLanguages).ThrowOnError();
+
+            CookieLocale = new HttpCookieSingleValueDependencySource<CultureInfo>(cookie, appProfile.LocaleKey, CultureConverter);
+            _supportedCultures = new HashSet<CultureInfo>(appProfile.SupportedLanguages);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core;
+using BGC.Utilities;
 using BGC.Web.Controllers;
 using BGC.Web.Models;
 using BGC.Web.Services;
@@ -35,6 +36,8 @@ namespace BGC.Web.HttpHandlers
         {
 
         }
+        
+        private string _localeRouteTokenName;
 
         protected virtual string GetDefaultAction(string controllerName)
         {
@@ -46,12 +49,13 @@ namespace BGC.Web.HttpHandlers
         protected RouteValueDictionary GetCompleteRoute(RouteValueDictionary route)
         {
             RouteValueDictionary completeRoute = null;
-            if (Locale.EffectiveValue.Name != route?[LocaleRouteTokenName]?.ToString())
+
+            if (Locale.EffectiveValue.Name != route?[_localeRouteTokenName]?.ToString())
             {
                 completeRoute = route != null
                     ? new RouteValueDictionary(route)
                     : new RouteValueDictionary();
-                UpdateOrAdd(completeRoute, LocaleRouteTokenName, Locale.EffectiveValue.Name);
+                UpdateOrAdd(completeRoute, _localeRouteTokenName, Locale.EffectiveValue.Name);
             }
 
             if (string.IsNullOrEmpty(route?["controller"]?.ToString()))
@@ -87,7 +91,7 @@ namespace BGC.Web.HttpHandlers
         protected RouteValueDictionary ProcessRoute()
         {
             RouteValueDictionary validRouteTokens = GetCompleteRoute(RequestContext.RouteData?.Values);
-            Locale.CookieLocale.SetValue((validRouteTokens ?? RequestContext.RouteData.Values)[LocaleRouteTokenName] as string);
+            Locale.CookieLocale.SetValue(Locale.EffectiveValue);
             return validRouteTokens;
         }
 
@@ -114,26 +118,35 @@ namespace BGC.Web.HttpHandlers
 
         public RequestContextLocale Locale { get; private set; }
 
-        protected LocalizationHttpHandler(RequestContext context, RequestContextLocale locale) :
+        protected LocalizationHttpHandler(RequestContext context, RequestContextLocale locale, string localeRouteTokenName) :
             base(context)
         {
+            Shield.ArgumentNotNull(locale).ThrowOnError();
+            Shield.IsNotNullOrEmpty(localeRouteTokenName);
+
             Locale = locale;
+            _localeRouteTokenName = localeRouteTokenName;
         }
 
-        public LocalizationHttpHandler(RequestContext context, IEnumerable<CultureInfo> supportedLanguages) :
-            this(context, DependencyResolver.Current.GetService<IGeoLocationService>(), supportedLanguages)
+        public LocalizationHttpHandler(RequestContext context, ApplicationProfile appProfile) :
+            this(context, DependencyResolver.Current.GetService<IGeoLocationService>(), appProfile)
         {
+            Shield.ArgumentNotNull(context).ThrowOnError();
+            Shield.ArgumentNotNull(appProfile).ThrowOnError();
+            Shield.IsNotNullOrEmpty(appProfile.LocaleRouteTokenName).ThrowOnError();
         }
 
-        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, IEnumerable<CultureInfo> supportedLanguages) :
+        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, ApplicationProfile appProfile) :
             this(
                 context: context,
                 locale: RequestContextLocale.FromRequest(
-                    supportedCultures: supportedLanguages,
+                    appProfile: appProfile.ArgumentNotNull().GetValueOrThrow(),
                     geoLocationService: svc.ArgumentNotNull().GetValueOrThrow(),
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
-                    cookie: context.HttpContext.Response.Cookies[LocaleCookieName]))
+                    cookie: context.HttpContext.Response.Cookies[appProfile.LocaleCookieName.IsNotNullOrEmpty().GetValueOrThrow()]),
+                localeRouteTokenName: appProfile.ArgumentNotNull().GetValueOrThrow().LocaleRouteTokenName)
         {
+            Shield.IsNotNullOrEmpty(appProfile.LocaleRouteTokenName).ThrowOnError();
         }
     }
 }
