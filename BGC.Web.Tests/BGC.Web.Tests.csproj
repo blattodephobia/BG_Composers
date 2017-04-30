@@ -163,6 +163,7 @@
     <Compile Include="AdministrationArea\AreaTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandlerTests.cs" />
+    <Compile Include="Models\RequestContextLocaleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicArea\Controllers\MainControllerTests.cs" />
     <Compile Include="PublicArea\Controllers\ResourcesControllerTests.cs" />
@@ -197,9 +198,7 @@
       <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

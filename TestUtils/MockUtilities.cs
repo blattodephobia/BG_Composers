@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using System.Xml;
 
 namespace TestUtils
@@ -144,6 +145,30 @@ namespace TestUtils
             return mockManager;
         }
 
+        public static Mock<HttpResponseBase> GetMockResponseBase()
+        {
+            var result = new Mock<HttpResponseBase>();
+
+            return result;
+        }
+
+        public static Mock<RequestContext> GetMockRequestContext(HttpRequestBase request = null, HttpResponseBase response = null)
+        {
+            var result = new Mock<RequestContext>();
+            result.SetupGet(r => r.HttpContext).Returns(GetMockHttpContextBase(request, response).Object);
+
+            return result;
+        }
+
+        public static Mock<HttpContextBase> GetMockHttpContextBase(HttpRequestBase request = null, HttpResponseBase response = null)
+        {
+            var result = new Mock<HttpContextBase>();
+            result.SetupGet(x => x.Request).Returns(request);
+            result.SetupGet(x => x.Response).Returns(response);
+
+            return result;
+        }
+
         public static Mock<IComposerDataService> GetMockComposerService(IList<Composer> composers)
         {
             Mock<IComposerDataService> mockService = new Mock<IComposerDataService>();
@@ -184,7 +209,7 @@ namespace TestUtils
 
         public static T GetActionResultModel<T>(this ActionResult result) where T : class => (result as ViewResultBase).Model as T;
 
-        public static Mock<HttpRequestBase> GetMockRequest()
+        public static Mock<HttpRequestBase> GetMockRequestBase()
         {
             return new Mock<HttpRequestBase>();
         }
@@ -194,10 +219,13 @@ namespace TestUtils
             return new Mock<HttpContextBase>();
         }
 
-        public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db)
+        public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db = null)
         {
             var mockService = new Mock<IGeoLocationService>();
-            mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            if (db != null)
+            {
+                mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            }
             return mockService;
         }
 
@@ -207,6 +235,17 @@ namespace TestUtils
             mockService.Setup(s => s.Search(It.IsAny<string>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
 
             return mockService;
+        }
+
+        public static ApplicationProfile GetStandardAppProfile()
+        {
+            return new ApplicationProfile()
+            {
+                LocaleCookieName = "localeCookie",
+                LocaleRouteTokenName = "locale",
+                LocaleKey = "locale",
+                SupportedLanguages = new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") }
+            };
         }
     }
 }
