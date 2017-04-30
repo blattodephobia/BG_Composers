@@ -40,7 +40,7 @@ namespace BGC.Web.Tests.HttpHandlers
         public RouteValueDictionary ProcessRouteProxy(HttpCookie cookie) => ProcessRoute(cookie);
 
         public LocalizationHttpHandlerProxy(RequestContext ctx, IEnumerable<CultureInfo> supportedCultures) :
-            base(ctx, new RequestContextLocaleProxy(supportedCultures, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, GetLocaleCookie()))
+            base(ctx, new RequestContextLocaleProxy(supportedCultures, MockUtilities.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, GetLocaleCookie()))
         {
         }
 
@@ -152,7 +152,7 @@ namespace BGC.Web.Tests.HttpHandlers
             var supportedLocales = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") };
 
             HttpCookie localeCookie = new HttpCookie(LocaleCookieName);
-            RequestContextLocaleProxy reqLocale = new RequestContextLocaleProxy(supportedLocales, Mocks.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, localeCookie);
+            RequestContextLocaleProxy reqLocale = new RequestContextLocaleProxy(supportedLocales, MockUtilities.GetMockGeoLocationService(new Dictionary<IPAddress, IEnumerable<CultureInfo>>()).Object, localeCookie);
             reqLocale.ValidRouteLocale.SetValue(CultureInfo.GetCultureInfo(req.RouteData.Values["locale"] as string));
 
             LocalizationHttpHandlerProxy handler = new LocalizationHttpHandlerProxy(req, reqLocale);

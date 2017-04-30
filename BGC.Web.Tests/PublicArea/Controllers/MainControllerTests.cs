@@ -51,10 +51,10 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         {
             var composers = GetComposers();
             var mainCtrl = new MainController(
-                composersService: Mocks.GetMockComposerService(composers).Object,
-                articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
-                composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
-            mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
+                composersService: MockUtilities.GetMockComposerService(composers).Object,
+                articleStorageService: MockUtilities.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                composerSearchService: MockUtilities.GetMockComposerSearchService(composers).Object);
+            mainCtrl.LocalizationService = new LocalizationService(MockUtilities.SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
             Assert.AreEqual(composers.Count, (result.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
@@ -65,10 +65,10 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         {
             var composers = GetComposers();
             var mainCtrl = new MainController(
-                composersService: Mocks.GetMockComposerService(composers).Object,
-                articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
-                composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
-            mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
+                composersService: MockUtilities.GetMockComposerService(composers).Object,
+                articleStorageService: MockUtilities.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                composerSearchService: MockUtilities.GetMockComposerSearchService(composers).Object);
+            mainCtrl.LocalizationService = new LocalizationService(MockUtilities.SampleLocalization);
 
             var resultUpperCase = mainCtrl.Index('S') as ViewResult;
             Assert.AreEqual(2, (resultUpperCase.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
@@ -82,10 +82,10 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         {
             var composers = GetComposers();
             var mainCtrl = new MainController(
-                composersService: Mocks.GetMockComposerService(composers).Object,
-                articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
-                composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
-            mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
+                composersService: MockUtilities.GetMockComposerService(composers).Object,
+                articleStorageService: MockUtilities.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                composerSearchService: MockUtilities.GetMockComposerSearchService(composers).Object);
+            mainCtrl.LocalizationService = new LocalizationService(MockUtilities.SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
             Assert.AreEqual(3, (result.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
@@ -97,10 +97,10 @@ namespace BGC.Web.Tests.PublicArea.Controllers
         {
             var composers = GetComposers();
             var mainCtrl = new MainController(
-                composersService: Mocks.GetMockComposerService(composers).Object,
-                articleStorageService: Mocks.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
-                composerSearchService: Mocks.GetMockComposerSearchService(composers).Object);
-            mainCtrl.LocalizationService = new LocalizationService(Mocks.SampleLocalization);
+                composersService: MockUtilities.GetMockComposerService(composers).Object,
+                articleStorageService: MockUtilities.GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                composerSearchService: MockUtilities.GetMockComposerSearchService(composers).Object);
+            mainCtrl.LocalizationService = new LocalizationService(MockUtilities.SampleLocalization);
 
             var result = mainCtrl.Index('\t') as ViewResult;
             Assert.AreEqual(3, (result.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
