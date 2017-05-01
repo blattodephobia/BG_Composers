@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
@@ -17,7 +18,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 	{
         private string GetAdminHomePageUrl()
         {
-            string result = Url.RouteUrl(MVC.Administration.Name, MVC.Administration.Account.Activities().GetT4MVCResult().RouteValueDictionary);
+            string result = Url.Action(MVC.Administration.Account.ActionNames.Activities, MVC.Administration.Account.Name);
             return result;
         }
 

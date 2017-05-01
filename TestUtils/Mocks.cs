@@ -12,6 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -145,9 +146,20 @@ namespace TestUtils
             return mockManager;
         }
 
-        public static Mock<HttpResponseBase> GetMockResponseBase()
+        public static Mock<IPrincipal> GetMockUser(string name)
         {
-            var result = new Mock<HttpResponseBase>();
+            var identity = new Mock<IIdentity>();
+            identity.SetupGet(x => x.Name).Returns(name);
+            identity.SetupGet(x => x.IsAuthenticated).Returns(true);
+
+            var result = new Mock<IPrincipal>();
+            result.SetupGet(x => x.Identity).Returns(identity.Object);
+            return result;
+        }
+
+        public static Mock<HttpResponseBase> GetMockResponseBase(MockBehavior behavior = MockBehavior.Loose)
+        {
+            var result = new Mock<HttpResponseBase>(behavior);
 
             return result;
         }
@@ -209,14 +221,14 @@ namespace TestUtils
 
         public static T GetActionResultModel<T>(this ActionResult result) where T : class => (result as ViewResultBase).Model as T;
 
-        public static Mock<HttpRequestBase> GetMockRequestBase()
+        public static Mock<HttpRequestBase> GetMockRequestBase(MockBehavior behavior = default(MockBehavior))
         {
-            return new Mock<HttpRequestBase>();
+            return new Mock<HttpRequestBase>(behavior);
         }
 
-        public static Mock<HttpContextBase> GetMockContext()
+        public static Mock<HttpContextBase> GetMockContext(MockBehavior behavior = default(MockBehavior))
         {
-            return new Mock<HttpContextBase>();
+            return new Mock<HttpContextBase>(behavior);
         }
 
         public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db = null)
