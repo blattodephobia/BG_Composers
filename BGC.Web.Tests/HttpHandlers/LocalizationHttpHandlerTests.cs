@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Routing;
-using TestUtils;
+using static TestUtils.MockUtilities;
 
 namespace BGC.Web.Tests.HttpHandlers
 {
@@ -33,7 +33,7 @@ namespace BGC.Web.Tests.HttpHandlers
         }
 
         public LocalizationHttpHandlerProxy(RequestContext ctx, RequestContextLocale locale) :
-            base(ctx, locale, Mocks.GetStandardAppProfile().LocaleRouteTokenName)
+            base(ctx, locale, GetStandardAppProfile().LocaleRouteTokenName)
         {
         }
     }
@@ -43,7 +43,7 @@ namespace BGC.Web.Tests.HttpHandlers
     {
         private readonly LocalizationHttpHandlerProxy _handler = new LocalizationHttpHandlerProxy(
             ctx: new RequestContext(),
-            appProfile: Mocks.GetStandardAppProfile());
+            appProfile: GetStandardAppProfile());
 
         [Test]
         public void PopulatesMissingLocaleToken_KeyMissing()
@@ -138,9 +138,9 @@ namespace BGC.Web.Tests.HttpHandlers
             Assert.Throws<InvalidOperationException>(() => new LocalizationHttpHandler(
                 context: new RequestContext()
                 {
-                    HttpContext = Mocks.GetMockHttpContextBase(Mocks.GetMockRequestBase().Object, Mocks.GetMockResponseBase().Object).Object
+                    HttpContext = GetMockHttpContextBase(GetMockRequestBase().Object, GetMockResponseBase().Object).Object
                 },
-                svc: Mocks.GetMockGeoLocationService().Object,
+                svc: GetMockGeoLocationService().Object,
                 appProfile: new ApplicationProfile()));
         }
 
@@ -150,9 +150,9 @@ namespace BGC.Web.Tests.HttpHandlers
             Assert.Throws<InvalidOperationException>(() => new LocalizationHttpHandler(
                 context: new RequestContext()
                 {
-                    HttpContext = Mocks.GetMockHttpContextBase(Mocks.GetMockRequestBase().Object, Mocks.GetMockResponseBase().Object).Object
+                    HttpContext = GetMockHttpContextBase(GetMockRequestBase().Object, GetMockResponseBase().Object).Object
                 },
-                svc: Mocks.GetMockGeoLocationService().Object,
+                svc: GetMockGeoLocationService().Object,
                 appProfile: new ApplicationProfile() { LocaleRouteTokenName = "" }));
         }
     }
@@ -163,7 +163,7 @@ namespace BGC.Web.Tests.HttpHandlers
         [Test]
         public void SetsCookieWithLastUsedLocale()
         {
-            ApplicationProfile testProfile = Mocks.GetStandardAppProfile();
+            ApplicationProfile testProfile = GetStandardAppProfile();
             testProfile.Seal();
 
             var req = new RequestContext() { RouteData = new RouteData() };

@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using static TestUtils.Mocks;
+using static TestUtils.MockUtilities;
 
 namespace BGC.Web.Tests.AdministrationArea.Controllers
 {

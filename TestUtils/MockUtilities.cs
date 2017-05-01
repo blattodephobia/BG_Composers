@@ -22,12 +22,12 @@ using System.Xml;
 
 namespace TestUtils
 {
-    public static class Mocks
+    public static class MockUtilities
     {
-        static Mocks()
+        static MockUtilities()
         {
             SampleLocalization = new XmlDocument();
-            var assemblyFileName = new FileInfo(typeof(Mocks).Assembly.Location);
+            var assemblyFileName = new FileInfo(typeof(MockUtilities).Assembly.Location);
             SampleLocalization.Load(assemblyFileName.Directory.GetFiles(@"SampleLoc.xml").First().OpenRead());
         }
 

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TestUtils.Mocks;
+using static TestUtils.MockUtilities;
 
 namespace BGC.Services.Tests
 {
