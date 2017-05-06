@@ -94,7 +94,6 @@
   <ItemGroup>
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
-    <Compile Include="CultureInfoConvention.cs" />
     <Compile Include="DataLayerDependencyRegistration.cs" />
     <Compile Include="Migrations\201612042027134_Initial.cs" />
     <Compile Include="Migrations\201612042027134_Initial.Designer.cs">
