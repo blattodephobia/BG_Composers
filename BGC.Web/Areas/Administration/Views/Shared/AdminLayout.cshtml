@@ -103,25 +103,35 @@
         </div>
     </div>
 
-    <div class="main-container ace-save-state" id="main-container">
-        <div id="sidebar" class="sidebar responsive ace-save-state">
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-                @RenderSection("sidebar_content", required: false)
-            </div>
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="main-container ace-save-state" id="main-container">
+            <div id="sidebar" class="sidebar responsive ace-save-state">
+                <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                    @RenderSection("sidebar_content", required: false)
+                </div>
 
-            <div class="main-content">
-                <div class="main-content-inner">
-                    <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
-                        @RenderSection("errors", required: false)
+                <div class="main-content">
+                    <div class="main-content-inner">
+                        <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
+                            @RenderSection("errors", required: false)
+                        </div>
+
+                        @if (!Model.RenderErrorsOnly)
+                        {
+                            @RenderBody()
+                        }
                     </div>
-
-                    @if (!Model.RenderErrorsOnly)
-                    {
-                        @RenderBody()
-                    }
                 </div>
             </div>
         </div>
-    </div>
+    }
+    else
+    {
+        if (!Model.RenderErrorsOnly)
+        {
+            @RenderBody()
+        }
+    }
 </body>
 </html>
