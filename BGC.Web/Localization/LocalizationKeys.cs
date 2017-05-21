@@ -87,6 +87,7 @@ public class Public
 }
 public class Global
 {
+    public const string Welcome = "Global.Welcome";
     public const string Send = "Global.Send";
     public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";

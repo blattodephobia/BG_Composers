@@ -39,24 +39,89 @@
     @RenderSection("styles", required: false)
     @RenderSection("scripts", required: false)
 </head>
-    <body class="container">
-        <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
-            @RenderSection("errors", required: false)
+<body class="no-skin">
+    <div id="navbar" class="navbar navbar-default ace-save-state">
+        <div class="navbar-container ace-save-state" id="navbar-container">
+            <div class="navbar-header pull-left">
+                <a href="@Url.Action(MVC.Administration.Account.Activities())" class="navbar-brand">
+                    <small>
+                        <i class="fa fa-leaf"></i>
+                        @Localize(Administration.Name)
+                    </small>
+                </a>
+            </div>
         </div>
 
-        @if (!Model.RenderErrorsOnly)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                <ul>
-                    @foreach (CultureInfo supportedCulture in SupportedLanguages)
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="grey dropdown-modal">
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <i class="ace-icon fa fa-tasks"></i>
+                            <span class="badge badge-grey">[Current language]</span>
+                        </a>
+
+                        <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                            @foreach (CultureInfo supportedCulture in SupportedLanguages)
+                            {
+                                <li class="dropdown-header">@Html.ActionLink(supportedCulture.DisplayName, MVC.Administration.Account.ActionNames.SetLocale, MVC.Administration.Account.Name, new { locale = supportedCulture.Name }, null)</li>
+                            }
+                        </ul>
+                    </li>
+
+                    <li class="light-blue dropdown-modal">
+                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                            <span class="user-info">
+                                <small>@Localize(Global.Welcome),</small>
+                                @User.Identity.Name
+                            </span>
+
+                            <i class="ace-icon fa fa-caret-down"></i>
+                        </a>
+
+                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                            <li>
+                                <a href="@Url.Action(MVC.Administration.Account.ChangePassword())">
+                                    <i class="ace-icon fa fa-user"></i>
+                                    @Localize(Administration.Account.ChangePassword.ChangePasswordTitle)
+                                </a>
+                            </li>
+
+                            <li class="divider"></li>
+
+                            <li>
+                                <a href="@Url.Action(MVC.Administration.Authentication.Actions.LogOut())">
+                                    <i class="ace-icon fa fa-power-off"></i>
+                                    @Localize(Global.Logout)
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-container ace-save-state" id="main-container">
+        <div id="sidebar" class="sidebar responsive ace-save-state">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                @RenderSection("sidebar_content", required: false)
+            </div>
+
+            <div class="main-content">
+                <div class="main-content-inner">
+                    <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
+                        @RenderSection("errors", required: false)
+                    </div>
+
+                    @if (!Model.RenderErrorsOnly)
                     {
-                        <li>@Html.ActionLink(supportedCulture.DisplayName, MVC.Administration.Account.ActionNames.SetLocale, MVC.Administration.Account.Name, new { locale = supportedCulture.Name }, null)</li>
+                        @RenderBody()
                     }
-                </ul>
-                <div>@Html.ActionLink(Localize(Global.Logout), MVC.Administration.Authentication.Actions.LogOut())</div>
-            }
-            @RenderBody()
-        }
-    </body>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>

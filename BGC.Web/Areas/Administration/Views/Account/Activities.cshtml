@@ -6,22 +6,20 @@
     ViewBag.Title = "Profile";
 }
 
-<h2>Profile</h2>
-@Html.ActionLink(Localize(Administration.Account.ChangePassword.ChangePasswordTitle), MVC.Administration.Account.ChangePassword())
-<ul>
-    @foreach (PermissionViewModelBase permission in Model.PermittedActions)
-    {
-        <li>
-            @if (!string.IsNullOrEmpty(permission.ActivityUrl))
-            {
-                <a href="@permission.ActivityUrl">
-                    @(Localize(permission.LocalizationKey))
+@{
+    Layout = "~/Areas/Administration/Views/Shared/AdminLayout.cshtml";
+}
+
+@section sidebar_content
+{
+    <ul class="nav nav-list">
+        @foreach (PermissionViewModelBase permission in Model.PermittedActions)
+        {
+            <li>
+                <a href="@(!string.IsNullOrEmpty(permission.ActivityUrl) ? permission.ActivityUrl : "#")">
+                    <span class="pull-left">@(Localize(permission.LocalizationKey))</span>
                 </a>
-            }
-            else
-            {
-                @(Localize(permission.LocalizationKey))
-            }
-        </li>
-    }
-</ul>
+            </li>
+        }
+    </ul>
+}

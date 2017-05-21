@@ -208,6 +208,11 @@
     </Main>
   </Public>
   <Global>
+    <LocalizedString key="Welcome">
+      <Translation culture="en-US">Welcome</Translation>
+      <Translation culture="de-DE">Willkommen</Translation>
+      <Translation culture="bg-BG">Добре дошли</Translation>
+    </LocalizedString>
     <LocalizedString key="Send">
       <Translation culture="en-US">Send</Translation>
       <Translation culture="de-DE">Verschicken</Translation>
