@@ -22,6 +22,8 @@ public class Account
 }
 public class RequestPasswordReset
 {
+            public const string ResetPassword = "Administration.Account.RequestPasswordReset.ResetPassword";
+            public const string BackToLogin = "Administration.Account.RequestPasswordReset.BackToLogin";
             public const string PasswordResetEmailSent = "Administration.Account.RequestPasswordReset.PasswordResetEmailSent";
             public const string TypeEmailForPasswordReset = "Administration.Account.RequestPasswordReset.TypeEmailForPasswordReset";
 }

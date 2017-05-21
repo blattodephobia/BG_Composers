@@ -34,6 +34,16 @@
         </LocalizedString>
       </Activities>
       <RequestPasswordReset>
+        <LocalizedString key="ResetPassword">
+          <Translation culture="en-US">Reset password</Translation>
+          <Translation culture="de-DE">Passwort zurücksetzen</Translation>
+          <Translation culture="bg-BG">Възстановяване на парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="BackToLogin">
+          <Translation culture="en-US">Back to login</Translation>
+          <Translation culture="de-DE">Zurück zum Anmelden</Translation>
+          <Translation culture="bg-BG">Назад към вписване</Translation>
+        </LocalizedString>
         <LocalizedString key="PasswordResetEmailSent">
           <Translation culture="en-US">A password reset email has been sent.</Translation>
           <Translation culture="de-DE">Wir haben Ihnen eine Email geschickt, damit Sie ihre Passwort zurücksetzen können.</Translation>
