@@ -10,27 +10,60 @@
 }
 
 <div class="ultimate-center">
-        <h1 class="text-center">@Localize(Administration.Name)</h1>
+    <h1 class="text-center">@Localize(Administration.Name)</h1>
 
-        @using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post, new { @class = "text-center form-horizontal" }))
-        {
-            <div class="form-group-lg">
-                <i class="glyphicon glyphicon-user"></i>
-                @Html.TextBoxFor(m => m.UserName, new { @class = "input-lg" })
-            </div>
-            <div class="form-group-lg">
-                <i class="glyphicon glyphicon-lock"></i>
-                @Html.PasswordFor(m => m.Password, new { @class = "input-lg" })
-            </div>
+    <div class="login-container login-layout light-login">
 
-            <div class="form-group-lg">
-                <div>
-                    <input type="submit" class="btn btn-primary btn-sm" value="@Localize(Administration.Authentication.Login.LoginButton)" />
-                </div>
-                <div>
-                    @Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())
-                </div>
-            </div>
-        }
+        <div class="position-relative">
+            <div id="login-box" class="login-box visible widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="space-6"></div>
+                        @using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post))
+                        {
+                            <fieldset>
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = @Localize(Administration.Authentication.Login.Username) })
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                </label>
+
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = @Localize(Administration.Authentication.Login.Password) })
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                                </label>
+
+                                <div class="space"></div>
+
+                                <div class="clearfix">
+                                    <label class="inline">
+                                        <input type="checkbox" class="ace" />
+                                        <span class="lbl">@Localize(Administration.Authentication.Login.RememberMe)</span>
+                                    </label>
+
+                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="bigger-110">@Localize(Administration.Authentication.Login.LoginButton)</span>
+                                    </button>
+                                </div>
+
+                                <div class="space-4"></div>
+                                <div>
+                                    <a href="@Url.Action(MVC.Administration.Account.RequestPasswordReset())" class="text-center">
+                                        @Localize(Administration.Authentication.Login.Forgot_password)
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </fieldset>
+                        }
+                    </div><!-- /.widget-main -->
+
+                </div><!-- /.widget-body -->
+            </div><!-- /.login-box -->
+
+        </div><!-- /.position-relative -->
     </div>
 </div>

@@ -105,7 +105,7 @@
         </LocalizedString>
         <LocalizedString key="PasswordRequired">
           <Translation culture="en-US">The password is required.</Translation>
-          <Translation culture="de-DE">Das Password ist erforderlich.</Translation>
+          <Translation culture="de-DE">Das Passwort ist erforderlich.</Translation>
           <Translation culture="bg-BG">Въвеждането на парола е задължително.</Translation>
         </LocalizedString>
       </ChangePassword>
@@ -153,6 +153,11 @@
           <Translation culture="de-DE">Anmelden</Translation>
           <Translation culture="bg-BG">Вход</Translation>
         </LocalizedString>
+        <LocalizedString key="Username">
+          <Translation culture="en-US">Username</Translation>
+          <Translation culture="de-DE">Benutzername</Translation>
+          <Translation culture="bg-BG">Потребителско име</Translation>
+        </LocalizedString>
         <LocalizedString key="Password">
           <Translation culture="en-US">Password</Translation>
           <Translation culture="de-DE">Passwort</Translation>
@@ -167,6 +172,11 @@
           <Translation culture="en-US">Forgot your password?</Translation>
           <Translation culture="de-DE">Passwort vergessen?</Translation>
           <Translation culture="bg-BG">Забравили сте си паролата?</Translation>
+        </LocalizedString>
+        <LocalizedString key="RememberMe">
+          <Translation culture="en-US">Remember me</Translation>
+          <Translation culture="de-DE">Angemeldet bleiben</Translation>
+          <Translation culture="bg-BG">Запомни ме</Translation>
         </LocalizedString>
       </Login>
     </Authentication>

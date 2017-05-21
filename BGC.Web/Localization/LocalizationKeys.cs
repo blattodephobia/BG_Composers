@@ -64,9 +64,11 @@ public class Authentication
         public class Login
         {
                     public const string LoginButton = "Administration.Authentication.Login.LoginButton";
+                    public const string Username = "Administration.Authentication.Login.Username";
                     public const string Password = "Administration.Authentication.Login.Password";
                     public const string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
                     public const string Forgot_password = "Administration.Authentication.Login.Forgot_password";
+                    public const string RememberMe = "Administration.Authentication.Login.RememberMe";
 }
 }
 }
