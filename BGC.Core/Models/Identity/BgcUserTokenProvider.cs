@@ -66,6 +66,7 @@ namespace BGC.Core
                     writer.Write(userId);
                     writer.Write(user.PasswordHash);
                     byte[] result = (writer.BaseStream as MemoryStream).ToArray();
+                    user.SetPasswordResetTokenHash(result.ToBase62());
                     return EncryptToken(result);
                 }
             }
@@ -100,7 +101,8 @@ namespace BGC.Core
             {
                 if (purpose == TokenPurposes.ResetPassword)
                 {
-                    using (var reader = new BinaryReader(new MemoryStream(DecryptToken(token))))
+                    byte[] decryptedToken = DecryptToken(token);
+                    using (var reader = new BinaryReader(new MemoryStream(decryptedToken)))
                     {
                         DateTime validity = new DateTime(ticks: reader.ReadInt64());
                         long userId = reader.ReadInt64();
@@ -108,7 +110,8 @@ namespace BGC.Core
                         isValid =
                             DateTime.UtcNow < validity &&
                             userId == user.Id &&
-                            passwordHash == user.PasswordHash;
+                            passwordHash == user.PasswordHash &&
+                            user.CheckPasswordResetToken(decryptedToken.ToBase62());
                     }
                 }
             }
