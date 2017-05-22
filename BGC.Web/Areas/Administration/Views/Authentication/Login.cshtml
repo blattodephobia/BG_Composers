@@ -1,7 +1,7 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = Localize(Administration.Authentication.Login.LoginLabel);
 }
 
 @if (Model.AuthenticationFailure)
@@ -44,7 +44,7 @@
 
                                     <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
                                         <i class="ace-icon fa fa-key"></i>
-                                        <span class="bigger-110">@Localize(Administration.Authentication.Login.LoginButton)</span>
+                                        <span class="bigger-110">@Localize(Administration.Authentication.Login.LoginLabel)</span>
                                     </button>
                                 </div>
 

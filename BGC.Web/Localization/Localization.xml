@@ -163,7 +163,7 @@
     </UserManagement>
     <Authentication>
       <Login>
-        <LocalizedString key="LoginButton">
+        <LocalizedString key="LoginLabel">
           <Translation culture="en-US">Login</Translation>
           <Translation culture="de-DE">Anmelden</Translation>
           <Translation culture="bg-BG">Вход</Translation>
