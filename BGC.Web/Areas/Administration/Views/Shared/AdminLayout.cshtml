@@ -106,12 +106,9 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="main-container ace-save-state" id="main-container">
-            @if (IsSectionDefined("siderbar_content"))
-            {
-                <div id="sidebar" class="sidebar responsive ace-save-state">
-                    @RenderSection("sidebar_content", required: false)
-                </div>
-            }
+            <div id="sidebar" class="sidebar responsive ace-save-state" @(IsSectionDefined("sidebar_content") ? "" : "hidden")>
+                @RenderSection("sidebar_content", required: false)
+            </div>
 
             <div class="main-content">
                 <div class="main-content-inner">
