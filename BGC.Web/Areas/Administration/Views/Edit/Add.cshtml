@@ -1,7 +1,7 @@
 ﻿@model AddComposerViewModel
 
 @{
-    ViewBag.Title = "Add";
+    ViewBag.Title = Localize(Administration.Edit.Add.AddEntry);
 }
 
 @section scripts
@@ -17,35 +17,68 @@
     <script src="~/Areas/Administration/Scripts/Edit/Add.js"></script>
 }
 
-<h2>Add</h2>
-
-<div id="uploadArea"></div>
-
-<div id="uploadedImages"></div>
+@section sidebar_content
+{
+    <div class="sidebar-actions-container">
+        <div>
+            <button type="submit" form="addComposerForm" class="btn btn-lg btn-success btn-block">
+                <i class="ace-icon fa fa-floppy-o"></i>
+                <span>@Localize(Global.Save)</span>
+            </button>
+        </div>
+        <div>
+            <div id="uploadArea" class="dropzone well">
+                <div class="dz-default dz-message">
+                    <i class="upload-icon ace-icon fa fa-cloud-upload blue fa-3x"></i>
+                    <br />
+                    <span class="smaller-80 grey">@Localize(Administration.Edit.Add.UploadImagesPrompt)</span>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id="uploadedImages"></div>
+        </div>
+    </div>
+}
 
 <iframe id="postResult" hidden="hidden"></iframe>
 
-@using (Html.BeginForm())
-{
-    <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-default">
-        @for (int i = 0; i < Model.Articles.Count; i++)
-        {
-            @Html.HiddenFor(m => Model.Articles[i].Language)
-            <div class="panel-heading" role="tab" id="article-heading-@i">
-                <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
-                        &gt;
-                    </a>
-                    @Model.Articles[i].Language.DisplayName:
-                    @Html.TextBoxFor(m => Model.Articles[i].FullName)
-                </h4>
-            </div>
-            <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
-                @Html.TextAreaFor(m => Model.Articles[i].Content, new { @class = "tinymce" })
-            </div>
-        }
-        </div>
+<div class="page-content">
+    <div class="page-header">
+        <h1>@Localize(Administration.Edit.Add.AddEntry)</h1>
     </div>
-    <input type="submit" value="@Localize(Global.Submit)" />
-}
+
+    @using (Html.BeginForm(MVC.Administration.Edit.Add_Post(), FormMethod.Post, new { id = "addComposerForm" }))
+    {
+        <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                @for (int i = 0; i < Model.Articles.Count; i++)
+                {
+                    @Html.HiddenFor(m => Model.Articles[i].Language)
+                    <div class="panel-heading" role="tab" id="article-heading-@i">
+                        <div class="row name-edit-header">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
+                                <b class="arrow fa fa-angle-down fa-lg"></b>
+                            </a>
+                            <span>
+                                @Html.TextBoxFor(
+                                    expression: m => Model.Articles[i].FullName,
+                                    htmlAttributes: new
+                                    {
+                                        placeholder = string.Format(
+                                            format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
+                                            arg0: Model.Articles[i].Language.NativeName.Substring(
+                                                startIndex: 0,
+                                                length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
+                                    })
+                            </span>
+                        </div>
+                    </div>
+                    <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
+                        @Html.TextAreaFor(m => Model.Articles[i].Content, new { @class = "tinymce" })
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

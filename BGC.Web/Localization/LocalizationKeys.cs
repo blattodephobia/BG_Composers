@@ -7,9 +7,15 @@ namespace BGC.Web.LocalizationKeys
     public const string Name = "Administration.Name";
     public class Edit
     {
-            public class List
+            public class Add
             {
-                        public const string Add_entry = "Administration.Edit.List.Add_entry";
+                        public const string AddEntry = "Administration.Edit.Add.AddEntry";
+                        public const string NamePromptFormat = "Administration.Edit.Add.NamePromptFormat";
+                        public const string UploadImagesPrompt = "Administration.Edit.Add.UploadImagesPrompt";
+}
+public class List
+{
+            public const string AddEntry = "Administration.Edit.List.AddEntry";
 }
 }
 public class Account
@@ -89,6 +95,7 @@ public class Public
 public class Global
 {
     public const string Welcome = "Global.Welcome";
+    public const string Save = "Global.Save";
     public const string Send = "Global.Send";
     public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";

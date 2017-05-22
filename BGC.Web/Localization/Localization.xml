@@ -7,11 +7,28 @@
       <Translation culture="bg-BG">BGC Администрация</Translation>
     </LocalizedString>
     <Edit>
-      <List>
-        <LocalizedString key="add_entry">
+      <Add>
+        <LocalizedString key="AddEntry">
           <Translation culture="en-US">Add new entry</Translation>
           <Translation culture="de-DE">Eintrag hinzufügen</Translation>
-          <Translation culture="bg-BG">Добави нов</Translation>
+          <Translation culture="bg-BG">Добавяне на нов запис</Translation>
+        </LocalizedString>
+        <LocalizedString key="NamePromptFormat">
+          <Translation culture="en-US">Name in {0}</Translation>
+          <Translation culture="de-DE">Name auf {0}</Translation>
+          <Translation culture="bg-BG">Име на {0}</Translation>
+        </LocalizedString>
+        <LocalizedString key="UploadImagesPrompt">
+          <Translation culture="en-US">Drop images here to upload</Translation>
+          <Translation culture="de-DE">Ziehen Sie Bilder hier hin, um sie hochzuladen</Translation>
+          <Translation culture="bg-BG">Поставете изображения тук, за да ги качите</Translation>
+        </LocalizedString>
+      </Add>
+      <List>
+        <LocalizedString key="AddEntry">
+          <Translation culture="en-US">Add new entry</Translation>
+          <Translation culture="de-DE">Eintrag hinzufügen</Translation>
+          <Translation culture="bg-BG">Добави нов запис</Translation>
         </LocalizedString>
       </List>
     </Edit>
@@ -217,6 +234,11 @@
       <Translation culture="en-US">Welcome</Translation>
       <Translation culture="de-DE">Willkommen</Translation>
       <Translation culture="bg-BG">Добре дошли</Translation>
+    </LocalizedString>
+    <LocalizedString key="Save">
+      <Translation culture="en-US">Save</Translation>
+      <Translation culture="de-DE">Speichern</Translation>
+      <Translation culture="bg-BG">Запази</Translation>
     </LocalizedString>
     <LocalizedString key="Send">
       <Translation culture="en-US">Send</Translation>
