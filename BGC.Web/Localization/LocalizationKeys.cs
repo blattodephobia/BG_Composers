@@ -29,6 +29,7 @@ public class RequestPasswordReset
 }
 public class ResetPassword
 {
+            public const string ResetPasswordLabel = "Administration.Account.ResetPassword.ResetPasswordLabel";
             public const string UnknownEmailError = "Administration.Account.ResetPassword.UnknownEmailError";
             public const string UnknownError = "Administration.Account.ResetPassword.UnknownError";
 }
