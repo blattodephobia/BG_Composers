@@ -15,7 +15,7 @@ namespace BGC.Web.Areas.Administration.Controllers
     {
         private static readonly XName ImgTagName = XName.Get("img");
 
-        private IComposerDataService composersService;
+        private IComposerDataService _composersService;
         private ISettingsService settingsService;
         private IArticleContentService articleStorageService;
 
@@ -43,31 +43,30 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService)
         {
-            this.composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
+            this._composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
             this.articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
         }
 
         public virtual ActionResult List()
         {
-            IEnumerable<Composer> composers = this.composersService.GetAllComposers().ToList();
-            return this.View(composers);
+            IEnumerable<Composer> composers = _composersService.GetAllComposers().ToList();
+            return View(composers);
         }
 
         [HttpGet]
         public virtual ActionResult Add()
         {
-            IList<AddComposerViewModel> articlesRequired =
-                settingsService.ReadSetting<CultureSupportSetting>("SupportedLanguages")
-                .SupportedCultures
-                .Select(c => new AddComposerViewModel() { Language = c })
-                .ToList();
+            IEnumerable<AddArticleViewModel> articlesRequired = from language in ApplicationProfile.SupportedLanguages
+                                                                select new AddArticleViewModel() { Language = language };
 
-            return this.View(articlesRequired);
+            var vm = new AddComposerViewModel(articlesRequired);
+            return View(vm);
         }
 
         [HttpPost]
-        public virtual ActionResult Add(IList<AddComposerViewModel> editedData)
+        [ActionName(nameof(Add))]
+        public virtual ActionResult Add_Post(IList<AddArticleViewModel> editedData)
         {
             Composer newComposer = new Composer();
             for (int i = 0; i < editedData.Count; i++)
@@ -76,15 +75,15 @@ namespace BGC.Web.Areas.Administration.Controllers
                 newComposer.LocalizedNames.Add(name);
                 newComposer.Articles.Add(new ComposerArticle()
                 {
-                    StorageId = this.articleStorageService.StoreEntry(editedData[i].Article),
+                    StorageId = this.articleStorageService.StoreEntry(editedData[i].Content),
                     Composer = newComposer,
                     Language = editedData[i].Language,
                     LocalizedName = name
                 });
             }
-            this.composersService.Add(newComposer);
+            _composersService.Add(newComposer);
 
-            return base.RedirectToAction(nameof(List));
+            return RedirectToAction(nameof(List));
         }
     }
 }

@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>@string.Format("{0} - {1}", ViewBag.Title, Localize(Administration.Name))</title>
 
     @if (MVC.Debugging)
     {

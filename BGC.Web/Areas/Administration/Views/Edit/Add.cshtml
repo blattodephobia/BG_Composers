@@ -1,4 +1,4 @@
-﻿@model IList<AddComposerViewModel>
+﻿@model AddComposerViewModel
 
 @{
     ViewBag.Title = "Add";
@@ -6,7 +6,7 @@
 
 @section scripts
 {
-    @if (IsDebugBuild)
+    @if (MVC.Debugging)
     {
         <script src="http://cdn.tinymce.com/4/tinymce.js" crossorigin="anonymous"></script> @*integrity="sha384-ZLmGcx7NndDoJD1tvNLyxHbAgPmytCoUoJaZE9jgXaHtwusXSYf8STW0nS0404nY" attribute removed due to compatibility issues with Firefox *@
     }
@@ -29,20 +29,20 @@
 {
     <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
         <div class="panel panel-default">
-        @for (int i = 0; i < Model.Count; i++)
+        @for (int i = 0; i < Model.Articles.Count; i++)
         {
-            @Html.HiddenFor(m => Model[i].Language)
+            @Html.HiddenFor(m => Model.Articles[i].Language)
             <div class="panel-heading" role="tab" id="article-heading-@i">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
                         &gt;
                     </a>
-                    @Model[i].Language.DisplayName:
-                    @Html.TextBoxFor(m => Model[i].FullName)
+                    @Model.Articles[i].Language.DisplayName:
+                    @Html.TextBoxFor(m => Model.Articles[i].FullName)
                 </h4>
             </div>
             <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
-                @Html.TextAreaFor(m => Model[i].Article, new { @class = "tinymce" })
+                @Html.TextAreaFor(m => Model.Articles[i].Content, new { @class = "tinymce" })
             </div>
         }
         </div>
