@@ -106,22 +106,32 @@
     @if (User.Identity.IsAuthenticated)
     {
         <div class="main-container ace-save-state" id="main-container">
-            <div id="sidebar" class="sidebar responsive ace-save-state">
-                <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+            @if (IsSectionDefined("siderbar_content"))
+            {
+                <div id="sidebar" class="sidebar responsive ace-save-state">
                     @RenderSection("sidebar_content", required: false)
                 </div>
+            }
 
-                <div class="main-content">
-                    <div class="main-content-inner">
-                        <div @((Model.ErrorMessages.Any()) ? "" : "hidden='hidden'")>
-                            @RenderSection("errors", required: false)
+            <div class="main-content">
+                <div class="main-content-inner">
+                    @if (Model.ErrorMessages.Any())
+                    {
+                        <div class="alert alert-danger no-margin alert-dismissable">
+                            @foreach (string errorKey in Model.ErrorMessages)
+                            {
+                                <div>
+                                    <i class="ace-icon fa fa-exclamation-triangle bigger-120"></i>
+                                    @Localize(errorKey)
+                                </div>
+                            }
                         </div>
+                    }
 
-                        @if (!Model.RenderErrorsOnly)
-                        {
-                            @RenderBody()
-                        }
-                    </div>
+                    @if (!Model.RenderErrorsOnly)
+                    {
+                        @RenderBody()
+                    }
                 </div>
             </div>
         </div>
