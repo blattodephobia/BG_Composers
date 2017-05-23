@@ -70,7 +70,8 @@ public class UserManagement
 public class SendInvite
 {
             public const string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
-            public const string Roles = "Administration.UserManagement.SendInvite.Roles";
+            public const string SendInvitationTitle = "Administration.UserManagement.SendInvite.SendInvitationTitle";
+            public const string ChooseRoles = "Administration.UserManagement.SendInvite.ChooseRoles";
             public const string UserExists = "Administration.UserManagement.SendInvite.UserExists";
 }
 }

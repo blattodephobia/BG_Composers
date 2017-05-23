@@ -196,10 +196,15 @@
           <Translation culture="de-DE">Die Einladung wurder erfolgreich geschickt.</Translation>
           <Translation culture="bg-BG">Поканата беше изпратена успешно.</Translation>
         </LocalizedString>
-        <LocalizedString key="roles">
-          <Translation culture="en-US">Roles</Translation>
-          <Translation culture="de-DE">Rollen</Translation>
-          <Translation culture="bg-BG">Роли</Translation>
+        <LocalizedString key="SendInvitationTitle">
+          <Translation culture="en-US">Send an invitation</Translation>
+          <Translation culture="de-DE">Einladung verschicken</Translation>
+          <Translation culture="bg-BG">Изпращане на покана</Translation>
+        </LocalizedString>
+        <LocalizedString key="ChooseRoles">
+          <Translation culture="en-US">Select the roles for the new user</Translation>
+          <Translation culture="de-DE">Wählen Sie die Rollen für den neuen Benutzer</Translation>
+          <Translation culture="bg-BG">Изберете ролите на новия потребител</Translation>
         </LocalizedString>
         <LocalizedString key="UserExists">
           <Translation culture="en-US">A user with this email is already registered.</Translation>
