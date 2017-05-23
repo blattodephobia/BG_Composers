@@ -154,6 +154,26 @@
         <Translation culture="bg-BG">Потребителско име</Translation>
       </LocalizedString>
       <Register>
+        <LocalizedString key="RegisterTitle">
+          <Translation culture="en-US">Register</Translation>
+          <Translation culture="de-DE">Registrieren</Translation>
+          <Translation culture="bg-BG">Регистриране</Translation>
+        </LocalizedString>
+        <LocalizedString key="AvailableRoles">
+          <Translation culture="en-US">You will be assigned the following roles</Translation>
+          <Translation culture="de-DE">Ihnen wеrden folgenden Rolen zugeordnet</Translation>
+          <Translation culture="bg-BG">Ще ви бъдат възложени следните роли</Translation>
+        </LocalizedString>        
+        <LocalizedString key="FillOutFormPrompt">
+          <Translation culture="en-US">Enter the following details to register</Translation>
+          <Translation culture="de-DE">Tragen Sie folgende Daten ein um zu registrieren</Translation>
+          <Translation culture="bg-BG">Въведете си данните, за да се регистрирате</Translation>
+        </LocalizedString>
+        <LocalizedString key="RegisterNewUser">
+          <Translation culture="en-US">Register new user</Translation>
+          <Translation culture="de-DE">Neuen Benutzer registrieren</Translation>
+          <Translation culture="bg-BG">Регистриране на нов потребител</Translation>
+        </LocalizedString>
         <LocalizedString key="UserNameRequired">
           <Translation culture="en-US">User name is required.</Translation>
           <Translation culture="de-DE">Benutzername ist erforderlich.</Translation>
@@ -163,6 +183,11 @@
           <Translation culture="en-US">A user with that name already exists.</Translation>
           <Translation culture="de-DE">Ein Benutzer mit diesem Namen existiert schon.</Translation>
           <Translation culture="bg-BG">Това потребителско име е заето.</Translation>
+        </LocalizedString>
+        <LocalizedString key="ConfirmPassword">
+          <Translation culture="en-US">Confirm password</Translation>
+          <Translation culture="de-DE">Passwort bestätigen</Translation>
+          <Translation culture="bg-BG">Потвърдете паролата</Translation>
         </LocalizedString>
       </Register>
       <SendInvite>

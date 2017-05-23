@@ -59,8 +59,13 @@ public class UserManagement
         public const string UserName = "Administration.UserManagement.UserName";
         public class Register
         {
+                    public const string RegisterTitle = "Administration.UserManagement.Register.RegisterTitle";
+                    public const string AvailableRoles = "Administration.UserManagement.Register.AvailableRoles";
+                    public const string FillOutFormPrompt = "Administration.UserManagement.Register.FillOutFormPrompt";
+                    public const string RegisterNewUser = "Administration.UserManagement.Register.RegisterNewUser";
                     public const string UserNameRequired = "Administration.UserManagement.Register.UserNameRequired";
                     public const string UserNameInUse = "Administration.UserManagement.Register.UserNameInUse";
+                    public const string ConfirmPassword = "Administration.UserManagement.Register.ConfirmPassword";
 }
 public class SendInvite
 {
