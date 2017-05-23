@@ -50,8 +50,9 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         public virtual ActionResult List()
         {
-            IEnumerable<Composer> composers = _composersService.GetAllComposers().ToList();
-            return View(composers);
+            var vm = new ListArticlesViewModel(_composersService.GetAllComposers());
+
+            return View(vm);
         }
 
         [HttpGet]

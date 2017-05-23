@@ -1,15 +1,33 @@
-﻿@{
-    ViewBag.Title = "List";
+﻿@using BGC.Web.Controllers
+
+@{
+    ViewBag.Title = Localize(Administration.Edit.List.PublishedArticles);
 }
 @using BGC.Core;
 
-@model IEnumerable<Composer>
+@model ListArticlesViewModel
 
-<h2>List</h2>
-
-@foreach (Composer composer in this.Model)
+@section sidebar_content
 {
-    @(composer.LocalizedNames.FirstOrDefault(c => c.Language.Name == "bg-BG") ?? composer.LocalizedNames.First())
+    <div class="sidebar-actions-container">
+        <div>
+            <a href="@Url.Action(MVC.Administration.Edit.Add())" class="btn btn-success btn-block">
+                <i class="ace-icon glyphicon glyphicon-plus"></i>
+                @Localize(Administration.Edit.List.AddEntry)
+            </a>
+        </div>
+    </div>
 }
 
-@Html.ActionLink(Localize(Administration.Edit.List.Add_entry), MVC.Administration.Edit.Add());
+<div class="page-content">
+    <div class="page-header">
+        <h1>@Localize(Administration.Edit.List.PublishedArticles)</h1>
+    </div>
+
+    @foreach (Composer composer in Model.Composers)
+    {
+        <span class="info">
+            @composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName()
+        </span>
+    }
+</div>

@@ -16,6 +16,7 @@ namespace BGC.Web.LocalizationKeys
 public class List
 {
             public const string AddEntry = "Administration.Edit.List.AddEntry";
+            public const string PublishedArticles = "Administration.Edit.List.PublishedArticles";
 }
 }
 public class Account
@@ -96,6 +97,7 @@ public class Global
 {
     public const string Welcome = "Global.Welcome";
     public const string Save = "Global.Save";
+    public const string Publish = "Global.Publish";
     public const string Send = "Global.Send";
     public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";

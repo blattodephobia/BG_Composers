@@ -30,6 +30,11 @@
           <Translation culture="de-DE">Eintrag hinzufügen</Translation>
           <Translation culture="bg-BG">Добави нов запис</Translation>
         </LocalizedString>
+        <LocalizedString key="PublishedArticles">
+          <Translation culture="en-US">Published articles</Translation>
+          <Translation culture="de-DE">Veröffentlichte Artikel</Translation>
+          <Translation culture="bg-BG">Публикувани статии</Translation>
+        </LocalizedString>
       </List>
     </Edit>
     <Account>
@@ -239,6 +244,11 @@
       <Translation culture="en-US">Save</Translation>
       <Translation culture="de-DE">Speichern</Translation>
       <Translation culture="bg-BG">Запази</Translation>
+    </LocalizedString>
+    <LocalizedString key="Publish">
+      <Translation culture="en-US">Publish</Translation>
+      <Translation culture="de-DE">Veröffentlichen</Translation>
+      <Translation culture="bg-BG">Публикувай</Translation>
     </LocalizedString>
     <LocalizedString key="Send">
       <Translation culture="en-US">Send</Translation>
