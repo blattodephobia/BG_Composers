@@ -15,3 +15,26 @@
         }
     </ul>
 }
+
+<div class="page-content">
+    <div class="page-header">
+        <h1 class="bigger lighter blue center">@Localize(Administration.Account.Activities.WelcomeToAdminArea)</h1>
+    </div>
+
+    <div class="space-6"></div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <h2 class="header lighter green">@Localize(Administration.Account.Activities.Statistics)</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-5 col-xs-offset-1">
+            <h4 class="smaller lighter green">
+                <i class="fa fa-caret-right"></i>
+                @string.Format("{0} {1}", Model.PublishedComposersCount, Localize(Administration.Account.Activities.PublishedArticles))
+            </h4>
+        </div>
+    </div>
+</div>

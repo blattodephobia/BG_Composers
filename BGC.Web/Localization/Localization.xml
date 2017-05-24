@@ -39,6 +39,21 @@
     </Edit>
     <Account>
       <Activities>
+        <LocalizedString key="WelcomeToAdminArea">
+          <Translation culture="en-US">Welcome to the BGC Administration area</Translation>
+          <Translation culture="de-DE">Wilkommen zum BGC Verwaltungsbereich</Translation>
+          <Translation culture="bg-BG">Добре дошли в секцията за администриране на BGC</Translation>
+        </LocalizedString>
+        <LocalizedString key="PublishedArticles">
+          <Translation culture="en-US">publishes article(s)</Translation>
+          <Translation culture="de-DE">veröffentlichter/n Artikel</Translation>
+          <Translation culture="bg-BG">публикувана(и) статия(и)</Translation>
+        </LocalizedString>
+        <LocalizedString key="Statistics">
+          <Translation culture="en-US">Stats</Translation>
+          <Translation culture="de-DE">Statistik</Translation>
+          <Translation culture="bg-BG">Статистика</Translation>
+        </LocalizedString>
         <LocalizedString key="SendInvite">
           <Translation culture="en-US">Invite users</Translation>
           <Translation culture="de-DE">Benutzer einlanden</Translation>
