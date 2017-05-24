@@ -23,7 +23,6 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
     [TestFixture]
     public class ResetPasswordTests
     {
-
         [Test]
         public void ReturnsCorrectViewModel()
         {
@@ -40,7 +39,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             mockManager.Object.EmailService = mService.Object;
             #endregion
 
-            AccountController ctrl = new AccountController()
+            AccountController ctrl = new AccountController(GetMockComposerService(new List<Composer>()).Object)
             {
                 SignInManager = sm.Object,
                 UserManager = mockManager.Object,
@@ -68,7 +67,12 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             mockHttpContext.SetupAllProperties();
             #endregion
 
-            AccountController ctrl = new AccountController() { SignInManager = sm.Object, UserManager = mockManager.Object };
+            AccountController ctrl = new AccountController(GetMockComposerService(new List<Composer>()).Object)
+            {
+                SignInManager = sm.Object,
+                UserManager = mockManager.Object
+            };
+
             sm
                 .Setup(x => x.SignInAsync(It.IsAny<BgcUser>(), It.IsAny<bool>(), It.IsAny<bool>()))
                 .Callback((BgcUser u, bool a, bool b) =>
