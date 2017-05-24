@@ -40,6 +40,18 @@ $(document).ready(function ()
         return stopEvent(e);
     });
 
+    $('.collapse').on('shown.bs.collapse', function ()
+    {
+        var link = $(this).parent().find("a[href='#" + this.id + "']");
+        var icon = link.find("i");
+        icon.removeClass().addClass(icon.data("icon-hide"));
+    }).on('hidden.bs.collapse', function ()
+    {
+        var link = $(this).parent().find("a[href='#" + this.id + "']");
+        var icon = link.find("i");
+        icon.removeClass().addClass(icon.data("icon-show"));
+    });
+
     $('#uploadArea').on("drop", function (e)
     {
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
