@@ -467,6 +467,9 @@
       <LastGenOutput>LocalizationKeys.cs</LastGenOutput>
     </Content>
     <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="Resources\bg-BG.png" />
+    <Content Include="Resources\de-DE.png" />
+    <Content Include="Resources\en-US.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

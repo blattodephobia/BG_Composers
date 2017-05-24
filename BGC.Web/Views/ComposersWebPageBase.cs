@@ -39,6 +39,8 @@ namespace BGC.Web.Views
         {
         }
 
+        public CultureInfo CurrentLocale => (ViewContext.Controller as BgcControllerBase).CurrentLocale.EffectiveValue;
+
         public string Localize(string key) => LocalizationService.Localize(key, (ViewContext.Controller as BgcControllerBase).CurrentLocale.EffectiveValue);
 
         public IEnumerable<CultureInfo> SupportedLanguages => (ViewContext.Controller as BgcControllerBase).ApplicationProfile.SupportedLanguages;
