@@ -90,6 +90,18 @@ namespace BGC.Core
             }
         }
 
+        public override async Task<IdentityResult> ResetPasswordAsync(long userId, string token, string newPassword)
+        {
+            IdentityResult result = await base.ResetPasswordAsync(userId, token, newPassword);
+            BgcUser user = await FindByIdAsync(userId);
+            if (result.Succeeded)
+            {
+                user.SetPasswordResetTokenHash(null);
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Searches the underlying repository for an invitation with the given id and returns it.
         /// </summary>

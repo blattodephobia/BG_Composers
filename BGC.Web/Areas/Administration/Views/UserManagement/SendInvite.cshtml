@@ -1,27 +1,51 @@
 ﻿@model SendInvitePermissionViewModel
 
 @{
-    ViewBag.Title = "SendInvite";
+    ViewBag.Title = Localize(Administration.UserManagement.SendInvite.SendInvitationTitle);
 }
 
-<h2>SendInvite</h2>
+<div class="ultimate-center light-login">
+    <div class="login-container">
+        <div class="position-relative">
+            <div id="signup-box" class="signup-box widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="header green lighter bigger">
+                            <i class="ace-icon fa fa-users blue"></i>
+                            @Localize(Administration.UserManagement.SendInvite.SendInvitationTitle)
+                        </h4>
 
-@if (Model.ErrorMessages.Any())
-{
-    foreach (string error in Model.ErrorMessages)
-    {
-        <div>@Localize(error)</div>
-    }
-}
+                        <div class="space-6"></div>
 
-@if (Model.IsPreviousInvitationSent)
-{
-    <div>@Localize(Administration.UserManagement.SendInvite.Invitation_sent)</div>
-}
+                        @if (Model.IsPreviousInvitationSent)
+                        {
+                            <div>@Localize(Administration.UserManagement.SendInvite.Invitation_sent)</div>
+                        }
 
-@using (Html.BeginForm(MVC.Administration.UserManagement.SendInvite_Post(), FormMethod.Post))
-{
-    <span>@Localize(Global.Email): @Html.TextBoxFor(m => m.Email)</span>
-    <span>@Localize(Administration.UserManagement.SendInvite.Roles): @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }), new { multiple = "" })</span>
-    <input type="submit" value="@Localize(Global.Send)"/>
-}
+                        @using (Html.BeginForm(MVC.Administration.UserManagement.SendInvite_Post(), FormMethod.Post))
+                        {
+                            <fieldset>
+                                <div class="block clearfix">
+                                    <span>@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = Localize(Global.Email) })</span>
+                                </div>
+                                <div class="block clearfix">
+                                    <span>@Localize(Administration.UserManagement.SendInvite.ChooseRoles)</span>
+                                </div>
+                                <div>
+                                    @Html.ListBoxFor(m => m.AvailableRoles, Model.AvailableRoles.Select(role => new SelectListItem() { Text = role, Value = role }), new { multiple = "" })
+                                </div>
+
+                                <div class="space-6"></div>
+
+                                <button type="submit" class="btn btn-success btn-block">
+                                    <i class="ace-icon fa fa-envelope"></i>
+                                    @Localize(Global.Send)
+                                </button>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

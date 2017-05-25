@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Services;
 using BGC.Utilities;
 using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.Areas.Administration.ViewModels.Permissions;
@@ -21,16 +22,20 @@ namespace BGC.Web.Areas.Administration.Controllers
 {
 	public partial class AccountController : AdministrationControllerBase
     {
-        private DiscoveredTypes typeDiscovery;
+        private DiscoveredTypes _typeDiscovery;
+        private readonly IComposerDataService _composerService;
+        
+        public AccountController(IComposerDataService composerService)
+        {
+            Shield.ArgumentNotNull(composerService).ThrowOnError();
 
-        public AccountController()
-        {            
-            this.typeDiscovery = TypeDiscovery.Discover(GetType(), a => a == Assembly.GetExecutingAssembly());
+            _typeDiscovery = TypeDiscovery.Discover(GetType(), a => a == Assembly.GetExecutingAssembly());
+            _composerService = composerService;
         }
 
         public virtual ActionResult Activities()
         {
-            var validActivities = (from viewModel in typeDiscovery.DiscoveredTypesInheritingFrom<PermissionViewModelBase>()
+            var validActivities = (from viewModel in _typeDiscovery.DiscoveredTypesInheritingFrom<PermissionViewModelBase>()
                                    from mapAttribute in viewModel.GetCustomAttributes<MappableWithAttribute>()
                                    join permission in User.GetPermissions() on mapAttribute.RelatedType equals permission.GetType()
                                    where viewModel.GetCustomAttribute<GeneratedCodeAttribute>() != null
@@ -40,7 +45,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 vm.ActivityUrl = Url.RouteUrl(vm.ActivityAction.GetRouteValueDictionary());
             }
-            return View(new ActivitiesViewModel() { PermittedActions = validActivities });
+
+            return View(new ActivitiesViewModel()
+            {
+                PermittedActions = validActivities,
+                PublishedComposersCount = _composerService.GetAllComposers().Count
+            });
         }
 
         public virtual ActionResult ChangePassword(ChangePasswordViewModel vm = null)

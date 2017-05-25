@@ -285,8 +285,10 @@
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
     <Compile Include="Areas\Administration\Models\UserLocaleDependencyValue.cs" />
     <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AddArticleViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ListArticlesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ApplicationSettingsWritePermissionViewModel.cs" />

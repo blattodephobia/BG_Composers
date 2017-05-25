@@ -40,15 +40,14 @@
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
-#uploadArea {
-    height: 200px;
-    width: 100%;
-    background-color: darkgray;
-}
-
 .ultimate-center {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+.margin-vertical-med {
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
