@@ -8,107 +8,118 @@
 <!DOCTYPE html>
 
 <html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>@(ViewData.ContainsKey("Title") ? string.Format("{0} - {1}", ViewBag.Title, Localize(Administration.Name)) : Localize(Administration.Name) )</title>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>@(ViewData.ContainsKey("Title") ? string.Format("{0} - {1}", ViewBag.Title, Localize(Administration.Name)) : Localize(Administration.Name) )</title>
 
-    @if (MVC.Debugging)
-    {
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" integrity="sha384-12jyvLdRujy7xPBSEsRChlYNcKKODOnVcrqexeULMkmGGzBmM9ms6CT1HGxtu96M" crossorigin="anonymous" />
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" @*integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"*@ />
-        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" integrity="sha384-nbu0EcklP74/4DaTXgE8DZcxAX458y/YsSqsK9R31nCkAtdJC5tHRoMsGlNqpo2H" crossorigin="anonymous"></script>
-    }
-    else
-    {
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" @*integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"*@ />
-        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    }
+        @if (MVC.Debugging)
+        {
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.css" integrity="sha384-12jyvLdRujy7xPBSEsRChlYNcKKODOnVcrqexeULMkmGGzBmM9ms6CT1HGxtu96M" crossorigin="anonymous" />
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" @*integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"*@ />
+            <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha384-TlQc6091kl7Au04dPgLW7WK3iey+qO8dAi/LdwxaGBbszLxnizZ4xjPyNrEf+aQt" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.js" integrity="sha384-nbu0EcklP74/4DaTXgE8DZcxAX458y/YsSqsK9R31nCkAtdJC5tHRoMsGlNqpo2H" crossorigin="anonymous"></script>
+        }
+        else
+        {
+            <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+            <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" @*integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous"*@ />
+            <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha384-rY/jv8mMhqDabXSo+UCggqKtdmBfd3qC2/KvyTDNQ6PcUJXaxK1tMepoQda4g5vB" crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        }
 
-    <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/fonts.googleapis.com.css" />
-    <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/ace.min.css" />
-    <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/ace-rtl.min.css" />
+        <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/fonts.googleapis.com.css" />
+        <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/ace.min.css" />
+        <link rel="stylesheet" href="~/Areas/Administration/Resources/css/bt-themes/ace-master/ace-rtl.min.css" />
 
-    <link rel="stylesheet" href="~/Content/Site.css" />
-    <link rel="stylesheet" href="~/Areas/Administration/Resources/css/admin.css" />
+        <link rel="stylesheet" href="~/Content/Site.css" />
+        <link rel="stylesheet" href="~/Areas/Administration/Resources/css/admin.css" />
 
-    @Styles.Render("~/admincss")
+        @Styles.Render("~/admincss")
 
-    @RenderSection("styles", required: false)
-    @RenderSection("scripts", required: false)
-</head>
-<body class="no-skin">
-    <div id="navbar" class="navbar navbar-default ace-save-state">
-        <div class="navbar-container ace-save-state" id="navbar-container">
-            <div class="navbar-header pull-left">
-                <a href="@Url.Action(MVC.Administration.Account.Activities())" class="navbar-brand">
-                    <small>
-                        <i class="fa fa-leaf"></i>
-                        @Localize(Administration.Name)
-                    </small>
-                </a>
+        @RenderSection("styles", required: false)
+        @RenderSection("scripts", required: false)
+    </head>
+    <body class="no-skin">
+        <div id="navbar" class="navbar navbar-default ace-save-state">
+            <div class="navbar-container ace-save-state" id="navbar-container">
+                <div class="navbar-header pull-left">
+                    <a href="@Url.Action(MVC.Administration.Account.Activities())" class="navbar-brand">
+                        <small>
+                            <i class="fa fa-leaf"></i>
+                            @Localize(Administration.Name)
+                        </small>
+                    </a>
+                </div>
+            </div>
+
+            <div class="navbar-buttons navbar-header pull-right" role="navigation">
+                <ul class="nav ace-nav">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li class="light-blue dropdown-modal">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span>
+                                    <img src="~/Resources/@(CurrentLocale.Name).png" />
+                                    <i class="ace-icon fa fa-caret-down"></i>
+                                </span>
+                            </a>
+
+                            <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                                @foreach (CultureInfo supportedCulture in SupportedLanguages)
+                                {
+                                    <li class="dropdown-header">
+                                        @if (!supportedCulture.Equals(CurrentLocale))
+                                        {
+                                            <a class="pull-left" href="@Url.Action(MVC.Administration.Account.SetLocale(supportedCulture.Name))">
+                                                <img class="country-flag" src="~/Resources/@(supportedCulture.Name).png" />
+                                                @supportedCulture.NativeName
+                                            </a>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+
+                        <li class="light-blue dropdown-modal">
+                            <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                                <span class="user-info">
+                                    <small>@Localize(Global.Welcome),</small>
+                                    @User.Identity.Name
+                                </span>
+
+                                <i class="ace-icon fa fa-caret-down"></i>
+                            </a>
+
+                            <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                                <li>
+                                    <a href="@Url.Action(MVC.Administration.Account.ChangePassword())">
+                                        <i class="ace-icon fa fa-user"></i>
+                                        @Localize(Administration.Account.ChangePassword.ChangePasswordTitle)
+                                    </a>
+                                </li>
+
+                                <li class="divider"></li>
+
+                                <li>
+                                    <a href="@Url.Action(MVC.Administration.Authentication.Actions.LogOut())">
+                                        <i class="ace-icon fa fa-power-off"></i>
+                                        @Localize(Global.Logout)
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
             </div>
         </div>
 
-        <div class="navbar-buttons navbar-header pull-right" role="navigation">
-            <ul class="nav ace-nav">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <li class="grey dropdown-modal">
-                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <i class="ace-icon fa fa-tasks"></i>
-                            <span class="badge badge-grey">[Current language]</span>
-                        </a>
-
-                        <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
-                            @foreach (CultureInfo supportedCulture in SupportedLanguages)
-                            {
-                                <li class="dropdown-header">@Html.ActionLink(supportedCulture.DisplayName, MVC.Administration.Account.ActionNames.SetLocale, MVC.Administration.Account.Name, new { locale = supportedCulture.Name }, null)</li>
-                            }
-                        </ul>
-                    </li>
-
-                    <li class="light-blue dropdown-modal">
-                        <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                            <span class="user-info">
-                                <small>@Localize(Global.Welcome),</small>
-                                @User.Identity.Name
-                            </span>
-
-                            <i class="ace-icon fa fa-caret-down"></i>
-                        </a>
-
-                        <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-                            <li>
-                                <a href="@Url.Action(MVC.Administration.Account.ChangePassword())">
-                                    <i class="ace-icon fa fa-user"></i>
-                                    @Localize(Administration.Account.ChangePassword.ChangePasswordTitle)
-                                </a>
-                            </li>
-
-                            <li class="divider"></li>
-
-                            <li>
-                                <a href="@Url.Action(MVC.Administration.Authentication.Actions.LogOut())">
-                                    <i class="ace-icon fa fa-power-off"></i>
-                                    @Localize(Global.Logout)
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                }
-            </ul>
-        </div>
-    </div>
-
-    @if (User.Identity.IsAuthenticated)
-    {
         <div class="main-container ace-save-state" id="main-container">
-            <div id="sidebar" class="sidebar responsive ace-save-state" @(IsSectionDefined("sidebar_content") ? "" : "hidden")>
-                @RenderSection("sidebar_content", required: false)
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div id="sidebar" class="sidebar responsive ace-save-state" @(IsSectionDefined("sidebar_content") ? "" : "hidden")>
+                    @RenderSection("sidebar_content", required: false)
+                </div>
+            }
 
             <div class="main-content">
                 <div class="main-content-inner">
@@ -125,36 +136,9 @@
                         </div>
                     }
 
-                    @if (!Model.RenderErrorsOnly)
-                    {
-                        @RenderBody()
-                    }
+                    @RenderBody()
                 </div>
             </div>
         </div>
-    }
-    else
-    {
-        if (!Model.RenderErrorsOnly)
-        {
-            @RenderBody()
-            if (User.Identity.IsAuthenticated)
-            {
-                <div class="dropdown">
-                    <div><img src="~/Resources/@(CurrentLocale.Name).png" />@CurrentLocale.DisplayName</div>
-                    <div class="dropdown-content">
-                        @foreach (CultureInfo supportedCulture in SupportedLanguages)
-                        {
-                            <a href="@Url.Action(MVC.Administration.Account.SetLocale(supportedCulture.Name))">
-                                <img src="~/Resources/@(supportedCulture.Name).png" />
-                                @supportedCulture.NativeName
-                            </a>
-                        }
-                    </div>
-                </div>
-                <div style="position: fixed; right: 0px;">@Html.ActionLink(Localize(Global.Logout), MVC.Administration.Authentication.Actions.LogOut())</div>
-            }
-        }
-    }
-</body>
+    </body>
 </html>
