@@ -54,7 +54,7 @@ namespace BGC.Core
         {
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
 
-            ComposerArticle result = Articles.FirstOrDefault(article => article.LanguageInternal == language.Name);
+            ComposerArticle result = Articles.FirstOrDefault(article => article.Language.Equals(language));
             return result;
         }
 
@@ -62,7 +62,7 @@ namespace BGC.Core
         {
             Shield.ArgumentNotNull(language).ThrowOnError();
 
-            ComposerName result = LocalizedNames?.FirstOrDefault(name => name.Language == language);
+            ComposerName result = LocalizedNames?.FirstOrDefault(name => name.Language.Equals(language));
             return result;
         }
 

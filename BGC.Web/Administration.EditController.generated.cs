@@ -55,6 +55,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             return RedirectToActionPermanent(taskResult.Result);
         }
 
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Add_Post()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public EditController Actions { get { return MVC.Administration.Edit; } }
@@ -73,6 +79,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public readonly string List = "List";
             public readonly string Add = "Add";
+            public readonly string Add_Post = nameof(Add);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -80,14 +87,15 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public const string List = "List";
             public const string Add = "Add";
+            public const string Add_Post = nameof(Add);
         }
 
 
-        static readonly ActionParamsClass_Add s_params_Add = new ActionParamsClass_Add();
+        static readonly ActionParamsClass_Add_Post s_params_Add_Post = new ActionParamsClass_Add_Post();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Add AddParams { get { return s_params_Add; } }
+        public ActionParamsClass_Add_Post Add_PostParams { get { return s_params_Add_Post; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Add
+        public class ActionParamsClass_Add_Post
         {
             public readonly string editedData = "editedData";
         }
@@ -137,14 +145,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void AddOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel> editedData);
+        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddArticleViewModel> editedData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add(System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel> editedData)
+        public override System.Web.Mvc.ActionResult Add_Post(System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddArticleViewModel> editedData)
         {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add);
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "editedData", editedData);
-            AddOverride(callInfo, editedData);
+            Add_PostOverride(callInfo, editedData);
             return callInfo;
         }
 

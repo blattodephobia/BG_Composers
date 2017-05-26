@@ -36,7 +36,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
         }
 
-        public override CultureInfo CurrentLocale => UserLocale.EffectiveValue;
+        public override DependencyValue<CultureInfo> CurrentLocale => UserLocale;
 
         private UserLocaleDependencyValue _userLocale;
         public UserLocaleDependencyValue UserLocale
@@ -45,9 +45,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 if (_userLocale == null)
                 {
-                    HttpContext.Response.Cookies[LocaleCookieName][LocaleRouteTokenName] = HttpContext.Request.Cookies[LocaleCookieName][LocaleRouteTokenName];
-                    _userLocale = new UserLocaleDependencyValue(ApplicationProfile.SupportedLanguages, HttpContext.Response.Cookies[LocaleCookieName], LocaleRouteTokenName);
+                    HttpCookie responseLocaleCookie = HttpContext.Response.Cookies[ApplicationProfile.LocaleCookieName];
+                    HttpCookie requestLocaleCookie = HttpContext.Request.Cookies[ApplicationProfile.LocaleCookieName];
+                    responseLocaleCookie[ApplicationProfile.LocaleRouteTokenName] = requestLocaleCookie?[ApplicationProfile.LocaleRouteTokenName];
+                    _userLocale = new UserLocaleDependencyValue(ApplicationProfile, responseLocaleCookie);
                     _userLocale.DbSetting.SetValue(UserProfile?.PreferredLocale);
+                    _userLocale.CookieSetting.SetValue(_userLocale.EffectiveValue);
                 }
 
                 return _userLocale;

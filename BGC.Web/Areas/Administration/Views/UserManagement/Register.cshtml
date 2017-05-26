@@ -1,40 +1,78 @@
 ﻿@model RegisterViewModel
 
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = @Localize(Administration.UserManagement.Register.RegisterTitle);
 }
 
-<h2>Register</h2>
-@section errors
-{
-    @if (Model.ErrorMessages.Any())
-    {
-        <div>@Localize(Model.ErrorMessages.First())</div>
-    }
-}
+<div class="ultimate-center light-login">
+    <div class="login-container">
+        <div class="position-relative">
+            <div id="signup-box" class="signup-box widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <h4 class="header green lighter bigger">
+                            <i class="ace-icon fa fa-users blue"></i>
+                            @Localize(Administration.UserManagement.Register.RegisterNewUser)
+                        </h4>
 
-@using (Html.BeginForm(MVC.Administration.UserManagement.Register_Post()))
-{
-    @Html.HiddenFor(m => m.InvitationId)
-    <table>
-        <tbody>
-            <tr>
-                <td>@Localize(Administration.UserManagement.UserName):</td>
-                <td>@Html.TextBoxFor(m => m.UserName)</td>
-            </tr>
-            <tr>
-                <td>@Localize(Administration.Authentication.Login.Password):</td>
-                <td>@Html.PasswordFor(m => m.NewPassword)</td>
-            </tr>
-            <tr>
-                <td>@Localize(Administration.Account.ChangePassword.ConfirmNewPassword):</td>
-                <td>@Html.PasswordFor(m => m.ConfirmPassword)</td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <input type="submit" value="@Localize(Global.Submit)"/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-}
+                        <div class="space-6"></div>
+
+                        <p>@Localize(Administration.UserManagement.Register.FillOutFormPrompt):</p>
+
+                        @using (Html.BeginForm(MVC.Administration.UserManagement.Register_Post()))
+                        {
+                            <fieldset>
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.TextBoxFor(m => m.UserName, new { placeholder = Localize(Administration.UserManagement.UserName), @class = "form-control" })
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                </label>
+
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.PasswordFor(m => m.NewPassword, new { placeholder = Localize(Administration.Authentication.Login.Password), @class = "form-control" })
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                                </label>
+
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.PasswordFor(m => m.ConfirmPassword, new { placeholder = Localize(Administration.UserManagement.Register.ConfirmPassword), @class = "form-control" })
+                                        <i class="ace-icon fa fa-retweet"></i>
+                                    </span>
+                                </label>
+
+                                <div class="block">
+                                    <div>
+                                        <span class="lbl">
+                                            @Localize(Administration.UserManagement.Register.AvailableRoles):
+                                        </span>
+                                    </div>
+                                    <div>
+                                        @foreach (string role in Model.Roles)
+                                        {
+                                            <div class="col-sm-offset-1">
+                                                <i class="fa fa-icon fa-caret-right"></i>
+                                                @role
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="space-24"></div>
+
+                                <div class="clearfix">
+                                    <button type="submit" class="btn btn-sm btn-block btn-success">
+                                        <span class="bigger-110">@Localize(Administration.UserManagement.Register.RegisterTitle)</span>
+                                        <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+                                    </button>
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div><!-- /.widget-body -->
+            </div>
+        </div>
+    </div>
+</div>

@@ -57,4 +57,27 @@ namespace BGC.Core.Tests.Models.Identity
             Assert.AreEqual(base64String.Length, strLengthAttr.MaximumLength);
         }
     }
+
+    [TestFixture]
+    public class SetPasswordResetTokenHashTests
+    {
+        [Test]
+        public void ComputesHashWithNonEmptyToken()
+        {
+            BgcUser user = new BgcUser();
+            user.SetPasswordResetTokenHash("sflkjd");
+
+            Assert.IsNotNull(user.PasswordResetTokenHash);
+            Assert.IsNotEmpty(user.PasswordResetTokenHash);
+        }
+
+        [Test]
+        public void ComputesHashWithEmptyToken()
+        {
+            BgcUser user = new BgcUser();
+            user.SetPasswordResetTokenHash(null);
+
+            Assert.IsNull(user.PasswordResetTokenHash);
+        }
+    }
 }

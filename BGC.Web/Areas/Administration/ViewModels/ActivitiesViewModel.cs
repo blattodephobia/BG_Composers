@@ -22,5 +22,7 @@ namespace BGC.Web.Areas.Administration.ViewModels
                 _permittedActions = value;
             }
         }
+
+        public int PublishedComposersCount { get; set; }
     }
 }

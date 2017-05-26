@@ -69,8 +69,15 @@ namespace BGC.Core
         /// <param name="plainToken"></param>
         public void SetPasswordResetTokenHash(string plainToken)
         {
-            byte[] hashCode = plainToken.GetHashCode<SHA256Managed>();
-            PasswordResetTokenHash = Convert.ToBase64String(hashCode);
+            if (plainToken != null)
+            {
+                byte[] hashCode = plainToken.GetHashCode<SHA256Managed>();
+                PasswordResetTokenHash = Convert.ToBase64String(hashCode);
+            }
+            else
+            {
+                PasswordResetTokenHash = null;
+            }
         }
 
         /// <summary>

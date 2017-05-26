@@ -1,22 +1,47 @@
-﻿@model IEnumerable<IGrouping<char, ComposerArticle>>
+﻿@model IndexViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-<ol>
-    @foreach (IGrouping<char, ComposerArticle> group in Model)
-    {
-        <li>
-            <span>@group.Key</span>
-            <ol>
-                @foreach (ComposerArticle link in group)
-                {
-                    <li>@Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))</li>
-                }
-            </ol>
-        </li>
-    }
-</ol>
+@if (Model.Alphabet.Count() == 1)
+{
+    <div class="text-center">
+        <label class="text-primary">@Model.Alphabet[0]</label>
+    </div>
+    <div class="col-md-2 col-md-offset-2">
+        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 0))
+        {
+            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+        }
+    </div>
+    <div class="col-md-2">
+        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 1))
+        {
+            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+        }
+    </div>
+    <div class="col-md-2">
+        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 2))
+        {
+            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+        }
+    </div>
+}
+else
+{
+    <div class="text-center">
+        @foreach (char group in Model.Alphabet)
+        {
+            <div class="dropdown center">
+                @Html.ActionLink(group.ToString(), MVC.Public.Main.Index(group), new { @class = "dropbtn center text-primary" })
+                <div class="dropdown-content">
+                    @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
+                    {
+                        @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

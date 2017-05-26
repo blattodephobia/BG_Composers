@@ -30,12 +30,30 @@ namespace BGC.Utilities
         private Func<DependencyValue<T>, IEnumerable<DependencySource<T>>> DependencySourcesGetter => _dependencySourceGetter ?? (_dependencySourceGetter = GenerateDependencySourcesGetter());
 
         private List<DependencySource<T>> _sources;
-        private void SetEffectiveValue()
+        private bool _hasEffectiveValue;
+
+        private List<DependencySource<T>> InitializeSources(List<DependencySource<T>> sources)
         {
-            DependencySource<T> validSource = (from source in _sources
-                                               where (source?.HasValue ?? false) && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false) // ignore sources that are null, empty or contain invalid values
-                                               select source).FirstOrDefault();
-            _effectiveValue = (validSource ?? DefaultValue).GetEffectiveValue();
+            for (int i = 0; i < sources.Count; i++)
+            {
+                if (sources[i] != null)
+                {
+                    sources[i].EffectiveValueChanged += OnDependencySourceValueChanged;
+                }
+            }
+
+            _sources = sources;
+
+            return sources;
+        }
+
+        private void SetEffectiveValue(IEnumerable<DependencySource<T>> sources)
+        {
+            IEnumerable<DependencySource<T>> validSources = from source in sources ?? Enumerable.Empty<DependencySource<T>>()
+                                                            where source == DefaultValue || (source?.HasValue ?? false) && (CoerceValue(source.GetEffectiveValue())?.Equals(source.GetEffectiveValue()) ?? false) // ignore sources that are null, empty or contain invalid values
+                                                            select source;
+            _effectiveValue = validSources.First().GetEffectiveValue();
+            _hasEffectiveValue = true;
         }
 
         protected virtual T CoerceValue(T value)
@@ -54,7 +72,7 @@ namespace BGC.Utilities
 
         protected void OnDependencySourceValueChanged(object sender, EffectiveValueChangedEventArgs<T> args)
         {
-            SetEffectiveValue();
+            SetEffectiveValue(_sources ?? InitializeSources(GetDependencySources()));
         }
 
         private T _effectiveValue;
@@ -62,26 +80,17 @@ namespace BGC.Utilities
         {
             get
             {
-                if (_sources != null)
+                if (_hasEffectiveValue)
                 {
                     return _effectiveValue;
                 }
                 else
                 {
-                    _sources = GetDependencySources().ToList();
-                    for (int i = 0; i < _sources.Count; i++)
-                    {
-                        if (_sources[i] != null)
-                        {
-                            _sources[i].EffectiveValueChanged += OnDependencySourceValueChanged;
-                        }
-                    }
-                    SetEffectiveValue();
+                    SetEffectiveValue(InitializeSources(GetDependencySources()));
                     return _effectiveValue;
                 }
             }
         }
-
 
         public DependencyValue()
         {

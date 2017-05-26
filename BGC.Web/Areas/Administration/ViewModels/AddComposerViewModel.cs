@@ -1,21 +1,23 @@
-﻿using BGC.Core;
-using BGC.Web.ViewModels;
+﻿using BGC.Web.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Web;
-using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.ViewModels
 {
     public class AddComposerViewModel : ViewModelBase
     {
-        public string FullName { get; set; }
+        public List<AddArticleViewModel> Articles { get; set; }
 
-        [AllowHtml]
-        public string Article { get; set; }
+        public AddComposerViewModel()
+        {
+            Articles = new List<AddArticleViewModel>();
+        }
 
-        public CultureInfo Language { get; set; }
+        public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles)
+        {
+            Articles = articles.ToList();
+        }
     }
 }

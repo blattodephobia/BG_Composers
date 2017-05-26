@@ -121,6 +121,15 @@ namespace BGC.Utilities.Tests
 
             Assert.AreEqual(12, proxy.EffectiveValue);
         }
+
+        [Test]
+        public void UpdatesEffectiveValue()
+        {
+            DependencyValueProxy proxy = new DependencyValueProxy();
+            proxy.Source2.SetValue(23);
+
+            Assert.AreEqual(23, proxy.EffectiveValue);
+        }
     }
 
     [TestFixture]

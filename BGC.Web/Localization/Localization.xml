@@ -1,17 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LocalizationKeys xmlns="https://github.com/blattodephobia/BG_Composers">
   <Administration>
+    <LocalizedString key="Name">
+      <Translation culture="en-US">BGC Administration area</Translation>
+      <Translation culture="de-DE">BGC Verwaltung</Translation>
+      <Translation culture="bg-BG">BGC Администрация</Translation>
+    </LocalizedString>
     <Edit>
-      <List>
-        <LocalizedString key="add_entry">
+      <Add>
+        <LocalizedString key="AddEntry">
           <Translation culture="en-US">Add new entry</Translation>
           <Translation culture="de-DE">Eintrag hinzufügen</Translation>
-          <Translation culture="bg-BG">Добави нов</Translation>
+          <Translation culture="bg-BG">Добавяне на нов запис</Translation>
+        </LocalizedString>
+        <LocalizedString key="NamePromptFormat">
+          <Translation culture="en-US">Name in {0}</Translation>
+          <Translation culture="de-DE">Name auf {0}</Translation>
+          <Translation culture="bg-BG">Име на {0}</Translation>
+        </LocalizedString>
+        <LocalizedString key="UploadImagesPrompt">
+          <Translation culture="en-US">Drop images here to upload</Translation>
+          <Translation culture="de-DE">Ziehen Sie Bilder hier hin, um sie hochzuladen</Translation>
+          <Translation culture="bg-BG">Поставете изображения тук, за да ги качите</Translation>
+        </LocalizedString>
+      </Add>
+      <List>
+        <LocalizedString key="AddEntry">
+          <Translation culture="en-US">Add new entry</Translation>
+          <Translation culture="de-DE">Eintrag hinzufügen</Translation>
+          <Translation culture="bg-BG">Добави нов запис</Translation>
+        </LocalizedString>
+        <LocalizedString key="PublishedArticles">
+          <Translation culture="en-US">Published articles</Translation>
+          <Translation culture="de-DE">Veröffentlichte Artikel</Translation>
+          <Translation culture="bg-BG">Публикувани статии</Translation>
         </LocalizedString>
       </List>
     </Edit>
     <Account>
       <Activities>
+        <LocalizedString key="WelcomeToAdminArea">
+          <Translation culture="en-US">Welcome to the BGC Administration area</Translation>
+          <Translation culture="de-DE">Wilkommen zum Verwaltungsbereich von BGC</Translation>
+          <Translation culture="bg-BG">Добре дошли в секцията за администриране на BGC</Translation>
+        </LocalizedString>
+        <LocalizedString key="PublishedArticles">
+          <Translation culture="en-US">publishes article(s)</Translation>
+          <Translation culture="de-DE">veröffentlichte(n) Artikel</Translation>
+          <Translation culture="bg-BG">публикувана(и) статия(и)</Translation>
+        </LocalizedString>
+        <LocalizedString key="Statistics">
+          <Translation culture="en-US">Stats</Translation>
+          <Translation culture="de-DE">Statistik</Translation>
+          <Translation culture="bg-BG">Статистика</Translation>
+        </LocalizedString>
         <LocalizedString key="SendInvite">
           <Translation culture="en-US">Invite users</Translation>
           <Translation culture="de-DE">Benutzer einlanden</Translation>
@@ -29,6 +71,16 @@
         </LocalizedString>
       </Activities>
       <RequestPasswordReset>
+        <LocalizedString key="ResetPassword">
+          <Translation culture="en-US">Reset password</Translation>
+          <Translation culture="de-DE">Passwort zurücksetzen</Translation>
+          <Translation culture="bg-BG">Възстановяване на парола</Translation>
+        </LocalizedString>
+        <LocalizedString key="BackToLogin">
+          <Translation culture="en-US">Back to login</Translation>
+          <Translation culture="de-DE">Zurück zum Anmelden</Translation>
+          <Translation culture="bg-BG">Назад към вписване</Translation>
+        </LocalizedString>
         <LocalizedString key="PasswordResetEmailSent">
           <Translation culture="en-US">A password reset email has been sent.</Translation>
           <Translation culture="de-DE">Wir haben Ihnen eine Email geschickt, damit Sie ihre Passwort zurücksetzen können.</Translation>
@@ -41,6 +93,11 @@
         </LocalizedString>
       </RequestPasswordReset>
       <ResetPassword>
+        <LocalizedString key="ResetPasswordLabel">
+          <Translation culture="en-US">Reset password</Translation>
+          <Translation culture="de-DE">Passwort zurücksetzen</Translation>
+          <Translation culture="bg-BG">Възстановяване на парола</Translation>
+        </LocalizedString>
         <LocalizedString key="UnknownEmailError">
           <Translation culture="en-US">We can't reset your password. You may have followed a wrong or mistyped link.</Translation>
           <Translation culture="de-DE">Ihre Passwort kann nicht zurückgesetzt werden. Sie könnten einen falschen link gefolgt haben.</Translation>
@@ -100,7 +157,7 @@
         </LocalizedString>
         <LocalizedString key="PasswordRequired">
           <Translation culture="en-US">The password is required.</Translation>
-          <Translation culture="de-DE">Das Password ist erforderlich.</Translation>
+          <Translation culture="de-DE">Das Passwort ist erforderlich.</Translation>
           <Translation culture="bg-BG">Въвеждането на парола е задължително.</Translation>
         </LocalizedString>
       </ChangePassword>
@@ -112,6 +169,26 @@
         <Translation culture="bg-BG">Потребителско име</Translation>
       </LocalizedString>
       <Register>
+        <LocalizedString key="RegisterTitle">
+          <Translation culture="en-US">Register</Translation>
+          <Translation culture="de-DE">Registrieren</Translation>
+          <Translation culture="bg-BG">Регистриране</Translation>
+        </LocalizedString>
+        <LocalizedString key="AvailableRoles">
+          <Translation culture="en-US">You will be assigned the following roles</Translation>
+          <Translation culture="de-DE">Ihnen wеrden folgenden Rolen zugeordnet</Translation>
+          <Translation culture="bg-BG">Ще ви бъдат възложени следните роли</Translation>
+        </LocalizedString>        
+        <LocalizedString key="FillOutFormPrompt">
+          <Translation culture="en-US">Enter the following details to register</Translation>
+          <Translation culture="de-DE">Tragen Sie folgende Daten ein um zu registrieren</Translation>
+          <Translation culture="bg-BG">Въведете си данните, за да се регистрирате</Translation>
+        </LocalizedString>
+        <LocalizedString key="RegisterNewUser">
+          <Translation culture="en-US">Register new user</Translation>
+          <Translation culture="de-DE">Neuen Benutzer registrieren</Translation>
+          <Translation culture="bg-BG">Регистриране на нов потребител</Translation>
+        </LocalizedString>
         <LocalizedString key="UserNameRequired">
           <Translation culture="en-US">User name is required.</Translation>
           <Translation culture="de-DE">Benutzername ist erforderlich.</Translation>
@@ -122,6 +199,11 @@
           <Translation culture="de-DE">Ein Benutzer mit diesem Namen existiert schon.</Translation>
           <Translation culture="bg-BG">Това потребителско име е заето.</Translation>
         </LocalizedString>
+        <LocalizedString key="ConfirmPassword">
+          <Translation culture="en-US">Confirm password</Translation>
+          <Translation culture="de-DE">Passwort bestätigen</Translation>
+          <Translation culture="bg-BG">Потвърдете паролата</Translation>
+        </LocalizedString>
       </Register>
       <SendInvite>
         <LocalizedString key="invitation_sent">
@@ -129,10 +211,15 @@
           <Translation culture="de-DE">Die Einladung wurder erfolgreich geschickt.</Translation>
           <Translation culture="bg-BG">Поканата беше изпратена успешно.</Translation>
         </LocalizedString>
-        <LocalizedString key="roles">
-          <Translation culture="en-US">Roles</Translation>
-          <Translation culture="de-DE">Rollen</Translation>
-          <Translation culture="bg-BG">Роли</Translation>
+        <LocalizedString key="SendInvitationTitle">
+          <Translation culture="en-US">Send an invitation</Translation>
+          <Translation culture="de-DE">Einladung verschicken</Translation>
+          <Translation culture="bg-BG">Изпращане на покана</Translation>
+        </LocalizedString>
+        <LocalizedString key="ChooseRoles">
+          <Translation culture="en-US">Select the roles for the new user</Translation>
+          <Translation culture="de-DE">Wählen Sie die Rollen für den neuen Benutzer</Translation>
+          <Translation culture="bg-BG">Изберете ролите на новия потребител</Translation>
         </LocalizedString>
         <LocalizedString key="UserExists">
           <Translation culture="en-US">A user with this email is already registered.</Translation>
@@ -143,10 +230,15 @@
     </UserManagement>
     <Authentication>
       <Login>
-        <LocalizedString key="LoginButton">
+        <LocalizedString key="LoginLabel">
           <Translation culture="en-US">Login</Translation>
           <Translation culture="de-DE">Anmelden</Translation>
           <Translation culture="bg-BG">Вход</Translation>
+        </LocalizedString>
+        <LocalizedString key="Username">
+          <Translation culture="en-US">Username</Translation>
+          <Translation culture="de-DE">Benutzername</Translation>
+          <Translation culture="bg-BG">Потребителско име</Translation>
         </LocalizedString>
         <LocalizedString key="Password">
           <Translation culture="en-US">Password</Translation>
@@ -162,6 +254,11 @@
           <Translation culture="en-US">Forgot your password?</Translation>
           <Translation culture="de-DE">Passwort vergessen?</Translation>
           <Translation culture="bg-BG">Забравили сте си паролата?</Translation>
+        </LocalizedString>
+        <LocalizedString key="RememberMe">
+          <Translation culture="en-US">Remember me</Translation>
+          <Translation culture="de-DE">Angemeldet bleiben</Translation>
+          <Translation culture="bg-BG">Запомни ме</Translation>
         </LocalizedString>
       </Login>
     </Authentication>
@@ -183,6 +280,21 @@
     </Main>
   </Public>
   <Global>
+    <LocalizedString key="Welcome">
+      <Translation culture="en-US">Welcome</Translation>
+      <Translation culture="de-DE">Willkommen</Translation>
+      <Translation culture="bg-BG">Добре дошли</Translation>
+    </LocalizedString>
+    <LocalizedString key="Save">
+      <Translation culture="en-US">Save</Translation>
+      <Translation culture="de-DE">Speichern</Translation>
+      <Translation culture="bg-BG">Запази</Translation>
+    </LocalizedString>
+    <LocalizedString key="Publish">
+      <Translation culture="en-US">Publish</Translation>
+      <Translation culture="de-DE">Veröffentlichen</Translation>
+      <Translation culture="bg-BG">Публикувай</Translation>
+    </LocalizedString>
     <LocalizedString key="Send">
       <Translation culture="en-US">Send</Translation>
       <Translation culture="de-DE">Verschicken</Translation>

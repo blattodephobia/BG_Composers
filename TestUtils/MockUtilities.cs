@@ -9,17 +9,29 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
+using System.Xml;
 
 namespace TestUtils
 {
-    public static class Mocks
+    public static class MockUtilities
     {
+        static MockUtilities()
+        {
+            SampleLocalization = new XmlDocument();
+            var assemblyFileName = new FileInfo(typeof(MockUtilities).Assembly.Location);
+            SampleLocalization.Load(assemblyFileName.Directory.GetFiles(@"SampleLoc.xml").First().OpenRead());
+        }
+
+        public static readonly XmlDocument SampleLocalization;
         public static Mock<IUserStore<BgcUser, long>> GetMockUserStore(BgcUser mockUser, Mock chainMock = null)
         {
             var mockStore = chainMock?.As<IUserStore<BgcUser, long>>() ?? new Mock<IUserStore<BgcUser, long>>();
@@ -134,6 +146,41 @@ namespace TestUtils
             return mockManager;
         }
 
+        public static Mock<IPrincipal> GetMockUser(string name)
+        {
+            var identity = new Mock<IIdentity>();
+            identity.SetupGet(x => x.Name).Returns(name);
+            identity.SetupGet(x => x.IsAuthenticated).Returns(true);
+
+            var result = new Mock<IPrincipal>();
+            result.SetupGet(x => x.Identity).Returns(identity.Object);
+            return result;
+        }
+
+        public static Mock<HttpResponseBase> GetMockResponseBase(MockBehavior behavior = MockBehavior.Loose)
+        {
+            var result = new Mock<HttpResponseBase>(behavior);
+
+            return result;
+        }
+
+        public static Mock<RequestContext> GetMockRequestContext(HttpRequestBase request = null, HttpResponseBase response = null)
+        {
+            var result = new Mock<RequestContext>();
+            result.SetupGet(r => r.HttpContext).Returns(GetMockHttpContextBase(request, response).Object);
+
+            return result;
+        }
+
+        public static Mock<HttpContextBase> GetMockHttpContextBase(HttpRequestBase request = null, HttpResponseBase response = null)
+        {
+            var result = new Mock<HttpContextBase>();
+            result.SetupGet(x => x.Request).Returns(request);
+            result.SetupGet(x => x.Response).Returns(response);
+
+            return result;
+        }
+
         public static Mock<IComposerDataService> GetMockComposerService(IList<Composer> composers)
         {
             Mock<IComposerDataService> mockService = new Mock<IComposerDataService>();
@@ -174,21 +221,43 @@ namespace TestUtils
 
         public static T GetActionResultModel<T>(this ActionResult result) where T : class => (result as ViewResultBase).Model as T;
 
-        public static Mock<HttpRequestBase> GetMockRequest()
+        public static Mock<HttpRequestBase> GetMockRequestBase(MockBehavior behavior = default(MockBehavior))
         {
-            return new Mock<HttpRequestBase>();
+            return new Mock<HttpRequestBase>(behavior);
         }
 
-        public static Mock<HttpContextBase> GetMockContext()
+        public static Mock<HttpContextBase> GetMockContext(MockBehavior behavior = default(MockBehavior))
         {
-            return new Mock<HttpContextBase>();
+            return new Mock<HttpContextBase>(behavior);
         }
 
-        public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db)
+        public static Mock<IGeoLocationService> GetMockGeoLocationService(Dictionary<IPAddress, IEnumerable<CultureInfo>> db = null)
         {
             var mockService = new Mock<IGeoLocationService>();
-            mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            if (db != null)
+            {
+                mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+            }
             return mockService;
+        }
+
+        public static Mock<ISearchService> GetMockComposerSearchService(IList<Composer> composers)
+        {
+            var mockService = new Mock<ISearchService>();
+            mockService.Setup(s => s.Search(It.IsAny<string>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
+
+            return mockService;
+        }
+
+        public static ApplicationProfile GetStandardAppProfile()
+        {
+            return new ApplicationProfile()
+            {
+                LocaleCookieName = "localeCookie",
+                LocaleRouteTokenName = "locale",
+                LocaleKey = "locale",
+                SupportedLanguages = new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") }
+            };
         }
     }
 }

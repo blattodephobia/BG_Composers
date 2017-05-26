@@ -69,7 +69,11 @@ namespace BGC.Core.Tests
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
             Assert.IsFalse(provider.IsValidProviderForUser(um, user));
         }
+    }
 
+    [TestFixture]
+    public class ValidateTests
+    {
         [Test]
         public void RejectsTokensAfterPasswordHasChanged()
         {
@@ -103,6 +107,24 @@ namespace BGC.Core.Tests
             string token = provider.Generate(TokenPurposes.ResetPassword, um, user);
             Thread.Sleep(provider.TokenExpiration);
             Assert.IsFalse(provider.Validate(TokenPurposes.ResetPassword, token, um, user));
+        }
+
+        [Test]
+        public void ValidatesOwnUsersToken()
+        {
+            var mockStore = new Mock<IUserStore<BgcUser, long>>();
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
+            var user1 = new BgcUser() { Id = 5, Email = "email1", PasswordHash = "old" };
+            var user2 = new BgcUser() { Id = 5, Email = "email2", PasswordHash = "old" };
+            mockStore.Setup(m => m.FindByIdAsync(user1.Id)).Returns(Task.Run(() => user1));
+            mockStore.Setup(m => m.FindByIdAsync(user2.Id)).Returns(Task.Run(() => user2));
+
+            BgcUserTokenProvider provider = new BgcUserTokenProvider() { TokenExpiration = TimeSpan.FromDays(10) };
+            string token = provider.Generate(TokenPurposes.ResetPassword, um, user1);
+
+            Assert.IsFalse(provider.Validate(TokenPurposes.ResetPassword, token, um, user2));
         }
     }
 

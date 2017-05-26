@@ -285,8 +285,10 @@
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
     <Compile Include="Areas\Administration\Models\UserLocaleDependencyValue.cs" />
     <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\AddArticleViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ListArticlesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ApplicationSettingsWritePermissionViewModel.cs" />
@@ -304,6 +306,7 @@
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
     <Compile Include="Areas\Public\ViewModels\ArticleViewModel.cs" />
+    <Compile Include="Areas\Public\ViewModels\IndexViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\SearchResultViewModel.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Controllers\BgcControllerBase.cs" />
@@ -323,7 +326,7 @@
     <Compile Include="Services\DynamicMaxMinServiceProvider.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Models\IpAddressInfo.cs" />
-    <Compile Include="HttpHandlers\LocalizationHttpHandler.RequestContextLocale.cs" />
+    <Compile Include="Models\RequestContextLocale.cs" />
     <Compile Include="Public.MainController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -349,6 +352,13 @@
     <Compile Include="WebExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Administration\Resources\css\admin.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-ie.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-part2.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-rtl.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace-skins.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\ace.min.css" />
+    <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\fonts.googleapis.com.css" />
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />
     <Content Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -459,6 +469,9 @@
       <LastGenOutput>LocalizationKeys.cs</LastGenOutput>
     </Content>
     <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="Resources\bg-BG.png" />
+    <Content Include="Resources\de-DE.png" />
+    <Content Include="Resources\en-US.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

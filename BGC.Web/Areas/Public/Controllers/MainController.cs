@@ -28,12 +28,40 @@ namespace BGC.Web.Areas.Public.Controllers
         }
 
         [DefaultAction]
-		public virtual ActionResult Index()
+#if !DEBUG
+        [OutputCache(Duration = 3600)]
+#endif
+		public virtual ActionResult Index(char group = '\0')
         {
+            group = char.ToUpper(group);
+            bool getSpecificGroupOnly = char.IsLetter(group);
+
             IEnumerable<ComposerArticle> articles = _composersService
                 .GetAllComposers()
-                .Select(composer => composer.GetArticle(CurrentLocale));
-            return View(articles.GroupBy(article => article.LocalizedName.LastName[0]));
+                .Select(composer => composer.GetArticle(CurrentLocale.EffectiveValue));
+
+            Dictionary<char, IList<ComposerArticle>> articlesIndex = new Dictionary<char, IList<ComposerArticle>>();
+            foreach (ComposerArticle article in articles)
+            {
+                char currentLeadingChar = char.ToUpper(article.LocalizedName.GetEasternOrderFullName()[0]);
+                if (!getSpecificGroupOnly || currentLeadingChar == group)
+                {
+                    if (!articlesIndex.ContainsKey(currentLeadingChar))
+                    {
+                        articlesIndex.Add(currentLeadingChar, new List<ComposerArticle>());
+                    }
+
+                    articlesIndex[currentLeadingChar].Add(article);
+                }
+            }
+
+            IndexViewModel model = new IndexViewModel()
+            {
+                Alphabet = getSpecificGroupOnly ? new[] { group }  : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale.EffectiveValue),
+                Articles = articlesIndex,
+            };
+            
+            return View(model);
         }
 
         public virtual ActionResult Read(Guid article)
@@ -41,7 +69,7 @@ namespace BGC.Web.Areas.Public.Controllers
             return View(new ArticleViewModel()
             {
                 Text = _articleStorageService.GetEntry(article),
-                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale).FullName
+                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale.EffectiveValue).FullName
             });
         }
 
@@ -52,8 +80,8 @@ namespace BGC.Web.Areas.Public.Controllers
                 Results = (from result in _searchService.Search(query)
                            let composer = _composersService.FindComposer(result.IdAsLong())
                            where composer != null
-                           select composer.GetArticle(CurrentLocale))
-                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale).FullName)
+                           select composer.GetArticle(CurrentLocale.EffectiveValue))
+                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
             };
             return View(vm);
         }

@@ -16,11 +16,17 @@ namespace BGC.Services
         private static readonly string TranslationElementName = "Translation";
         private static readonly string KeyAttributeName = "key";
         private static readonly string CultureAttributeName = "culture";
+        private static readonly IReadOnlyDictionary<CultureInfo, char[]> Alphabets = new Dictionary<CultureInfo, char[]>()
+        {
+            { CultureInfo.GetCultureInfo("bg-BG"), "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ".ToCharArray() },
+            { CultureInfo.GetCultureInfo("en-US"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
+            { CultureInfo.GetCultureInfo("de-DE"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
+        };
 
         protected LocalizationService()
         {
             this.localizationCache = new Dictionary<string, string>();
-            this.Culture = System.Threading.Thread.CurrentThread.CurrentCulture;
+            this.DefaultCulture = System.Threading.Thread.CurrentThread.CurrentCulture;
         }
 
         public LocalizationService(XmlDocument localizationXml) :
@@ -59,7 +65,7 @@ namespace BGC.Services
         }
 
         private CultureInfo culture;
-        public CultureInfo Culture
+        public CultureInfo DefaultCulture
         {
             get
             {
@@ -73,16 +79,24 @@ namespace BGC.Services
             }
         }
 
-        public string Localize(string key) => this.Localize(key, this.Culture);
-
-        public string Localize(string key, CultureInfo culture)
+        public string Localize(string key, CultureInfo culture = null)
         {
             Shield.ArgumentNotNull(key, nameof(key)).ThrowOnError();
 
             string result;
-            key = this.GetNormalizedKey(key, culture);
+            key = this.GetNormalizedKey(key, culture ?? DefaultCulture);
             this.localizationCache.TryGetValue(key, out result);
             return result ?? key;
+        }
+
+        public char[] GetAlphabet(bool useUpperCase = true, CultureInfo culture = null)
+        {
+            culture = culture ?? DefaultCulture;
+
+            Shield.AssertOperation(culture, Alphabets.ContainsKey(culture), $"The current culture, {culture}, is not supported for this operation.").ThrowOnError();
+            
+            char[] result = Alphabets[culture].Select(c => useUpperCase ? c : char.ToLower(c, culture)).ToArray(); // a copy is necessary, because arrays are not read-only and can still be modified
+            return result;
         }
 
         private string GetNormalizedKey(string key, CultureInfo culture)

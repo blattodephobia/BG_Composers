@@ -1,0 +1,45 @@
+﻿body {
+    font-family: 'Segoe UI' !important;
+}
+
+h1 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.vertical-center {
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+}
+
+.form-group-lg {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.sidebar-actions-container {
+    padding: 2px;
+}
+
+.sidebar-actions-container > :first-child {
+    margin-bottom: 1px !important;
+}
+
+.sidebar-actions-container > * {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.sidebar-actions-container > :last-child {
+    margin-top: 1px !important;
+}
+
+.name-edit-header {
+    padding-left: 5px;
+}
+
+.name-edit-header input {
+    margin-left: 3px;
+    width: 400px;
+}

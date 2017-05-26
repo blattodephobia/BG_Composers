@@ -162,8 +162,11 @@
   <ItemGroup>
     <Compile Include="AdministrationArea\AreaTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
+    <Compile Include="AdministrationArea\Controllers\AuthenticationControllerTests.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandlerTests.cs" />
+    <Compile Include="Models\RequestContextLocaleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PublicArea\Controllers\MainControllerTests.cs" />
     <Compile Include="PublicArea\Controllers\ResourcesControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -179,6 +182,10 @@
       <Project>{E3CB843A-3420-4A76-91C8-E4DB0688FEF5}</Project>
       <Name>BGC.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Services\BGC.Services.csproj">
+      <Project>{92D59B09-84DC-4938-B447-2DEDCC22B038}</Project>
+      <Name>BGC.Services</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
       <Project>{05233e69-ff24-41d8-b779-9dd446202d8d}</Project>
       <Name>BGC.Utilities</Name>
@@ -192,9 +199,7 @@
       <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

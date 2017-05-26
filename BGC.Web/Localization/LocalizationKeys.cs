@@ -4,28 +4,42 @@ namespace BGC.Web.LocalizationKeys
 {
     public class Administration
 {
+    public const string Name = "Administration.Name";
     public class Edit
     {
-            public class List
+            public class Add
             {
-                        public const string Add_entry = "Administration.Edit.List.Add_entry";
+                        public const string AddEntry = "Administration.Edit.Add.AddEntry";
+                        public const string NamePromptFormat = "Administration.Edit.Add.NamePromptFormat";
+                        public const string UploadImagesPrompt = "Administration.Edit.Add.UploadImagesPrompt";
+}
+public class List
+{
+            public const string AddEntry = "Administration.Edit.List.AddEntry";
+            public const string PublishedArticles = "Administration.Edit.List.PublishedArticles";
 }
 }
 public class Account
 {
         public class Activities
         {
+                    public const string WelcomeToAdminArea = "Administration.Account.Activities.WelcomeToAdminArea";
+                    public const string PublishedArticles = "Administration.Account.Activities.PublishedArticles";
+                    public const string Statistics = "Administration.Account.Activities.Statistics";
                     public const string SendInvite = "Administration.Account.Activities.SendInvite";
                     public const string UserSettings = "Administration.Account.Activities.UserSettings";
                     public const string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
 }
 public class RequestPasswordReset
 {
+            public const string ResetPassword = "Administration.Account.RequestPasswordReset.ResetPassword";
+            public const string BackToLogin = "Administration.Account.RequestPasswordReset.BackToLogin";
             public const string PasswordResetEmailSent = "Administration.Account.RequestPasswordReset.PasswordResetEmailSent";
             public const string TypeEmailForPasswordReset = "Administration.Account.RequestPasswordReset.TypeEmailForPasswordReset";
 }
 public class ResetPassword
 {
+            public const string ResetPasswordLabel = "Administration.Account.ResetPassword.ResetPasswordLabel";
             public const string UnknownEmailError = "Administration.Account.ResetPassword.UnknownEmailError";
             public const string UnknownError = "Administration.Account.ResetPassword.UnknownError";
 }
@@ -48,13 +62,19 @@ public class UserManagement
         public const string UserName = "Administration.UserManagement.UserName";
         public class Register
         {
+                    public const string RegisterTitle = "Administration.UserManagement.Register.RegisterTitle";
+                    public const string AvailableRoles = "Administration.UserManagement.Register.AvailableRoles";
+                    public const string FillOutFormPrompt = "Administration.UserManagement.Register.FillOutFormPrompt";
+                    public const string RegisterNewUser = "Administration.UserManagement.Register.RegisterNewUser";
                     public const string UserNameRequired = "Administration.UserManagement.Register.UserNameRequired";
                     public const string UserNameInUse = "Administration.UserManagement.Register.UserNameInUse";
+                    public const string ConfirmPassword = "Administration.UserManagement.Register.ConfirmPassword";
 }
 public class SendInvite
 {
             public const string Invitation_sent = "Administration.UserManagement.SendInvite.Invitation_sent";
-            public const string Roles = "Administration.UserManagement.SendInvite.Roles";
+            public const string SendInvitationTitle = "Administration.UserManagement.SendInvite.SendInvitationTitle";
+            public const string ChooseRoles = "Administration.UserManagement.SendInvite.ChooseRoles";
             public const string UserExists = "Administration.UserManagement.SendInvite.UserExists";
 }
 }
@@ -62,10 +82,12 @@ public class Authentication
 {
         public class Login
         {
-                    public const string LoginButton = "Administration.Authentication.Login.LoginButton";
+                    public const string LoginLabel = "Administration.Authentication.Login.LoginLabel";
+                    public const string Username = "Administration.Authentication.Login.Username";
                     public const string Password = "Administration.Authentication.Login.Password";
                     public const string Authentication_failure = "Administration.Authentication.Login.Authentication_failure";
                     public const string Forgot_password = "Administration.Authentication.Login.Forgot_password";
+                    public const string RememberMe = "Administration.Authentication.Login.RememberMe";
 }
 }
 }
@@ -82,6 +104,9 @@ public class Public
 }
 public class Global
 {
+    public const string Welcome = "Global.Welcome";
+    public const string Save = "Global.Save";
+    public const string Publish = "Global.Publish";
     public const string Send = "Global.Send";
     public const string InvitationEmailFormat = "Global.InvitationEmailFormat";
     public const string Email = "Global.Email";

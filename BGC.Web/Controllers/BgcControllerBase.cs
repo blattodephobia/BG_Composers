@@ -1,6 +1,9 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Utilities;
 using BGC.Web.Attributes;
+using BGC.Web.Models;
+using BGC.Web.Services;
 using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
@@ -15,6 +18,8 @@ namespace BGC.Web.Controllers
 {
     public abstract class BgcControllerBase : Controller
     {
+        private DependencyValue<CultureInfo> _currentLocale;
+
         [Dependency]
         public ILocalizationService LocalizationService { get; set; }
 
@@ -34,20 +39,21 @@ namespace BGC.Web.Controllers
             }
         }
 
-        private CultureInfo _currentLocale;
-        public virtual CultureInfo CurrentLocale
+        public virtual DependencyValue<CultureInfo> CurrentLocale
         {
             get
             {
-                if (_currentLocale == null)
-                {
-                    string routeLocale = RouteData.Values["locale"]?.ToString();
-                    _currentLocale = string.IsNullOrEmpty(routeLocale)
-                        ? CultureInfo.GetCultureInfo("bg-BG")
-                        : CultureInfo.GetCultureInfo(routeLocale);
-                }
+                return (_currentLocale ?? (_currentLocale =
+            RequestContextLocale.FromRequest(
+                appProfile: ApplicationProfile,
+                geoLocationService: DependencyResolver.Current.GetService<IGeoLocationService>(),
+                request: Request,
+                cookie: Request.Cookies[ApplicationProfile.LocaleCookieName])));
+            }
 
-                return _currentLocale;
+            protected set
+            {
+                _currentLocale = value;
             }
         }
 

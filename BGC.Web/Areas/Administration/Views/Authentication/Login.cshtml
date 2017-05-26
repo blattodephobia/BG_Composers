@@ -1,20 +1,67 @@
 ﻿@model LoginViewModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = Localize(Administration.Authentication.Login.LoginLabel);
 }
 
-<h2>Login</h2>
 @if (Model.AuthenticationFailure)
 {
     <div>@Localize(Administration.Authentication.Login.Authentication_failure)</div>
 }
 
-@using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post))
-{
-    @Html.TextBoxFor(m => m.UserName)
-    @Html.PasswordFor(m => m.Password)
-    <input type="submit" value="@Localize(Administration.Authentication.Login.LoginButton)"/>
-}
+<div class="ultimate-center">
+    <div class="login-container login-layout light-login">
 
-<div>@Html.ActionLink(Localize(Administration.Authentication.Login.Forgot_password), MVC.Administration.Account.RequestPasswordReset())</div>
+        <div class="position-relative">
+            <div id="login-box" class="login-box visible widget-box no-border">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <div class="space-6"></div>
+                        @using (Html.BeginForm(MVC.Administration.Authentication.ActionNames.Login, MVC.Administration.Authentication.Name, FormMethod.Post))
+                        {
+                            <fieldset>
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = @Localize(Administration.Authentication.Login.Username) })
+                                        <i class="ace-icon fa fa-user"></i>
+                                    </span>
+                                </label>
+
+                                <label class="block clearfix">
+                                    <span class="block input-icon input-icon-right">
+                                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = @Localize(Administration.Authentication.Login.Password) })
+                                        <i class="ace-icon fa fa-lock"></i>
+                                    </span>
+                                </label>
+
+                                <div class="space"></div>
+
+                                <div class="clearfix">
+                                    <label class="inline">
+                                        <input type="checkbox" class="ace" />
+                                        <span class="lbl">@Localize(Administration.Authentication.Login.RememberMe)</span>
+                                    </label>
+
+                                    <button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+                                        <i class="ace-icon fa fa-key"></i>
+                                        <span class="bigger-110">@Localize(Administration.Authentication.Login.LoginLabel)</span>
+                                    </button>
+                                </div>
+
+                                <div class="space-4"></div>
+                                <div>
+                                    <a href="@Url.Action(MVC.Administration.Account.RequestPasswordReset())" class="text-center">
+                                        @Localize(Administration.Authentication.Login.Forgot_password)
+                                        <i class="ace-icon fa fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </fieldset>
+                        }
+                    </div><!-- /.widget-main -->
+
+                </div><!-- /.widget-body -->
+            </div><!-- /.login-box -->
+
+        </div><!-- /.position-relative -->
+    </div>
+</div>

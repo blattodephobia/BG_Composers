@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TestUtils.Mocks;
+using static TestUtils.MockUtilities;
 
 namespace BGC.Core.Tests.Models.Identity
 {
@@ -28,7 +28,7 @@ namespace BGC.Core.Tests.Models.Identity
             public override Task<IdentityResult> UpdateAsync(BgcUser user) => Task.Run(() =>
             {
                 UserUpdatesCalled++;
-                return new IdentityResult();
+                return IdentityResult.Success;
             });
 
             protected override Task<IdentityResult> UpdatePassword(IUserPasswordStore<BgcUser, long> passwordStore, BgcUser user, string newPassword) => Task.Run(() =>
@@ -91,8 +91,14 @@ namespace BGC.Core.Tests.Models.Identity
             var manager = new BgcUserManagerProxy(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object) { UserTokenProvider = new BgcUserTokenProvider(), };
             manager.UpdatePasswordCallback += (u, pass) => u.PasswordHash = pass;
             string encryptedToken = manager.GeneratePasswordResetToken(user.Id);
-            manager.ResetPasswordAsync(user.Id, encryptedToken, "new").Wait();
+
+            Assert.IsNotNull(user.PasswordResetTokenHash);
+
+            IdentityResult resetResult = manager.ResetPasswordAsync(user.Id, encryptedToken, "new").Result;
+            Assert.IsTrue(resetResult.Succeeded);
+
             Assert.AreEqual("new", user.PasswordHash);
+            Assert.IsNull(user.PasswordResetTokenHash);
         }
 
         [Test]

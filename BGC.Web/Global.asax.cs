@@ -26,9 +26,6 @@ namespace BGC.Web
 			}
 		}
 
-        public static readonly string LocaleRouteTokenName = "locale";
-        public static readonly string LocaleCookieName = LocaleRouteTokenName;
-
 		protected void Application_Start()
 		{
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
