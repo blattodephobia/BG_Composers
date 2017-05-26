@@ -1,4 +1,4 @@
-﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ assembly name="EnvDTE.dll" #>
 <#@ assembly name="System.IO" #>
 <#@ assembly name="System.Core" #>
@@ -10,6 +10,7 @@
 <#@ assembly name="Microsoft.CodeAnalysis.Workspaces.Desktop" #>
 <#@ assembly name="Microsoft.CodeAnalysis.Workspaces" #>
 <#@ assembly name="System.Runtime" #>
+<#@ assembly name="System.Collections.Immutable" #>
 <#@ import namespace="Microsoft.CodeAnalysis" #>
 <#@ import namespace="Microsoft.CodeAnalysis.CSharp.Syntax" #>
 <#@ import namespace="Microsoft.CodeAnalysis.Emit" #>
@@ -38,7 +39,7 @@
             string className = _class.Identifier.Text;
             return compiledProject.Assembly.GetTypeByMetadataName(_namespace + "." + className);
         })
-        .Where(type => type != null && GetBaseTypes(type).FirstOrDefault(t => t.ToString() == "BGC.Core.Permission") != null);
+        .Where(type => type != null && type.AllInterfaces.Any(i => i.ToString() == "BGC.Core.IPermission"));
 #>using System.CodeDom.Compiler;
 using BGC.Web.Areas.Administration.ViewModels.Permissions;
 using BGC.Web.Areas.Administration.Controllers;
@@ -53,11 +54,12 @@ namespace BGC.Web.Areas.Administration.ViewModels.Permissions
         viewModelName = viewModelName.Substring(viewModelName.LastIndexOf('.') + 1);
         #>
     [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
-    [MappableWith(typeof(<#= permission.ToString() #>))]
+    [MappableWith(typeof(<#= permission.Interfaces.Where(i => i.AllInterfaces.Select(baseI => baseI.ToString()).Contains("BGC.Core.IPermission")).Single().ToString() #>))]
     [Discoverable(typeof(AccountController))]
     public partial class <#= viewModelName #> : PermissionViewModelBase
     {
     }
+
 <#
     }
 #>

@@ -6,21 +6,31 @@ using BGC.Utilities;
 namespace BGC.Web.Areas.Administration.ViewModels.Permissions
 {
     [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
-    [MappableWith(typeof(BGC.Core.SendInvitePermission))]
+    [MappableWith(typeof(BGC.Core.IArticleManagementPermission))]
+    [Discoverable(typeof(AccountController))]
+    public partial class ArticleManagementPermissionViewModel : PermissionViewModelBase
+    {
+    }
+
+    [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
+    [MappableWith(typeof(BGC.Core.ISendInvitePermission))]
     [Discoverable(typeof(AccountController))]
     public partial class SendInvitePermissionViewModel : PermissionViewModelBase
     {
     }
+
     [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
-    [MappableWith(typeof(BGC.Core.ApplicationSettingsWritePermission))]
+    [MappableWith(typeof(BGC.Core.IApplicationSettingsWritePermission))]
     [Discoverable(typeof(AccountController))]
     public partial class ApplicationSettingsWritePermissionViewModel : PermissionViewModelBase
     {
     }
+
     [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
-    [MappableWith(typeof(BGC.Core.UserSettingsPermission))]
+    [MappableWith(typeof(BGC.Core.IUserSettingsPermission))]
     [Discoverable(typeof(AccountController))]
     public partial class UserSettingsPermissionViewModel : PermissionViewModelBase
     {
     }
+
 }

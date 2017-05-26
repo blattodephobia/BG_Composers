@@ -27,6 +27,7 @@ public class Account
                     public const string PublishedArticles = "Administration.Account.Activities.PublishedArticles";
                     public const string Statistics = "Administration.Account.Activities.Statistics";
                     public const string SendInvite = "Administration.Account.Activities.SendInvite";
+                    public const string ContentManagement = "Administration.Account.Activities.ContentManagement";
                     public const string UserSettings = "Administration.Account.Activities.UserSettings";
                     public const string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
 }

@@ -37,7 +37,8 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             var validActivities = (from viewModel in _typeDiscovery.DiscoveredTypesInheritingFrom<PermissionViewModelBase>()
                                    from mapAttribute in viewModel.GetCustomAttributes<MappableWithAttribute>()
-                                   join permission in User.GetPermissions() on mapAttribute.RelatedType equals permission.GetType()
+                                   from permission in User.GetPermissions()
+                                   where mapAttribute.RelatedType.IsAssignableFrom(permission.GetType())
                                    where viewModel.GetCustomAttribute<GeneratedCodeAttribute>() != null
                                    select Activator.CreateInstance(viewModel) as PermissionViewModelBase).ToList();
 

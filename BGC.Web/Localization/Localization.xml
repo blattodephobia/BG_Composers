@@ -59,6 +59,11 @@
           <Translation culture="de-DE">Benutzer einlanden</Translation>
           <Translation culture="bg-BG">Покани потребители</Translation>
         </LocalizedString>
+        <LocalizedString key="ContentManagement">
+          <Translation culture="en-US">Add/edit articles</Translation>
+          <Translation culture="de-DE">Artikel hinzufügen/ändern</Translation>
+          <Translation culture="bg-BG">Добавяне/редактиране на статии</Translation>
+        </LocalizedString>
         <LocalizedString key="UserSettings">
           <Translation culture="en-US">Settings</Translation>
           <Translation culture="de-DE">Einstellungen</Translation>
