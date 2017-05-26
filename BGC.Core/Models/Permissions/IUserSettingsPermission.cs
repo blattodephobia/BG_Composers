@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public sealed class SendInvitePermission : Permission, ISendInvitePermission
+    public interface IUserSettingsPermission : IPermission
     {
     }
 }

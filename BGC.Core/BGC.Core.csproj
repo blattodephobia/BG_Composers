@@ -71,6 +71,12 @@
     <Compile Include="Models\Identity\EditorRole.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
+    <Compile Include="Models\Permissions\ArticleManagementPermission.cs" />
+    <Compile Include="Models\Permissions\IApplicationSettingsWritePermission.cs" />
+    <Compile Include="Models\Permissions\IArticleManagementPermission.cs" />
+    <Compile Include="Models\Permissions\IPermission.cs" />
+    <Compile Include="Models\Permissions\ISendInvitePermission.cs" />
+    <Compile Include="Models\Permissions\IUserSettingsPermission.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\Settings\CultureInfoSetting.cs" />
     <Compile Include="Models\Settings\Setting.SettingDebugView.cs" />

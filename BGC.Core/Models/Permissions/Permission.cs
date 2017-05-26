@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 namespace BGC.Core
 {
     [DiscoverableHierarchy(typeof(AdministratorRole), typeof(BgcRoleManager))]
-    public abstract class Permission : BgcEntity<long>, IEquatable<Permission>
+    public abstract class Permission : BgcEntity<long>, IPermission
     {
-        private string name;
+        private string _name;
 
         /// <summary>
         /// Identifies the permissions in db stores.
@@ -25,34 +25,34 @@ namespace BGC.Core
         {
             get
             {
-                return this.name ?? (this.name = this.GetType().FullName); ; 
+                return _name ?? (_name = GetType().FullName); ; 
             }
 
             protected set
             {
                 Shield.Assert(
                     value,
-                    value == this.GetType().FullName,
-                    s => new InvalidOperationException($"Invalid relational mapping detected. Property {nameof(Name)} and the type name returned by the GetType().FullName must match. Expected {this.GetType().FullName}, actual value is {s}"));
-                this.name = value;
+                    value == GetType().FullName,
+                    s => new InvalidOperationException($"Invalid relational mapping detected. Property {nameof(Name)} and the type name returned by the GetType().FullName must match. Expected {GetType().FullName}, actual value is {s}"));
+                _name = value;
             }
         }
 
-        private ICollection<BgcRole> roles;
+        private ICollection<BgcRole> _roles;
         public virtual ICollection<BgcRole> Roles
         {
             get
             {
-                return this.roles ?? (this.roles = new HashSet<BgcRole>());
+                return _roles ?? (_roles = new HashSet<BgcRole>());
             }
 
             set
             {
-                this.roles = value;
+                _roles = value;
             }
         }
 
-        public bool Equals(Permission other) => (other?.Name ?? "").CompareTo(Name) == 0;
+        public bool Equals(IPermission other) => string.IsNullOrWhiteSpace(other?.Name) ? false : other.Name.CompareTo(Name) == 0;
 
         public sealed override bool Equals(object obj) => Equals(obj as Permission);
 
