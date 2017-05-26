@@ -8,6 +8,7 @@ using System.Data.Entity.Migrations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.ExceptionServices;
 
 namespace BGC.Data.Migrations
 {
@@ -27,7 +28,6 @@ namespace BGC.Data.Migrations
                     context.Permissions.Add(permission);
                 }
             }
-            context.SaveChanges();
         }
 
         private static void SeedRoles(ComposersDbContext context, BgcRoleManager roleManager)
@@ -43,14 +43,21 @@ namespace BGC.Data.Migrations
                 adminRole = new BgcRole() { Name = nameof(AdministratorRole) };
                 roleManager.Create(adminRole);
             }
-            adminRole.Permissions = context.Permissions.ToList();
-            context.SaveChanges();
+
+            foreach (Permission permission in context.Permissions.ToList())
+            {
+                if (!adminRole.Permissions.Contains(permission))
+                {
+                    adminRole.Permissions.Add(permission);
+                }
+            }
         }
 
         protected override void Seed(ComposersDbContext context)
         {
             try
             {
+                System.Diagnostics.Debugger.Break();
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
                 var userManager = new BgcUserManager(
                     new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context),
@@ -58,7 +65,6 @@ namespace BGC.Data.Migrations
                     context.GetRepository<Invitation>());
 
                 SeedPermissions(context);
-
                 SeedRoles(context, roleManager);
                 context.SaveChanges();
 
@@ -140,7 +146,7 @@ namespace BGC.Data.Migrations
                     System.Diagnostics.Debugger.Break();
                 }
 
-                throw e;
+                ExceptionDispatchInfo.Capture(e).Throw();
             }
         }
     }
