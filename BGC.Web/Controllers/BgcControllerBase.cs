@@ -48,7 +48,7 @@ namespace BGC.Web.Controllers
                 appProfile: ApplicationProfile,
                 geoLocationService: DependencyResolver.Current.GetService<IGeoLocationService>(),
                 request: Request,
-                cookie: Request.Cookies[ApplicationProfile.LocaleCookieName])));
+                cookieStore: Request.Cookies[ApplicationProfile.LocaleCookieName])));
             }
 
             protected set

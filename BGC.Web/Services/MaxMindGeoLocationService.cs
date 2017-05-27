@@ -19,6 +19,6 @@ namespace BGC.Web.Services
             _dbReader = new Reader(db.ArgumentNotNull().GetValueOrThrow());
         }
 
-        public CountryInfo GetCountry(IPAddress ip) => _dbReader.Find<IpAddressInfo>(ip.ArgumentNotNull().GetValueOrThrow()).Country;
+        public CountryInfo GetCountry(IPAddress ip) => _dbReader.Find<IpAddressInfo>(ip.ArgumentNotNull().GetValueOrThrow())?.Country;
     }
 }

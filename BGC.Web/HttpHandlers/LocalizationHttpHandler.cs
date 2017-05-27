@@ -143,7 +143,7 @@ namespace BGC.Web.HttpHandlers
                     appProfile: appProfile.ArgumentNotNull().GetValueOrThrow(),
                     geoLocationService: svc.ArgumentNotNull().GetValueOrThrow(),
                     request: context.ArgumentNotNull().GetValueOrThrow().HttpContext.Request,
-                    cookie: context.HttpContext.Response.Cookies[appProfile.LocaleCookieName.IsNotNullOrEmpty().GetValueOrThrow()]),
+                    cookieStore: context.HttpContext.Response.Cookies[appProfile.LocaleCookieName.IsNotNullOrEmpty().GetValueOrThrow()]),
                 localeRouteTokenName: appProfile.ArgumentNotNull().GetValueOrThrow().LocaleRouteTokenName)
         {
             Shield.IsNotNullOrEmpty(appProfile.LocaleRouteTokenName).ThrowOnError();

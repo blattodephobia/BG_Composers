@@ -236,7 +236,7 @@ namespace TestUtils
             var mockService = new Mock<IGeoLocationService>();
             if (db != null)
             {
-                mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()));
+                mockService.Setup(x => x.GetCountry(It.IsNotNull<IPAddress>())).Returns((IPAddress ip) => db.ContainsKey(ip) ? new CountryInfo(db[ip].Select(c => c.Name.Substring(2, 2)).First()) : null);
             }
             return mockService;
         }

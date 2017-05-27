@@ -32,16 +32,16 @@ namespace BGC.Web.Models
             }
         }
 
-        public static RequestContextLocale FromRequest(ApplicationProfile appProfile, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookie)
+        public static RequestContextLocale FromRequest(ApplicationProfile appProfile, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookieStore)
         {
             Shield.ArgumentNotNull(request).ThrowOnError();
             Shield.ArgumentNotNull(appProfile).ThrowOnError();
             Shield.ArgumentNotNull(geoLocationService).ThrowOnError();
 
-            RequestContextLocale result = new RequestContextLocale(appProfile, cookie);
+            RequestContextLocale result = new RequestContextLocale(appProfile, cookieStore);
             IPAddress ip = GetIpFromRequest(request);
             IEnumerable<CultureInfo> validIpLocales = ip != null
-                ? geoLocationService.GetCountry(ip).LocalCultures.Select(c => result.CoerceValue(c))
+                ? (geoLocationService.GetCountry(ip)?.LocalCultures ?? Enumerable.Empty<CultureInfo>()).Select(c => result.CoerceValue(c))
                 : Enumerable.Empty<CultureInfo>();
             result.ValidIpLocales.SetValueRange(validIpLocales);
 
