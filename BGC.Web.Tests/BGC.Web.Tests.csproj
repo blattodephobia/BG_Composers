@@ -163,6 +163,7 @@
     <Compile Include="AdministrationArea\AreaTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AuthenticationControllerTests.cs" />
+    <Compile Include="AdministrationArea\Filters\PermissionsAttributeTests.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandlerTests.cs" />
     <Compile Include="Models\RequestContextLocaleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
