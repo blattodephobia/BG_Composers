@@ -321,6 +321,7 @@
       <DependentUpon>LocalizationKeys.tt</DependentUpon>
     </Compile>
     <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Models\ActionCollection.cs" />
     <Compile Include="Models\ContinentInfo.cs" />
     <Compile Include="Models\CountryInfo.cs" />
     <Compile Include="Models\GeoLocation.cs" />
@@ -455,6 +456,7 @@
       <DependentUpon>LocalizationSchema.tt</DependentUpon>
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Models\ActionCollection.ActionVerbKey.cs" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Debug.pubxml" />
     <None Include="Properties\PublishProfiles\FileSystemPublish.Release.pubxml" />
     <None Include="Localization\Localization.xml">
