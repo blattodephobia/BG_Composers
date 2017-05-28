@@ -46,6 +46,7 @@ public static partial class MVC
 
 namespace T4MVC
 {
+    using BGC.Web.Models;
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class AdministrationClass
     {
@@ -62,6 +63,17 @@ namespace T4MVC
            { "Edit" , new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController() },
            { "UserManagement" , new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController() },
         };
+
+        /// <summary>
+        /// Indexes actions by controller name.
+        /// </summary>
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        {
+           { "Account" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AccountController")) },
+           { "Authentication" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AuthenticationController")) },
+           { "Edit" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.EditController")) },
+           { "UserManagement" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.UserManagementController")) },
+        };
     }
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public class PublicClass
@@ -74,6 +86,15 @@ namespace T4MVC
         {
            { "Main" , new BGC.Web.Areas.Public.Controllers.T4MVC_MainController() },
            { "Resources" , new BGC.Web.Areas.Public.Controllers.T4MVC_ResourcesController() },
+        };
+
+        /// <summary>
+        /// Indexes actions by controller name.
+        /// </summary>
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        {
+           { "Main" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Public.Controllers.MainController")) },
+           { "Resources" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Public.Controllers.ResourcesController")) },
         };
     }
 }

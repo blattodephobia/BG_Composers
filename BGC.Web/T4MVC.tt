@@ -100,6 +100,7 @@ public static class Areas
 
 namespace <#=settings.T4MVCNamespace #>
 {
+    using BGC.Web.Models;
 <#foreach (var area in Areas.Where(a => !string.IsNullOrEmpty(a.Name))) { #>
     [<#= GeneratedCode #>, DebuggerNonUserCode]
     public class <#=area.Name #>Class
@@ -112,6 +113,16 @@ namespace <#=settings.T4MVCNamespace #>
         {
 <#        foreach (var controller in area.GetControllers().Where(c => !c.NotRealController)) { #>
            { "<#= controller.Name #>" , new <#=controller.FullDerivedClassName #>() },
+<#} #>
+        };
+
+        /// <summary>
+        /// Indexes actions by controller name.
+        /// </summary>
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        {
+<#        foreach (var controller in area.GetControllers().Where(c => !c.NotRealController)) { #>
+           { "<#= controller.Name #>" , ActionCollection.FromType(Type.GetType("<#=controller.FullClassName #>")) },
 <#} #>
         };
     }
