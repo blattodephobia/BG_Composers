@@ -42,14 +42,14 @@ namespace BGC.Web.Models
                 _verbs = verbs;
             }
 
-            public override int GetHashCode() => _actionName.GetHashCode() ^ _verbs.GetHashCode();
+            public override int GetHashCode() => _actionName.ToUpperInvariant().GetHashCode() ^ _verbs.GetHashCode();
 
             public override bool Equals(object obj)
             {
                 if (obj is ActionVerbKey)
                 {
                     ActionVerbKey other = (ActionVerbKey)obj;
-                    return other._actionName.CompareTo(_actionName) == 0 && other._verbs == _verbs;
+                    return string.Compare(other._actionName, _actionName, ignoreCase: true) == 0 && other._verbs == _verbs;
                 }
                 else
                 {
