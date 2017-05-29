@@ -21,6 +21,7 @@ using System.Web.Hosting;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using BGC.Web.Services;
+using BGC.Web.Models;
 
 namespace BGC.Web.App_Start
 {
@@ -85,7 +86,7 @@ namespace BGC.Web.App_Start
             
             container.RegisterType<SignInManager<BgcUser, long>>(new InjectionFactory(c =>
             {
-                return new SignInManager<BgcUser, long>(c.Resolve<BgcUserManager>(), HttpContext.Current.GetOwinContext().Authentication);
+                return new BgcSignInManager(c.Resolve<BgcUserManager>(), HttpContext.Current.GetOwinContext().Authentication);
             }));
 
             container.RegisterType<ILocalizationService, LocalizationService>

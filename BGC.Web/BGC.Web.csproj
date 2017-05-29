@@ -322,6 +322,7 @@
     </Compile>
     <Compile Include="Areas\Administration\ViewModels\LoginViewModel.cs" />
     <Compile Include="Models\ActionCollection.cs" />
+    <Compile Include="Models\BgcSignInManager.cs" />
     <Compile Include="Models\ContinentInfo.cs" />
     <Compile Include="Models\CountryInfo.cs" />
     <Compile Include="Models\GeoLocation.cs" />
