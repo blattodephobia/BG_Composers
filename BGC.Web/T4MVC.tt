@@ -119,7 +119,7 @@ namespace <#=settings.T4MVCNamespace #>
         /// <summary>
         /// Indexes actions by controller name.
         /// </summary>
-        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>(StringComparer.InvariantCultureIgnoreCase)
         {
 <#        foreach (var controller in area.GetControllers().Where(c => !c.NotRealController)) { #>
            { "<#= controller.Name #>" , ActionCollection.FromType(Type.GetType("<#=controller.FullClassName #>")) },

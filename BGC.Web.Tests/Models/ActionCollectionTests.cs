@@ -128,5 +128,11 @@ namespace BGC.Web.Tests.Models.ActionCollectionTests
         {
             Assert.AreSame(_col[nameof(MockController.Action), HttpVerbs.Post], _col[nameof(MockController.Action), "post"]);
         }
+
+        [Test]
+        public void IsCaseInsensitive()
+        {
+            Assert.AreSame(_col[nameof(MockController.Action), HttpVerbs.Post], _col[nameof(MockController.Action).ToUpperInvariant(), "post"]);
+        }
     }
 }

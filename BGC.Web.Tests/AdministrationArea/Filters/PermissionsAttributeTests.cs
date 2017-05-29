@@ -15,43 +15,48 @@ namespace BGC.Web.Tests.AdministrationArea.Filters
         [Test]
         public void AuthorizesFullSetOfPermissions()
         {
-            var attr = new PermissionsAttribute(typeof(UserSettingsPermission), typeof(SendInvitePermission));
-            Assert.IsTrue(attr.IsAuthorized(new IPermission[] { new UserSettingsPermission(), new SendInvitePermission() }));
+            var permissions = new IPermission[] { new UserSettingsPermission(), new SendInvitePermission() };
+            var attr = new PermissionsAttribute(permissions[0].Name, permissions[1].Name);
+            Assert.IsTrue(attr.IsAuthorized(permissions.Select(p => p.Name)));
         }
 
         [Test]
         public void AuthorizesWithExtraPermissions()
         {
-            var attr = new PermissionsAttribute(typeof(UserSettingsPermission), typeof(SendInvitePermission));
-            Assert.IsTrue(attr.IsAuthorized(new IPermission[] { new UserSettingsPermission(), new SendInvitePermission(), new ArticleManagementPermission() }));
+            var permissions = new IPermission[] { new UserSettingsPermission(), new SendInvitePermission() };
+            var attr = new PermissionsAttribute(permissions[0].Name, permissions[1].Name);
+            Assert.IsTrue(attr.IsAuthorized(permissions.Select(p => p.Name)));
         }
 
         [Test]
         public void AuthorizesAnonymous()
         {
+            var permissions = new IPermission[] { new UserSettingsPermission(), new SendInvitePermission(), new ArticleManagementPermission() };
             var attr = new PermissionsAttribute();
-            Assert.IsTrue(attr.IsAuthorized(new IPermission[] { new UserSettingsPermission(), new SendInvitePermission(), new ArticleManagementPermission() }));
-        }
-
-        [Test]
-        public void NoAuthorizationForPartialSetOfPermissions()
-        {
-            var attr = new PermissionsAttribute(typeof(UserSettingsPermission), typeof(SendInvitePermission));
-            Assert.IsFalse(attr.IsAuthorized(new IPermission[] { new SendInvitePermission() }));
+            Assert.IsTrue(attr.IsAuthorized(permissions.Select(p => p.Name)));
         }
 
         [Test]
         public void ThrowsExceptionIfNoPermissions_1()
         {
-            var attr = new PermissionsAttribute(typeof(UserSettingsPermission), typeof(SendInvitePermission));
+            var attr = new PermissionsAttribute(nameof(IUserSettingsPermission), nameof(ISendInvitePermission));
             Assert.Throws<InvalidOperationException>(() => attr.IsAuthorized(new IPermission[0]));
         }
 
         [Test]
         public void ThrowsExceptionIfNoPermissions_2()
         {
-            var attr = new PermissionsAttribute(typeof(UserSettingsPermission), typeof(SendInvitePermission));
-            Assert.Throws<InvalidOperationException>(() => attr.IsAuthorized(null));
+            var attr = new PermissionsAttribute(nameof(IUserSettingsPermission), nameof(ISendInvitePermission));
+            IEnumerable<IPermission> nullCollection = null;
+            Assert.Throws<InvalidOperationException>(() => attr.IsAuthorized(nullCollection));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfCollectionHasNullElements()
+        {
+            var attr = new PermissionsAttribute(nameof(IUserSettingsPermission), nameof(ISendInvitePermission));
+            IEnumerable<IPermission> nullCollection = new IPermission[] { new UserSettingsPermission(), null };
+            Assert.Throws<InvalidOperationException>(() => attr.IsAuthorized(nullCollection));
         }
     }
 }

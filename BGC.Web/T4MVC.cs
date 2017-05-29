@@ -67,7 +67,7 @@ namespace T4MVC
         /// <summary>
         /// Indexes actions by controller name.
         /// </summary>
-        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>(StringComparer.InvariantCultureIgnoreCase)
         {
            { "Account" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AccountController")) },
            { "Authentication" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AuthenticationController")) },
@@ -91,7 +91,7 @@ namespace T4MVC
         /// <summary>
         /// Indexes actions by controller name.
         /// </summary>
-        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>()
+        public Dictionary<string, ActionCollection> ControllerActions = new Dictionary<string, ActionCollection>(StringComparer.InvariantCultureIgnoreCase)
         {
            { "Main" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Public.Controllers.MainController")) },
            { "Resources" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Public.Controllers.ResourcesController")) },

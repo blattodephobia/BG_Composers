@@ -48,6 +48,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             this.articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
         }
 
+        [Permissions(nameof(IArticleManagementPermission))]
         public virtual ActionResult List()
         {
             var vm = new ListArticlesViewModel(_composersService.GetAllComposers());
@@ -56,6 +57,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [HttpGet]
+        [Permissions(nameof(IArticleManagementPermission))]
         public virtual ActionResult Add()
         {
             IEnumerable<AddArticleViewModel> articlesRequired = from language in ApplicationProfile.SupportedLanguages
@@ -67,6 +69,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ActionName(nameof(Add))]
+        [Permissions(nameof(IArticleManagementPermission))]
         public virtual ActionResult Add_Post(IList<AddArticleViewModel> editedData)
         {
             Composer newComposer = new Composer();

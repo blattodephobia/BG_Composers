@@ -23,6 +23,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         private BgcRoleManager _roleManager;
 
         [HttpGet]
+        [Permissions(nameof(ISendInvitePermission))]
         public virtual ActionResult SendInvite(SendInvitePermissionViewModel vm = null)
         {
             if (User.FindPermission<SendInvitePermission>() == null)
@@ -39,6 +40,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         [HttpPost]
         [ActionName(nameof(SendInvite))]
+        [Permissions(nameof(ISendInvitePermission))]
         public virtual ActionResult SendInvite_Post(SendInvitePermissionViewModel invitation)
         {
             try
