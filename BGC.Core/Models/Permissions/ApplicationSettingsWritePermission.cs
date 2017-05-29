@@ -12,5 +12,7 @@ namespace BGC.Core
         {
             return SettingPriority.Application;
         }
+
+        public override string Name => nameof(IApplicationSettingsWritePermission);
     }
 }

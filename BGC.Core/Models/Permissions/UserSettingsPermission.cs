@@ -12,5 +12,7 @@ namespace BGC.Core
         {
             return SettingPriority.User;
         }
+
+        public override string Name => nameof(IUserSettingsPermission);
     }
 }

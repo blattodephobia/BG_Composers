@@ -12,12 +12,12 @@ namespace BGC.Core.Tests.Models
     {
         private class DerivedPermissionA : Permission
         {
-
+            public override string Name => nameof(DerivedPermissionA);
         }
 
         private class DerivedPermissionB : DerivedPermissionA
         {
-
+            public override string Name => nameof(DerivedPermissionB);
         }
 
         [Test]

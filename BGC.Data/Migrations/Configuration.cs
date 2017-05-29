@@ -57,7 +57,6 @@ namespace BGC.Data.Migrations
         {
             try
             {
-                System.Diagnostics.Debugger.Break();
                 var roleManager = new BgcRoleManager(new RoleStore<BgcRole, long, BgcUserRole>(context));
                 var userManager = new BgcUserManager(
                     new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context),
@@ -145,8 +144,6 @@ namespace BGC.Data.Migrations
                 {
                     System.Diagnostics.Debugger.Break();
                 }
-
-                ExceptionDispatchInfo.Capture(e).Throw();
             }
         }
     }

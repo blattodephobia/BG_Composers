@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201612042027134_Initial.Designer.cs">
       <DependentUpon>201612042027134_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705292047252_Permission_Refactoring.cs" />
+    <Compile Include="Migrations\201705292047252_Permission_Refactoring.Designer.cs">
+      <DependentUpon>201705292047252_Permission_Refactoring.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +132,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201612042027134_Initial.resx">
       <DependentUpon>201612042027134_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705292047252_Permission_Refactoring.resx">
+      <DependentUpon>201705292047252_Permission_Refactoring.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

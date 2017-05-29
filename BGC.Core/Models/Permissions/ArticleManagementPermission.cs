@@ -8,5 +8,6 @@ namespace BGC.Core
 {
     public class ArticleManagementPermission : Permission, IArticleManagementPermission
     {
+        public override string Name => nameof(IArticleManagementPermission);
     }
 }
