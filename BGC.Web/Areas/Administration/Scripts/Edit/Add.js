@@ -85,7 +85,8 @@ $(document).ready(function ()
                 }
             };
 
-            xhr.open('POST', '/resources/upload');
+            var url = $(this).data("action-url");
+            xhr.open("POST", url);
             xhr.send(formData);
         }
         return stopEvent(e);

@@ -18,12 +18,21 @@ namespace BGC.Web.Areas.Public
 
 		public override void RegisterArea(AreaRegistrationContext context)
 		{
+            Route resourcesRoute = new Route("resources/{action}", new MvcRouteHandler())
+            {
+                Defaults = new RouteValueDictionary() { { "controller", MVC.Public.Resources.Name } },
+                DataTokens = new RouteValueDictionary() { { "area", AreaName } },
+                RouteHandler = new MvcRouteHandler()
+            };
+            context
+                .Routes
+                .Add(MVC.Public.Resources.Name, resourcesRoute);
+
             Route standardRoute = new Route("{locale}/{controller}/{action}", new LocalizationRouteHandler())
             {
                 Defaults = new RouteValueDictionary() { { "controller", MVC.Public.Main.Name }, { "action", UrlParameter.Optional } },
                 DataTokens = new RouteValueDictionary() { { "area", AreaName } }
             };
-
             context
                 .Routes
                 .Add(standardRoute);
