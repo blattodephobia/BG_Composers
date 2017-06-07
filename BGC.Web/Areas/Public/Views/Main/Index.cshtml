@@ -9,24 +9,33 @@
     <div class="text-center">
         <label class="text-primary">@Model.Alphabet[0]</label>
     </div>
-    <div class="col-md-2 col-md-offset-2">
-        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 0))
-        {
-            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
-        }
-    </div>
-    <div class="col-md-2">
-        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 1))
-        {
-            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
-        }
-    </div>
-    <div class="col-md-2">
-        @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 2))
-        {
-            @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
-        }
-    </div>
+    if (Model.Articles.ContainsKey(Model.Alphabet[0]))
+    {
+        <div class="col-md-2 col-md-offset-2">
+            @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 0))
+            {
+                @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+            }
+        </div>
+        <div class="col-md-2">
+            @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 1))
+            {
+                @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+            }
+        </div>
+        <div class="col-md-2">
+            @foreach (ComposerArticle link in Model.Articles[Model.Alphabet[0]].Where((m, index) => index % 3 == 2))
+            {
+                @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.StorageId))
+            }
+        </div>
+    }
+    else
+    {
+        <div class="text-center">
+            @Localize(Public.Main.Index.NoArticles)
+        </div>
+    }
 }
 else
 {

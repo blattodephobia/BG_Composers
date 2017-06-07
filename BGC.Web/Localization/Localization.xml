@@ -282,6 +282,13 @@
           <Translation culture="bg-BG">Няма резултати от търсенето.</Translation>
         </LocalizedString>
       </Search>
+    <Index>
+      <LocalizedString key="NoArticles">
+        <Translation culture="en-US">No articles found.</Translation>
+        <Translation culture="de-DE">Keine Artikel wurden gefunden.</Translation>
+        <Translation culture="bg-BG">Няма намерени статии.</Translation>
+      </LocalizedString>
+    </Index>
     </Main>
   </Public>
   <Global>

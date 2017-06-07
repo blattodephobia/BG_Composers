@@ -101,6 +101,10 @@ public class Public
             {
                         public const string NoResults = "Public.Main.Search.NoResults";
 }
+public class Index
+{
+            public const string NoArticles = "Public.Main.Index.NoArticles";
+}
 }
 }
 public class Global
