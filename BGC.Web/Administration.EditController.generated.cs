@@ -145,10 +145,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddArticleViewModel> editedData);
+        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel editedData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add_Post(System.Collections.Generic.IList<BGC.Web.Areas.Administration.ViewModels.AddArticleViewModel> editedData)
+        public override System.Web.Mvc.ActionResult Add_Post(BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel editedData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "editedData", editedData);

@@ -70,18 +70,18 @@ namespace BGC.Web.Areas.Administration.Controllers
         [HttpPost]
         [ActionName(nameof(Add))]
         [Permissions(nameof(IArticleManagementPermission))]
-        public virtual ActionResult Add_Post(IList<AddArticleViewModel> editedData)
+        public virtual ActionResult Add_Post(AddComposerViewModel editedData)
         {
             Composer newComposer = new Composer();
-            for (int i = 0; i < editedData.Count; i++)
+            for (int i = 0; i < editedData.Articles.Count; i++)
             {
-                var name = new ComposerName(editedData[i].FullName, editedData[i].Language);
+                var name = new ComposerName(editedData.Articles[i].FullName, editedData.Articles[i].Language);
                 newComposer.LocalizedNames.Add(name);
                 newComposer.Articles.Add(new ComposerArticle()
                 {
-                    StorageId = this.articleStorageService.StoreEntry(editedData[i].Content),
+                    StorageId = this.articleStorageService.StoreEntry(editedData.Articles[i].Content),
                     Composer = newComposer,
-                    Language = editedData[i].Language,
+                    Language = editedData.Articles[i].Language,
                     LocalizedName = name
                 });
             }
