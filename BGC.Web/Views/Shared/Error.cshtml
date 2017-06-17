@@ -1,4 +1,6 @@
-﻿@{
+﻿@model ErrorViewModel
+
+@{
     Layout = null;
 }
 
@@ -6,12 +8,15 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Error</title>
+    <title>@Localize(Global.Error)</title>
 </head>
 <body>
     <hgroup>
-        <h1>Error.</h1>
-        <h2>An error occurred while processing your request.</h2>
+        <h1>@Localize(Global.ErrorOccurredDuringRequest) - @Model.StatusCode</h1>
+        <h2>@Model.Description</h2>
     </hgroup>
+    <div>
+        
+    </div>
 </body>
 </html>

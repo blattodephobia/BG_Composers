@@ -85,5 +85,10 @@ namespace BGC.Web.Areas.Public.Controllers
             };
             return View(vm);
         }
+
+        public virtual ActionResult Error()
+        {
+            return View(new ErrorViewModel(Response));
+        }
     }
 }

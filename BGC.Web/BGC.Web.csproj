@@ -307,6 +307,7 @@
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
     <Compile Include="Areas\Public\ViewModels\ArticleViewModel.cs" />
+    <Compile Include="Areas\Public\ViewModels\ErrorViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\IndexViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\SearchResultViewModel.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />

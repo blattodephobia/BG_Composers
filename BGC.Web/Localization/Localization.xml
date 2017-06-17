@@ -292,6 +292,16 @@
     </Main>
   </Public>
   <Global>
+    <LocalizedString key="Error">
+      <Translation culture="en-US">Error</Translation>
+      <Translation culture="de-DE">Fehler</Translation>
+      <Translation culture="bg-BG">Грешка</Translation>
+    </LocalizedString>
+    <LocalizedString key="ErrorOccurredDuringRequest">
+      <Translation culture="en-US">An error occurred while processing your request.</Translation>
+      <Translation culture="de-DE">Ein Fehler ist aufgetreten, während der Bearbeitung Ihrer Anfrage.</Translation>
+      <Translation culture="bg-BG">Възникна грешка докато се обработваше заявката ви.</Translation>
+    </LocalizedString>
     <LocalizedString key="Welcome">
       <Translation culture="en-US">Welcome</Translation>
       <Translation culture="de-DE">Willkommen</Translation>

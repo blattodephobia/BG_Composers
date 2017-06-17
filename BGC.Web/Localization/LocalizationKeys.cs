@@ -109,6 +109,8 @@ public class Index
 }
 public class Global
 {
+    public const string Error = "Global.Error";
+    public const string ErrorOccurredDuringRequest = "Global.ErrorOccurredDuringRequest";
     public const string Welcome = "Global.Welcome";
     public const string Save = "Global.Save";
     public const string Publish = "Global.Publish";
