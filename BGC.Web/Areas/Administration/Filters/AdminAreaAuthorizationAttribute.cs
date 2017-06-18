@@ -1,8 +1,10 @@
 ﻿using BGC.Core;
 using BGC.Utilities;
+using BGC.Web.Areas.Public.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Security.Claims;
 using System.Web;
@@ -19,15 +21,22 @@ namespace BGC.Web.Areas.Administration
             return (httpContext.User.Identity as ClaimsIdentity).FindAll(nameof(IPermission)).Select(c => c.Value);
         }
 
-        /// <summary>
-        /// Returns an array of <see cref="IPermission"/> collections which represent the permissions required for a user to perform an action.
-        /// A user can perform an action if they have all or more than the necessary permissions in either one of the collections from the array.
-        /// </summary>
-        /// <param name="action"></param>
-        /// <returns></returns>
-        private static IEnumerable<Type>[] GetRequiredPermissionClauses(MethodInfo action)
+        private static PermissionsAttribute GetPermissionsFromDeclaringTypes(MethodInfo methodInfo)
         {
-            return null;// action.GetCustomAttributes<PermissionsAttribute>().Select(attr => attr.PermissionTypes.Where(p => typeof(IPermission).IsAssignableFrom(p))).ToArray();
+            Type currentDeclaringType = methodInfo.DeclaringType;
+            PermissionsAttribute result = null;
+            while (currentDeclaringType != null && result == null)
+            {
+                result = currentDeclaringType.GetCustomAttribute<PermissionsAttribute>();
+            }
+
+            return result;
+        }
+        
+        internal static PermissionsAttribute GetRequiredPermissions(MethodInfo action)
+        {
+            PermissionsAttribute attr = action.GetCustomAttribute<PermissionsAttribute>() ?? GetPermissionsFromDeclaringTypes(action);
+            return attr;
         }
 
         internal bool HasNecessaryPermissions(IEnumerable<string> availablePermissions, PermissionsAttribute requiredPermissions)
@@ -47,16 +56,28 @@ namespace BGC.Web.Areas.Administration
 
 		protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
 		{
-			string returnUrl = filterContext.RequestContext.HttpContext.Request.CurrentExecutionFilePath;
-			string loginUrl = GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login());
-			
-			if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
-			{
-				filterContext.Controller.TempData.Remove(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
-			}
-			
-			filterContext.Controller.TempData.Add(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
-			filterContext.Result = new RedirectResult(loginUrl);
+            if (filterContext.HttpContext.User?.Identity.IsAuthenticated ?? false)
+            {
+                filterContext.Result = new ViewResult()
+                {
+                    ViewName = MVC.Shared.Views.Error,
+                    ViewData = new ViewDataDictionary(new ErrorViewModel(filterContext.HttpContext.Response))
+                };
+                filterContext.Controller = (ControllerBase)ControllerBuilder.Current.GetControllerFactory().CreateController(new RequestContext(filterContext.HttpContext, filterContext.RouteData), MVC.Public.Main.Name);
+            }
+            else
+            {
+                string returnUrl = filterContext.RequestContext.HttpContext.Request.CurrentExecutionFilePath;
+                string loginUrl = GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login());
+
+                if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+                {
+                    filterContext.Controller.TempData.Remove(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+                }
+
+                filterContext.Controller.TempData.Add(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
+                filterContext.Result = new RedirectResult(loginUrl);
+            }
 		}
 
         private MethodInfo ResolveAction(HttpContextBase httpContext)
@@ -75,7 +96,13 @@ namespace BGC.Web.Areas.Administration
 
                 bool isAuthorized = HasNecessaryPermissions(
                     availablePermissions: GetAvailablePermissions(httpContext),
-                    requiredPermissions: actionToBeExecuted.GetCustomAttribute<PermissionsAttribute>());
+                    requiredPermissions: GetRequiredPermissions(actionToBeExecuted));
+
+                if (!isAuthorized)
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                    httpContext.Response.StatusDescription = LocalizationKeys.Global.Forbidden;
+                }
 
                 return isAuthorized;
             }

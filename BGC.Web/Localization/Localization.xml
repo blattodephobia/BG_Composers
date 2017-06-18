@@ -302,6 +302,16 @@
       <Translation culture="de-DE">Ein Fehler ist aufgetreten, während der Bearbeitung Ihrer Anfrage.</Translation>
       <Translation culture="bg-BG">Възникна грешка докато се обработваше заявката ви.</Translation>
     </LocalizedString>
+    <LocalizedString key="Forbidden">
+      <Translation culture="en-US">You don't have the necessary permissions to access this page.</Translation>
+      <Translation culture="de-DE">Sie verfügen über die verlangte Vorrechte nicht, um diese Seite zu zugreifen.</Translation>
+      <Translation culture="bg-BG">Нямате необходимите привилегии, за да достъпите тази страница.</Translation>
+    </LocalizedString>
+    <LocalizedString key="InternalServerError">
+      <Translation culture="en-US">Unknown error. It's our fault, probably.</Translation>
+      <Translation culture="de-DE">Unbekannter Fehler. Es ist unser Schuld, vielleicht.</Translation>
+      <Translation culture="bg-BG">Непозната грешка. Вината е наша, може би.</Translation>
+    </LocalizedString>
     <LocalizedString key="Welcome">
       <Translation culture="en-US">Welcome</Translation>
       <Translation culture="de-DE">Willkommen</Translation>

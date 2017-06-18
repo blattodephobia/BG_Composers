@@ -86,6 +86,7 @@ namespace BGC.Web.Areas.Public.Controllers
             public readonly string Index = "Index";
             public readonly string Read = "Read";
             public readonly string Search = "Search";
+            public readonly string Error = "Error";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -94,6 +95,7 @@ namespace BGC.Web.Areas.Public.Controllers
             public const string Index = "Index";
             public const string Read = "Read";
             public const string Search = "Search";
+            public const string Error = "Error";
         }
 
 
@@ -179,6 +181,17 @@ namespace BGC.Web.Areas.Public.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "query", query);
             SearchOverride(callInfo, query);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ErrorOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Error()
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Error);
+            ErrorOverride(callInfo);
             return callInfo;
         }
 

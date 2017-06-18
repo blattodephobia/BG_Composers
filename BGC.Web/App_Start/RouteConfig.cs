@@ -12,6 +12,8 @@ namespace BGC.Web
 		public static void RegisterRoutes(RouteCollection routes)
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute("error", "error", MVC.Public.Main.Actions.Error());
 		}
 	}
 }

@@ -11,10 +11,8 @@
     <title>@Localize(Global.Error)</title>
 </head>
 <body>
-    <hgroup>
-        <h1>@Localize(Global.ErrorOccurredDuringRequest) - @Model.StatusCode</h1>
-        <h2>@Model.Description</h2>
-    </hgroup>
+    <h1>@Localize(Global.ErrorOccurredDuringRequest)</h1>
+    <h2>@Model.StatusCode - @Localize(Model.Description)</h2>
     <div>
         
     </div>
