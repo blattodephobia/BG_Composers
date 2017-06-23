@@ -20,12 +20,17 @@ namespace BGC.Web
 
 	public class WebApiApplication : System.Web.HttpApplication
 	{
-		public class TempDataKeys
+		public class DataKeys
 		{
 			public class AdministrationArea
 			{
 				public static readonly string LoginSuccessReturnUrl = $"{nameof(AdministrationArea)}.{nameof(LoginSuccessReturnUrl)}";
 			}
+
+            public class Global
+            {
+                public static readonly string ErrorViewModelKey = $"{nameof(Global)}.{nameof(ErrorViewModel)}";
+            }
 		}
 
 		protected void Application_Start()
@@ -42,28 +47,30 @@ namespace BGC.Web
             HttpContext httpContext = HttpContext.Current;
             if (httpContext != null)
             {
-                RequestContext requestContext = ((MvcHandler)httpContext.CurrentHandler).RequestContext;
-                /* when the request is ajax the system can automatically handle a mistake with a JSON response. then overwrites the default response */
-                if (requestContext.HttpContext.Request.IsAjaxRequest())
-                {
-                    httpContext.Response.Clear();
-                    IControllerFactory factory = ControllerBuilder.Current.GetControllerFactory();
-                    IController controller = factory.CreateController(requestContext, MVC.Public.Main.Name);
-                    ControllerContext controllerContext = new ControllerContext(requestContext, (ControllerBase)controller);
+                httpContext.ClearError();
+                httpContext.Response.Clear();
 
-                    JsonResult jsonResult = new JsonResult();
-                    jsonResult.Data = new { success = false, serverError = "500" };
-                    jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
-                    jsonResult.ExecuteResult(controllerContext);
-                    httpContext.Response.End();
-                }
-                else
-                {
-                    httpContext.Response.Clear();
-                    httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    httpContext.Response.StatusDescription = LocalizationKeys.Global.InternalServerError;
-                    httpContext.Response.End();
-                }
+                IControllerFactory factory = ControllerBuilder.Current.GetControllerFactory();
+                RequestContext requestContext = ((MvcHandler)httpContext.CurrentHandler).RequestContext;
+                ControllerBase controller = factory.CreateController(requestContext, MVC.Public.Main.Name) as ControllerBase;
+                controller.ControllerContext = new ControllerContext(requestContext, controller);
+                ActionResult responseResult = requestContext.HttpContext.Request.IsAjaxRequest() ?
+                    new JsonResult() // when the request is ajax the system can automatically handle a mistake with a JSON response. then overwrites the default response
+                    {
+                        Data = new { success = false, serverError = (int)HttpStatusCode.InternalServerError },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    } as ActionResult
+                    :
+                    new ViewResult()
+                    {
+                        ViewData = new ViewDataDictionary(new ErrorViewModel(
+                            statusCode: HttpStatusCode.InternalServerError,
+                            description: LocalizationKeys.Global.InternalServerError)),
+                        ViewName = MVC.Shared.Views.Error
+                    } as ActionResult;
+                responseResult.ExecuteResult(controller.ControllerContext);
+
+                httpContext.Response.End();
             }
         }
     }

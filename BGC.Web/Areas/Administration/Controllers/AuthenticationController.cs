@@ -32,9 +32,9 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
             else
             {
-                if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+                if (TempData.ContainsKey(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl))
                 {
-                    TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+                    TempData.Keep(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl);
                 }
                 return View(model);
             }
@@ -55,14 +55,14 @@ namespace BGC.Web.Areas.Administration.Controllers
 			if (success)
 			{
 				object returnUrl;
-				TempData.TryGetValue(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
+				TempData.TryGetValue(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl, out returnUrl);
 				return new RedirectResult(string.IsNullOrWhiteSpace(returnUrl as string) ? GetAdminHomePageUrl() : returnUrl as string);
 			}
 			else
 			{
-			    if (TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+			    if (TempData.ContainsKey(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl))
 			    {
-				    TempData.Keep(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+				    TempData.Keep(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl);
 			    }
 				return Login(new LoginViewModel() { AuthenticationFailure = true });
 			}

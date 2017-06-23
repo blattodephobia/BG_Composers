@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static BGC.Web.WebApiApplication;
 
 namespace BGC.Web.Areas.Public.Controllers
 {
@@ -88,7 +89,8 @@ namespace BGC.Web.Areas.Public.Controllers
 
         public virtual ActionResult Error()
         {
-            return View(new ErrorViewModel(Response));
+            ErrorViewModel vm = HttpContext.Session[DataKeys.Global.ErrorViewModelKey] as ErrorViewModel ?? new ErrorViewModel(Response);
+            return View(vm);
         }
     }
 }

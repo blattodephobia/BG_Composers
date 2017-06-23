@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 
 namespace BGC.Web.Areas.Public.ViewModels
@@ -16,13 +17,25 @@ namespace BGC.Web.Areas.Public.ViewModels
         {
         }
 
-        public ErrorViewModel(HttpResponseBase response)
+        public ErrorViewModel(int statusCode, string description)
         {
-            if (response != null)
-            {
-                StatusCode = response.StatusCode;
-                Description = response.StatusDescription;
-            }
+            StatusCode = statusCode;
+            Description = description;
+        }
+
+        public ErrorViewModel(HttpStatusCode statusCode, string description) :
+            this((int)statusCode, description)
+        {
+        }
+
+        public ErrorViewModel(HttpResponseBase response) :
+            this(response?.StatusCode ?? 0, response?.StatusDescription)
+        {
+        }
+
+        public ErrorViewModel(HttpResponse response) :
+            this(response?.StatusCode ?? 0, response?.StatusDescription)
+        {
         }
     }
 }

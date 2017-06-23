@@ -70,12 +70,12 @@ namespace BGC.Web.Areas.Administration
                 string returnUrl = filterContext.RequestContext.HttpContext.Request.CurrentExecutionFilePath;
                 string loginUrl = GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login());
 
-                if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl))
+                if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl))
                 {
-                    filterContext.Controller.TempData.Remove(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl);
+                    filterContext.Controller.TempData.Remove(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl);
                 }
 
-                filterContext.Controller.TempData.Add(WebApiApplication.TempDataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
+                filterContext.Controller.TempData.Add(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
                 filterContext.Result = new RedirectResult(loginUrl);
             }
 		}
