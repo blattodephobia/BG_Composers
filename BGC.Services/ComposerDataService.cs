@@ -15,14 +15,16 @@ namespace BGC.Services
         protected IRepository<Composer> Composers { get; private set; }
         protected IRepository<ComposerName> Names { get; private set; }
 
-        private IEnumerable<SearchResult> SearchInternal(IEnumerable<string> keywords) =>
-            from name in Names.All().ToList()
-            where keywords.Any(keyword => name.FullName.Contains(keyword))
-            select new SearchResult(name.Composer.Id)
-            {
-                Header = name.FullName,
-                ParsedResultXml = null
-            };
+        private IEnumerable<SearchResult> SearchInternal(IEnumerable<string> keywords)
+        {
+            return from name in Names.All().ToList()
+                   where keywords.Any(keyword => name.FullName.ToLowerInvariant().Contains(keyword.ToLowerInvariant()))
+                   select new SearchResult(name.Composer.Id)
+                   {
+                       Header = name.FullName,
+                       ParsedResultXml = null
+                   };
+        }
 
         public ComposerDataService(IRepository<Composer> composers, IRepository<ComposerName> names)
         {

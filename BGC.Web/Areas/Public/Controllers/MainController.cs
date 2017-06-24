@@ -82,6 +82,7 @@ namespace BGC.Web.Areas.Public.Controllers
                            let composer = _composersService.FindComposer(result.IdAsGuid())
                            where composer != null
                            select composer.GetArticle(CurrentLocale.EffectiveValue))
+                           .Distinct(ComposerArticle.Comparers.ByComposerEqualityComparer)
                            .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
             };
             return View(vm);

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class ComposerArticle : BgcEntity<long>
+	public partial class ComposerArticle : BgcEntity<long>
 	{
         private CultureInfo language;
         private ICollection<MediaTypeInfo> media;
