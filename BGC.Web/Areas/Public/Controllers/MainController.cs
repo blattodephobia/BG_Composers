@@ -65,12 +65,13 @@ namespace BGC.Web.Areas.Public.Controllers
             return View(model);
         }
 
-        public virtual ActionResult Read(Guid article)
+        public virtual ActionResult Read(Guid composerId)
         {
+            Composer composer = _composersService.FindComposer(composerId);
             return View(new ArticleViewModel()
             {
-                Text = _articleStorageService.GetEntry(article),
-                Title = _composersService.FindComposerByArticle(article)?.GetName(CurrentLocale.EffectiveValue).FullName
+                Text = _articleStorageService.GetEntry(composer.GetArticle(CurrentLocale.EffectiveValue).StorageId),
+                Title = composer.GetName(CurrentLocale.EffectiveValue).FullName
             });
         }
 
@@ -83,7 +84,7 @@ namespace BGC.Web.Areas.Public.Controllers
                            where composer != null
                            select composer.GetArticle(CurrentLocale.EffectiveValue))
                            .Distinct(ComposerArticle.Comparers.ByComposerEqualityComparer)
-                           .ToDictionary(a => a.StorageId, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
+                           .ToDictionary(a => a.Composer.Id, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
             };
             return View(vm);
         }

@@ -13,20 +13,20 @@ namespace BGC.Core
 {
 	public partial class ComposerArticle : BgcEntity<long>
 	{
-        private CultureInfo language;
-        private ICollection<MediaTypeInfo> media;
+        private CultureInfo _language;
+        private ICollection<MediaTypeInfo> _media;
         
         [MaxLength(5)]
         internal protected string LanguageInternal
         {
             get
             {
-                return this.language.Name;
+                return _language.Name;
             }
 
             set
             {
-                this.language = CultureInfo.GetCultureInfo(value.ValueNotNull());
+                _language = CultureInfo.GetCultureInfo(value.ValueNotNull());
             }
         }
 
@@ -35,12 +35,12 @@ namespace BGC.Core
         {
             get
             {
-                return this.language;
+                return _language;
             }
 
             set
             {
-                this.language = value.ValueNotNull();
+                _language = value.ValueNotNull();
             }
         }
 
@@ -60,13 +60,22 @@ namespace BGC.Core
         {
             get
             {
-                return this.media ?? (this.media = new HashSet<MediaTypeInfo>());
+                return _media ?? (_media = new HashSet<MediaTypeInfo>());
             }
 
             set
             {
-                this.media = value;
+                _media = value;
             }
+        }
+
+        public bool IsArchived { get; set; }
+
+        public DateTime CreatedUtc { get; set; }
+
+        public ComposerArticle()
+        {
+            CreatedUtc = DateTime.UtcNow;
         }
 	}
 }

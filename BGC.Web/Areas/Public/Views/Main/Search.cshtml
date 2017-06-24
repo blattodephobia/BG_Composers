@@ -11,7 +11,7 @@
         @foreach (KeyValuePair<Guid, string> kvp in Model.Results)
         {
             <li>
-                @Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.article, kvp.Key))
+                @Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.composerId, kvp.Key))
             </li>
         }
     </ul>

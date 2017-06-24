@@ -113,7 +113,7 @@ namespace BGC.Web.Areas.Public.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Read
         {
-            public readonly string article = "article";
+            public readonly string composerId = "composerId";
         }
         static readonly ActionParamsClass_Search s_params_Search = new ActionParamsClass_Search();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -161,14 +161,14 @@ namespace BGC.Web.Areas.Public.Controllers
         }
 
         [NonAction]
-        partial void ReadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid article);
+        partial void ReadOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid composerId);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Read(System.Guid article)
+        public override System.Web.Mvc.ActionResult Read(System.Guid composerId)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Read);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "article", article);
-            ReadOverride(callInfo, article);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "composerId", composerId);
+            ReadOverride(callInfo, composerId);
             return callInfo;
         }
 

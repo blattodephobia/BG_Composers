@@ -38,6 +38,23 @@ namespace BGC.Core.Tests.Models
 
             Assert.AreEqual(bgArticle, c.GetArticle(new CultureInfo("bg-BG")));
         }
+
+        [Test]
+        public void GetsMostRecentVersionOfArticle()
+        {
+            var c = new Composer();
+            var mostRecent = new ComposerArticle() { Language = new CultureInfo("bg-BG"), CreatedUtc = new DateTime(2000, 12, 1) };
+            c.Articles = new List<ComposerArticle>()
+            {
+                mostRecent,
+                new ComposerArticle() { Language = new CultureInfo("bg-BG"), CreatedUtc = new DateTime(2000, 11, 1), IsArchived = true, },
+                new ComposerArticle() { Language = new CultureInfo("en-US"), CreatedUtc = new DateTime(2000, 12, 1) },
+                new ComposerArticle() { Language = new CultureInfo("en-US"), CreatedUtc = new DateTime(2000, 11, 1), IsArchived = true, },
+
+            };
+
+            Assert.AreSame(mostRecent, c.GetArticle(new CultureInfo("bg-BG")));
+        }
     }
 
     [TestFixture]
@@ -106,6 +123,52 @@ namespace BGC.Core.Tests.Models
             composer.GetHashCode();
 
             Assert.Throws<InvalidOperationException>(() => composer.Id = Guid.NewGuid());
+        }
+    }
+
+    [TestFixture]
+    public class AddArticleTests
+    {
+        [Test]
+        public void ThrowsExceptionIfArticleIsArchived()
+        {
+            var composer = new Composer();
+            Assert.Throws<InvalidOperationException>(() => composer.AddArticle(new ComposerArticle() { IsArchived = true }));
+        }
+
+        [Test]
+        public void ArchivesSimilarArticles()
+        {
+            var composer = new Composer();
+            var englishArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("en-US") };
+            var oldBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            composer.Articles.Add(englishArticle);
+            composer.Articles.Add(oldBulgarianArticle);
+
+            Assert.IsTrue(composer.Articles.All(a => !a.IsArchived));
+
+            var newBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            composer.AddArticle(newBulgarianArticle);
+            
+            Assert.IsTrue(oldBulgarianArticle.IsArchived);
+            Assert.IsFalse(newBulgarianArticle.IsArchived);
+        }
+
+        [Test]
+        public void DoesntModifyDissimilarArticles()
+        {
+            var composer = new Composer();
+            var englishArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("en-US") };
+            var oldBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            composer.Articles.Add(englishArticle);
+            composer.Articles.Add(oldBulgarianArticle);
+
+            Assert.IsTrue(composer.Articles.All(a => !a.IsArchived));
+
+            var newBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            composer.AddArticle(newBulgarianArticle);
+
+            Assert.IsFalse(englishArticle.IsArchived);
         }
     }
 }

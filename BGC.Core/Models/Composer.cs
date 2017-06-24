@@ -67,11 +67,28 @@ namespace BGC.Core
             }
         }
 
+        public void AddArticle(ComposerArticle article)
+        {
+            Shield.ArgumentNotNull(article, nameof(article)).ThrowOnError();
+            Shield.AssertOperation(article, !article.IsArchived, $"Cannot add an already archived article.").ThrowOnError();
+
+            IEnumerable<ComposerArticle> articlesToArchive = Articles.Where(a => a.Language == article.Language);
+            foreach (ComposerArticle oldArticle in articlesToArchive)
+            {
+                oldArticle.IsArchived = true;
+            }
+
+            Articles.Add(article);
+        }
+
         public ComposerArticle GetArticle(CultureInfo language)
         {
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
 
-            ComposerArticle result = Articles.FirstOrDefault(article => article.Language.Equals(language));
+            ComposerArticle result = (from article in Articles
+                                      where !article.IsArchived && article.Language.Equals(language)
+                                      orderby article.CreatedUtc descending
+                                      select article).FirstOrDefault();
             return result;
         }
 

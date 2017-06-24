@@ -99,6 +99,10 @@
     <Compile Include="Migrations\201706241032555_Initial.Designer.cs">
       <DependentUpon>201706241032555_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706241955076_ArticlesArchivability.cs" />
+    <Compile Include="Migrations\201706241955076_ArticlesArchivability.Designer.cs">
+      <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -128,6 +132,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706241032555_Initial.resx">
       <DependentUpon>201706241032555_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706241955076_ArticlesArchivability.resx">
+      <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
