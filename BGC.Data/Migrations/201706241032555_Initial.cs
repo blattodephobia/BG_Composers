@@ -14,7 +14,7 @@ namespace BGC.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Language = c.String(nullable: false, maxLength: 5, storeType: "nvarchar"),
                         StorageId = c.Guid(nullable: false),
-                        Composer_Id = c.Long(nullable: false),
+                        Composer_Id = c.Guid(nullable: false),
                         LocalizedName_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -28,7 +28,7 @@ namespace BGC.Data.Migrations
                 "dbo.Composers",
                 c => new
                     {
-                        Id = c.Long(nullable: false, identity: true),
+                        Id = c.Guid(nullable: false, identity: true),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -41,7 +41,7 @@ namespace BGC.Data.Migrations
                         FirstName = c.String(maxLength: 32, storeType: "nvarchar"),
                         LastName = c.String(maxLength: 32, storeType: "nvarchar"),
                         FullName = c.String(maxLength: 128, storeType: "nvarchar"),
-                        Composer_Id = c.Long(nullable: false),
+                        Composer_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Composers", t => t.Composer_Id, cascadeDelete: true)
@@ -92,7 +92,6 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(nullable: false, unicode: false),
                         Discriminator = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id);

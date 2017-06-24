@@ -90,4 +90,22 @@ namespace BGC.Core.Tests.Models
             Assert.AreEqual(germanName, actualName);
         }
     }
+
+    [TestFixture]
+    public class IdTests
+    {
+        [Test]
+        public void ThrowsExceptionIfGetHashCodeIsCalled()
+        {
+            var composer = new Composer();
+
+            var id = new byte[16];
+            id[15] = 2;
+            composer.Id = new Guid(id);
+
+            composer.GetHashCode();
+
+            Assert.Throws<InvalidOperationException>(() => composer.Id = Guid.NewGuid());
+        }
+    }
 }

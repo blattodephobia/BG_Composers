@@ -8,12 +8,29 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-	public class Composer : BgcEntity<long>
+	public class Composer : BgcEntity<Guid>
 	{
         private ICollection<ComposerName> _localizedNames;
         private ICollection<ComposerArticle> _articles;
+        private bool _getHashCodeCalled;
+        private Guid _id;
 
-		public virtual ICollection<ComposerName> LocalizedNames
+        public override Guid Id
+        {
+            get
+            {
+                return _id;
+            }
+
+            set
+            {
+                Shield.AssertOperation(this, !_getHashCodeCalled, $"This object's {nameof(Id)} cannot be changed, since {nameof(GetHashCode)} has been called and it relies on the {nameof(Id)}'s value").ThrowOnError();
+
+                _id = value;
+            }
+        }
+
+        public virtual ICollection<ComposerName> LocalizedNames
         {
             get
             {
@@ -66,8 +83,17 @@ namespace BGC.Core
             return result;
         }
 
-		public Composer()
-		{
-		}
+        public override int GetHashCode()
+        {
+            _getHashCodeCalled = true;
+
+            return Id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            Composer other = obj as Composer;
+            return other != null && other.Id == Id;
+        }
 	}
 }

@@ -15,7 +15,7 @@ namespace BGC.Core.Services
 		IList<Composer> GetAllComposers();
 
         [OperationContract]
-        Composer FindComposer(long id);
+        Composer FindComposer(Guid id);
 
         [OperationContract]
         Composer FindComposerByArticle(Guid articleId);

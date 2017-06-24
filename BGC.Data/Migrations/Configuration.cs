@@ -87,7 +87,9 @@ namespace BGC.Data.Migrations
                     });
 
 #if DEBUG
-                Composer pStupel = new Composer() { Id = 1 };
+                byte[] id = new byte[16];
+                id[id.Length - 1] = 1;
+                Composer pStupel = new Composer() { Id = new Guid(id) };
 
                 ComposerName[] names = new[]
                 {

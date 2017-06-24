@@ -14,35 +14,35 @@ namespace BGC.Services.Tests
     {
         private static readonly List<Composer> ComposersRepo = new List<Composer>()
         {
-            new Composer() { Id = 1, LocalizedNames = new List<ComposerName>()
+            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"John Stamos", "en-US"),
                 new ComposerName(@"John Stamos", "de-DE"),
                 new ComposerName(@"Джон Стамос", "bg-BG"),
             }},
 
-            new Composer() { Id = 2, LocalizedNames = new List<ComposerName>()
+            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Petar Stupel", "en-US"),
                 new ComposerName(@"Petar Stupel", "de-DE"),
                 new ComposerName(@"Петър Ступел", "bg-BG"),
             }},
 
-            new Composer() { Id = 3, LocalizedNames = new List<ComposerName>()
+            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Pancho Vladigerov", "en-US"),
                 new ComposerName(@"Pancho Vladigerov", "de-DE"),
                 new ComposerName(@"Панчо Владигеров", "bg-BG"),
             }},
 
-            new Composer() { Id = 4, LocalizedNames = new List<ComposerName>()
+            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"John Atanasoff", "en-US"),
                 new ComposerName(@"John Atanasoff", "de-DE"),
                 new ComposerName(@"Джон Атанасов", "bg-BG"),
             }},
 
-            new Composer() { Id = 5, LocalizedNames = new List<ComposerName>()
+            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Atanas Dalchev", "en-US"),
                 new ComposerName(@"Atanas Dalchev", "de-DE"),

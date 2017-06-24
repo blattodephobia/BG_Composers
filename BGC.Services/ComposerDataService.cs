@@ -52,7 +52,7 @@ namespace BGC.Services
                 .Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
                 .Select(s => s.Trim()));
 
-        public Composer FindComposer(long id) => Composers.All().FirstOrDefault(c => c.Id == id);
+        public Composer FindComposer(Guid id) => Composers.All().FirstOrDefault(c => c.Id == id);
 
         public Composer FindComposerByArticle(Guid articleId)
         {
