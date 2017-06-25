@@ -56,6 +56,9 @@
     <Compile Include="HttpCookieSingleValueDependencySource.cs" />
     <Compile Include="IDynamicMemberGetter.cs" />
     <Compile Include="LambdaCaptureFieldAccessor.cs" />
+    <Compile Include="LazyOrderedEnumerable.IterationFrame.cs" />
+    <Compile Include="LazyOrderedEnumerable.Iterator.cs" />
+    <Compile Include="LazyOrderedEnumerable.cs" />
     <Compile Include="MappableWithAttribute.cs" />
     <Compile Include="MultiValueDependencySource.cs" />
     <Compile Include="MultiValueFifoDependencySource.cs" />
