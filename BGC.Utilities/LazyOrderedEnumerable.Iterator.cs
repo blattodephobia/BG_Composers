@@ -7,34 +7,15 @@ using System.Threading.Tasks;
 
 namespace BGC.Utilities
 {
-    public partial class LazyOrderedEnumerable<T> : IOrderedEnumerable<T>
+    public partial class LazyOrderedEnumerable<T, TKey> : IOrderedEnumerable<T>
     {
-        private class Iterator<TKey> : IEnumerator<T>
+        private class Iterator<T> : IEnumerator<T>
         {
-            private static int RoundBase2Log(int number)
-            {
-                int maxBitIndex = 0;
-                for (int i = 31; i > 0; i--)
-                {
-                    int mask = 1 << i;
-                    if ((maxBitIndex & mask) != 0)
-                    {
-                        maxBitIndex = i;
-                        break;
-                    }
-                }
-
-                return maxBitIndex + 1;
-            }
-
             private readonly Stack<IterationFrame> _sortingOps = new Stack<IterationFrame>();
-            private readonly LazyOrderedEnumerable<T> _parent;
+            private readonly LazyOrderedEnumerable<T, TKey> _parent;
             private readonly List<T> _internalCollection;
-            private readonly Func<T, TKey> _keySelector;
-            private readonly IComparer<TKey> _keyComparer;
-            private int _currentElementIndex;
-            private int _currentIterationIndex;
-            private int _maxSortedIndex;
+            private int _currentElementIndex = -1;
+            private int _maxSortedIndex = -1;
 
             private void Swap(int xIndex, int yIndex)
             {
@@ -46,11 +27,9 @@ namespace BGC.Utilities
             private int ArrangeItems(IterationFrame frame)
             {
                 int pivotIndex = frame.StartIndex + (frame.EndIndex - frame.StartIndex) / 2;
-                for (int i = frame.EndIndex; pivotIndex < frame.EndIndex;)
+                for (int i = frame.EndIndex; i > pivotIndex;)
                 {
-                    TKey pivotKey = _keySelector(_internalCollection[pivotIndex]);
-                    TKey currElem = _keySelector(_internalCollection[i]);
-                    if (_keyComparer.Compare(currElem, pivotKey) < 0)
+                    if (_parent.Compare(_internalCollection[i], _internalCollection[pivotIndex]) < 0)
                     {
                         Swap(i, pivotIndex + 1);
                         Swap(pivotIndex, pivotIndex + 1);
@@ -64,9 +43,7 @@ namespace BGC.Utilities
 
                 for (int i = frame.StartIndex; i < pivotIndex;)
                 {
-                    TKey pivotKey = _keySelector(_internalCollection[pivotIndex]);
-                    TKey currElem = _keySelector(_internalCollection[i]);
-                    if (_keyComparer.Compare(currElem, pivotKey) > 0)
+                    if (_parent.Compare(_internalCollection[i], _internalCollection[pivotIndex]) > 0)
                     {
                         Swap(i, pivotIndex - 1);
                         Swap(pivotIndex, pivotIndex - 1);
@@ -81,20 +58,33 @@ namespace BGC.Utilities
                 return pivotIndex;
             }
 
-            private void TryPerformSortIteration()
+            private void EnsureHasNextSortedElement()
             {
                 while (_sortingOps.Count > 0  && _maxSortedIndex < _currentElementIndex)
                 {
                     IterationFrame current = _sortingOps.Pop();
-                    int pivotIndex = ArrangeItems(current);
-                    _sortingOps.Push(current.Right(pivotIndex));
-                    _sortingOps.Push(current.Left(pivotIndex));
+
+                    if (current.ElementsCount > 2)
+                    {
+                        int pivotIndex = ArrangeItems(current);
+                        _sortingOps.Push(current.Right(pivotIndex));
+                        _sortingOps.Push(current.Left(pivotIndex));
+                    }
+                    else
+                    {
+                        if (current.ElementsCount == 2 && _parent.Compare(_internalCollection[current.StartIndex], _internalCollection[current.EndIndex]) > 0)
+                        {
+                            Swap(current.StartIndex, current.EndIndex);
+                        }
+                        _maxSortedIndex = current.EndIndex;
+                    }
                 }
             }
 
-            public Iterator(List<T> internalCollection)
+            public Iterator(List<T> internalCollection, LazyOrderedEnumerable<T, TKey> parent)
             {
                 _internalCollection = internalCollection;
+                _parent = parent;
                 _sortingOps.Push(new IterationFrame(0, _internalCollection.Count - 1));
             }
 
@@ -102,7 +92,7 @@ namespace BGC.Utilities
             {
                 get
                 {
-                    TryPerformSortIteration();
+                    EnsureHasNextSortedElement();
 
                     return _parent._internalCollection[_currentElementIndex];
                 }
@@ -116,12 +106,12 @@ namespace BGC.Utilities
 
             public bool MoveNext()
             {
-                _currentElementIndex++;
-                return _maxSortedIndex < _parent._internalCollection.Count - 1;
+                return _currentElementIndex++ < _parent._internalCollection.Count - 1;
             }
 
             public void Reset()
             {
+                _currentElementIndex = -1;
             }
         }
     }
