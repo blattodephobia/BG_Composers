@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttributeTests
@@ -71,8 +72,18 @@ namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttribu
             }
 
             [Permissions(METHOD_PERMISSION)]
-            public void ActionMethod2()
+            public virtual void ActionMethod2()
             {
+            }
+        }
+
+        public class TestControllerClass_Inheriting : TestControllerClass_BasePermission
+        {
+            public class Nested
+            {
+                public void ActionMethod3()
+                {
+                }
             }
         }
 
@@ -95,7 +106,7 @@ namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttribu
             Assert.AreEqual(1, reqPermissions.Count());
             Assert.AreEqual(CLASS_PERMISSION, reqPermissions.First());
         }
-        
+
         [Test]
         public void GetsPermissionsFromMethod_WithBasePermissions2()
         {
@@ -104,6 +115,41 @@ namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttribu
 
             Assert.AreEqual(1, reqPermissions.Count());
             Assert.AreEqual(METHOD_PERMISSION, reqPermissions.First());
+        }
+
+        [Test]
+        public void GetsPermissionsFromMethod_WithInheritance1()
+        {
+            MethodInfo permMethod = typeof(TestControllerClass_Inheriting).GetMethod(nameof(TestControllerClass_Inheriting.ActionMethod2));
+            IEnumerable<string> reqPermissions = AdminAreaAuthorizationAttribute.GetRequiredPermissions(permMethod).PermissionTypes;
+
+            Assert.AreEqual(1, reqPermissions.Count());
+            Assert.AreEqual(METHOD_PERMISSION, reqPermissions.First());
+        }
+
+        [Test]
+        public void GetsPermissionsFromMethod_WithNestedType()
+        {
+            IEnumerable<string> reqPermissions = null;
+
+            var timeout = new CancellationTokenSource();
+            timeout.CancelAfter(TimeSpan.FromSeconds(1));
+            try
+            {
+                Task testRun = Task.Run(() =>
+                {
+                    MethodInfo permMethod = typeof(TestControllerClass_Inheriting.Nested).GetMethod(nameof(TestControllerClass_Inheriting.Nested.ActionMethod3));
+                    reqPermissions = AdminAreaAuthorizationAttribute.GetRequiredPermissions(permMethod).PermissionTypes;
+                });
+                testRun.Wait(timeout.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                Assert.Fail("The test took too long to execute. This could mean an infinite loop has been encountered.");
+            }
+                        
+            Assert.AreEqual(1, reqPermissions.Count());
+            Assert.AreEqual(CLASS_PERMISSION, reqPermissions.First());
         }
     }
 }

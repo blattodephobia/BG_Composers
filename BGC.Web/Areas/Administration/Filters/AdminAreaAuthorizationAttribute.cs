@@ -28,6 +28,7 @@ namespace BGC.Web.Areas.Administration
             while (currentDeclaringType != null && result == null)
             {
                 result = currentDeclaringType.GetCustomAttribute<PermissionsAttribute>();
+               currentDeclaringType = currentDeclaringType.DeclaringType;
             }
 
             return result;
