@@ -77,5 +77,13 @@ namespace BGC.Core
         {
             CreatedUtc = DateTime.UtcNow;
         }
+
+        public ComposerArticle(Composer composer, CultureInfo culture):
+            this()
+        {
+            Composer = composer;
+            LocalizedName = composer.GetName(culture);
+            Language = culture;
+        }
 	}
 }

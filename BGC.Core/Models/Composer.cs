@@ -72,7 +72,7 @@ namespace BGC.Core
             Shield.ArgumentNotNull(article, nameof(article)).ThrowOnError();
             Shield.AssertOperation(article, !article.IsArchived, $"Cannot add an already archived article.").ThrowOnError();
 
-            IEnumerable<ComposerArticle> articlesToArchive = Articles.Where(a => a.Language == article.Language);
+            IEnumerable<ComposerArticle> articlesToArchive = Articles.Where(a => !a.IsArchived && a.Language.Equals(article.Language));
             foreach (ComposerArticle oldArticle in articlesToArchive)
             {
                 oldArticle.IsArchived = true;
@@ -81,6 +81,13 @@ namespace BGC.Core
             Articles.Add(article);
         }
 
+        public IEnumerable<ComposerArticle> GetArticles() => Articles?.Where(a => !a.IsArchived) ?? Enumerable.Empty<ComposerArticle>();
+
+        /// <summary>
+        /// Gets a <see cref="ComposerArticle"/> that hasn't been archived in the specified language.
+        /// </summary>
+        /// <param name="language"></param>
+        /// <returns></returns>
         public ComposerArticle GetArticle(CultureInfo language)
         {
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
