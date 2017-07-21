@@ -193,7 +193,7 @@ namespace TestUtils
                 .Returns((CultureInfo language) => composers.SelectMany(c => c.LocalizedNames).Where(name => name.Language == language).ToList());
 
             mockService
-                .Setup(s => s.Add(It.IsAny<Composer>()))
+                .Setup(s => s.AddOrUpdate(It.IsAny<Composer>()))
                 .Callback((Composer c) => composers.Add(c));
 
             return mockService;

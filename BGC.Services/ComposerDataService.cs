@@ -37,11 +37,15 @@ namespace BGC.Services
 
         public IList<Composer> GetAllComposers() => Composers.All().ToList();
 
-        public void Add(Composer composer)
+        public void AddOrUpdate(Composer composer)
         {
             Shield.ArgumentNotNull(composer, nameof(composer)).ThrowOnError();
 
-            Composers.Insert(composer);
+            if (!Composers.All().Any(c => c.Id == composer.Id))
+            {
+                Composers.Insert(composer);
+            }
+
             SaveAll();
         }
 
@@ -55,13 +59,5 @@ namespace BGC.Services
                 .Select(s => s.Trim()));
 
         public Composer FindComposer(Guid id) => Composers.All().FirstOrDefault(c => c.Id == id);
-
-        public Composer FindComposerByArticle(Guid articleId)
-        {
-            var composers = from composer in Composers.All()
-                            where composer.Articles.Any(a => a.StorageId == articleId)
-                            select composer;
-            return composers.FirstOrDefault();
-        }
     }
 }

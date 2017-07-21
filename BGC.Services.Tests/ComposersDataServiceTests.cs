@@ -98,5 +98,25 @@ namespace BGC.Services.Tests
 
             Assert.AreEqual("Панчо Владигеров", results.First().Header);
         }
+
+        [Test]
+        public void DoesntInsertAlreadyExistingComposer()
+        {
+            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var duplicateComposer = new Composer() { Id = ComposersRepo[0].Id };
+            svc.AddOrUpdate(duplicateComposer);
+
+            Assert.AreNotSame(duplicateComposer, ComposersRepo[0]);
+        }
+
+        [Test]
+        public void InsertsNewComposer()
+        {
+            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var newComposer = new Composer() { Id = Guid.NewGuid() };
+            svc.AddOrUpdate(newComposer);
+
+            Assert.IsTrue(ComposersRepo.Contains(newComposer));
+        }
     }
 }

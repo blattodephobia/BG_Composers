@@ -85,7 +85,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                     LocalizedName = name
                 });
             }
-            _composersService.Add(newComposer);
+            _composersService.AddOrUpdate(newComposer);
 
             return RedirectToAction(nameof(List));
         }

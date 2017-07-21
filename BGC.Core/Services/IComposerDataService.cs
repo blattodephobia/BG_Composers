@@ -16,14 +16,11 @@ namespace BGC.Core.Services
 
         [OperationContract]
         Composer FindComposer(Guid id);
-
-        [OperationContract]
-        Composer FindComposerByArticle(Guid articleId);
-
+        
         [OperationContract]
         IList<ComposerName> GetNames(CultureInfo culture);
 
         [OperationContract]
-        void Add(Composer composer);
+        void AddOrUpdate(Composer composer);
 	}
 }
