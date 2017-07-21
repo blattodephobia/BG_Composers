@@ -57,11 +57,12 @@
         <xs:element name="<#=group.Key#>" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
 <#
         foreach (var controller in group)
         {
 #>
-              <xs:element name="<#=controller.Identifier.Text.EndsWith("Controller") ? controller.Identifier.Text.Substring(0, controller.Identifier.Text.Length - "Controller".Length) : controller.Identifier.Text#>">
+              <xs:element minOccurs="0" maxOccurs="1" name="<#=controller.Identifier.Text.EndsWith("Controller") ? controller.Identifier.Text.Substring(0, controller.Identifier.Text.Length - "Controller".Length) : controller.Identifier.Text#>">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
@@ -78,7 +79,7 @@
             foreach (string actionName in actionNames.Distinct())
             {
 #>
-                    <xs:element name="<#=actionName#>" type="ViewElement"/>
+                    <xs:element name="<#=actionName#>" type="ViewElement" minOccurs="0" maxOccurs="1"/>
 <#
             }
 #>

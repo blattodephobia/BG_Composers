@@ -303,6 +303,7 @@
     <Compile Include="Areas\Administration\ViewModels\Permissions\UserSettingsPermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RegisterViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\RequestPasswordResetViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\UpdateComposerViewModel.cs" />
     <Compile Include="Areas\Public\Controllers\MainController.cs" />
     <Compile Include="Areas\Public\Controllers\ResourcesController.cs" />
     <Compile Include="Areas\Public\PublicAreaRegistration.cs" />
@@ -370,6 +371,7 @@
     </Content>
     <Content Include="Areas\Administration\Views\Account\ChangePassword.cshtml" />
     <Content Include="Areas\Public\Resources\css\bt-themes\paper\bootstrap-paper.css" />
+    <Content Include="Areas\Administration\Views\Edit\Update.cshtml" />
     <None Include="Areas\Public\Resources\css\public.less" />
     <Content Include="Areas\Public\Views\Main\Search.cshtml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

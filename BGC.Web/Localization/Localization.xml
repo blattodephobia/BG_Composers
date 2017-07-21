@@ -36,6 +36,13 @@
           <Translation culture="bg-BG">Публикувани статии</Translation>
         </LocalizedString>
       </List>
+      <Update>
+        <LocalizedString key="UpdateArticle">
+          <Translation culture="en-US">Update article</Translation>
+          <Translation culture="de-DE">Artikel aktualisieren</Translation>
+          <Translation culture="bg-BG">Обновяване на статия</Translation>
+        </LocalizedString>
+      </Update>
     </Edit>
     <Account>
       <Activities>

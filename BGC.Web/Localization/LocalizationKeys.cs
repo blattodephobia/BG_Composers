@@ -18,6 +18,10 @@ public class List
             public const string AddEntry = "Administration.Edit.List.AddEntry";
             public const string PublishedArticles = "Administration.Edit.List.PublishedArticles";
 }
+public class Update
+{
+            public const string UpdateArticle = "Administration.Edit.Update.UpdateArticle";
+}
 }
 public class Account
 {

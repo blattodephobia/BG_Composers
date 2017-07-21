@@ -27,7 +27,10 @@
     @foreach (Composer composer in Model.Composers)
     {
         <span class="info">
-            @composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName()
+            @Html.ActionLink(
+                linkText: composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName(),
+                actionName: MVC.Administration.Edit.ActionNames.Update,
+                routeValues: new { composerId = composer.Id })
         </span>
     }
 </div>

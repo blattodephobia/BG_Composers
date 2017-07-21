@@ -12,49 +12,43 @@
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
               <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-              <xs:element name="Account">
+              <xs:element minOccurs="0" maxOccurs="1" name="Account">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="Activities" type="ViewElement"/>
-                    <xs:element name="ChangePassword" type="ViewElement"/>
-                    <xs:element name="ResetPassword" type="ViewElement"/>
-                    <xs:element name="RequestPasswordReset" type="ViewElement"/>
-                    <xs:element name="Login" type="ViewElement"/>
-                    <xs:element name="LogOut" type="ViewElement"/>
+                    <xs:element name="Activities" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="ChangePassword" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="SetLocale" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="ResetPassword" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="RequestPasswordReset" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>
-              <xs:element name="Authentication">
+              <xs:element minOccurs="0" maxOccurs="1" name="Authentication">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="Login" type="ViewElement"/>
-                    <xs:element name="LogOut" type="ViewElement"/>
+                    <xs:element name="Login" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="LogOut" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>
-              <xs:element name="Edit">
+              <xs:element minOccurs="0" maxOccurs="1" name="Edit">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="List" type="ViewElement"/>
-                    <xs:element name="Add" type="ViewElement"/>
+                    <xs:element name="List" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Add" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Update" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>
-              <xs:element name="UserManagement">
+              <xs:element minOccurs="0" maxOccurs="1" name="UserManagement">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="SendInvite" type="ViewElement"/>
-                    <xs:element name="Register" type="ViewElement"/>
-                    <xs:element name="Activities" type="ViewElement"/>
-                    <xs:element name="ChangePassword" type="ViewElement"/>
-                    <xs:element name="ResetPassword" type="ViewElement"/>
-                    <xs:element name="RequestPasswordReset" type="ViewElement"/>
-                    <xs:element name="Login" type="ViewElement"/>
-                    <xs:element name="LogOut" type="ViewElement"/>
+                    <xs:element name="SendInvite" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Register" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>
@@ -64,22 +58,24 @@
         <xs:element name="Public" minOccurs="0" maxOccurs="1">
           <xs:complexType>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
-              <xs:element name="Main">
+              <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+              <xs:element minOccurs="0" maxOccurs="1" name="Main">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="Index" type="ViewElement"/>
-                    <xs:element name="Read" type="ViewElement"/>
-                    <xs:element name="Search" type="ViewElement"/>
+                    <xs:element name="Index" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Read" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Search" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Error" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>
-              <xs:element name="Resources">
+              <xs:element minOccurs="0" maxOccurs="1" name="Resources">
                 <xs:complexType>
                   <xs:choice minOccurs="0" maxOccurs="unbounded">
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
-                    <xs:element name="Get" type="ViewElement"/>
-                    <xs:element name="Upload" type="ViewElement"/>
+                    <xs:element name="Get" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Upload" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>

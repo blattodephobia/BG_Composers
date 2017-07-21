@@ -17,7 +17,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         private IComposerDataService _composersService;
         private ISettingsService settingsService;
-        private IArticleContentService articleStorageService;
+        private IArticleContentService _articleStorageService;
 
         private static IEnumerable<XElement> GetImageTags(XElement htmlRoot)
         {
@@ -43,9 +43,9 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService)
         {
-            this._composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
+            _composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
             this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
-            this.articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
+            _articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
         }
 
         [Permissions(nameof(IArticleManagementPermission))]
@@ -77,9 +77,9 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 var name = new ComposerName(editedData.Articles[i].FullName, editedData.Articles[i].Language);
                 newComposer.LocalizedNames.Add(name);
-                newComposer.Articles.Add(new ComposerArticle()
+                newComposer.AddArticle(new ComposerArticle()
                 {
-                    StorageId = this.articleStorageService.StoreEntry(editedData.Articles[i].Content),
+                    StorageId = _articleStorageService.StoreEntry(editedData.Articles[i].Content),
                     Composer = newComposer,
                     Language = editedData.Articles[i].Language,
                     LocalizedName = name
@@ -88,6 +88,53 @@ namespace BGC.Web.Areas.Administration.Controllers
             _composersService.AddOrUpdate(newComposer);
 
             return RedirectToAction(nameof(List));
+        }
+
+        [HttpGet]
+        [Permissions(nameof(IArticleManagementPermission))]
+        public virtual ActionResult Update(Guid composerId)
+        {
+            Composer composer = _composersService.FindComposer(composerId);
+            var model = new UpdateComposerViewModel()
+            {
+                Articles = composer.GetArticles().Select(a => new AddArticleViewModel()
+                {
+                    Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
+                    FullName = composer.GetName(a.Language).FullName,
+                    Language = a.Language
+                }).ToList()
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ActionName(nameof(Update))]
+        [Permissions(nameof(IArticleManagementPermission))]
+        public virtual ActionResult Update_Post(UpdateComposerViewModel editedData)
+        {
+            Composer editingComposer = _composersService.FindComposer(editedData.ComposerId);
+
+            foreach (AddArticleViewModel newArticle in editedData.Articles)
+            {
+                ComposerName name = editingComposer.GetName(newArticle.Language);
+                if (name.FullName != newArticle.FullName)
+                {
+                    name.FullName = newArticle.FullName;
+                }
+
+                ComposerArticle existingArticle = editingComposer.GetArticle(newArticle.Language);
+                if (newArticle.Content != _articleStorageService.GetEntry(existingArticle.StorageId))
+                {
+                    editingComposer.AddArticle(new ComposerArticle(editingComposer, newArticle.Language)
+                    {
+                        StorageId = _articleStorageService.StoreEntry(newArticle.Content)
+                    });
+                }
+            }
+            _composersService.AddOrUpdate(editingComposer);
+
+            return RedirectToAction(MVC.Administration.Edit.List());
         }
     }
 }
