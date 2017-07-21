@@ -36,7 +36,7 @@ namespace TestUtils
         {
             var mockStore = chainMock?.As<IUserStore<BgcUser, long>>() ?? new Mock<IUserStore<BgcUser, long>>();
             mockStore
-                .Setup(store => store.FindByIdAsync(It.Is<long>(u => u== mockUser.Id)))
+                .Setup(store => store.FindByIdAsync(It.Is<long>(u => u == mockUser.Id)))
                 .ReturnsAsync(mockUser);
 
             mockStore
@@ -84,6 +84,13 @@ namespace TestUtils
                 .Returns(Task.CompletedTask);
 
             return mockEmailService;
+        }
+
+        public static Mock<ISettingsService> GetMockSettingsService(IList<Setting> settingsRepo = null)
+        {
+            var mockService = new Mock<MockSettingsService>(settingsRepo);
+            mockService.Setup(x => x.ReadSetting(It.IsNotNull<string>())).Returns((string name) => settingsRepo?.Where(s => s.Name == name).OrderByDescending(s => s.Priority).FirstOrDefault());
+            return mockService.As<ISettingsService>();
         }
 
         public static Mock<IUserTokenProvider<BgcUser, long>> GetMockTokenProvider(string defaultPasswordResetToken, BgcUser testUser)
@@ -196,6 +203,10 @@ namespace TestUtils
                 .Setup(s => s.AddOrUpdate(It.IsAny<Composer>()))
                 .Callback((Composer c) => composers.Add(c));
 
+            mockService
+                .Setup(s => s.FindComposer(It.IsAny<Guid>()))
+                .Returns((Guid id) => composers.FirstOrDefault(c => c.Id == id));
+
             return mockService;
         }
 
@@ -205,16 +216,29 @@ namespace TestUtils
         /// </summary>
         /// <param name="articles"></param>
         /// <returns></returns>
-        public static Mock<IArticleContentService> GetMockArticleService(IList<ComposerArticle> articles)
+        public static Mock<IArticleContentService> GetMockArticleService(IDictionary<Guid, string> articles)
         {
             Mock<IArticleContentService> mockService = new Mock<IArticleContentService>();
             mockService
                 .Setup(s => s.GetEntry(It.IsAny<Guid>()))
-                .Returns((Guid id) => articles.FirstOrDefault(a => a.StorageId == id)?.ToString());
+                .Returns((Guid id) => articles.ContainsKey(id) ? articles[id] : null);
 
             mockService
                 .Setup(s => s.RemoveEntry(It.IsAny<Guid>()))
-                .Callback((Guid id) => articles.Remove(articles.First(a => a.StorageId == id)));
+                .Callback((Guid id) => articles.Remove(id));
+
+            mockService
+                .Setup(s => s.StoreEntry(It.IsAny<string>()))
+                .Returns((string s) =>
+                {
+                    var id = Guid.NewGuid();
+                    articles.Add(id, s);
+                    return id;
+                });
+
+            mockService
+                .Setup(s => s.UpdateEntry(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Callback((Guid id, string s) => articles[id] = s);
 
             return mockService;
         }

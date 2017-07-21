@@ -67,9 +67,14 @@ namespace BGC.Web.Tests.PublicArea.Controllers
                 },
             };
 
-            foreach (Composer cmp in composers)
+            for (int i = 0; i < composers.Count; i++)
             {
-                cmp.Articles.Add(new ComposerArticle() { Composer = cmp, LocalizedName = cmp.LocalizedNames.First(), Language = CultureInfo.GetCultureInfo("en-US") });
+                Composer cmp = composers[i];
+                cmp.AddArticle(new ComposerArticle(cmp, CultureInfo.GetCultureInfo("en-US"))
+                {
+                    LocalizedName = cmp.LocalizedNames.First(),
+                    StorageId = new Guid(Enumerable.Range(0, 16).Select((_byte, index) => index == 15 ? (byte)(i) : (byte)0).ToArray())
+                });
             }
 
             return composers;
@@ -81,7 +86,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             var composers = GetComposers();
             var mainCtrl = new MainControllerProxy(
                 composersService: GetMockComposerService(composers).Object,
-                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
             mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
@@ -96,7 +101,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             var composers = GetComposers();
             var mainCtrl = new MainControllerProxy(
                 composersService: GetMockComposerService(composers).Object,
-                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
             mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
@@ -114,7 +119,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             var composers = GetComposers();
             var mainCtrl = new MainControllerProxy(
                 composersService: GetMockComposerService(composers).Object,
-                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
             mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
@@ -130,7 +135,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             var composers = GetComposers();
             var mainCtrl = new MainControllerProxy(
                 composersService: GetMockComposerService(composers).Object,
-                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToList()).Object,
+                articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
             mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
