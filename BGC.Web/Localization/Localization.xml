@@ -280,7 +280,7 @@
       <LocalizedString key="SearchCaption">
         <Translation culture="en-US">Search</Translation>
         <Translation culture="de-DE">Suchen</Translation>
-        <Translation culture="bg-BG">Търси</Translation>
+        <Translation culture="bg-BG">търси</Translation>
       </LocalizedString>
       <Search>
         <LocalizedString key="NoResults">
@@ -289,16 +289,28 @@
           <Translation culture="bg-BG">Няма резултати от търсенето.</Translation>
         </LocalizedString>
       </Search>
-    <Index>
-      <LocalizedString key="NoArticles">
-        <Translation culture="en-US">No articles found.</Translation>
-        <Translation culture="de-DE">Keine Artikel wurden gefunden.</Translation>
-        <Translation culture="bg-BG">Няма намерени статии.</Translation>
-      </LocalizedString>
-    </Index>
+      <Index>
+        <LocalizedString key="NoArticles">
+          <Translation culture="en-US">No articles found.</Translation>
+          <Translation culture="de-DE">Keine Artikel wurden gefunden.</Translation>
+          <Translation culture="bg-BG">Няма намерени статии.</Translation>
+        </LocalizedString>
+      </Index>
+      <Read>
+        <LocalizedString key="LanguagesSelectionCaption">
+          <Translation culture="en-US">Languages</Translation>
+          <Translation culture="de-DE">Sprachen</Translation>
+          <Translation culture="bg-BG">Езици</Translation>
+        </LocalizedString>
+      </Read>
     </Main>
   </Public>
   <Global>
+    <LocalizedString key="ApplicationName">
+      <Translation culture="en-US">Composers from Bulgaria</Translation>
+      <Translation culture="de-DE">Komponisten aus Bulgarien</Translation>
+      <Translation culture="bg-BG">Композитори от България</Translation>
+    </LocalizedString>
     <LocalizedString key="Error">
       <Translation culture="en-US">Error</Translation>
       <Translation culture="de-DE">Fehler</Translation>

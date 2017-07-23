@@ -109,10 +109,15 @@ public class Index
 {
             public const string NoArticles = "Public.Main.Index.NoArticles";
 }
+public class Read
+{
+            public const string LanguagesSelectionCaption = "Public.Main.Read.LanguagesSelectionCaption";
+}
 }
 }
 public class Global
 {
+    public const string ApplicationName = "Global.ApplicationName";
     public const string Error = "Global.Error";
     public const string ErrorOccurredDuringRequest = "Global.ErrorOccurredDuringRequest";
     public const string Forbidden = "Global.Forbidden";

@@ -56,3 +56,11 @@
     width: 16px;
     height: 10px;
 }
+
+.public-layout #contentPlaceHolder {
+    margin-top: 60px;
+}
+
+#searchForm input {
+    width: 350px;
+}
