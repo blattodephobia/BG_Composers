@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-@if (Model.Alphabet.Count() == 1)
+@if (Model.Alphabet.Length == 1)
 {
     <div class="text-center">
         <label class="text-primary">@Model.Alphabet[0]</label>
@@ -39,18 +39,76 @@
 }
 else
 {
-    <div class="text-center">
-        @foreach (char group in Model.Alphabet)
-        {
-            <div class="dropdown center">
-                @Html.ActionLink(group.ToString(), MVC.Public.Main.Index(group), new { @class = "dropbtn center text-primary" })
-                <div class="dropdown-content">
-                    @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
-                    {
-                        @Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.Composer.Id))
-                    }
-                </div>
+    <div class="panel panel-default emphasis-element">
+        <div class="panel-body">
+            <table class="fuck-css-centering emphasis-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <div class="text-center">
+                                <h2>@Localize(Public.Main.Index.Welcome)</h2>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", role = "search" }))
+                            {
+                                <table class="fuck-css-centering stretch">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <input name="query" class="form-control input-lg" placeholder="@Localize(Public.Main.SearchCaption)" />
+                                            </td>
+                                            <td class="fit-content">
+                                                <button type="submit" class="btn btn-lg btn-primary">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            }
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-offset-3 col-lg-6">
+            <div class="captioned-separator block-before-lg">
+                <a class="btn btn-primary" data-toggle="collapse" data-target="#browseIndex">
+                    <i data-icon-hide="ace-icon glyphicon glyphicon-triangle-bottom" data-icon-show="ace-icon glyphicon glyphicon-triangle-right" class="ace-icon glyphicon glyphicon-triangle-right"></i>
+                    @Localize(Public.Main.Index.OrBrowse)
+                </a>
             </div>
-        }
+        </div>
+    </div>
+    <div id="browseIndex" class="collapse well">
+        <div class="text-center">
+            @for (int i = 0; i < Model.Alphabet.Length; i++)
+            {
+                char group = Model.Alphabet[i];
+                if (Model.Articles.ContainsKey(group))
+                {
+                    <div class="dropdown center">
+                        @Html.ActionLink(group.ToString(), MVC.Public.Main.Index(group), new { @class = "dropbtn center text-primary" })
+                        <div class="dropdown-content">
+                            @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
+                            {
+                                Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.Composer.Id));
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <span class="disabled text-medium">@group</span>
+                }
+            }
+        </div>
     </div>
 }

@@ -295,6 +295,16 @@
           <Translation culture="de-DE">Keine Artikel wurden gefunden.</Translation>
           <Translation culture="bg-BG">Няма намерени статии.</Translation>
         </LocalizedString>
+        <LocalizedString key="Welcome">
+          <Translation culture="en-US">Welcome to Composers from Bulgaria</Translation>
+          <Translation culture="de-DE">Willkommen zu Komponisten aus Bulgarien</Translation>
+          <Translation culture="bg-BG">Добре дошли при Композитори от България</Translation>
+        </LocalizedString>
+        <LocalizedString key="OrBrowse">
+          <Translation culture="en-US">Or browse</Translation>
+          <Translation culture="de-DE">Oder stöbern Sie weiter</Translation>
+          <Translation culture="bg-BG">Или прегледай</Translation>
+        </LocalizedString>      
       </Index>
       <Read>
         <LocalizedString key="LanguagesSelectionCaption">

@@ -62,5 +62,63 @@
 }
 
 #searchForm input {
-    width: 350px;
+    display: inline-block;
+    width: 100%;
+}
+
+.captioned-separator::before {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #D0D0D0;
+    content: "";
+}
+
+.captioned-separator {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.text-medium {
+    font-size: 16px;
+    padding: 16px;
+}
+
+span.disabled {
+    color: rgb(102, 102, 102);
+}
+
+.block-before-lg {
+    margin-top: 50px;
+}
+
+.emphasis-table {
+    width: 80%;
+}
+
+.emphasis-table td > * {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.fuck-css-centering {
+    margin: 0 auto;
+}
+
+.stretch {
+    width: 100%;
+}
+
+.fit-content {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.emphasis-element {
+    padding-top: 20px;
+    padding-bottom: 20px;
 }

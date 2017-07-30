@@ -22,31 +22,10 @@
         <link href="~/Areas/Public/Resources/css/bt-themes/paper/variables.less" rel="stylesheet"/>
         <link href="~/Areas/Public/Resources/css/public.less" rel="stylesheet"/>
         <link href="~/Content/Site.css" rel="stylesheet" />
+
+        <script src="~/Scripts/common.js"></script>
     </head>
     <body class="container-fluid public-layout">
-        @if (!IsSectionDefined("jumbotron"))
-        {
-            <nav class="navbar navbar-inverse navbar-fixed-top">
-                <div class="container-fluid">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
-                    </div>
-
-                    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
-                        @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", @class = "navbar-form navbar-left", role = "search" }))
-                        {
-                            <div class="form-group">
-                                <input name="query" class="form-control" placeholder="@Localize(Public.Main.SearchCaption)" />
-                                <button type="submit" class="btn btn-default">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            </nav>
-        }
-
         <div class="row" id="contentPlaceHolder">
             <div>
                 @RenderSection("header", required: false)

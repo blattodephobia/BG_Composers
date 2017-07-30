@@ -55,28 +55,30 @@
             <div class="panel panel-default">
                 @for (int i = 0; i < Model.Articles.Count; i++)
                 {
-                    @Html.HiddenFor(m => Model.Articles[i].Language)
-                    <div class="panel-heading" role="tab" id="article-heading-@i">
-                        <div class="row name-edit-header">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
-                                <i data-icon-hide="ace-icon glyphicon glyphicon-minus" data-icon-show="ace-icon glyphicon glyphicon-plus" class="ace-icon glyphicon glyphicon-plus"></i>
-                            </a>
-                            <span>
-                                @Html.TextBoxFor(
-                                    expression: m => Model.Articles[i].FullName,
-                                    htmlAttributes: new
-                                    {
-                                        placeholder = string.Format(
-                                            format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
-                                            arg0: Model.Articles[i].Language.NativeName.Substring(
-                                                startIndex: 0,
-                                                length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
-                                    })
-                            </span>
+                    <div class="article-editor">
+                        @Html.HiddenFor(m => Model.Articles[i].Language)
+                        <div class="panel-heading" role="tab" id="article-heading-@i">
+                            <div class="row name-edit-header">
+                                <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
+                                    <i data-icon-hide="ace-icon glyphicon glyphicon-minus" data-icon-show="ace-icon glyphicon glyphicon-plus" class="ace-icon glyphicon glyphicon-plus"></i>
+                                </a>
+                                <span>
+                                    @Html.TextBoxFor(
+                                        expression: m => Model.Articles[i].FullName,
+                                        htmlAttributes: new
+                                        {
+                                            placeholder = string.Format(
+                                                format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
+                                                arg0: Model.Articles[i].Language.NativeName.Substring(
+                                                    startIndex: 0,
+                                                    length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
+                                        })
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                    <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
-                        @Html.TextAreaFor(m => Model.Articles[i].Content, new { @class = "tinymce" })
+                        <div id="article-collapse-@i" class="panel-collapse collapse" role="tabpanel" aria-labelledby="article-heading-@i">
+                            @Html.TextAreaFor(m => Model.Articles[i].Content, new { @class = "tinymce" })
+                        </div>
                     </div>
                 }
             </div>

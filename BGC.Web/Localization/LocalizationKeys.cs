@@ -108,6 +108,8 @@ public class Public
 public class Index
 {
             public const string NoArticles = "Public.Main.Index.NoArticles";
+            public const string Welcome = "Public.Main.Index.Welcome";
+            public const string OrBrowse = "Public.Main.Index.OrBrowse";
 }
 public class Read
 {
