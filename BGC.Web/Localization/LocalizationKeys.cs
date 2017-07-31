@@ -110,6 +110,7 @@ public class Index
             public const string NoArticles = "Public.Main.Index.NoArticles";
             public const string Welcome = "Public.Main.Index.Welcome";
             public const string OrBrowse = "Public.Main.Index.OrBrowse";
+            public const string InOtherLanguages = "Public.Main.Index.InOtherLanguages";
 }
 public class Read
 {

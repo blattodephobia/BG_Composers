@@ -304,7 +304,12 @@
           <Translation culture="en-US">Or browse</Translation>
           <Translation culture="de-DE">Oder stöbern Sie weiter</Translation>
           <Translation culture="bg-BG">Или прегледай</Translation>
-        </LocalizedString>      
+        </LocalizedString>
+        <LocalizedString key="InOtherLanguages">
+          <Translation culture="en-US">In other languages</Translation>
+          <Translation culture="de-DE">Auf anderen Sprachen</Translation>
+          <Translation culture="bg-BG">На други езици</Translation>
+        </LocalizedString>
       </Index>
       <Read>
         <LocalizedString key="LanguagesSelectionCaption">

@@ -122,3 +122,9 @@ span.disabled {
     padding-top: 20px;
     padding-bottom: 20px;
 }
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    right: 16px;
+}

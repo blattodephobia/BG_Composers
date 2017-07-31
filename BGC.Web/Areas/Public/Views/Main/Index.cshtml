@@ -1,4 +1,8 @@
-﻿@model IndexViewModel
+﻿@using System.Globalization;
+@using System.Text.RegularExpressions;
+@using BGC.Web.Controllers;
+
+@model IndexViewModel
 
 @{
     ViewBag.Title = "Index";
@@ -111,4 +115,29 @@ else
             }
         </div>
     </div>
+}
+
+@section footer {
+    <ul class="list-inline">
+        <li>@Localize(Public.Main.Index.InOtherLanguages):</li>
+        @foreach (CultureInfo language in SupportedLanguages)
+        {
+            <li>
+                @{
+                    string languageName = Regex.Replace(language.NativeName, @"\s\([\w\d\s]+\)", ""); @* remove the region name and leave the language name only *@
+                if (!language.Equals(CurrentLocale))
+                {
+                    RouteValueDictionary newRouteData = new RouteValueDictionary(ViewContext.RouteData.Values);
+                    newRouteData[(ViewContext.Controller as BgcControllerBase).ApplicationProfile.LocaleRouteTokenName] = language.Name;
+
+                    @Html.ActionLink(languageName, MVC.Public.Main.ActionNames.Index, newRouteData)
+                }
+                else
+                {
+                    <span>@languageName</span>
+                }
+                }
+            </li>
+        }
+    </ul>
 }

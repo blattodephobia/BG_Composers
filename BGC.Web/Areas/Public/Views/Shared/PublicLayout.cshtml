@@ -49,7 +49,9 @@
             </div>
         </div>
 
-        <footer></footer>
+        <footer>
+            @RenderSection("footer", required: false)
+        </footer>
 
         @RenderSection("scripts", required: false)
     </body>
