@@ -96,11 +96,11 @@ span.disabled {
     margin-top: 50px;
 }
 
-.emphasis-table {
+.emphasis-element {
     width: 80%;
 }
 
-.emphasis-table td > * {
+.emphasis-element td > * {
     margin-top: 20px;
     margin-bottom: 20px;
 }
