@@ -104,6 +104,8 @@ public class Public
             public class Search
             {
                         public const string NoResults = "Public.Main.Search.NoResults";
+                        public const string SearchResults = "Public.Main.Search.SearchResults";
+                        public const string SearchAgain = "Public.Main.Search.SearchAgain";
 }
 public class Index
 {

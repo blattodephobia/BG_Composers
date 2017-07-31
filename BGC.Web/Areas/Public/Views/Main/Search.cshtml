@@ -5,29 +5,67 @@
 @model SearchResultViewModel
 
 @{
-    ViewBag.Title = "Search";
+    ViewBag.Title = Localize(Public.Main.Search.SearchResults);
 }
 
-<h2>Search</h2>
-@if (Model.Results.Any())
+@section header
 {
-    <ul>
-        @foreach (KeyValuePair<Guid, string> kvp in Model.Results)
-        {
-            <li>
-                @Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.composerId, kvp.Key))
-            </li>
-        }
-    </ul>
+    <div class="row">
+        <nav class="navbar center col-lg-offset-3 col-lg-7">
+            <div class="container-fluid">
+                @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", @class = "navbar-form", target = "_self", role = "search" }))
+                    {
+                    <table class="fuck-css-centering stretch">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input name="query" class="form-control input-lg" placeholder="@Localize(Public.Main.Search.SearchAgain)" />
+                                </td>
+                                <td class="fit-content">
+                                    <button type="submit" class="btn btn-lg btn-primary">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </nav>
+    </div>
 }
-else
-{
-    <span>@Localize(Public.Main.Search.NoResults)</span>
-}
+
+
+<div class="search-results-container">
+
+    <h3>@Localize(Public.Main.Search.SearchResults)</h3>
+
+    @if (Model.Results.Any())
+            {
+        <div>
+            @foreach (KeyValuePair<Guid, string> kvp in Model.Results)
+            {
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <span class="panel-title">@Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.composerId, kvp.Key))</span>
+                    </div>
+                    <div class="panel-body search-result-body">
+
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div>@Localize(Public.Main.Search.NoResults)</div>
+    }
+</div>
 
 @section footer {
     <ul class="list-inline">
         <li>@Localize(Public.Main.Index.InOtherLanguages):</li>
+
         @foreach (CultureInfo language in SupportedLanguages)
         {
             <li>
@@ -46,6 +84,6 @@ else
                 }
                 }
             </li>
-        }
+                    }
     </ul>
 }

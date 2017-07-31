@@ -288,6 +288,16 @@
           <Translation culture="de-DE">Keine Suchergebnisse.</Translation>
           <Translation culture="bg-BG">Няма резултати от търсенето.</Translation>
         </LocalizedString>
+        <LocalizedString key="SearchResults">
+          <Translation culture="en-US">Search results</Translation>
+          <Translation culture="de-DE">Suchergebnisse</Translation>
+          <Translation culture="bg-BG">Резултати от търсенето</Translation>          
+        </LocalizedString>
+        <LocalizedString key="SearchAgain">
+          <Translation culture="en-US">search again</Translation>
+          <Translation culture="de-DE">noch einmal suchen</Translation>
+          <Translation culture="bg-BG">търси отново</Translation>          
+        </LocalizedString>
       </Search>
       <Index>
         <LocalizedString key="NoArticles">

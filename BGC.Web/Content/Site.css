@@ -128,3 +128,16 @@ footer {
     bottom: 0px;
     right: 16px;
 }
+
+.search-result-body {
+    height: 48px;
+}
+
+.search-result-link span {
+    display: inline-block;
+}
+
+.search-results-container > * {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
