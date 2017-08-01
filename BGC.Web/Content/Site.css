@@ -61,7 +61,7 @@
     margin-top: 60px;
 }
 
-#searchForm input {
+.searchForm input {
     display: inline-block;
     width: 100%;
 }
@@ -140,4 +140,8 @@ footer {
 .search-results-container > * {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+.input-wide {
+    width: 400px !important;
 }
