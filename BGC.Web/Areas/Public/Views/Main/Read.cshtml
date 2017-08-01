@@ -5,7 +5,7 @@
 @model ArticleViewModel
 
 @{
-    ViewBag.Title = "Read";
+    ViewBag.Title = string.Format("{0} - {1}", Model.Title, Localize(Global.ApplicationName));
 }
 
 @section scripts
