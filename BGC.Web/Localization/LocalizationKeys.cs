@@ -104,15 +104,25 @@ public class Public
             public class Search
             {
                         public const string NoResults = "Public.Main.Search.NoResults";
+                        public const string SearchResults = "Public.Main.Search.SearchResults";
+                        public const string SearchAgain = "Public.Main.Search.SearchAgain";
 }
 public class Index
 {
             public const string NoArticles = "Public.Main.Index.NoArticles";
+            public const string Welcome = "Public.Main.Index.Welcome";
+            public const string OrBrowse = "Public.Main.Index.OrBrowse";
+            public const string InOtherLanguages = "Public.Main.Index.InOtherLanguages";
+}
+public class Read
+{
+            public const string LanguagesSelectionCaption = "Public.Main.Read.LanguagesSelectionCaption";
 }
 }
 }
 public class Global
 {
+    public const string ApplicationName = "Global.ApplicationName";
     public const string Error = "Global.Error";
     public const string ErrorOccurredDuringRequest = "Global.ErrorOccurredDuringRequest";
     public const string Forbidden = "Global.Forbidden";

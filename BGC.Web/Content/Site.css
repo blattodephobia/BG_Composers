@@ -56,3 +56,96 @@
     width: 16px;
     height: 10px;
 }
+
+.public-layout #contentPlaceHolder {
+    margin-top: 60px;
+}
+
+.searchForm input {
+    display: inline-block;
+    width: 100%;
+}
+
+.captioned-separator::before {
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px solid #D0D0D0;
+    content: "";
+}
+
+.captioned-separator {
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+.text-medium {
+    font-size: 16px;
+    padding: 16px;
+}
+
+span.disabled {
+    color: rgb(102, 102, 102);
+}
+
+.block-before-lg {
+    margin-top: 50px;
+}
+
+.emphasis-element {
+    width: 80%;
+}
+
+.emphasis-element td > * {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.fuck-css-centering {
+    margin: 0 auto;
+}
+
+.stretch {
+    width: 100% !important;
+}
+
+input.stretch {
+    display: inline-block;
+}
+
+.fit-content {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.emphasis-element {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0px;
+    right: 16px;
+}
+
+.search-result-body {
+    height: 48px;
+}
+
+.search-result-link span {
+    display: inline-block;
+}
+
+.search-results-container > * {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input-wide {
+    width: 400px !important;
+}
