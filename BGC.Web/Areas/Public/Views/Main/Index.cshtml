@@ -43,7 +43,7 @@
 }
 else
 {
-    <div class="panel panel-default emphasis-element">
+    <div class="panel panel-default stretch emphasis-element">
         <div class="panel-body">
             <table class="fuck-css-centering emphasis-element">
                 <tbody>
@@ -80,17 +80,14 @@ else
             </table>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-offset-3 col-lg-6">
-            <div class="captioned-separator block-before-lg">
-                <a class="btn btn-primary" data-toggle="collapse" data-target="#browseIndex">
-                    <i data-icon-hide="ace-icon glyphicon glyphicon-triangle-bottom" data-icon-show="ace-icon glyphicon glyphicon-triangle-right" class="ace-icon glyphicon glyphicon-triangle-right"></i>
-                    @Localize(Public.Main.Index.OrBrowse)
-                </a>
-            </div>
-        </div>
+        
+    <div class="captioned-separator block-before-lg center">
+        <a class="btn btn-primary" data-toggle="collapse" data-target="#browseIndex">
+            <i data-icon-hide="ace-icon glyphicon glyphicon-triangle-bottom" data-icon-show="ace-icon glyphicon glyphicon-triangle-right" class="ace-icon glyphicon glyphicon-triangle-right"></i>
+            @Localize(Public.Main.Index.OrBrowse)
+        </a>
     </div>
+
     <div id="browseIndex" class="collapse well">
         <div class="text-center">
             @for (int i = 0; i < Model.Alphabet.Length; i++)
