@@ -110,7 +110,11 @@ span.disabled {
 }
 
 .stretch {
-    width: 100%;
+    width: 100% !important;
+}
+
+input.stretch {
+    display: inline-block;
 }
 
 .fit-content {

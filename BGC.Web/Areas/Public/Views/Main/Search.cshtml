@@ -11,25 +11,31 @@
 @section header
 {
     <div class="row">
-        <nav class="navbar center col-lg-offset-3 col-lg-7">
+        <nav class="navbar navbar-fixed-top">
             <div class="container-fluid">
-                @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", @class = "navbar-form", target = "_self", role = "search" }))
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
+                    @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", @class = "navbar-form navbar-left", role = "search" }))
                     {
-                    <table class="fuck-css-centering stretch">
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <input name="query" class="form-control input-lg" placeholder="@Localize(Public.Main.Search.SearchAgain)" />
-                                </td>
-                                <td class="fit-content">
-                                    <button type="submit" class="btn btn-lg btn-primary">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                }
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input name="query" class="form-control input-wide" type="text" placeholder="@Localize(Public.Main.Search.SearchAgain)" />
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
         </nav>
     </div>
