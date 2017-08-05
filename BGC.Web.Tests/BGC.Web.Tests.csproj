@@ -164,8 +164,10 @@
     <Compile Include="AdministrationArea\Controllers\AccountControllerTests.cs" />
     <Compile Include="AdministrationArea\Controllers\AuthenticationControllerTests.cs" />
     <Compile Include="AdministrationArea\Controllers\EditControllerTests.cs" />
+    <Compile Include="AdministrationArea\Controllers\GlossaryControllerTests.cs" />
     <Compile Include="AdministrationArea\Filters\AdminAreaAuthorizationAttributeTests.cs" />
     <Compile Include="AdministrationArea\Filters\PermissionsAttributeTests.cs" />
+    <Compile Include="AdministrationArea\ViewModels\GlossaryEntryViewModelTests.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandlerTests.cs" />
     <Compile Include="Models\ActionCollectionTests.cs" />
     <Compile Include="Models\RequestContextLocaleTests.cs" />

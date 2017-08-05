@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Models;
 using BGC.Core.Services;
 using BGC.Web.Models;
 using BGC.Web.Services;
@@ -239,6 +240,28 @@ namespace TestUtils
             mockService
                 .Setup(s => s.UpdateEntry(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Callback((Guid id, string s) => articles[id] = s);
+
+            return mockService;
+        }
+
+        public static Mock<IGlossaryService> GetMockGlossaryService(List<GlossaryEntry> backingStore)
+        {
+            var mockService = new Mock<IGlossaryService>();
+            mockService
+                .Setup(s => s.ListAll())
+                .Returns(() => backingStore);
+
+            mockService
+                .Setup(s => s.Delete(It.IsAny<GlossaryEntry>()))
+                .Callback((GlossaryEntry entry) => backingStore.Remove(entry));
+
+            mockService
+                .Setup(s => s.Find(It.IsAny<Guid>()))
+                .Returns((Guid id) => backingStore.FirstOrDefault(x => x?.Id == id));
+
+            mockService
+                .Setup(s => s.AddOrUpdate(It.IsAny<GlossaryEntry>()))
+                .Callback((GlossaryEntry entry) => backingStore.Add(entry));
 
             return mockService;
         }

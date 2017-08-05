@@ -23,6 +23,18 @@ public class Update
             public const string UpdateArticle = "Administration.Edit.Update.UpdateArticle";
 }
 }
+public class Glossary
+{
+        public class ListGlossary
+        {
+                    public const string Glossary = "Administration.Glossary.ListGlossary.Glossary";
+}
+public class Edit
+{
+            public const string AddEntry = "Administration.Glossary.Edit.AddEntry";
+            public const string EditEntry = "Administration.Glossary.Edit.EditEntry";
+}
+}
 public class Account
 {
         public class Activities
@@ -34,6 +46,7 @@ public class Account
                     public const string ContentManagement = "Administration.Account.Activities.ContentManagement";
                     public const string UserSettings = "Administration.Account.Activities.UserSettings";
                     public const string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
+                    public const string GlossaryManagement = "Administration.Account.Activities.GlossaryManagement";
 }
 public class RequestPasswordReset
 {

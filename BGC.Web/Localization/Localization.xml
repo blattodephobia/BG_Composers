@@ -44,6 +44,27 @@
         </LocalizedString>
       </Update>
     </Edit>
+    <Glossary>
+      <ListGlossary>
+        <LocalizedString key="Glossary">
+          <Translation culture="en-US">Glossary</Translation>
+          <Translation culture="de-DE">Glossar</Translation>
+          <Translation culture="bg-BG">Речник</Translation>
+        </LocalizedString>
+      </ListGlossary>
+      <Edit>
+        <LocalizedString key="AddEntry">
+          <Translation culture="en-US">Add glossary entry</Translation>
+          <Translation culture="de-DE">Glossareintrag hinzufügen</Translation>
+          <Translation culture="bg-BG">Добавяне на понятие в речника</Translation>          
+        </LocalizedString>
+        <LocalizedString key="EditEntry">
+          <Translation culture="en-US">Edit glossary entry</Translation>
+          <Translation culture="de-DE">Glossareintrag bearbeiten</Translation>
+          <Translation culture="bg-BG">Редактиране на понятие от речника</Translation>          
+        </LocalizedString>
+      </Edit>
+    </Glossary>
     <Account>
       <Activities>
         <LocalizedString key="WelcomeToAdminArea">
@@ -80,6 +101,11 @@
           <Translation culture="en-US">Global settings</Translation>
           <Translation culture="de-DE">Globale Einstellungen</Translation>
           <Translation culture="bg-BG">Глобални настройки</Translation>
+        </LocalizedString>
+        <LocalizedString key="GlossaryManagement">
+          <Translation culture="en-US">Edit glossary</Translation>
+          <Translation culture="de-DE">Glossar bearbeiten</Translation>
+          <Translation culture="bg-BG">Редактиране на речник</Translation>
         </LocalizedString>
       </Activities>
       <RequestPasswordReset>

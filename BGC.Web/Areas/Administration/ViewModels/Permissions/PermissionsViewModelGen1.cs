@@ -13,6 +13,13 @@ namespace BGC.Web.Areas.Administration.ViewModels.Permissions
     }
 
     [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
+    [MappableWith(typeof(BGC.Core.IGlossaryManagementPermission))]
+    [Discoverable(typeof(AccountController))]
+    public partial class GlossaryManagementPermissionViewModel : PermissionViewModelBase
+    {
+    }
+
+    [GeneratedCode("PermissionsViewModelGen.tt", "1.0.0.0")]
     [MappableWith(typeof(BGC.Core.ISendInvitePermission))]
     [Discoverable(typeof(AccountController))]
     public partial class SendInvitePermissionViewModel : PermissionViewModelBase

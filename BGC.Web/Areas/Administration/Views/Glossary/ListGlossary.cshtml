@@ -1,0 +1,23 @@
+﻿@model GlossaryListViewModel
+
+@{
+    ViewBag.Title = Localize(Administration.Glossary.ListGlossary.Glossary);
+}
+
+<h2>@ViewBag.Title</h2>
+
+@Html.ActionLink(Localize(Administration.Glossary.Edit.AddEntry), MVC.Administration.Glossary.Edit())
+
+<table>
+    <tbody>
+        @foreach (GlossaryEntryViewModel entry in Model.Entries)
+        {
+            <tr>
+                <td>@entry.Id</td>
+                <td>
+                    @Html.ActionLink(entry.GetDefinitionsInLocale(CurrentLocale).First().Definition, MVC.Administration.Glossary.Edit(entry.Id))
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

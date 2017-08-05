@@ -262,6 +262,9 @@
     <Compile Include="Administration.EditController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Administration.GlossaryController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Administration.SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -278,6 +281,7 @@
     <Compile Include="Areas\Administration\AdministrationAreaRegistration.cs" />
     <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
     <Compile Include="Areas\Administration\Controllers\AdministrationControllerBase.cs" />
+    <Compile Include="Areas\Administration\Controllers\GlossaryController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Administration\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
@@ -288,11 +292,15 @@
     <Compile Include="Areas\Administration\ViewModels\AddArticleViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddComposerViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ChangePasswordViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\GlossaryDefinitionViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\GlossaryEntryViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\GlossaryListViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ListArticlesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ApplicationSettingsWritePermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\ArticleManagementPermissionViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\Permissions\GlossaryManagementPermissionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -372,6 +380,8 @@
     <Content Include="Areas\Administration\Views\Account\ChangePassword.cshtml" />
     <Content Include="Areas\Public\Resources\css\bt-themes\paper\bootstrap-paper.css" />
     <Content Include="Areas\Administration\Views\Edit\Update.cshtml" />
+    <Content Include="Areas\Administration\Views\Glossary\ListGlossary.cshtml" />
+    <Content Include="Areas\Administration\Views\Glossary\Edit.cshtml" />
     <None Include="Areas\Public\Resources\css\public.less" />
     <Content Include="Areas\Public\Views\Main\Search.cshtml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

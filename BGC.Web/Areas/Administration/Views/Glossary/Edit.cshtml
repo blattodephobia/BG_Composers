@@ -1,0 +1,20 @@
+﻿@model GlossaryEntryViewModel
+
+@{
+    ViewBag.Title = Localize(Model.Id == null ? Administration.Glossary.Edit.AddEntry : Administration.Glossary.Edit.EditEntry);
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(MVC.Administration.Glossary.Edit_Post(), FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.Id);
+    for (int i = 0; i < Model.Definitions.Count; i++)
+    {
+        <div>
+            @Html.HiddenFor(m => m.Definitions[i].LocaleCode)
+            @Html.TextAreaFor(m => m.Definitions[i].Definition)
+        </div>
+    }
+    <input type="submit" value="@Localize(Global.Save)"/>
+}
