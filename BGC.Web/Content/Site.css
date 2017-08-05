@@ -149,3 +149,16 @@ footer {
 .input-wide {
     width: 400px !important;
 }
+
+a.btn {
+    white-space: normal;
+}
+
+a td {
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
+a > table {
+    margin: -6px -12px;
+}

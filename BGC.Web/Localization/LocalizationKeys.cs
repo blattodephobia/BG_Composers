@@ -28,6 +28,9 @@ public class Glossary
         public class ListGlossary
         {
                     public const string Glossary = "Administration.Glossary.ListGlossary.Glossary";
+                    public const string TermName = "Administration.Glossary.ListGlossary.TermName";
+                    public const string InOtherLanguages = "Administration.Glossary.ListGlossary.InOtherLanguages";
+                    public const string Definition = "Administration.Glossary.ListGlossary.Definition";
 }
 public class Edit
 {

@@ -30,6 +30,9 @@ namespace BGC.Web.Areas.Administration.ViewModels
         public IEnumerable<GlossaryDefinitionViewModel> GetDefinitionsInLocale(params CultureInfo[] locales) =>
             GetDefinitionsInLocale(new HashSet<CultureInfo>(locales));
 
+        public IEnumerable<GlossaryDefinitionViewModel> GetDefinitionsInLocale(IEnumerable<CultureInfo> localesCollection) =>
+            GetDefinitionsInLocale(locales: new HashSet<CultureInfo>(localesCollection));
+
         public IEnumerable<GlossaryDefinitionViewModel> GetDefinitionsInLocale(HashSet<CultureInfo> locales)
         {
             return Definitions?.Where(def => locales.Contains(def.GetLocaleCultureInfo()));
