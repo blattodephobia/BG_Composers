@@ -103,9 +103,9 @@
     <Compile Include="Migrations\201706241955076_ArticlesArchivability.Designer.cs">
       <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707241131186_Glossary.cs" />
-    <Compile Include="Migrations\201707241131186_Glossary.Designer.cs">
-      <DependentUpon>201707241131186_Glossary.cs</DependentUpon>
+    <Compile Include="Migrations\201708051247594_Glosssary.cs" />
+    <Compile Include="Migrations\201708051247594_Glosssary.Designer.cs">
+      <DependentUpon>201708051247594_Glosssary.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -140,8 +140,8 @@
     <EmbeddedResource Include="Migrations\201706241955076_ArticlesArchivability.resx">
       <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707241131186_Glossary.resx">
-      <DependentUpon>201707241131186_Glossary.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708051247594_Glosssary.resx">
+      <DependentUpon>201708051247594_Glosssary.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

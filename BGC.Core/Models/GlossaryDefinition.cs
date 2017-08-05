@@ -16,7 +16,7 @@ namespace BGC.Core.Models
         private string _definition;
 
         [Required]
-        protected string LanguageInternal
+        internal protected string LanguageInternal
         {
             get
             {
@@ -67,6 +67,9 @@ namespace BGC.Core.Models
         public GlossaryDefinition(CultureInfo language, string definition) :
             this()
         {
+            Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
+            Shield.IsNotNullOrEmpty(definition, nameof(definition)).ThrowOnError();
+
             _language = language;
             _definition = definition;
         }

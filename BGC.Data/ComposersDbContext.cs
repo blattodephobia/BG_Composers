@@ -86,6 +86,12 @@ namespace BGC.Data
                 .Property(entry => entry.LanguageInternal)
                 .HasColumnName(nameof(ComposerArticle.Language))
                 .IsRequired();
+
+            modelBuilder.Entity<GlossaryDefinition>()
+                .Property(definition => definition.LanguageInternal)
+                .HasColumnName(nameof(GlossaryDefinition.Language))
+                .IsRequired();
+
             modelBuilder.Entity<ComposerArticle>()
                 .Property(entry => entry.StorageId);
                         

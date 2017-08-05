@@ -3,7 +3,7 @@ namespace BGC.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Glossary : DbMigration
+    public partial class Glosssary : DbMigration
     {
         public override void Up()
         {
@@ -20,6 +20,7 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Language = c.String(nullable: false, unicode: false),
                         Definition = c.String(nullable: false, maxLength: 1000, storeType: "nvarchar"),
                         GlossaryEntry_Id = c.Guid(),
                     })
