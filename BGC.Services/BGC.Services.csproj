@@ -79,6 +79,7 @@
     <Compile Include="FileSystemMediaService.cs" />
     <Compile Include="FileSystemStorageService.cs" />
     <Compile Include="FileSystemArticleContentService.cs" />
+    <Compile Include="GlossaryService.cs" />
     <Compile Include="LocalizationService.cs" />
     <Compile Include="SmtpClientConfigurationElement.cs" />
     <Compile Include="SmtpClientConfigurationCollection.cs" />
