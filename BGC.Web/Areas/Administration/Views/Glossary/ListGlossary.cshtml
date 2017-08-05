@@ -58,7 +58,7 @@
                                 var aliasLanguages = new HashSet<CultureInfo>(SupportedLanguages.Except(new[] { CurrentLocale }));
                                 foreach (GlossaryDefinitionViewModel def in entry.GetDefinitionsInLocale(aliasLanguages))
                                 {
-                                    <li>@def.Definition</li>
+                                    <li>@def.Term</li>
                                 }
                             }
                         </ul>
