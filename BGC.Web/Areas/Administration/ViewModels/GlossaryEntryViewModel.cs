@@ -39,11 +39,16 @@ namespace BGC.Web.Areas.Administration.ViewModels
         {
             Shield.ArgumentNotNull(entry, nameof(entry)).ThrowOnError();
 
-            var definitions = entry.Definitions.Select(def => new GlossaryDefinitionViewModel() { LocaleCode = def.Language.Name, Definition = def.Definition });
+            var definitions = entry.Definitions.Select(def => new GlossaryDefinitionViewModel()
+            {
+                LocaleCode = def.Language.Name,
+                Definition = def.Definition,
+                Term = def.Term
+            });
             var result = new GlossaryEntryViewModel()
             {
                 Definitions = definitions.ToList(),
-                Id = entry.Id
+                Id = entry.Id,
             };
 
             return result;

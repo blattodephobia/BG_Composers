@@ -17,7 +17,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new GlossaryDefinition(null, "definition");
+                new GlossaryDefinition(null, "definition", "term");
             });
         }
 
@@ -26,7 +26,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), null);
+                new GlossaryDefinition(new CultureInfo("en-US"), null, "term");
             });
 
         }
@@ -36,18 +36,38 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), "");
+                new GlossaryDefinition(new CultureInfo("en-US"), "", "term");
+            });
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullTerm()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                new GlossaryDefinition(new CultureInfo("en-US"), "definition", null);
+            });
+
+        }
+
+        [Test]
+        public void ThrowsExceptionIfEmptyTerm()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                new GlossaryDefinition(new CultureInfo("en-US"), "definition", "");
             });
         }
 
         [Test]
         public void SetsPropertiesCorrectly()
         {
-            var def = new GlossaryDefinition(CultureInfo.GetCultureInfo("en-US"), "Hello world");
+            var def = new GlossaryDefinition(CultureInfo.GetCultureInfo("en-US"), "Hello world", "Welcoming");
 
             Assert.AreEqual("en-US", def.LanguageInternal);
             Assert.AreEqual(CultureInfo.GetCultureInfo("en-US"), def.Language);
             Assert.AreEqual("Hello world", def.Definition);
+            Assert.AreEqual("Welcoming", def.Term);
         }
     }
 
@@ -57,7 +77,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         [Test]
         public void ThrowsExceptionIfLanguageNotSupported()
         {
-            var def = new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch");
+            var def = new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch", "term");
 
             Assert.Throws<CultureNotFoundException>(() => def.LanguageInternal = "z3-45");
         }
@@ -65,7 +85,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         [Test]
         public void SetsLanguageCorrectly()
         {
-            var def = new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch");
+            var def = new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch", "term");
 
             def.Language = new CultureInfo("en-US");
             Assert.AreEqual("en-US", def.LanguageInternal);

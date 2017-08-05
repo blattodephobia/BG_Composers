@@ -54,7 +54,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             var currentEntry = new GlossaryEntry()
             {
                 Id = entry.Id.GetValueOrDefault(),
-                Definitions = entry.Definitions.Select(d => new GlossaryDefinition(d.GetLocaleCultureInfo(), d.Definition)).ToList()
+                Definitions = entry.Definitions.Select(d => new GlossaryDefinition(d.GetLocaleCultureInfo(), d.Definition, d.Term)).ToList()
             };
             _glossaryService.AddOrUpdate(currentEntry);
 

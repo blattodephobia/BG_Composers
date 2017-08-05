@@ -74,7 +74,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.GlossaryControllerTests
         public void ReturnsViewModelForUpdateIfCorrectId()
         {
             Guid id = Guid.NewGuid();
-            var definition = new GlossaryDefinition(new CultureInfo("en-US"), "Hey");
+            var definition = new GlossaryDefinition(new CultureInfo("en-US"), "Hey", "term");
             var existingEntry = new GlossaryEntry()
             {
                 Id = id,

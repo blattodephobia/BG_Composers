@@ -13,6 +13,7 @@
     {
         <div>
             @Html.HiddenFor(m => m.Definitions[i].LocaleCode)
+            @Html.TextBoxFor(m => m.Definitions[i].Term)
             @Html.TextAreaFor(m => m.Definitions[i].Definition)
         </div>
     }

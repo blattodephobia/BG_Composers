@@ -14,6 +14,7 @@ namespace BGC.Core.Models
     {
         private CultureInfo _language;
         private string _definition;
+        private string _term;
 
         [Required]
         internal protected string LanguageInternal
@@ -45,6 +46,22 @@ namespace BGC.Core.Models
         }
 
         [Required, Unicode]
+        public string Term
+        {
+            get
+            {
+                return _term;
+            }
+
+            set
+            {
+                Shield.IsNotNullOrEmpty(value, nameof(Term)).ThrowOnError();
+
+                _term = value;
+            }
+        }
+
+        [Required, Unicode]
         public string Definition
         {
             get
@@ -64,14 +81,16 @@ namespace BGC.Core.Models
         {
         }
 
-        public GlossaryDefinition(CultureInfo language, string definition) :
+        public GlossaryDefinition(CultureInfo language, string definition, string term) :
             this()
         {
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
             Shield.IsNotNullOrEmpty(definition, nameof(definition)).ThrowOnError();
+            Shield.IsNotNullOrEmpty(term, nameof(term)).ThrowOnError();
 
             _language = language;
             _definition = definition;
+            _term = term;
         }
     }
 }

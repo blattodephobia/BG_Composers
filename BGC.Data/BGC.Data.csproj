@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201708051247594_Glosssary.Designer.cs">
       <DependentUpon>201708051247594_Glosssary.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708052030157_GlossaryDefinition_Term.cs" />
+    <Compile Include="Migrations\201708052030157_GlossaryDefinition_Term.Designer.cs">
+      <DependentUpon>201708052030157_GlossaryDefinition_Term.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -142,6 +146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708051247594_Glosssary.resx">
       <DependentUpon>201708051247594_Glosssary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708052030157_GlossaryDefinition_Term.resx">
+      <DependentUpon>201708052030157_GlossaryDefinition_Term.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

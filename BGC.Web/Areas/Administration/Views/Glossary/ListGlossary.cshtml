@@ -15,7 +15,7 @@
             <tr>
                 <td>@entry.Id</td>
                 <td>
-                    @Html.ActionLink(entry.GetDefinitionsInLocale(CurrentLocale).First().Definition, MVC.Administration.Glossary.Edit(entry.Id))
+                    @Html.ActionLink(entry.GetDefinitionsInLocale(CurrentLocale).First().Term, MVC.Administration.Glossary.Edit(entry.Id))
                 </td>
             </tr>
         }

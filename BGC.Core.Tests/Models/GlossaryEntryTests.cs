@@ -29,8 +29,8 @@ namespace BGC.Core.Tests.Models
             {
                 Definitions = new List<GlossaryDefinition>()
                 {
-                    new GlossaryDefinition(new CultureInfo("en-US"), "english"),
-                    new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch"),
+                    new GlossaryDefinition(new CultureInfo("en-US"), "english", "term"),
+                    new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch", "term"),
                 }
             };
 

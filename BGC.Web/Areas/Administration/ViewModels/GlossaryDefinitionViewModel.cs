@@ -12,6 +12,8 @@ namespace BGC.Web.Areas.Administration.ViewModels
         public string LocaleCode { get; set; }
 
         public string Definition { get; set; }
+
+        public string Term { get; set; }
         
         public CultureInfo GetLocaleCultureInfo() => CultureInfo.GetCultureInfo(LocaleCode);
     }
