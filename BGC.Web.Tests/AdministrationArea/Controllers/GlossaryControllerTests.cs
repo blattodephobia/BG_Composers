@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using static TestUtils.MockUtilities;
 
@@ -114,6 +116,46 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.GlossaryControllerTests
 
             mockSvc.Verify(svc => svc.AddOrUpdate(It.Is<GlossaryEntry>(g => g.Id == id)));
             Assert.AreEqual(id, backingStore.Single().Id);
+        }
+    }
+
+    [TestFixture]
+    public class DeleteTests
+    {
+        [Test]
+        public void SetsStatusCodeToNotFoundIfInvalidId()
+        {
+            var mockSvc = GetMockGlossaryService(new List<GlossaryEntry>());
+            var ctrl = new GlossaryController(mockSvc.Object);
+            ctrl.ApplicationProfile = GetStandardAppProfile();
+            ctrl.ControllerContext = new ControllerContext();
+            Mock<HttpResponseBase> response = GetMockResponseBase(MockBehavior.Loose);
+            response.SetupAllProperties();
+            ctrl.ControllerContext.HttpContext = GetMockHttpContextBase(response: response.Object).Object;
+
+            Guid missingId = new Guid("01234567-0123-0123-0123-0123456789AB");
+            ctrl.Delete(missingId);
+            Assert.AreEqual((int)HttpStatusCode.NotFound, ctrl.Response.StatusCode);
+        }
+
+        [Test]
+        public void SetsStatusCodeToSuccessIfValidId()
+        {
+            Guid entryId = new Guid("01234567-0123-0123-0123-0123456789AB");
+            var mockSvc = GetMockGlossaryService(new List<GlossaryEntry>()
+            {
+                new GlossaryEntry() { Id = entryId }
+            });
+            var ctrl = new GlossaryController(mockSvc.Object);
+            ctrl.ApplicationProfile = GetStandardAppProfile();
+            ctrl.ControllerContext = new ControllerContext();
+            Mock<HttpResponseBase> response = GetMockResponseBase(MockBehavior.Loose);
+            response.SetupAllProperties();
+            response.Object.StatusCode = (int)HttpStatusCode.OK;
+            ctrl.ControllerContext.HttpContext = GetMockHttpContextBase(response: response.Object).Object;
+
+            ctrl.Delete(entryId);
+            Assert.AreEqual((int)HttpStatusCode.OK, ctrl.Response.StatusCode);
         }
     }
 }

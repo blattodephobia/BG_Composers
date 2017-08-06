@@ -66,6 +66,16 @@
           <Translation culture="de-DE">Definition</Translation>
           <Translation culture="bg-BG">Определение</Translation>
         </LocalizedString>
+        <LocalizedString key="ConfirmDelete">
+          <Translation culture="en-US">Are you sure you want to delete this entry?</Translation>
+          <Translation culture="de-DE">Sind Sie sicher, dass Sie diesen Eintrag löschen wollen?</Translation>
+          <Translation culture="bg-BG">Сигурни ли сте, че искате да изтриете това понятие?</Translation>
+        </LocalizedString>
+        <LocalizedString key="ErrorWhileDeleting">
+          <Translation culture="en-US">An error occurred while attempting to delete this entry.</Translation>
+          <Translation culture="de-DE">Ein Fehler ist aufgetreten während wir diesen Eintrag löschen versuchten.</Translation>
+          <Translation culture="bg-BG">Възникна грешка при опит да се изтрие понятието.</Translation>
+        </LocalizedString>
       </ListGlossary>
       <Edit>
         <LocalizedString key="AddEntry">

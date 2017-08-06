@@ -162,3 +162,9 @@ a td, button td {
 a > table, button > table {
     margin: -6px -12px;
 }
+
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}

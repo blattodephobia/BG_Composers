@@ -63,6 +63,12 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Delete()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Edit_Post()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit_Post);
@@ -85,6 +91,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public readonly string ListGlossary = "ListGlossary";
             public readonly string Edit = "Edit";
+            public readonly string Delete = "Delete";
             public readonly string Edit_Post = nameof(Edit);
         }
 
@@ -93,6 +100,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         {
             public const string ListGlossary = "ListGlossary";
             public const string Edit = "Edit";
+            public const string Delete = "Delete";
             public const string Edit_Post = nameof(Edit);
         }
 
@@ -104,6 +112,14 @@ namespace BGC.Web.Areas.Administration.Controllers
         public class ActionParamsClass_Edit
         {
             public readonly string entry = "entry";
+        }
+        static readonly ActionParamsClass_Delete s_params_Delete = new ActionParamsClass_Delete();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Delete DeleteParams { get { return s_params_Delete; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Delete
+        {
+            public readonly string entryId = "entryId";
         }
         static readonly ActionParamsClass_Edit_Post s_params_Edit_Post = new ActionParamsClass_Edit_Post();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -156,6 +172,18 @@ namespace BGC.Web.Areas.Administration.Controllers
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Edit);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "entry", entry);
             EditOverride(callInfo, entry);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void DeleteOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, System.Guid entryId);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Delete(System.Guid entryId)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Delete);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "entryId", entryId);
+            DeleteOverride(callInfo, entryId);
             return callInfo;
         }
 

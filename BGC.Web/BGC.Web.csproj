@@ -374,6 +374,7 @@
     <Content Include="Areas\Administration\Resources\css\bt-themes\ace-master\fonts.googleapis.com.css" />
     <Content Include="Areas\Administration\Resources\css\glossary\edit.css" />
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />
+    <Content Include="Areas\Administration\Scripts\Glossary\ListGlossary.js" />
     <Content Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PermissionsViewModelGen1.cs</LastGenOutput>

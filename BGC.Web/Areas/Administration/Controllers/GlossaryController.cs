@@ -5,6 +5,7 @@ using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -42,6 +43,22 @@ namespace BGC.Web.Areas.Administration.Controllers
                 {
                     return HttpNotFound();
                 }
+            }
+        }
+
+        [HttpPost]
+        public virtual ActionResult Delete(Guid entryId)
+        {
+            GlossaryEntry entry = _glossaryService.Find(entryId);
+            if (entry != null)
+            {
+                _glossaryService.Delete(entry);
+                return Json(new object());
+            }
+            else
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Json(new { status = Response.StatusCode });
             }
         }
 
