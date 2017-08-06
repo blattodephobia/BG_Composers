@@ -110,7 +110,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
             }
 
-            return Redirect(Request.UrlReferrer.AbsolutePath);
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         [AllowAnonymous]
