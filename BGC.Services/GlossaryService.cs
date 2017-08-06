@@ -48,8 +48,7 @@ namespace BGC.Services
         public void Delete(GlossaryEntry entry)
         {
             Shield.ArgumentNotNull(entry, nameof(entry)).ThrowOnError();
-
-            entry.Definitions.Clear();
+            
             GlossaryRepo.Delete(entry);
             SaveAll();
         }
