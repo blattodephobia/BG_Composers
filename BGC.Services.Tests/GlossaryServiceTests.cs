@@ -70,4 +70,34 @@ namespace BGC.Services.Tests.GlossaryServiceTests
             });
         }
     }
+
+    [TestFixture]
+    public class DeleteTests
+    {
+        [Test]
+        public void ClearsDefinitionsUponDeletion()
+        {
+            var entry = new GlossaryEntry()
+            {
+                Definitions = new List<GlossaryDefinition>()
+                {
+                    new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch", "term")
+                }
+            };
+            var store = new List<GlossaryEntry>() { entry };
+            var svc = new GlossaryService(GetMockRepository(store).Object);
+
+            svc.Delete(entry);
+
+            Assert.AreEqual(0, entry.Definitions.Count);
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullEntry()
+        {
+            var svc = new GlossaryService(GetMockRepository(new List<GlossaryEntry>()).Object);
+
+            Assert.Throws<ArgumentNullException>(() => svc.Delete(null));
+        }
+    }
 }
