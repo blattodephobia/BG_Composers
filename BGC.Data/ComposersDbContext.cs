@@ -92,6 +92,11 @@ namespace BGC.Data
                 .HasColumnName(nameof(GlossaryDefinition.Language))
                 .IsRequired();
 
+            modelBuilder.Entity<GlossaryEntry>()
+                .HasMany(d => d.Definitions)
+                .WithRequired()
+                .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<ComposerArticle>()
                 .Property(entry => entry.StorageId);
                         

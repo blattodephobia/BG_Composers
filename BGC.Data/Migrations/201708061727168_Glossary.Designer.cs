@@ -7,13 +7,13 @@ namespace BGC.Data.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class Glosssary : IMigrationMetadata
+    public sealed partial class Glossary : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Glosssary));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Glossary));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708051247594_Glosssary"; }
+            get { return "201708061727168_Glossary"; }
         }
         
         string IMigrationMetadata.Source
