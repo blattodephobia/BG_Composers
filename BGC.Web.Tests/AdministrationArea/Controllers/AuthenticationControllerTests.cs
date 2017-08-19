@@ -24,7 +24,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
         [Test]
         public void RedirectsToActivitiesIfAuthenticated()
         {
-            var user = new BgcUser() { UserName = "admin" };
+            var user = new BgcUser("admin");
             var baseUrl = new Uri("http://localhost");
             Mock<HttpRequestBase> mockReq = GetMockRequestBase(MockBehavior.Strict);
             mockReq.SetupGet(x => x.ApplicationPath).Returns("/");

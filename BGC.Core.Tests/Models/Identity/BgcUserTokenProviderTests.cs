@@ -21,7 +21,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "abcdef" };
+            var user = new BgcUser("Alice") { Id = 5, Email = "email", PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
@@ -35,7 +35,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Email = "email", PasswordHash = "abcdef" };
+            var user = new BgcUser("Alice") { Email = "email", PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => (BgcUser)null));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
@@ -49,7 +49,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5, PasswordHash = "abcdef" };
+            var user = new BgcUser("Alice") { Id = 5, PasswordHash = "abcdef" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
@@ -63,7 +63,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5, Email = "email" };
+            var user = new BgcUser("Alice") { Id = 5, Email = "email" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
@@ -81,7 +81,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "old" };
+            var user = new BgcUser("Alice") { Id = 5, Email = "email", PasswordHash = "old" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider();
@@ -100,7 +100,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5, Email = "email", PasswordHash = "old" };
+            var user = new BgcUser("Alice") { Id = 5, Email = "email", PasswordHash = "old" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
 
             BgcUserTokenProvider provider = new BgcUserTokenProvider() { TokenExpiration = TimeSpan.FromMilliseconds(10) };
@@ -116,8 +116,8 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user1 = new BgcUser() { Id = 5, Email = "email1", PasswordHash = "old" };
-            var user2 = new BgcUser() { Id = 5, Email = "email2", PasswordHash = "old" };
+            var user1 = new BgcUser("Alice") { Id = 5, Email = "email1", PasswordHash = "old" };
+            var user2 = new BgcUser("Alice") { Id = 5, Email = "email2", PasswordHash = "old" };
             mockStore.Setup(m => m.FindByIdAsync(user1.Id)).Returns(Task.Run(() => user1));
             mockStore.Setup(m => m.FindByIdAsync(user2.Id)).Returns(Task.Run(() => user2));
 
@@ -139,7 +139,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Email = "email", PasswordHash = "ABCDEF" };
+            var user = new BgcUser("Alice") { Email = "email", PasswordHash = "ABCDEF" };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
             string token = provider.Generate(TokenPurposes.ResetPassword, um, user);
             Assert.IsTrue(provider.Validate(TokenPurposes.ResetPassword, token, um, user));
@@ -154,7 +154,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, new BgcUser() { Email = "test" })); // user has email, but doesn't exist in the IUserStore
+            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, new BgcUser("Alice") { Email = "test" })); // user has email, but doesn't exist in the IUserStore
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace BGC.Core.Tests
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
             var mockInvitationRepo = new Mock<IRepository<Invitation>>();
             var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser() { Id = 5 };
+            var user = new BgcUser("Alice") { Id = 5 };
             mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
             Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, user)); // user has no email; the provider is not valid
         }

@@ -43,12 +43,27 @@ namespace BGC.Core
 
         public virtual ICollection<Setting> UserSettings { get; set; }
 
-		public BgcUser()
+        public override string UserName
+        {
+            get
+            {
+                return base.UserName;
+            }
+
+            set
+            {
+                Shield.IsNotNullOrEmpty(value, nameof(UserName)).ThrowOnError();
+                base.UserName = value;
+            }
+        }
+
+        protected BgcUser()
 		{
 		}
 
 		public BgcUser(string username)
 		{
+            Shield.IsNotNullOrEmpty(username, nameof(username)).ThrowOnError();
 			UserName = username;
 		}
 
