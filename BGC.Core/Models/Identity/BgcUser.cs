@@ -14,6 +14,7 @@ namespace BGC.Core
 {
     public class BgcUser : IdentityUser<long, BgcUserLogin, BgcUserRole, BgcUserClaim>
     {
+        private readonly byte[] TokenSalt = new byte[] { 39, 49, 102, 200, 203, 9, 1, 173, 98, 55, 98, 3, 70, 28, 34, 78, 20, 208, 50, 3, 90, 57, 234 };
         internal const int PASSWORD_RESET_TOKEN_LENGTH = 32;
 
         public static readonly string AdministratorUserName = "Administrator";
@@ -86,7 +87,7 @@ namespace BGC.Core
         {
             if (plainToken != null)
             {
-                byte[] hashCode = plainToken.GetHashCode<SHA256Managed>();
+                byte[] hashCode = plainToken.GetHashCode<SHA256Managed>(TokenSalt);
                 PasswordResetTokenHash = Convert.ToBase64String(hashCode);
             }
             else
@@ -104,7 +105,7 @@ namespace BGC.Core
         {
             Shield.IsNotNullOrEmpty(plainToken, nameof(plainToken)).ThrowOnError();
             return PasswordResetTokenHash != null
-                ? Convert.ToBase64String(plainToken.GetHashCode<SHA256Managed>()) == PasswordResetTokenHash
+                ? Convert.ToBase64String(plainToken.GetHashCode<SHA256Managed>(TokenSalt)) == PasswordResetTokenHash
                 : false;
         }
 	}
