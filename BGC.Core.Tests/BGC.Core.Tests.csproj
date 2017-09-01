@@ -74,6 +74,8 @@
     <Compile Include="Models\ComposerTests.cs" />
     <Compile Include="Models\CultureSupportSettingTests.cs" />
     <Compile Include="Models\DateTimeSettingTests.cs" />
+    <Compile Include="Models\GlossaryDefinitionTests.cs" />
+    <Compile Include="Models\GlossaryEntryTests.cs" />
     <Compile Include="Models\Identity\BgcUserManagerTests.cs" />
     <Compile Include="Models\Identity\BgcUserTests.cs" />
     <Compile Include="Models\Identity\BgcUserTokenProviderTests.cs" />

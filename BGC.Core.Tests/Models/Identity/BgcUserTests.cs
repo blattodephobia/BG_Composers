@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Tests.Models.Identity
+namespace BGC.Core.Tests.Models.Identity.BgcUserTests
 {
     [TestFixture]
     public class CheckPasswordResetToken
@@ -15,33 +15,33 @@ namespace BGC.Core.Tests.Models.Identity
         [Test]
         public void MatchesCorrectTokens()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             user.SetPasswordResetTokenHash("ABCDEF");
             Assert.IsTrue(user.CheckPasswordResetToken("ABCDEF"));
         }
-        
+
         public void DoesntMatchWrongTokens()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             user.SetPasswordResetTokenHash("ABCDEF");
             Assert.IsFalse(user.CheckPasswordResetToken("123456"));
         }
-        
+
         public void DoesntMatchWhenNoStoredHash()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             Assert.IsFalse(user.CheckPasswordResetToken("123456"));
         }
-        
+
         public void ThrowsExceptionIfInvalidToken_1()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             Assert.Throws<InvalidOperationException>(() => user.CheckPasswordResetToken(null));
         }
-        
+
         public void ThrowsExceptionIfInvalidToken_2()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             Assert.Throws<InvalidOperationException>(() => user.CheckPasswordResetToken(""));
         }
     }
@@ -59,12 +59,58 @@ namespace BGC.Core.Tests.Models.Identity
     }
 
     [TestFixture]
+    public class CtorTests
+    {
+        [Test]
+        public void ThrowsExceptionIfNullString()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var user = new BgcUser(null);
+            });
+        }
+
+        [Test]
+        public void ThrowsExceptionIfEmptyString()
+        {
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                var user = new BgcUser("");
+            });
+        }
+    }
+
+    [TestFixture]
+    public class UserNameTests
+    {
+        [Test]
+        public void ThrowsExceptionIfNullString()
+        {
+            var user = new BgcUser("alice");
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                user.UserName = null;
+            });
+        }
+
+        [Test]
+        public void ThrowsExceptionIfEmptyString()
+        {
+            var user = new BgcUser("alice");
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                user.UserName = "";
+            });
+        }
+    }
+
+    [TestFixture]
     public class SetPasswordResetTokenHashTests
     {
         [Test]
         public void ComputesHashWithNonEmptyToken()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             user.SetPasswordResetTokenHash("sflkjd");
 
             Assert.IsNotNull(user.PasswordResetTokenHash);
@@ -74,7 +120,7 @@ namespace BGC.Core.Tests.Models.Identity
         [Test]
         public void ComputesHashWithEmptyToken()
         {
-            BgcUser user = new BgcUser();
+            BgcUser user = new BgcUser("Alice");
             user.SetPasswordResetTokenHash(null);
 
             Assert.IsNull(user.PasswordResetTokenHash);

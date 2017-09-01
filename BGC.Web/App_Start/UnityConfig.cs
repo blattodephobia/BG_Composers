@@ -65,6 +65,7 @@ namespace BGC.Web.App_Start
             serviceLayerDependencyRegistration.RegisterType(typeof(ISettingsService),       container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IArticleContentService), container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IMediaService),          container);
+            serviceLayerDependencyRegistration.RegisterType(typeof(IGlossaryService),       container);
 
             container.RegisterType<ISearchService>(nameof(Composer), new InjectionFactory(c => c.Resolve<IComposerDataService>()));
 

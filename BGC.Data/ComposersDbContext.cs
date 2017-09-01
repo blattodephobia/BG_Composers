@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Models;
 using BGC.Data.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
@@ -27,6 +28,8 @@ namespace BGC.Data
         public DbSet<Invitation> Invitations { get; set; }
 
         public DbSet<Permission> Permissions { get; set; }
+
+        public DbSet<GlossaryEntry> GlossaryEntries { get; set; }
 
 		public ComposersDbContext() : this("MySqlConnection")
 		{
@@ -83,6 +86,17 @@ namespace BGC.Data
                 .Property(entry => entry.LanguageInternal)
                 .HasColumnName(nameof(ComposerArticle.Language))
                 .IsRequired();
+
+            modelBuilder.Entity<GlossaryDefinition>()
+                .Property(definition => definition.LanguageInternal)
+                .HasColumnName(nameof(GlossaryDefinition.Language))
+                .IsRequired();
+
+            modelBuilder.Entity<GlossaryEntry>()
+                .HasMany(d => d.Definitions)
+                .WithRequired()
+                .WillCascadeOnDelete(true);
+
             modelBuilder.Entity<ComposerArticle>()
                 .Property(entry => entry.StorageId);
                         

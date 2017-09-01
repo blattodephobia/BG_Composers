@@ -32,9 +32,19 @@ namespace BGC.Data.Migrations
 
         private static void SeedRoles(ComposersDbContext context, BgcRoleManager roleManager)
         {
-            if (!roleManager.RoleExists(nameof(EditorRole)))
+            BgcRole editorRole = roleManager.FindByName(nameof(EditorRole));
+            if (editorRole == null)
             {
-                roleManager.Create(new EditorRole());
+                editorRole = new EditorRole();
+                roleManager.Create(editorRole);
+            }
+            var editorPermissions = new Permission[] { new ArticleManagementPermission(), new GlossaryManagementPermission() };
+            foreach (Permission editorPermission in editorPermissions)
+            {
+                if (!editorRole.Permissions.Contains(editorPermission))
+                {
+                    editorRole.Permissions.Add(editorPermission);
+                }
             }
 
             BgcRole adminRole = roleManager.FindByName(nameof(AdministratorRole));

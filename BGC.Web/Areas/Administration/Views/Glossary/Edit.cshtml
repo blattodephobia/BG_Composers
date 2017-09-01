@@ -1,0 +1,63 @@
+﻿@using System.Text.RegularExpressions;
+
+@model GlossaryEntryViewModel
+
+@{
+    ViewBag.Title = Localize(Model.Id == null ? Administration.Glossary.Edit.AddEntry : Administration.Glossary.Edit.EditEntry);
+}
+
+@section styles
+{
+    <link rel="stylesheet" href="~/Areas/Administration/Resources/css/glossary/edit.css">
+}
+
+@section sidebar_content
+{
+    <div class="sidebar-actions-container">
+        <button type="submit" form="glossaryEntryForm" class="btn btn-success btn-block">
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <i class="ace-icon glyphicon glyphicon-save"></i>
+                        </td>
+                        <td class="text-left">
+                            @Localize(Global.Save)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </button>
+    </div>
+}
+
+<div class="page-content">
+    <h2 class="header lighter green">@ViewBag.Title</h2>
+
+    @using (Html.BeginForm(MVC.Administration.Glossary.Edit_Post(), FormMethod.Post, new { id = "glossaryEntryForm" }))
+    {
+        @Html.HiddenFor(m => m.Id);
+        <div id="accordion" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-default">
+                @for (int i = 0; i < Model.Definitions.Count; i++)
+                {
+                    <div>
+                        @Html.HiddenFor(m => m.Definitions[i].LocaleCode)
+                        <div class="panel-heading" role="tab" id="definition-heading-@i">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#definition-collapse-@i" aria-controls="definition-collapse-@i">
+                                <i data-icon-hide="ace-icon glyphicon glyphicon-minus" data-icon-show="ace-icon glyphicon glyphicon-plus" class="ace-icon glyphicon glyphicon-plus"></i>
+                            </a>
+                            <span>
+                                @Html.TextBoxFor(m => m.Definitions[i].Term, new { placeholder = Regex.Replace(Model.Definitions[i].GetLocaleCultureInfo().NativeName, @"\s\([\w\d\s]+\)", "") })
+                                <img class="country-flag" src="~/Resources/@(Model.Definitions[i].LocaleCode).png" />
+                            </span>
+                        </div>
+                        <div id="definition-collapse-@i" class="panel-collapse collapse edit-box" role="tabpanel" aria-labelledby="definition-heading-@i">
+                            @Html.TextAreaFor(m => m.Definitions[i].Definition)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>

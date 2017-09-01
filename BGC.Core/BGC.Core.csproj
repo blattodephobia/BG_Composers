@@ -63,6 +63,8 @@
     <Compile Include="Models\ApplicationProfile.cs" />
     <Compile Include="Models\ComposerArticle.ByComposerEqualityComparer.cs" />
     <Compile Include="Models\ComposerArticle.Comparers..cs" />
+    <Compile Include="Models\GlossaryDefinition.cs" />
+    <Compile Include="Models\GlossaryEntry.cs" />
     <Compile Include="Models\Identity\AdministratorRole.cs" />
     <Compile Include="Models\Identity\ApplicationCriticalRole.cs" />
     <Compile Include="Models\Identity\AuthorizedUserRole.cs" />
@@ -74,8 +76,10 @@
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
     <Compile Include="Models\Permissions\ArticleManagementPermission.cs" />
+    <Compile Include="Models\Permissions\GlossaryManagementPermission.cs" />
     <Compile Include="Models\Permissions\IApplicationSettingsWritePermission.cs" />
     <Compile Include="Models\Permissions\IArticleManagementPermission.cs" />
+    <Compile Include="Models\Permissions\IGlossaryManagementPermission.cs" />
     <Compile Include="Models\Permissions\IPermission.cs" />
     <Compile Include="Models\Permissions\ISendInvitePermission.cs" />
     <Compile Include="Models\Permissions\IUserSettingsPermission.cs" />
@@ -84,6 +88,7 @@
     <Compile Include="Models\Settings\Setting.SettingDebugView.cs" />
     <Compile Include="Models\Permissions\SendInvitePermission.cs" />
     <Compile Include="Models\UserProfile.cs" />
+    <Compile Include="Services\IGlossaryService.cs" />
     <Compile Include="Services\ISearchService.cs" />
     <Compile Include="SingletonRepository.cs" />
     <Compile Include="UnicodeAttribute.cs" />

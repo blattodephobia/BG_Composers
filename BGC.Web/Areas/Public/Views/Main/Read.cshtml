@@ -1,7 +1,11 @@
-﻿@model ArticleViewModel
+﻿@using System.Globalization;
+@using System.Text.RegularExpressions;
+@using BGC.Web.Controllers;
+
+@model ArticleViewModel
 
 @{
-    ViewBag.Title = "Read";
+    ViewBag.Title = string.Format("{0} - {1}", Model.Title, Localize(Global.ApplicationName));
 }
 
 @section scripts
@@ -10,11 +14,84 @@
 
 @section additionalContent
 {
+    <div id="translations" class="col-lg-offset-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">@Localize(Public.Main.Read.LanguagesSelectionCaption)</h3>
+            </div>
+            <div class="panel-body">
+            @{
+                Guid composerId = Guid.Parse(Request.QueryString[MVC.Public.Main.ReadParams.composerId]);
+                foreach (CultureInfo language in SupportedLanguages)
+                {
+                    <div>
+                        @{
+                        string languageName = Regex.Replace(language.NativeName, @"\s\([\w\d\s]+\)", ""); @* remove the region name and leave the language name only *@
+                        if (!language.Equals(CurrentLocale))
+                        {
+                            RouteValueDictionary newRouteData = new RouteValueDictionary(ViewContext.RouteData.Values);
+                            newRouteData[(ViewContext.Controller as BgcControllerBase).ApplicationProfile.LocaleRouteTokenName] = language.Name;
+                            newRouteData.Add(MVC.Public.Main.ReadParams.composerId, composerId);
 
+                            @Html.ActionLink(languageName, MVC.Public.Main.ActionNames.Read, newRouteData)
+                        }
+                        else
+                        {
+                            <span>@languageName</span>
+                        }
+                    }
+                    </div>
+                }
+            }
+            </div>
+        </div>
+    </div>
 }
 
-<h2>@Model.Title</h2>
+@section header
+{
+    <div class="row">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
+                </div>
 
-<article>
-    @Html.Raw(Model.Text)
-</article>
+                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
+                    @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", @class = "navbar-form navbar-left", role = "search" }))
+                    {
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input name="query" class="form-control input-wide" type="text" placeholder="@Localize(Public.Main.SearchCaption)" />
+                                    </td>
+                                    <td>
+                                        <button type="submit" class="btn btn-default">
+                                            <i class="glyphicon glyphicon-search"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-8">
+            <h2>@Model.Title</h2>
+        </div>
+    </div>
+}
+
+<div>
+    <div class="panel panel-default">
+        <article class="panel-body">
+            @Html.Raw(Model.Text)
+        </article>
+    </div>
+</div>

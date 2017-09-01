@@ -54,6 +54,7 @@ namespace T4MVC
         public BGC.Web.Areas.Administration.Controllers.AccountController Account = new BGC.Web.Areas.Administration.Controllers.T4MVC_AccountController();
         public BGC.Web.Areas.Administration.Controllers.AuthenticationController Authentication = new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController();
         public BGC.Web.Areas.Administration.Controllers.EditController Edit = new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController();
+        public BGC.Web.Areas.Administration.Controllers.GlossaryController Glossary = new BGC.Web.Areas.Administration.Controllers.T4MVC_GlossaryController();
         public BGC.Web.Areas.Administration.Controllers.UserManagementController UserManagement = new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController();
         public T4MVC.Administration.SharedController Shared = new T4MVC.Administration.SharedController();
         public Dictionary<string, ControllerBase> Controllers = new Dictionary<string, ControllerBase>()
@@ -61,6 +62,7 @@ namespace T4MVC
            { "Account" , new BGC.Web.Areas.Administration.Controllers.T4MVC_AccountController() },
            { "Authentication" , new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController() },
            { "Edit" , new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController() },
+           { "Glossary" , new BGC.Web.Areas.Administration.Controllers.T4MVC_GlossaryController() },
            { "UserManagement" , new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController() },
         };
 
@@ -72,6 +74,7 @@ namespace T4MVC
            { "Account" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AccountController")) },
            { "Authentication" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AuthenticationController")) },
            { "Edit" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.EditController")) },
+           { "Glossary" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.GlossaryController")) },
            { "UserManagement" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.UserManagementController")) },
         };
     }
@@ -134,6 +137,7 @@ namespace Links
         private const string URLPATH = "~/Scripts";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+        public static readonly string common_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/common.min.js") ? Url("common.min.js") : Url("common.js");
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -274,6 +278,14 @@ namespace Links
                     public static readonly string Add_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Add.min.js") ? Url("Add.min.js") : Url("Add.js");
                 }
             
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class Glossary {
+                    private const string URLPATH = "~/Areas/Administration/Scripts/Glossary";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public static readonly string ListGlossary_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ListGlossary.min.js") ? Url("ListGlossary.min.js") : Url("ListGlossary.js");
+                }
+            
             }
         
         }
@@ -303,6 +315,7 @@ namespace Links
         {
             public static class Assets
             {
+                public const string common_js = "~/Scripts/common.js"; 
             }
         }
         public static partial class Content 

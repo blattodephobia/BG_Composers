@@ -23,6 +23,23 @@ public class Update
             public const string UpdateArticle = "Administration.Edit.Update.UpdateArticle";
 }
 }
+public class Glossary
+{
+        public class ListGlossary
+        {
+                    public const string Glossary = "Administration.Glossary.ListGlossary.Glossary";
+                    public const string TermName = "Administration.Glossary.ListGlossary.TermName";
+                    public const string InOtherLanguages = "Administration.Glossary.ListGlossary.InOtherLanguages";
+                    public const string Definition = "Administration.Glossary.ListGlossary.Definition";
+                    public const string ConfirmDelete = "Administration.Glossary.ListGlossary.ConfirmDelete";
+                    public const string ErrorWhileDeleting = "Administration.Glossary.ListGlossary.ErrorWhileDeleting";
+}
+public class Edit
+{
+            public const string AddEntry = "Administration.Glossary.Edit.AddEntry";
+            public const string EditEntry = "Administration.Glossary.Edit.EditEntry";
+}
+}
 public class Account
 {
         public class Activities
@@ -34,6 +51,7 @@ public class Account
                     public const string ContentManagement = "Administration.Account.Activities.ContentManagement";
                     public const string UserSettings = "Administration.Account.Activities.UserSettings";
                     public const string ApplicationSettings = "Administration.Account.Activities.ApplicationSettings";
+                    public const string GlossaryManagement = "Administration.Account.Activities.GlossaryManagement";
 }
 public class RequestPasswordReset
 {
@@ -104,15 +122,25 @@ public class Public
             public class Search
             {
                         public const string NoResults = "Public.Main.Search.NoResults";
+                        public const string SearchResults = "Public.Main.Search.SearchResults";
+                        public const string SearchAgain = "Public.Main.Search.SearchAgain";
 }
 public class Index
 {
             public const string NoArticles = "Public.Main.Index.NoArticles";
+            public const string Welcome = "Public.Main.Index.Welcome";
+            public const string OrBrowse = "Public.Main.Index.OrBrowse";
+            public const string InOtherLanguages = "Public.Main.Index.InOtherLanguages";
+}
+public class Read
+{
+            public const string LanguagesSelectionCaption = "Public.Main.Read.LanguagesSelectionCaption";
 }
 }
 }
 public class Global
 {
+    public const string ApplicationName = "Global.ApplicationName";
     public const string Error = "Global.Error";
     public const string ErrorOccurredDuringRequest = "Global.ErrorOccurredDuringRequest";
     public const string Forbidden = "Global.Forbidden";

@@ -22,28 +22,36 @@
         <link href="~/Areas/Public/Resources/css/bt-themes/paper/variables.less" rel="stylesheet"/>
         <link href="~/Areas/Public/Resources/css/public.less" rel="stylesheet"/>
         <link href="~/Content/Site.css" rel="stylesheet" />
+
+        <script src="~/Scripts/common.js"></script>
     </head>
-    <body class="container-fluid">
-        <nav class="navbar navbar-default">
-            @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { target = "_self", @class = "pull-right navbar-form", role = "search" }))
-            {
-                <input name="query" class="input-sm" />
-                <input type="submit" class="navbar-btn btn-primary" value="@Localize(Public.Main.SearchCaption)" />
-            }
-        </nav>
+    <body class="container-fluid public-layout">
+        <div class="row" id="contentPlaceHolder">
+            <div>
+                @RenderSection("header", required: false)
+            </div>
+        </div>
 
-        @if (IsSectionDefined("additionalContent"))
-        {
-            <section id="additionalContent">
-                @RenderSection("additionalContent")
-            </section>
-        }
+        <div class="row">
+            <div class="col-lg-3">
+                @if (IsSectionDefined("additionalContent"))
+                {
+                    <section id="additionalContent">
+                        @RenderSection("additionalContent")
+                    </section>
+                }
+            </div>
 
-        <section id="content" class="center">
-            @RenderBody()
-        </section>
+            <div class="col-lg-6">
+                <section id="content" class="center">
+                    @RenderBody()
+                </section>
+            </div>
+        </div>
 
-        <footer></footer>
+        <footer>
+            @RenderSection("footer", required: false)
+        </footer>
 
         @RenderSection("scripts", required: false)
     </body>
