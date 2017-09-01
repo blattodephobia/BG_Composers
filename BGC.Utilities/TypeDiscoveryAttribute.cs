@@ -19,7 +19,7 @@ namespace BGC.Utilities
         /// </summary>
         public bool IsFreelyDiscoverable => !(ConsumingTypes?.Any() ?? false);
 
-        protected TypeDiscoveryAttribute(Type[] consumingTypes = null)
+        internal TypeDiscoveryAttribute(Type[] consumingTypes = null)
         {
             ConsumingTypes = consumingTypes;
         }
