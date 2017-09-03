@@ -114,6 +114,9 @@ namespace BGC.Core
             return result;
         }
 
+        /// <summary>
+        /// Gets or sets the time, in days, during which an invitation is valid
+        /// </summary>
         public TimeSpan InvitationExpiration { get; set; }
 
         public IEnumerable<BgcUser> GetUsers() => Users.ToList();
