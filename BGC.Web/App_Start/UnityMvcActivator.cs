@@ -2,8 +2,8 @@ using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Practices.Unity.Mvc;
 
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(BGC.Web.App_Start.UnityWebActivator), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(BGC.Web.App_Start.UnityWebActivator), "Shutdown")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(BGC.Web.App_Start.UnityWebActivator), nameof(BGC.Web.App_Start.UnityWebActivator.Start))]
+[assembly: WebActivatorEx.ApplicationShutdownMethod(typeof(BGC.Web.App_Start.UnityWebActivator), nameof(BGC.Web.App_Start.UnityWebActivator.Shutdown))]
 
 namespace BGC.Web.App_Start
 {
