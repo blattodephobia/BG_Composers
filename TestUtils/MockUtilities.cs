@@ -33,16 +33,19 @@ namespace TestUtils
         }
 
         public static readonly XmlDocument SampleLocalization;
-        public static Mock<IUserStore<BgcUser, long>> GetMockUserStore(BgcUser mockUser, Mock chainMock = null)
+        public static Mock<IUserStore<BgcUser, long>> GetMockUserStore(BgcUser mockUser = null, Mock chainMock = null)
         {
             var mockStore = chainMock?.As<IUserStore<BgcUser, long>>() ?? new Mock<IUserStore<BgcUser, long>>();
-            mockStore
+            if (mockUser != null)
+            {
+                mockStore
                 .Setup(store => store.FindByIdAsync(It.Is<long>(u => u == mockUser.Id)))
                 .ReturnsAsync(mockUser);
 
-            mockStore
-                .Setup(store => store.FindByNameAsync(It.Is<string>(s => s == mockUser.UserName)))
-                .ReturnsAsync(mockUser);
+                mockStore
+                    .Setup(store => store.FindByNameAsync(It.Is<string>(s => s == mockUser.UserName)))
+                    .ReturnsAsync(mockUser);
+            }
 
             return mockStore;
         }
@@ -138,7 +141,7 @@ namespace TestUtils
             mockRepo
                 .SetupGet(x => x.UnitOfWork)
                 .Returns(new Mock<IUnitOfWork>().Object);
-
+            
             return mockRepo;
         }
 

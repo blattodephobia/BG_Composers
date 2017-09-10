@@ -70,23 +70,32 @@ namespace BGC.Core
             }
 
             Invitation invitation = InvitationsRepo.All().FirstOrDefault(i => i.Id == invitationId);
-            if (invitation != null)
+            try
             {
-                BgcUser result = new BgcUser(userName)
+                if ((invitation?.ExpirationDate ?? DateTime.MinValue) > DateTime.UtcNow)
                 {
-                    Email = invitation.Email,
-                    EmailConfirmed = true
-                };
-                result.Roles.AddRange(invitation.AvailableRoles.Select(role => new BgcUserRole() { Role = role, User = result }));
-                CreateAsync(result, password).Wait();
+                    BgcUser result = new BgcUser(userName)
+                    {
+                        Email = invitation.Email,
+                        EmailConfirmed = true
+                    };
+                    result.Roles.AddRange(invitation.AvailableRoles.Select(role => new BgcUserRole() { Role = role, User = result }));
+                    CreateAsync(result, password).Wait();
 
-                InvitationsRepo.Delete(invitation);
-                InvitationsRepo.UnitOfWork.SaveChanges();
-                return result;
+                    return result;
+                }
+                else
+                {
+                    throw new EntityNotFoundException(invitationId, typeof(Invitation));
+                }
             }
-            else
+            finally
             {
-                throw new EntityNotFoundException(invitationId, typeof(Invitation));
+                if (invitation != null)
+                {
+                    InvitationsRepo.Delete(invitation);
+                    InvitationsRepo.UnitOfWork.SaveChanges();
+                }
             }
         }
 

@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static TestUtils.MockUtilities;
 
-namespace BGC.Core.Tests.Models.Identity
+namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
 {
     [TestFixture]
     public class PasswordResetTests
@@ -138,6 +138,35 @@ namespace BGC.Core.Tests.Models.Identity
                 invitationsRepo: GetMockRepository(new List<Invitation>(new[] { new Invitation("sdf", DateTime.MaxValue) { Id = invitationId } })).Object);
 
             Assert.Throws<DuplicateEntityException>(() => bgcManager.Create(invitationId, "test", "asdasdasd"));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfInvitationExpired()
+        {
+            Guid invitationId = new Guid(0, 8, 0, new byte[8]);
+            var bgcManager = new BgcUserManager(
+                userStore: GetMockUserStore().Object,
+                roleRepository: GetMockRepository(new List<BgcRole>()).Object,
+                invitationsRepo: GetMockRepository(new List<Invitation>(new[] { new Invitation("sdf", DateTime.UtcNow.Subtract(TimeSpan.FromDays(1))) { Id = invitationId } })).Object);
+
+            Assert.Throws<EntityNotFoundException>(() => bgcManager.Create(invitationId, "test", "asdasdasd"));
+        }
+
+        [Test]
+        public void DeletesInvitationIfUserCreated()
+        {
+            Guid invitationId = new Guid(0, 8, 0, new byte[8]);
+            var invitations = new List<Invitation>(new[]
+            {
+                new Invitation("sdf", DateTime.UtcNow.Add(TimeSpan.FromDays(1))) { Id = invitationId }
+            });
+            var bgcManager = new BgcUserManager(
+                userStore: GetMockUserStore(chainMock: GetMockPasswordStore(null)).Object,
+                roleRepository: GetMockRepository(new List<BgcRole>()).Object,
+                invitationsRepo: GetMockRepository(invitations).Object);
+
+            bgcManager.Create(invitationId, "test", "asdasdasd");
+            Assert.AreEqual(0, invitations.Count);
         }
     }
 
