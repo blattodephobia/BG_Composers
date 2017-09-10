@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static TestUtils.PlatformUtilities;
 
 namespace BGC.Services.Tests.FileSystemTextStorageServiceTests
 {
@@ -28,7 +29,7 @@ namespace BGC.Services.Tests.FileSystemTextStorageServiceTests
         {
             FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@".");
             Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
-            Assert.AreEqual("789ABCDE-00FB-ADCC-1111-0123456789AB", svc.GuidToFileName(guid).Name);
+            Assert.AreEqual("789ABCDE-00FB-ADCC-1111-0123456789AB", ShortFileName(svc.GuidToFileName(guid).Name));
         }
     }
 
