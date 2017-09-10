@@ -63,18 +63,21 @@ namespace TestUtils
         public static Mock<IUserPasswordStore<BgcUser, long>> GetMockPasswordStore(BgcUser mockUser, Mock chainMock = null)
         {
             var mockStore = chainMock?.As<IUserPasswordStore<BgcUser, long>>() ?? new Mock<IUserPasswordStore<BgcUser, long>>();
+            
             mockStore
                 .Setup(store => store.SetPasswordHashAsync(It.IsAny<BgcUser>(), It.IsAny<string>()))
                 .Callback((BgcUser u, string hash) => u.PasswordHash = hash)
                 .Returns(Task.CompletedTask);
-
-            mockStore
+            if (mockUser != null)
+            {
+                mockStore
                 .Setup(store => store.FindByNameAsync(It.Is<string>(s => s == mockUser.UserName)))
                 .ReturnsAsync(mockUser);
 
-            mockStore
-                .Setup(store => store.FindByIdAsync(It.Is<long>(id => id == mockUser.Id)))
-                .ReturnsAsync(mockUser);
+                mockStore
+                    .Setup(store => store.FindByIdAsync(It.Is<long>(id => id == mockUser.Id)))
+                    .ReturnsAsync(mockUser);
+            }
 
             return mockStore;
         }
