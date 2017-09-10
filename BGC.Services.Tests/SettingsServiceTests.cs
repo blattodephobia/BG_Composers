@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Services.Tests
+namespace BGC.Services.Tests.SettingsServiceTests
 {
     [TestFixture]
     public class FindSettingTests
