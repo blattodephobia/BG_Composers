@@ -14,21 +14,29 @@ namespace BGC.Services.Tests
     [TestFixture]
     public class SmtpClientConfigurationElementTests
     {
-        private static Configuration GetConfiguration(string relativePath)
+        private Configuration _config;
+        [OneTimeSetUp]
+        public void SetConfiguration()
         {
-            // Get the directory containing the test assembly. We can't rely on Environment.CurrentDirectory, since
-            // it may turn out to be %systemroot%\System32
-            DirectoryInfo workingDir = new FileInfo(Assembly.GetAssembly(typeof(SmtpClientConfigurationElementTests)).Location).Directory;
-            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap { ExeConfigFilename = workingDir.FullName + relativePath };
-            Configuration config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
-            return config;
+            // Get the directory containing the test assembly, so that a temporary .config file can be written to it.
+            // We can't rely on other paths, because there may be no permissions to write to them.
+            // Also, we can't rely on Environment.CurrentDirectory, since it may turn out to be %systemroot%\System32
+            // or a Visual Studio installation folder
+            Assembly execAssembly = Assembly.GetExecutingAssembly();
+            string tmpConfigFileName = Path.Combine(Directory.GetParent(execAssembly.Location).FullName, "SmtpConfig.config");
+            using (Stream tmpFile = File.Open(tmpConfigFileName, FileMode.Create))
+            using (Stream testFile = (execAssembly.GetManifestResourceStream(@"BGC.Services.Tests.TestFiles.SmtpConfig.config")))
+            {
+                testFile.CopyTo(tmpFile);
+            }
+            ExeConfigurationFileMap fileMap = new ExeConfigurationFileMap { ExeConfigFilename = tmpConfigFileName };
+            _config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
         }
 
         [Test]
         public void ShouldParseXmlSectionCorrectly()
         {
-            Configuration config = GetConfiguration(@"\TestFiles\SmtpConfig.config");
-            SmtpClientConfigurationSection section = config.GetSection("EmailClients") as SmtpClientConfigurationSection;
+            SmtpClientConfigurationSection section = _config.GetSection("EmailClients") as SmtpClientConfigurationSection;
             SmtpClientConfigurationElement smtpClient = section.SmtpClients[0];
             
             Assert.AreEqual("InvitationSender", smtpClient.Purpose);
@@ -45,8 +53,7 @@ namespace BGC.Services.Tests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                Configuration config = GetConfiguration(@"\TestFiles\SmtpConfig.config");
-                SmtpClientConfigurationSection section = config.GetSection("EmailClients") as SmtpClientConfigurationSection;
+                SmtpClientConfigurationSection section = _config.GetSection("EmailClients") as SmtpClientConfigurationSection;
                 SmtpClientConfigurationElement smtpClient = section.SmtpClients[1];
                 Assert.Fail($"The given SmtpClient contains an invalid value, {smtpClient.Port}, but no expected exception was thrown.");
             });

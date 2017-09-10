@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Services.Tests
+namespace BGC.Services.Tests.FileSystemTextStorageServiceTests
 {
     class FSArticleStorageServiceProxy : FileSystemArticleContentService
     {
@@ -26,25 +26,9 @@ namespace BGC.Services.Tests
         [Test]
         public void GeneratesValidFileName()
         {
-            FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\");
+            FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@".");
             Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
             Assert.AreEqual("789ABCDE-00FB-ADCC-1111-0123456789AB", svc.GuidToFileName(guid).Name);
-        }
-
-        [Test]
-        public void GeneratesFileNameInCorrectDirectory()
-        {
-            FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\Windows\");
-            Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
-            Assert.AreEqual("Windows", svc.GuidToFileName(guid).Directory.Name);
-        }
-
-        [Test]
-        public void GeneratesFileNameInCorrectDirectory_NoBackslash()
-        {
-            FSArticleStorageServiceProxy svc = new FSArticleStorageServiceProxy(@"C:\Windows");
-            Guid guid = Guid.Parse("789ABCDE-00FB-ADCC-1111-0123456789AB");
-            Assert.AreEqual("Windows", svc.GuidToFileName(guid).Directory.Name);
         }
     }
 
