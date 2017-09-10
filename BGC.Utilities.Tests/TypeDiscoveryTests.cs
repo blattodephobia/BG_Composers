@@ -152,7 +152,7 @@ namespace BGC.Utilities.Tests.TypeDiscoveryTests
         public void DoesntDiscoverAnonymousTypesInAnonymousMethods()
         {
             Lazy<DiscoveredTypes> td = new Lazy<DiscoveredTypes>(() => TypeDiscovery.Discover());
-            Assert.IsTrue(typeof(Lazy<>).Equals(td.Value.ConsumingType));
+            Assert.AreEqual(typeof(Lazy<>), td.Value.ConsumingType.GetGenericTypeDefinition(), $"Expected {typeof(Lazy<>)}, but was {td.Value.ConsumingType.GetGenericTypeDefinition()}");
         }
     }
 
