@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Services.Tests
+namespace BGC.Services.Tests.SettingsServiceTests
 {
     [TestFixture]
     public class FindSettingTests
@@ -23,7 +23,7 @@ namespace BGC.Services.Tests
                         new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application }
                 }.AsQueryable());
 
-            BgcUser mockUser = new BgcUser();
+            BgcUser mockUser = new BgcUser("Alice");
             mockUser.UserSettings = new List<Setting>()
                 {
                     new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User }
@@ -60,7 +60,7 @@ namespace BGC.Services.Tests
                 .Setup(x => x.All())
                 .Returns(new List<Setting>() { appSetting, userSetting1, userSetting2 }.AsQueryable());
 
-            BgcUser user = new BgcUser() { UserSettings = new List<Setting>() { userSetting1 } };
+            BgcUser user = new BgcUser("Alice") { UserSettings = new List<Setting>() { userSetting1 } };
 
             SettingsService service = new SettingsService(mockSettingsRepo.Object, user);
             DateTimeSetting setting = service.ReadSetting<DateTimeSetting>("TestSetting");

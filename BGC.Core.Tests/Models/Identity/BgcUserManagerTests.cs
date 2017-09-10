@@ -45,7 +45,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
             mockTokenProvider.Setup(t => t.GenerateAsync(It.IsAny<string>(), It.IsAny<UserManager<BgcUser, long>>(), It.IsAny<BgcUser>())).ReturnsAsync("token");
 
             Mock<IUserStore<BgcUser, long>> mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var user = new BgcUser() { Id = 5 };
+            var user = new BgcUser("alice") { Id = 5 };
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
@@ -63,7 +63,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
             mockTokenProvider.Setup(t => t.GenerateAsync(It.IsAny<string>(), It.IsAny<UserManager<BgcUser, long>>(), It.IsAny<BgcUser>())).ReturnsAsync("token");
 
             Mock<IUserStore<BgcUser, long>> mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var user = new BgcUser() { Id = 5 };
+            var user = new BgcUser("alice") { Id = 5 };
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
             var mockRoleRepo = new Mock<IRepository<BgcRole>>();
@@ -76,7 +76,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
         [Test]
         public void Integration_AcceptsEncryptedTokens()
         {
-            var user = new BgcUser() { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com", UserName = "user" };
+            var user = new BgcUser("user") { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com" };
             Mock<IUserStore<BgcUser, long>> mockStore = new Mock<IUserStore<BgcUser, long>>();
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
@@ -104,7 +104,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
         [Test]
         public void Integration_RejectsWrongEncryptedTokens()
         {
-            var user = new BgcUser() { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com", UserName = "user" };
+            var user = new BgcUser("user") { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com" };
             Mock<IUserStore<BgcUser, long>> mockStore = new Mock<IUserStore<BgcUser, long>>();
             mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
 
@@ -131,7 +131,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
         public void ThrowsExceptionOnUserAlreadyExisting()
         {
             Guid invitationId = new Guid(0, 8, 0, new byte[8]);
-            var user = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var user = new BgcUser("test") { Email = "s@mail.com" };
             var bgcManager = new BgcUserManager(
                 userStore:       GetMockUserStore(user, GetMockEmailStore(new List<BgcUser>() { user })).Object,
                 roleRepository:  GetMockRepository(new List<BgcRole>()).Object,
@@ -181,7 +181,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
                 Permissions = new List<Permission>() { new SendInvitePermission() }
             };
 
-            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var permittedUser = new BgcUser("test") { Email = "s@mail.com" };
             permittedUser.Roles.Add(new BgcUserRole()
             {
                 Role = inviteRole
@@ -206,12 +206,12 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
                 Permissions = new List<Permission>() { new SendInvitePermission() }
             };
 
-            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var permittedUser = new BgcUser("test") { Email = "s@mail.com" };
             permittedUser.Roles.Add(new BgcUserRole()
             {
                 Role = inviteRole
             });
-            var existingUser = new BgcUser() { UserName = "test2", Email = "email@provider.com" };
+            var existingUser = new BgcUser("test2") { Email = "email@provider.com" };
             var bgcManager = new BgcUserManager(
                 userStore:       GetMockUserStore(permittedUser, GetMockEmailStore(new List<BgcUser>() { permittedUser, existingUser })).Object,
                 roleRepository:  GetMockRepository(new List<BgcRole>(new[] { inviteRole, new BgcRole("Editor") })).Object,
@@ -228,7 +228,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
                 Permissions = new List<Permission>() { new UserSettingsPermission() }
             };
 
-            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var permittedUser = new BgcUser("test") { Email = "s@mail.com" };
             permittedUser.Roles.Add(new BgcUserRole()
             {
                 Role = nonInviteRole
@@ -250,7 +250,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
                 Permissions = new List<Permission>() { new SendInvitePermission() }
             };
 
-            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var permittedUser = new BgcUser("test") { Email = "s@mail.com" };
             permittedUser.Roles.Add(new BgcUserRole()
             {
                 Role = inviteRole
@@ -275,7 +275,7 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
                 Permissions = new List<Permission>() { new SendInvitePermission() }
             };
 
-            var permittedUser = new BgcUser() { UserName = "test", Email = "s@mail.com" };
+            var permittedUser = new BgcUser("test") { Email = "s@mail.com" };
             permittedUser.Roles.Add(new BgcUserRole()
             {
                 Role = inviteRole

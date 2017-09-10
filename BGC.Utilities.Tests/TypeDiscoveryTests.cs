@@ -9,7 +9,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Utilities.Tests
+namespace BGC.Utilities.Tests.TypeDiscoveryTests
 {
     [Discoverable]
     public class FreelyDiscoverableType
@@ -152,7 +152,7 @@ namespace BGC.Utilities.Tests
         public void DoesntDiscoverAnonymousTypesInAnonymousMethods()
         {
             Lazy<DiscoveredTypes> td = new Lazy<DiscoveredTypes>(() => TypeDiscovery.Discover());
-            Assert.AreEqual(typeof(Lazy<>), td.Value.ConsumingType);
+            Assert.AreEqual(typeof(Lazy<>), td.Value.ConsumingType.GetGenericTypeDefinition(), $"Expected {typeof(Lazy<>)}, but was {td.Value.ConsumingType.GetGenericTypeDefinition()}");
         }
     }
 

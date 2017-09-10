@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 namespace BGC.Utilities
 {
     /// <summary>
-    /// Indicates that the type this attribute is applied on can be dynamically discovered and instantiated at runtime by a different consumer type.
+    /// Indicates that the type this attribute is applied on can be dynamically discovered and instantiated at runtime by
+    /// a different consumer type. This attribute is inherited and types deriving from classes decorated with this attribute
+    /// will be discovered as well. To discover only classes decorated with a <see cref="TypeDiscoveryAttribute"/> and none
+    /// of their children, use <see cref="DiscoverableAttribute"/>
     /// </summary>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = false, Inherited = true)]
     public sealed class DiscoverableHierarchyAttribute : TypeDiscoveryAttribute

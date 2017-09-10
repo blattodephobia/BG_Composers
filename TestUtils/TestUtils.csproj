@@ -121,6 +121,7 @@
   <ItemGroup>
     <Compile Include="MockSettingsService.cs" />
     <Compile Include="MockUtilities.cs" />
+    <Compile Include="PlatformUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

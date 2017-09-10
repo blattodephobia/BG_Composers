@@ -26,7 +26,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
         [Test]
         public void ReturnsCorrectViewModel()
         {
-            var user = new BgcUser() { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com", UserName = "user" };
+            var user = new BgcUser("user") { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com" };
             string standardToken = "token";
             string sentEmail = "";
 
@@ -55,7 +55,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
         [Test]
         public void ResetPasswordOnPost()
         {
-            var user = new BgcUser() { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com", UserName = "user" };
+            var user = new BgcUser("user") { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com" };
             string standardToken = "token";
 
             #region Setup mocks

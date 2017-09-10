@@ -14,7 +14,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void SetsLocaleToUserSettings()
         {
-            var user = new BgcUser() { UserSettings = new HashSet<Setting>() };
+            var user = new BgcUser("Alice") { UserSettings = new HashSet<Setting>() };
             UserProfile profile = new UserProfile(user);
 
             CultureInfo locale = new CultureInfo("de-DE");
@@ -26,7 +26,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void GetsCorrectLocale()
         {
-            var user = new BgcUser() { UserSettings = new HashSet<Setting>() };
+            var user = new BgcUser("Alice") { UserSettings = new HashSet<Setting>() };
             UserProfile profile = new UserProfile(user);
 
             CultureInfo locale = new CultureInfo("de-DE");

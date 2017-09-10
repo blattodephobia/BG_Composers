@@ -107,9 +107,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <Content Include="TestFiles\SmtpConfig.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="TestFiles\SmtpConfig.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

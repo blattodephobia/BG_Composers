@@ -29,6 +29,17 @@ namespace BGC.Utilities
             }
         }
 
+        private static bool IsFieldOrNonIndexedReadableProperty(MemberInfo member)
+        {
+            PropertyInfo asProperty = member as PropertyInfo;
+            if (asProperty != null)
+            {
+                return (asProperty.GetMethod?.GetParameters()?.Length ?? -1) == 0; // the property has a get method with no parameters (the latter indicating an indexer
+            }
+
+            return member.MemberType == MemberTypes.Field; // the only other condition to check is whether the member is a field; if it had been a property, we would've hit the if-statement above 
+        }
+
         private readonly Dictionary<string, Func<T, object>> accessors;
 
         public LambdaCaptureFieldAccessor()
@@ -36,7 +47,7 @@ namespace BGC.Utilities
             // generate and compile methods that directly return a single field or property of an object;
             // e.g. x => x.field;
             this.accessors = typeof(T).GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public)
-                .Where(member => member.MemberType == MemberTypes.Field || member.MemberType == MemberTypes.Property)
+                .Where(member => IsFieldOrNonIndexedReadableProperty(member))
                 .ToDictionary(
                     member => member.Name,
                     member =>
@@ -53,7 +64,7 @@ namespace BGC.Utilities
         public object GetMemberValue(T instance, string memberName)
         {
             Shield.IsNotNullOrEmpty(memberName).ThrowOnError();
-            Shield.AssertOperation(memberName, accessors.ContainsKey(memberName), $"{memberName} is not a valid member of {typeof(T).FullName}").ThrowOnError();
+            Shield.AssertOperation(memberName, accessors.ContainsKey(memberName), $"{memberName} is not a valid member of {typeof(T).FullName} that can be accessed by this class. Valid members are fields, and non-indexed properties with getters.").ThrowOnError();
 
             try
             {
