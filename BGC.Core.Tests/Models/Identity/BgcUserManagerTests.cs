@@ -98,6 +98,36 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserManagerTests
             Assert.IsTrue(resetResult.Succeeded);
 
             Assert.AreEqual("new", user.PasswordHash);
+        }
+
+        [Test]
+        public void Integration_RemovesUsedPasswordResetTokens()
+        {
+            var user = new BgcUser("user") { Id = 5, PasswordHash = "old", Email = "sample_mail@host.com" };
+            Mock<IUserStore<BgcUser, long>> mockStore = new Mock<IUserStore<BgcUser, long>>();
+            mockStore.Setup(store => store.FindByIdAsync(user.Id)).ReturnsAsync(user);
+
+            Mock<IUserPasswordStore<BgcUser, long>> asPwdStore = mockStore.As<IUserPasswordStore<BgcUser, long>>();
+            asPwdStore.Setup(x => x.SetPasswordHashAsync(It.IsAny<BgcUser>(), It.IsAny<string>())).Callback((BgcUser u, string pass) =>
+            {
+                u.PasswordHash = pass;
+            });
+
+            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            var manager = new Mock<BgcUserManagerProxy>(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
+            manager.CallBase = true;
+            manager.SetupAllProperties();
+            manager.Object.UserTokenProvider = new BgcUserTokenProvider();
+            manager.Setup(m => m.UpdateUser(user));
+            string encryptedToken = manager.Object.GeneratePasswordResetToken(user.Id);
+
+            Assert.IsNotNull(user.PasswordResetTokenHash);
+
+            IdentityResult resetResult = manager.Object.ResetPasswordAsync(user.Id, encryptedToken, "new").Result;
+
+            Assert.IsTrue(resetResult.Succeeded);
+            manager.Verify(m => m.UpdateUser(user), Times.Once());
             Assert.IsNull(user.PasswordResetTokenHash);
         }
 

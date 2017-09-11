@@ -34,6 +34,17 @@ namespace BGC.Core
         protected IRepository<Invitation> InvitationsRepo { get; private set; }
 
         /// <summary>
+        /// This method is used for unit testing purposes. Unless necessary for a unit test expectation,
+        /// use the base <see cref="UserManager{TUser, TKey}.UpdateAsync(TUser)"/> method.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        internal virtual void UpdateUser(BgcUser user)
+        {
+            UpdateAsync(user).Wait();
+        }
+
+        /// <summary>
         /// Calls the underlying <see cref="IUserTokenProvider{TUser, TKey}"/> for the ResetPassword purpose. The resulting token's hash is stored
         /// in the <see cref="BgcUser"/> entity and an encrypted token is returned.
         /// </summary>
@@ -106,6 +117,9 @@ namespace BGC.Core
             if (result.Succeeded)
             {
                 user.SetPasswordResetTokenHash(null);
+                
+                UpdateUser(user); // We have to make sure UpdateAsync is called at exactly this point during unit testing; the base class, however,
+                                  // calls the method some number of times. Therefore, we use the wrapper method here and verify that it's called once.
             }
 
             return result;
