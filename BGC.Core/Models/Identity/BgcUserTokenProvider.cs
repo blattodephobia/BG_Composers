@@ -14,6 +14,10 @@ namespace BGC.Core
 {
     public partial class BgcUserTokenProvider : IUserTokenProvider<BgcUser, long>
     {
+        private static readonly int TokenSaltLength = 20;
+
+        private static readonly RandomNumberGenerator RandomNumberService = RandomNumberGenerator.Create();
+
         private static readonly string[] ValidPurposes = (from field in typeof(TokenPurposes).GetFields(BindingFlags.Static | BindingFlags.Public)
                                                           where field.FieldType == typeof(string)
                                                           select field.GetValue(null) as string).ToArray();
@@ -64,6 +68,10 @@ namespace BGC.Core
                     long userId = user.Id;
                     writer.Write(validity);
                     writer.Write(userId);
+                    writer.Write(TokenSaltLength);
+                    byte[] randomBytes = new byte[TokenSaltLength];
+                    RandomNumberService.GetBytes(randomBytes);  // make sure no two invocations of the method with the same parameters return identical tokens, otherwise there are security risks
+                    writer.Write(randomBytes);
                     writer.Write(user.PasswordHash);
                     byte[] result = (writer.BaseStream as MemoryStream).ToArray();
                     user.SetPasswordResetTokenHash(result.ToBase62());
@@ -106,6 +114,8 @@ namespace BGC.Core
                     {
                         DateTime validity = new DateTime(ticks: reader.ReadInt64());
                         long userId = reader.ReadInt64();
+                        int tokenSaltLength = reader.ReadInt32();
+                        reader.ReadBytes(tokenSaltLength); // skip the pseudorandom bytes
                         string passwordHash = reader.ReadString();
                         isValid =
                             DateTime.UtcNow < validity &&

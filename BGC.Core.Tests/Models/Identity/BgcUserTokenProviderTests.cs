@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using TestUtils;
 
 namespace BGC.Core.Tests
 {
@@ -127,48 +128,60 @@ namespace BGC.Core.Tests
             Assert.IsFalse(provider.Validate(TokenPurposes.ResetPassword, token, um, user2));
         }
     }
-
-    [TestFixture]
-    public class TokenGenerationTests
+    
+    public class TokenGenerationTests : TestFixtureBase
     {
+        private BgcUserTokenProvider _provider;
+        private Mock<IUserStore<BgcUser, long>> _mockStore;
+        private Mock<IRepository<BgcRole>> _mockRoleRepo;
+        private Mock<IRepository<Invitation>> _mockInvitationRepo;
+        private BgcUserManager _um;
+        private BgcUser _user;
+
+        public override void OneTimeSetUp()
+        {
+            _user = new BgcUser("Alice") { Email = "email", PasswordHash = "ABCDEF" };
+            _mockStore = MockUtilities.GetMockUserStore(_user);
+            _provider = new BgcUserTokenProvider();
+            _mockRoleRepo = new Mock<IRepository<BgcRole>>();
+            _mockInvitationRepo = new Mock<IRepository<Invitation>>();
+            _um = new BgcUserManager(_mockStore.Object, _mockRoleRepo.Object, _mockInvitationRepo.Object);
+        }
+
         [Test]
         public void GeneratesValidTokens()
         {
-            BgcUserTokenProvider provider = new BgcUserTokenProvider();
-            var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
-            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
-            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser("Alice") { Email = "email", PasswordHash = "ABCDEF" };
-            mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
-            string token = provider.Generate(TokenPurposes.ResetPassword, um, user);
-            Assert.IsTrue(provider.Validate(TokenPurposes.ResetPassword, token, um, user));
+            string token = _provider.Generate(TokenPurposes.ResetPassword, _um, _user);
+            Assert.IsTrue(_provider.Validate(TokenPurposes.ResetPassword, token, _um, _user));
         }
 
         [Test]
         public void DoesntGenerateTokensIfUserIsNotPresent()
         {
             // the provider should call IsValidProviderForUser before operations
-            BgcUserTokenProvider provider = new BgcUserTokenProvider();
-            var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
-            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
-            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, new BgcUser("Alice") { Email = "test" })); // user has email, but doesn't exist in the IUserStore
+            Assert.Throws<InvalidOperationException>(() =>
+            {
+                _provider.Generate(TokenPurposes.ResetPassword, _um, new BgcUser("Alice") { Email = "test" }); // user has email, but doesn't exist in the IUserStore
+            });
         }
 
         [Test]
         public void DoesntGenerateTokensIfUserHasNoEmail()
         {
             // the provider should call IsValidProviderForUser before operations
-            BgcUserTokenProvider provider = new BgcUserTokenProvider();
-            var mockStore = new Mock<IUserStore<BgcUser, long>>();
-            var mockRoleRepo = new Mock<IRepository<BgcRole>>();
-            var mockInvitationRepo = new Mock<IRepository<Invitation>>();
-            var um = new BgcUserManager(mockStore.Object, mockRoleRepo.Object, mockInvitationRepo.Object);
-            var user = new BgcUser("Alice") { Id = 5 };
-            mockStore.Setup(m => m.FindByIdAsync(user.Id)).Returns(Task.Run(() => user));
-            Assert.Throws<InvalidOperationException>(() => provider.Generate(TokenPurposes.ResetPassword, um, user)); // user has no email; the provider is not valid
+            _user = new BgcUser("Alice") { Id = 5 };
+            Assert.Throws<InvalidOperationException>(() => _provider.Generate(TokenPurposes.ResetPassword, _um, _user)); // user has no email; the provider is not valid
+        }
+
+        [Test]
+        public void GeneratesDifferentTokensForSameUser()
+        {
+            _user = new BgcUser("Alice") { Email = "email", PasswordHash = "ABCDEF" };
+
+            string token1 = _provider.Generate(TokenPurposes.ResetPassword, _um, _user);
+            string token2 = _provider.Generate(TokenPurposes.ResetPassword, _um, _user);
+
+            Assert.AreNotEqual(token1, token2);
         }
     }
 }
