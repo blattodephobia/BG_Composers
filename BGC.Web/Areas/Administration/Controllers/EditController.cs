@@ -61,6 +61,7 @@ namespace BGC.Web.Areas.Administration.Controllers
         public virtual ActionResult Add()
         {
             IEnumerable<AddArticleViewModel> articlesRequired = from language in ApplicationProfile.SupportedLanguages
+                                                                orderby language.Name
                                                                 select new AddArticleViewModel() { Language = language };
 
             var vm = new AddComposerViewModel(articlesRequired);
@@ -97,7 +98,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             Composer composer = _composersService.FindComposer(composerId);
             var model = new UpdateComposerViewModel()
             {
-                Articles = composer.GetArticles().Select(a => new AddArticleViewModel()
+                Articles = composer.GetArticles().OrderBy(a => a.Language.Name).Select(a => new AddArticleViewModel()
                 {
                     Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
                     FullName = composer.GetName(a.Language).FullName,
