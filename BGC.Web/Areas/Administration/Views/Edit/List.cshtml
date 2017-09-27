@@ -24,13 +24,15 @@
         <h1>@Localize(Administration.Edit.List.PublishedArticles)</h1>
     </div>
 
-    @foreach (Composer composer in Model.Composers)
-    {
-        <span class="info">
-            @Html.ActionLink(
-                linkText: composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName(),
-                actionName: MVC.Administration.Edit.ActionNames.Update,
-                routeValues: new { composerId = composer.Id })
-        </span>
-    }
+    <ul class="list-unstyled">
+        @foreach (Composer composer in Model.Composers.OrderBy(c => c.GetName(CurrentLocale).GetEasternOrderFullName()))
+        {
+            <li class="info">
+                @Html.ActionLink(
+                    linkText: composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName(),
+                    actionName: MVC.Administration.Edit.ActionNames.Update,
+                    routeValues: new { composerId = composer.Id })
+            </li>
+        }
+    </ul>
 </div>
