@@ -66,6 +66,7 @@
                                         expression: m => Model.Articles[i].FullName,
                                         htmlAttributes: new
                                         {
+                                            tabindex = i + 1,
                                             placeholder = string.Format(
                                                 format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
                                                 arg0: Model.Articles[i].Language.NativeName.Substring(
