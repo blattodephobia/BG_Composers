@@ -64,6 +64,7 @@
     <Compile Include="MultiValueFifoDependencySource.cs" />
     <Compile Include="MultiValueLifoDependencySource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shield.cs" />
     <Compile Include="TypeDiscovery.cs" />
     <Compile Include="TypeDiscoveryAttribute.cs" />
     <Compile Include="TypeDiscoveryCacheKey.cs" />
@@ -71,12 +72,7 @@
     <Compile Include="DiscoveredTypes.cs" />
     <Compile Include="SingleValueDependencySource.cs" />
     <Compile Include="SingleValueNonOverridableDependencySource.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CodeShield\CodeShield.csproj">
-      <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
-      <Name>CodeShield</Name>
-    </ProjectReference>
+    <Compile Include="Validation.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
