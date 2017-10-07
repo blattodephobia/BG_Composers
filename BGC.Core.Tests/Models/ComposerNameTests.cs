@@ -5,7 +5,7 @@ using System.Linq;
 using NUnit.Framework;
 using System.Globalization;
 
-namespace BGC.Core.Tests.Models
+namespace BGC.Core.Tests.Models.ComposerNameTests
 {
     class ComposerNameProxy : ComposerName
     {
@@ -47,6 +47,15 @@ namespace BGC.Core.Tests.Models
             ComposerName name = new ComposerName("Last", new CultureInfo(1033));
             Assert.AreEqual("Last", name.LastName);
             Assert.IsTrue(string.IsNullOrEmpty(name.FirstName));
+        }
+
+        [Test]
+        public void CanRemoveFirstName()
+        {
+            ComposerName name = new ComposerName("First Last", "en-US");
+            name.FirstName = null;
+            Assert.AreEqual("Last", name.FullName);
+            Assert.IsNull(name.FirstName);
         }
     }
 
