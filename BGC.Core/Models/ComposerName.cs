@@ -1,4 +1,5 @@
-﻿using CodeShield;
+﻿using BGC.Utilities;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,23 +22,40 @@ namespace BGC.Core
 			return names;
 		}
 
-		private static string CombineNames(IEnumerable<string> names)
-		{
-			return names.Aggregate(
-                new StringBuilder(),
-                (sb, name) => sb.AppendFormat(" {0}", name),
-                sb => sb.Length > 0 ? sb.Remove(0, 1) : sb) // remove leading space
-                .ToString();
+        private static string CombineNames(IEnumerable<string> names) => names.ToStringAggregate(" ");
+
+        private string _languageInternal;
+        [Required, MaxLength(5)]
+        internal protected string LanguageInternal
+        {
+            get
+            {
+                return _languageInternal;
+            }
+
+            set
+            {
+                _languageInternal = EnsureValid(value);
+            }
+        }
+
+        private Composer _composer;
+        [Required]
+        public virtual Composer Composer
+        {
+            get
+            {
+                return _composer;
+            }
+
+            set
+            {
+                _composer = EnsureValid(value);
+            }
         }
         
-        [MaxLength(5)]
-        internal protected string LanguageInternal { get; protected set; }
-
-        [Required]
-        public virtual Composer Composer { get; set; }
-        
         private CultureInfo language;
-        [NotMapped]
+        [Required, NotMapped]
         public CultureInfo Language
         {
             get
@@ -47,7 +65,7 @@ namespace BGC.Core
 
             set
             {
-                this.LanguageInternal = (this.language = value.ValueNotNull()).Name;
+                LanguageInternal = EnsureValid(value).Name;
             }
         }
 
@@ -78,7 +96,7 @@ namespace BGC.Core
 		}
 
 		private string lastName;
-        [MaxLength(32), Unicode, Index]
+        [Required, MaxLength(32), Unicode, Index]
         public string LastName
 		{
 			get
@@ -88,6 +106,7 @@ namespace BGC.Core
 
 			set
 			{
+                EnsureValid(value);
 				if (this.fullName != null)
 				{
 					List<string> names = ExtractNames(this.fullName);
@@ -109,7 +128,7 @@ namespace BGC.Core
         /// <summary>
         /// Gets the full name of the composer in western order ({first_name} {middle_name} {last_name})
         /// </summary>
-        [MaxLength(128), Unicode, Index]
+        [Required, MaxLength(128), Unicode, Index]
         public string FullName
 		{
 			get
@@ -119,9 +138,7 @@ namespace BGC.Core
 
 			set
 			{
-                Shield.ValueNotNull(value, nameof(FullName)).ThrowOnError();
-
-				this.fullName = value;
+				this.fullName = EnsureValid(value);
 				List<string> names = ExtractNames(value);
 				this.lastName = names.Last();
 				if (names.Count > 1) this.firstName = names.First();
