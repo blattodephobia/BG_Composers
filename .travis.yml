@@ -9,4 +9,3 @@ script:
   - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./BGC.Services.Tests/bin/Release/BGC.Services.Tests.dll
   - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./BGC.Utilities.Tests/bin/Release/BGC.Utilities.Tests.dll
   - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./BGC.Web.Tests/bin/Release/BGC.Web.Tests.dll
-  - mono ./testrunner/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe ./CodeShieldTests/bin/Release/CodeShieldTests.dll

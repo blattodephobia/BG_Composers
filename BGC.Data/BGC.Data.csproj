@@ -128,10 +128,6 @@
       <Project>{05233E69-FF24-41D8-B779-9DD446202D8D}</Project>
       <Name>BGC.Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CodeShield\CodeShield.csproj">
-      <Project>{fbe04096-c00b-4b8d-a7dd-3982002f4a13}</Project>
-      <Name>CodeShield</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706241032555_Initial.resx">
