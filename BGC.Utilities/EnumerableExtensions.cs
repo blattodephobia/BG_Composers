@@ -16,7 +16,7 @@ namespace BGC.Utilities
         /// <param name="collection"></param>
         /// <param name="delimiter">The delimiter that will separate the value of each item's string representation.</param>
         /// <returns></returns>
-        public static string ToStringAggregate<T>(this IEnumerable<T> collection, string delimiter = null) => ToStringAggregate(collection.Where(x => x != null), x => x.ToString(), delimiter);
+        public static string ToStringAggregate<T>(this IEnumerable<T> collection, string delimiter = null) => ToStringAggregate(collection, x => x?.ToString(), delimiter);
 
         /// <summary>
         /// Aggregates the string representation of all items in a collection in a single string by using the specified delimiter and string selector.
@@ -31,7 +31,7 @@ namespace BGC.Utilities
             Shield.ArgumentNotNull(collection, nameof(collection)).ThrowOnError();
             Shield.ArgumentNotNull(toStringSelector, nameof(toStringSelector)).ThrowOnError();
 
-            StringBuilder result = collection.Select(toStringSelector).Aggregate(
+            StringBuilder result = collection.Select(toStringSelector).Where(s => !string.IsNullOrEmpty(s)).Aggregate(
                 new StringBuilder(),
                 (sb, current) => sb.AppendFormat("{0}{1}", current, delimiter),
                 sb => sb.Length > 0 ? sb.Remove(sb.Length - delimiter?.Length ?? 0, delimiter?.Length ?? 0) : sb);
