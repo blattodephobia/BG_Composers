@@ -62,6 +62,7 @@ namespace BGC.Core
 
 			set
 			{
+                EnsureValid(value);
 				this.firstName = value;
 				if (this.fullName != null)
 				{
