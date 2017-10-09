@@ -1,6 +1,8 @@
 ﻿using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -10,6 +12,32 @@ namespace BGC.Core
 {
 	public class Composer : BgcEntity<Guid>
 	{
+        private const int ORDER_MAX_VALUE = 3998;
+
+        private static string ToRoman(int number)
+        {
+            Shield.Assert(
+                    value: number,
+                    condition: (0 <= number) && (number <= ORDER_MAX_VALUE),
+                    exceptionProvider: (x) => new ArgumentOutOfRangeException(nameof(Order), $"{nameof(Order)} must be betwheen 0 and {ORDER_MAX_VALUE}"))
+                  .ThrowOnError();
+            if (number < 1)     return string.Empty;
+            if (number >= 1000) return "M"  + ToRoman(number - 1000);
+            if (number >= 900)  return "CM" + ToRoman(number - 900);
+            if (number >= 500)  return "D"  + ToRoman(number - 500);
+            if (number >= 400)  return "CD" + ToRoman(number - 400);
+            if (number >= 100)  return "C"  + ToRoman(number - 100);
+            if (number >= 90)   return "XC" + ToRoman(number - 90);
+            if (number >= 50)   return "L"  + ToRoman(number - 50);
+            if (number >= 40)   return "XL" + ToRoman(number - 40);
+            if (number >= 10)   return "X"  + ToRoman(number - 10);
+            if (number >= 9)    return "IX" + ToRoman(number - 9);
+            if (number >= 5)    return "V"  + ToRoman(number - 5);
+            if (number >= 4)    return "IV" + ToRoman(number - 4);
+            if (number >= 1)    return "I"  + ToRoman(number - 1);
+            throw new Exception("something bad happened");
+        }
+
         private ICollection<ComposerName> _localizedNames;
         private ICollection<ComposerArticle> _articles;
         private bool _getHashCodeCalled;
@@ -29,6 +57,34 @@ namespace BGC.Core
                 _id = value;
             }
         }
+
+        public DateTime? DateOfBirth { get; set; }
+
+        public DateTime? DateOfDeath { get; set; }
+
+        private int _order;
+        /// <summary>
+        /// Specifies how many other composers with the same name have been added before this one.
+        /// </summary>
+        [Range(0, ORDER_MAX_VALUE)]
+        public int Order
+        {
+            get
+            {
+                return _order;
+            }
+
+            set
+            {
+                _order = EnsureValid(value);
+                _romanNumeralOrder = ToRoman(_order + 1);
+            }
+        }
+
+        private string _romanNumeralOrder;
+        public string RomanNumeralOrder => _romanNumeralOrder;
+
+        public bool HasNamesakes { get; set; }
 
         public virtual ICollection<ComposerName> LocalizedNames
         {

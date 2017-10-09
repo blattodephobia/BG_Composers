@@ -46,6 +46,22 @@ namespace BGC.Services
                 Composers.Insert(composer);
             }
 
+            var duplicateNames = from name in composer.LocalizedNames
+                                 join existingName in Names.All() on name.FullName equals existingName.FullName
+                                 where existingName.Composer.Id != composer.Id &&
+                                       existingName.LanguageInternal == name.LanguageInternal
+                                 group existingName by existingName.LanguageInternal into duplicateName
+                                 select duplicateName;
+            if (duplicateNames.Any())
+            {
+                composer.Order = duplicateNames.Max(group => group.Count());
+                composer.HasNamesakes = true;
+                foreach (Composer namesake in duplicateNames.SelectMany(group => group).Select(name => name.Composer).Distinct())
+                {
+                    namesake.HasNamesakes = true;
+                }
+            }            
+
             SaveAll();
         }
 

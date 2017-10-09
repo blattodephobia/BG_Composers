@@ -2,13 +2,217 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestUtils;
 using static TestUtils.MockUtilities;
 
-namespace BGC.Services.Tests
+namespace BGC.Services.Tests.ComposerDataServiceTests
 {
+    public class AddOrUpdateTests : TestFixtureBase
+    {
+        [Test]
+        public void SetsOrderToZeroWhenNoDuplicates()
+        {
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer() { Id = Guid.NewGuid() }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(new List<ComposerName>()).Object);
+
+            svc.AddOrUpdate(new Composer());
+
+            Assert.AreEqual(0, mockRepo.Last().Order);
+        }
+
+        [Test]
+        public void SetsOrderToOneWithOneDuplicateName_SingleCulture()
+        {
+            string duplicateName = "Rumpold Keltskin";
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>()
+                    {
+                        new ComposerName(duplicateName, "en-US"),
+                        new ComposerName("asd", "bg-BG"),
+                    }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            var duplicateComposer = new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>()
+                {
+                    new ComposerName(duplicateName, "en-US"),
+                    new ComposerName("oidjf", "bg-BG"),
+                }
+            };
+            svc.AddOrUpdate(duplicateComposer);
+
+            Assert.AreEqual(1, mockRepo.Last().Order, "Wrong order when there are duplicate names in only one of the supported locales.");
+        }
+
+        [Test]
+        public void SetsOrderToOneWithOneDuplicateName_MoreCultures()
+        {
+            string duplicateName = "Rumpold Keltskin";
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>()
+                    {
+                        new ComposerName(duplicateName, "en-US"),
+                        new ComposerName("asd", "bg-BG"),
+                    }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            var duplicateComposer = new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>()
+                {
+                    new ComposerName(duplicateName, "en-US"),
+                    new ComposerName("asd", "bg-BG"),
+                }
+            };
+            svc.AddOrUpdate(duplicateComposer);
+
+            Assert.AreEqual(1, mockRepo.Last().Order, "Wrong order when there are duplicate names in all supported cultures.");
+        }
+
+        [Test]
+        public void SetsOrderToOneWithMoreDuplicateNames_MixedCultures()
+        {
+            string duplicateName = "Rumpold Keltskin";
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>()
+                    {
+                        new ComposerName(duplicateName, "en-US"),
+                        new ComposerName(duplicateName, "de-DE"),
+                        new ComposerName("asd", "bg-BG"),
+                    }
+                },
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>()
+                    {
+                        new ComposerName(duplicateName, "en-US"),
+                        new ComposerName("dkk", "de-DE"),
+                        new ComposerName("asd", "bg-BG"),
+                    }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            var duplicateComposer = new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>()
+                {
+                    new ComposerName(duplicateName, "en-US"),
+                    new ComposerName(duplicateName, "de-DE"),
+                    new ComposerName("okl", "bg-BG"),
+                }
+            };
+            svc.AddOrUpdate(duplicateComposer);
+
+            Assert.AreEqual(2, mockRepo.Last().Order, "Wrong order when there are duplicate names in some of the supported cultures.");
+        }
+
+        [Test]
+        public void SetsNamesakePropertyCorrectly()
+        {
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            svc.AddOrUpdate(new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+            });
+
+            Assert.IsTrue(mockRepo.All(c => c.HasNamesakes));
+        }
+
+        [Test]
+        public void LeavesOutNamesakePropertyIfNoDuplicateNames()
+        {
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            svc.AddOrUpdate(new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>() { new ComposerName("Betty Boop", "en-US") }
+            });
+
+            Assert.IsFalse(mockRepo.All(c => c.HasNamesakes));
+        }
+
+        [Test]
+        public void LeavesOutNamesakePropertyIfNoDuplicateNames_MixedNames()
+        {
+            List<Composer> mockRepo = new List<Composer>()
+            {
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+                },
+                new Composer()
+                {
+                    Id = Guid.NewGuid(),
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("Betty Boop", "en-US") }
+                }
+            };
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+
+            svc.AddOrUpdate(new Composer()
+            {
+                Id = Guid.NewGuid(),
+                LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+            });
+
+            Assert.IsTrue(mockRepo
+                .Where(c => c.GetName(CultureInfo.GetCultureInfo("en-US")).FullName == "John Smith")
+                .All(c => c.HasNamesakes));
+
+            Assert.IsFalse(mockRepo
+                .Where(c => c.GetName(CultureInfo.GetCultureInfo("en-US")).FullName != "John Smith")
+                .All(c => c.HasNamesakes));
+        }
+    }
+
     [TestFixture]
     public class SearchComposerNameTests
     {

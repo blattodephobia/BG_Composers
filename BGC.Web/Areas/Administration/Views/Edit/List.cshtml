@@ -27,9 +27,14 @@
     <ul class="list-unstyled">
         @foreach (Composer composer in Model.Composers.OrderBy(c => c.GetName(CurrentLocale).GetEasternOrderFullName()))
         {
+            string composerName = composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName();
+            if (composer.HasNamesakes)
+            {
+                composerName = string.Format("{0} ({1})", composerName, composer.RomanNumeralOrder);
+            }
             <li class="info">
                 @Html.ActionLink(
-                    linkText: composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName(),
+                    linkText: composerName,
                     actionName: MVC.Administration.Edit.ActionNames.Update,
                     routeValues: new { composerId = composer.Id })
             </li>
