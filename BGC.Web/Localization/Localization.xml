@@ -42,6 +42,11 @@
           <Translation culture="de-DE">Artikel aktualisieren</Translation>
           <Translation culture="bg-BG">Обновяване на статия</Translation>
         </LocalizedString>
+      <LocalizedString key="ExplainOrder">
+        <Translation culture="en-US">There are composers bearing the same name as this one. This composer's name will be displayed to site visitors along with this number.</Translation>
+        <Translation culture="de-DE">Es gibt Komponisten mit demselben Namen wie diesen. Der Name dieses Komponisten wird den Besuchern der Seite zusammen mit dieser Nummer gezeigt.</Translation>
+        <Translation culture="bg-BG">В енциклопедията има статии за композитори със същото име като този. Името на този композитор ще бъде показвано заедно с този номер на посетителите на сайта.</Translation>
+      </LocalizedString>
       </Update>
     </Edit>
     <Glossary>

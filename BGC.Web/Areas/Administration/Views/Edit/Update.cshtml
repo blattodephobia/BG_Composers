@@ -62,7 +62,10 @@
                                 <a data-toggle="collapse" data-parent="#accordion" href="#article-collapse-@i" aria-controls="article-collapse-@i">
                                     <i data-icon-hide="ace-icon glyphicon glyphicon-minus" data-icon-show="ace-icon glyphicon glyphicon-plus" class="ace-icon glyphicon glyphicon-plus"></i>
                                 </a>
-                                <span>
+                                <span class="textbox-addon-left">
+                                    <span class="icon">
+                                        <img src="~/Resources/@(Model.Articles[i].Language.Name).png" />
+                                    </span>
                                     @Html.TextBoxFor(
                                         expression: m => Model.Articles[i].FullName,
                                         htmlAttributes: new
@@ -74,6 +77,12 @@
                                                     startIndex: 0,
                                                     length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
                                         })
+                                    @if (Model.Order != null)
+                                    {
+                                        <label class="badge" title="@Localize(Administration.Edit.Update.ExplainOrder)">
+                                            @(Model.Order + 1)
+                                        </label>
+                                    }
                                 </span>
                             </div>
                         </div>

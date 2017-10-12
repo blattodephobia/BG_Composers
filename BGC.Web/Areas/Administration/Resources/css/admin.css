@@ -39,7 +39,10 @@ h1 {
     padding-left: 5px;
 }
 
+.name-edit-header .glyphicon {
+    margin: 2px;
+}
+
 .name-edit-header input {
-    margin-left: 3px;
     width: 400px;
 }

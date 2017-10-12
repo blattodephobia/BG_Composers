@@ -21,6 +21,7 @@ public class List
 public class Update
 {
             public const string UpdateArticle = "Administration.Edit.Update.UpdateArticle";
+            public const string ExplainOrder = "Administration.Edit.Update.ExplainOrder";
 }
 }
 public class Glossary

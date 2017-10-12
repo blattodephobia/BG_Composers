@@ -168,3 +168,27 @@ a > table, button > table {
     vertical-align: middle;
     float: none;
 }
+
+.textbox-addon-left {
+    position: relative;
+}
+
+.textbox-addon-left > input {
+    padding-left: 20px;
+}
+
+.textbox-addon-left .icon {
+    position: absolute;
+    pointer-events: none;
+    left: 0px;
+    top: 50%;
+    margin-top: -11px;
+    margin-left: 3px;
+    width: 22px;
+    height: 22px;
+}
+
+.icon > * {
+    position: static;
+    margin: auto;
+}

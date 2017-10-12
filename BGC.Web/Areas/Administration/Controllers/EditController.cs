@@ -98,11 +98,12 @@ namespace BGC.Web.Areas.Administration.Controllers
             Composer composer = _composersService.FindComposer(composerId);
             var model = new UpdateComposerViewModel()
             {
+                Order = composer.HasNamesakes ? (int?)composer.Order : null,
                 Articles = composer.GetArticles().OrderBy(a => a.Language.Name).Select(a => new AddArticleViewModel()
                 {
                     Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
                     FullName = composer.GetName(a.Language).FullName,
-                    Language = a.Language
+                    Language = a.Language,
                 }).ToList()
             };
 

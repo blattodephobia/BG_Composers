@@ -8,5 +8,7 @@ namespace BGC.Web.Areas.Administration.ViewModels
     public class UpdateComposerViewModel : AddComposerViewModel
     {
         public Guid ComposerId { get; set; }
+
+        public int? Order { get; set; }
     }
 }
