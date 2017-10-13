@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace BGC.Utilities.Tests
 {
@@ -217,6 +218,23 @@ namespace BGC.Utilities.Tests
             }
         }
 
+        internal class StaticPropertiesClass
+        {
+            public static int StaticProperty1 { get; private set; } = 2;
+            public static int StaticProperty2 { get; private set; } = 5;
+        }
+
+        internal class MixedPropertiesClass
+        {
+            public static int StaticProperty { get; private set; } = 2;
+            public int InstanceProperty { get; private set; } = 5;
+
+            public static Expression<Func<MixedPropertiesClass, IEnumerable<int>>> Test = (MixedPropertiesClass x) =>
+                x == null
+            ? new[] { MixedPropertiesClass.StaticProperty }
+            : new[] { x.InstanceProperty };
+        }
+
         [Test]
         public void ShouldReturnAllMatchingProperties()
         {
@@ -236,6 +254,27 @@ namespace BGC.Utilities.Tests
         {
             Func<CustomEmptyService, IEnumerable<object>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<CustomEmptyService, object>();
             Assert.AreEqual(0, accessor.Invoke(new CustomEmptyService()).Count());
+        }
+
+        [Test]
+        public void ReturnsStaticPropertiesIf()
+        {
+            Func<StaticPropertiesClass, IEnumerable<int>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<int>(typeof(StaticPropertiesClass));
+            IEnumerable<int> expected = new int[] { StaticPropertiesClass.StaticProperty1, StaticPropertiesClass.StaticProperty2 }.OrderBy(x => x);
+            IEnumerable<int> actual = accessor.Invoke(null).OrderBy(x => x);
+            Assert.IsTrue(expected.SequenceEqual(actual));
+        }
+
+        [Test]
+        public void ReturnsStaticProperties_NullInstanceMixedPropertyModifiers()
+        {
+            Func<MixedPropertiesClass, IEnumerable<int>> accessor = Expressions.GetPropertyValuesOfTypeAccessor<int>(typeof(MixedPropertiesClass));
+
+            IEnumerable<int> expected = new int[] { MixedPropertiesClass.StaticProperty };
+            IEnumerable<int> actual = accessor.Invoke(null);
+
+            Assert.AreEqual(1, actual.Count());
+            Assert.AreEqual(expected.Single(), actual.Single());
         }
     }
 }

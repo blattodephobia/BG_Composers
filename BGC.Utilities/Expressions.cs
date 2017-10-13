@@ -122,6 +122,11 @@ namespace BGC.Utilities
             return paramValuePairs.ToStringAggregate("&");
         }
 
+        private static bool IsStatic(PropertyInfo property)
+        {
+            return (property.GetMethod ?? property.SetMethod).IsStatic;
+        }
+
         /// <summary>
         /// Returns the name of a field or property from a given expression.
         /// </summary>
@@ -258,41 +263,39 @@ namespace BGC.Utilities
             var lambda = Expression.Lambda<Func<object, IEnumerable<TPropertyType>>>
             (
                 parameters: parameter,
-                body: Expression.NewArrayInit
+                body: Expression.Condition
                 (
-                    type: typeof(TPropertyType),
-                    initializers: properties.Select(property =>
-                    {
-                        return Expression.Property(Expression.Convert(parameter, declaringType), property); // ((<propertyDeclaringType>)<parameter>).property
-                    })
+                    test: Expression.Equal(parameter, Expression.Constant(null)),
+                    ifTrue: Expression.NewArrayInit
+                    (
+                        type: typeof(TPropertyType),
+                        initializers: properties.Where(property => IsStatic(property)).Select(property =>
+                        {
+                            return Expression.Property(null, property);
+                        })
+                    ),
+                    ifFalse: Expression.NewArrayInit
+                    (
+                        type: typeof(TPropertyType),
+                        initializers: properties.Where(property => !IsStatic(property)).Select(property =>
+                        {
+                            return Expression.Property(Expression.Convert(parameter, declaringType), property); // ((<propertyDeclaringType>)<parameter>).property; the cast is necessary, since we use object as a parameter type
+                        })
+                    )
                 )
             );
 
             return lambda.Compile();
         }
 
-        public static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type propertyDeclaringType)
+        public static Func<object, IEnumerable<TPropertyType>> GetPropertyValuesOfTypeAccessor<TPropertyType>(Type declaringType)
         {
-            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance;
-            IEnumerable<PropertyInfo> matchingProperties = from property in propertyDeclaringType.GetProperties(flags)
+            BindingFlags flags = BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
+            IEnumerable<PropertyInfo> matchingProperties = from property in declaringType.GetProperties(flags)
                                                            where typeof(TPropertyType).IsAssignableFrom(property.PropertyType)
                                                            select property;
 
-            ParameterExpression parameter = Expression.Parameter(typeof(object));
-            var lambda = Expression.Lambda<Func<object, IEnumerable<TPropertyType>>>
-            (
-                parameters: parameter,
-                body: Expression.NewArrayInit
-                (
-                    type: typeof(TPropertyType),
-                    initializers: matchingProperties.Select(property =>
-                    {
-                        return Expression.Property(Expression.Convert(parameter, propertyDeclaringType), property); // ((<propertyDeclaringType>)<parameter>).property
-                    })
-                )
-            );
-
-            return lambda.Compile();
+            return GetPropertyValuesOfTypeAccessor<TPropertyType>(declaringType, matchingProperties);
         }
     }
 }
