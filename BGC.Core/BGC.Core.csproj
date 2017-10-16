@@ -98,7 +98,7 @@
     <Compile Include="Models\Permissions\Permission.cs" />
     <Compile Include="Models\Permissions\SettingsWritePermission.cs" />
     <Compile Include="Models\Permissions\UserSettingsPermission.cs" />
-    <Compile Include="Models\Settings\CultureSupportSetting.cs" />
+    <Compile Include="Models\Settings\MultiCultureInfoSetting.cs" />
     <Compile Include="Models\Settings\DateTimeSetting.cs" />
     <Compile Include="Models\Settings\SettingPriority.cs" />
     <Compile Include="Models\Settings\Setting.cs" />

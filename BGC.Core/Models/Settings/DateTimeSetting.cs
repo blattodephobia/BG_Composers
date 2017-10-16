@@ -33,11 +33,23 @@ namespace BGC.Core
             set
             {
                 string _value = value.IsNotNullOrEmpty(nameof(StringValue)).GetValueOrThrow();
-                Date = DateTime.Parse(_value, FormatProvider);
+                SetValue(ref _date, DateTime.Parse(_value, FormatProvider));
             }
         }
-        
-        public DateTime Date { get; set; }
+
+        private DateTime _date;
+        public DateTime Date
+        {
+            get
+            {
+                return _date;
+            }
+
+            set
+            {
+                SetValue(ref _date, value);
+            }
+        }
 
         DateTime IParameter<DateTime>.Value
         {

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class CultureSupportSetting : Setting, IParameter<IEnumerable<CultureInfo>>
+    public class MultiCultureInfoSetting : Setting, IParameter<IEnumerable<CultureInfo>>
     {
         private static readonly char[] Separators = new[] { ',', ' ', ';' };
 
-        private IEnumerable<CultureInfo> supportedCultures;
+        private IEnumerable<CultureInfo> _cultures;
         private string _string;
 
         public override string StringValue
@@ -27,37 +27,36 @@ namespace BGC.Core
             set
             {
                 Shield.ValueNotNull(value, nameof(StringValue)).ThrowOnError();
-                
-                SupportedCultures = value
+
+                SetValue(ref _string, value);
+                Cultures = value
                     .Split(Separators, StringSplitOptions.RemoveEmptyEntries)
                     .Select(s => CultureInfo.GetCultureInfo(s));
-                
-                this._string = value;
             }
         }
 
         [NotMapped]
-        public IEnumerable<CultureInfo> SupportedCultures
+        public IEnumerable<CultureInfo> Cultures
         {
             get
             {
-                return this.supportedCultures;
+                return this._cultures;
             }
 
             set
             {
-                this.supportedCultures = value;
+                SetValue(ref _cultures, value);
 
                 // generates a string of culture codes, separated by a comma and space, e.g. "en-US, de-DE"
-                this._string = this.supportedCultures?.ToStringAggregate(", ");
+                _string = _cultures?.ToStringAggregate(", ");
             }
         }
 
-        public CultureSupportSetting()
+        public MultiCultureInfoSetting()
         {
         }
 
-        public CultureSupportSetting(string culturesList) :
+        public MultiCultureInfoSetting(string culturesList) :
             this()
         {
             this.StringValue = culturesList.ArgumentNotNull();
@@ -67,12 +66,12 @@ namespace BGC.Core
         {
             get
             {
-                return SupportedCultures;
+                return Cultures;
             }
 
             set
             {
-                SupportedCultures = value;
+                Cultures = value;
             }
         }
     }

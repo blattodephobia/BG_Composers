@@ -96,7 +96,7 @@ namespace BGC.Core
         {
             return new ApplicationProfile()
             {
-                SupportedLanguages = new HashSet<CultureInfo>((applicationSettings.FirstOrDefault(s => s.Name == nameof(SupportedLanguages)) as CultureSupportSetting)?.SupportedCultures ?? Enumerable.Empty<CultureInfo>())
+                SupportedLanguages = new HashSet<CultureInfo>((applicationSettings.FirstOrDefault(s => s.Name == nameof(SupportedLanguages)) as MultiCultureInfoSetting)?.Cultures ?? Enumerable.Empty<CultureInfo>())
             };
         }
     }

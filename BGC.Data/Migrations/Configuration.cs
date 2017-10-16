@@ -85,10 +85,10 @@ namespace BGC.Data.Migrations
                 }
 
                 context.Settings.AddOrUpdate(setting => setting.Name,
-                    new CultureSupportSetting()
+                    new MultiCultureInfoSetting()
                     {
                         Name = "SupportedLanguages",
-                        SupportedCultures = new[]
+                        Cultures = new[]
                         {
                             CultureInfo.GetCultureInfo("bg-BG"),
                             CultureInfo.GetCultureInfo("en-US"),
