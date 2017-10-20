@@ -40,7 +40,7 @@ namespace BGC.Core
         {
             get
             {
-                return this._cultures;
+                return _cultures ?? Enumerable.Empty<CultureInfo>();
             }
 
             set
