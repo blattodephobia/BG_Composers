@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Models;
 using BGC.Core.Services;
+using BGC.Web;
 using BGC.Web.Models;
 using BGC.Web.Services;
 using Microsoft.AspNet.Identity;
@@ -302,9 +303,9 @@ namespace TestUtils
             return mockService;
         }
 
-        public static ApplicationProfile GetStandardAppProfile()
+        public static WebApplicationSettings GetStandardAppProfile()
         {
-            return new ApplicationProfile()
+            return new WebApplicationSettings()
             {
                 LocaleCookieName = "localeCookie",
                 LocaleRouteTokenName = "locale",

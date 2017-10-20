@@ -32,7 +32,7 @@ namespace BGC.Web.Models
             }
         }
 
-        public static RequestContextLocale FromRequest(ApplicationProfile appProfile, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookieStore)
+        public static RequestContextLocale FromRequest(WebApplicationSettings appProfile, IGeoLocationService geoLocationService, HttpRequestBase request, HttpCookie cookieStore)
         {
             Shield.ArgumentNotNull(request).ThrowOnError();
             Shield.ArgumentNotNull(appProfile).ThrowOnError();
@@ -109,7 +109,7 @@ namespace BGC.Web.Models
             source.SetValue(culture);
         }
         
-        public RequestContextLocale(ApplicationProfile appProfile, HttpCookie cookie) :
+        public RequestContextLocale(WebApplicationSettings appProfile, HttpCookie cookie) :
             base(appProfile?.SupportedLanguages?.FirstOrDefault())
         {
             Shield.ArgumentNotNull(appProfile).ThrowOnError();

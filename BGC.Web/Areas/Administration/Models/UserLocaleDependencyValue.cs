@@ -32,7 +32,7 @@ namespace BGC.Web.Areas.Administration.Models
         [DependencyPrecedence(1)]
         public SingleValueDependencySource<CultureInfo> DbSetting { get; private set; } = new SingleValueDependencySource<CultureInfo>(false);
 
-        public UserLocaleDependencyValue(ApplicationProfile appProfile, HttpCookie cookieStore) :
+        public UserLocaleDependencyValue(WebApplicationSettings appProfile, HttpCookie cookieStore) :
             base(appProfile?.SupportedLanguages?.First())
         {
             Shield.ArgumentNotNull(appProfile).ThrowOnError();

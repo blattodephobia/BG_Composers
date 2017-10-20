@@ -128,7 +128,7 @@ namespace BGC.Web.HttpHandlers
             _localeRouteTokenName = localeRouteTokenName;
         }
 
-        public LocalizationHttpHandler(RequestContext context, ApplicationProfile appProfile) :
+        public LocalizationHttpHandler(RequestContext context, WebApplicationSettings appProfile) :
             this(context, DependencyResolver.Current.GetService<IGeoLocationService>(), appProfile)
         {
             Shield.ArgumentNotNull(context).ThrowOnError();
@@ -136,7 +136,7 @@ namespace BGC.Web.HttpHandlers
             Shield.IsNotNullOrEmpty(appProfile.LocaleRouteTokenName).ThrowOnError();
         }
 
-        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, ApplicationProfile appProfile) :
+        public LocalizationHttpHandler(RequestContext context, IGeoLocationService svc, WebApplicationSettings appProfile) :
             this(
                 context: context,
                 locale: RequestContextLocale.FromRequest(

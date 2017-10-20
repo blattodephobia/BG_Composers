@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Tests.Models
+namespace BGC.Web.Tests.WebApplicationSettingsTests
 {
     [TestFixture]
-    public class ApplicationProfileTests
+    public class SealTests
     {
         [Test]
         public void ThrowsExceptionIfSealed()
         {
-            ApplicationProfile profile = new ApplicationProfile();
+            WebApplicationSettings profile = new WebApplicationSettings();
             profile.LocaleCookieName = "abc";
             Assert.AreEqual("abc", profile.LocaleCookieName);
             profile.Seal();
@@ -23,7 +23,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void SealsCorrectly()
         {
-            ApplicationProfile profile = new ApplicationProfile();
+            WebApplicationSettings profile = new WebApplicationSettings();
 
             Assert.IsFalse(profile.IsSealed);
             profile.Seal();

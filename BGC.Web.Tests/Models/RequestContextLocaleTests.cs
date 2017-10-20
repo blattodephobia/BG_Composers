@@ -21,7 +21,7 @@ namespace BGC.Web.Tests.Models
         [Test]
         public void ChecksAppProfileForValidData()
         {
-            Assert.Throws<InvalidOperationException>(() => new RequestContextLocale(new ApplicationProfile(), new HttpCookie("key")));
+            Assert.Throws<InvalidOperationException>(() => new RequestContextLocale(new WebApplicationSettings(), new HttpCookie("key")));
         }
     }
 

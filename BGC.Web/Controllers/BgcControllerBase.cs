@@ -23,9 +23,9 @@ namespace BGC.Web.Controllers
         [Dependency]
         public ILocalizationService LocalizationService { get; set; }
 
-        private ApplicationProfile _appProfile;
+        private WebApplicationSettings _appProfile;
         [Dependency]
-        public ApplicationProfile ApplicationProfile
+        public WebApplicationSettings ApplicationProfile
         {
             get
             {

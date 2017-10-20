@@ -170,6 +170,7 @@
     <Compile Include="AdministrationArea\ViewModels\GlossaryEntryViewModelTests.cs" />
     <Compile Include="HttpHandlers\LocalizationHttpHandlerTests.cs" />
     <Compile Include="Models\ActionCollectionTests.cs" />
+    <Compile Include="Models\ApplicationProfileTests.cs" />
     <Compile Include="Models\RequestContextLocaleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicArea\Controllers\MainControllerTests.cs" />

@@ -1,4 +1,5 @@
-﻿using CodeShield;
+﻿using BGC.Core;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,15 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core
+namespace BGC.Web
 {
-    public class ApplicationProfile
+    public class WebApplicationSettings : SystemSettings
     {
         private bool _isSealed;
 
         private void CheckNotSealed()
         {
-            Shield.AssertOperation(_isSealed, !_isSealed, $"This instance of {nameof(ApplicationProfile)} cannot be modified, because ot has been sealed.").ThrowOnError();
+            Shield.AssertOperation(_isSealed, !_isSealed, $"This instance of {nameof(WebApplicationSettings)} cannot be modified, because ot has been sealed.").ThrowOnError();
         }
 
         public bool IsSealed => _isSealed;
@@ -84,7 +85,7 @@ namespace BGC.Core
         public bool IsLanguageSupported(string language) => SupportedLanguages.Any(c => c.Name == language);
 
         /// <summary>
-        /// Marks this instance of <see cref="ApplicationProfile"/> as sealed, which will cause an <see cref="InvalidOperationException"/> to
+        /// Marks this instance of <see cref="WebApplicationSettings"/> as sealed, which will cause an <see cref="InvalidOperationException"/> to
         /// be thrown if an attempt is made to modify any of its properties.
         /// </summary>
         public void Seal()
@@ -92,9 +93,9 @@ namespace BGC.Core
             _isSealed = true;
         }
 
-        public static ApplicationProfile FromApplicationSettings(IEnumerable<Setting> applicationSettings)
+        public static WebApplicationSettings FromApplicationSettings(IEnumerable<Setting> applicationSettings)
         {
-            return new ApplicationProfile()
+            return new WebApplicationSettings()
             {
                 SupportedLanguages = new HashSet<CultureInfo>((applicationSettings.FirstOrDefault(s => s.Name == nameof(SupportedLanguages)) as MultiCultureInfoSetting)?.Cultures ?? Enumerable.Empty<CultureInfo>())
             };

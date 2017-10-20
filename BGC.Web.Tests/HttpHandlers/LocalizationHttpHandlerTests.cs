@@ -27,7 +27,7 @@ namespace BGC.Web.Tests.HttpHandlers
 
         public RouteValueDictionary ProcessRouteProxy() => ProcessRoute();
 
-        public LocalizationHttpHandlerProxy(RequestContext ctx, ApplicationProfile appProfile) :
+        public LocalizationHttpHandlerProxy(RequestContext ctx, WebApplicationSettings appProfile) :
             this(ctx, new RequestContextLocale(appProfile, new HttpCookie(appProfile.LocaleCookieName)))
         {
         }
@@ -141,7 +141,7 @@ namespace BGC.Web.Tests.HttpHandlers
                     HttpContext = GetMockHttpContextBase(GetMockRequestBase().Object, GetMockResponseBase().Object).Object
                 },
                 svc: GetMockGeoLocationService().Object,
-                appProfile: new ApplicationProfile()));
+                appProfile: new WebApplicationSettings()));
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace BGC.Web.Tests.HttpHandlers
                     HttpContext = GetMockHttpContextBase(GetMockRequestBase().Object, GetMockResponseBase().Object).Object
                 },
                 svc: GetMockGeoLocationService().Object,
-                appProfile: new ApplicationProfile() { LocaleRouteTokenName = "" }));
+                appProfile: new WebApplicationSettings() { LocaleRouteTokenName = "" }));
         }
     }
 
@@ -163,7 +163,7 @@ namespace BGC.Web.Tests.HttpHandlers
         [Test]
         public void SetsCookieWithLastUsedLocale()
         {
-            ApplicationProfile testProfile = GetStandardAppProfile();
+            WebApplicationSettings testProfile = GetStandardAppProfile();
             testProfile.Seal();
 
             var req = new RequestContext() { RouteData = new RouteData() };

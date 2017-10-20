@@ -109,7 +109,7 @@ namespace BGC.Web.App_Start
             dataLayerDependencyRegistration.RegisterType(typeof(DbContext), tempContainer, new PerResolveLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IRepository<>), tempContainer, new PerResolveLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IUnitOfWork), tempContainer, new PerResolveLifetimeManager());
-            ApplicationProfile profile = ApplicationProfile.FromApplicationSettings(tempContainer.Resolve<IRepository<Setting>>().All());
+            WebApplicationSettings profile = WebApplicationSettings.FromApplicationSettings(tempContainer.Resolve<IRepository<Setting>>().All());
             profile.LocaleCookieName = "locale";
             profile.LocaleRouteTokenName = "locale";
             profile.LocaleKey = "locale";

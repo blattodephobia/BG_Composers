@@ -60,7 +60,6 @@
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
-    <Compile Include="Models\ApplicationProfile.cs" />
     <Compile Include="Models\ComposerArticle.ByComposerEqualityComparer.cs" />
     <Compile Include="Models\ComposerArticle.Comparers..cs" />
     <Compile Include="Models\GlossaryDefinition.cs" />

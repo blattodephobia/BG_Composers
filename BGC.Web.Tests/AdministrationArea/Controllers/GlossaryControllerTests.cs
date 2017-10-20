@@ -49,7 +49,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.GlossaryControllerTests
         {
             var ctrl = new GlossaryController(GetMockGlossaryService(new List<GlossaryEntry>()).Object);
             var supportedLanguages = new[] { new CultureInfo("en-US"), new CultureInfo("de-DE") };
-            ctrl.ApplicationProfile = new ApplicationProfile() { SupportedLanguages = supportedLanguages };
+            ctrl.ApplicationProfile = new WebApplicationSettings() { SupportedLanguages = supportedLanguages };
 
             ActionResult result = ctrl.Edit(null);
 
