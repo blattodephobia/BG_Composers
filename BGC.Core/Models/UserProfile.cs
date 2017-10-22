@@ -20,7 +20,7 @@ namespace BGC.Core
             CultureInfoSetting setting = FindSetting();
             if (setting == null)
             {
-                _user.UserSettings.Add(setting = new CultureInfoSetting(locale) { Name = LocaleSettingName });
+                _user.UserSettings.Add(setting = new CultureInfoSetting(LocaleSettingName, locale));
                 
             }
             else

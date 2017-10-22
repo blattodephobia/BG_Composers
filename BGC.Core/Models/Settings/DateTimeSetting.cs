@@ -51,6 +51,16 @@ namespace BGC.Core
             }
         }
 
+        protected DateTimeSetting() :
+            base()
+        {
+        }
+
+        public DateTimeSetting(string name) :
+            base(name)
+        {
+        }
+
         DateTime IParameter<DateTime>.Value
         {
             get

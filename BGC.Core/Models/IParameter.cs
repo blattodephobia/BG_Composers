@@ -8,7 +8,7 @@ namespace BGC.Core
 {
     public interface IParameter<T>
     {
-        string Name { get; set; }
+        string Name { get; }
 
         T Value { get; set; }
     }

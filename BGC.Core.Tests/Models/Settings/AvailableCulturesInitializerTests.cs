@@ -26,7 +26,7 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
 
             var composerRepo = new List<Composer>() { first, second, third };
 
-            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting(), GetMockRepository(composerRepo).Object);
+            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting("Any"), GetMockRepository(composerRepo).Object);
             MultiCultureInfoSetting setting = availableCultures.Initialize();
 
             Assert.AreEqual(2, setting.Cultures.Count());
@@ -61,7 +61,7 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
 
             var composerRepo = new List<Composer>() { first, second, third };
 
-            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting(), GetMockRepository(composerRepo).Object);
+            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting("Any"), GetMockRepository(composerRepo).Object);
             MultiCultureInfoSetting setting = availableCultures.Initialize();
 
             Assert.AreEqual(2, setting.Cultures.Count());
@@ -81,7 +81,7 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
 
             var composerRepo = new List<Composer>() { first, second, third };
 
-            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting(), GetMockRepository(composerRepo).Object);
+            AvailableCulturesInitializer availableCultures = new AvailableCulturesInitializer(new MultiCultureInfoSetting("Any"), GetMockRepository(composerRepo).Object);
             MultiCultureInfoSetting setting = availableCultures.Initialize();
 
             Assert.AreEqual(0, setting.Cultures.Count());

@@ -14,7 +14,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void AcceptsNull()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting();
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
             s.Cultures = null;
             Assert.IsNull(s.StringValue);
         }
@@ -22,7 +22,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void IsPopulatedFromStringCorrectly1()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting();
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
             s.StringValue = "en-US, bg-BG, de-DE";
             Assert.AreEqual("en-US", s.Cultures.ElementAt(0).Name);
             Assert.AreEqual("bg-BG", s.Cultures.ElementAt(1).Name);
@@ -32,7 +32,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void IsPopulatedFromStringCorrectly2()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting();
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
             s.StringValue = "en-US";
             Assert.AreEqual("en-US", s.Cultures.ElementAt(0).Name);
         }
@@ -44,7 +44,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void IsSetFromSupportedCulturesProperty1()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting();
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
             s.Cultures = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("tr-TR") };
             Assert.AreEqual("en-US, tr-TR", s.StringValue);
         }
@@ -52,7 +52,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void IsSetFromSupportedCulturesProperty2()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting();
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
             s.Cultures = new[] { CultureInfo.GetCultureInfo("en-US") };
             Assert.AreEqual("en-US", s.StringValue);
         }
@@ -60,7 +60,7 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void FormatTest()
         {
-            MultiCultureInfoSetting s = new MultiCultureInfoSetting(); ;
+            MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any"); ;
             Assert.Throws<CultureNotFoundException>(() => s.StringValue = "dfQQ");
         }
     }
@@ -71,15 +71,15 @@ namespace BGC.Core.Tests.Models
         [Test]
         public void ConstructsCorrectlyWithValidInput()
         {
-            MultiCultureInfoSetting param = new MultiCultureInfoSetting("bg-BG, de-DE");
+            MultiCultureInfoSetting param = new MultiCultureInfoSetting("Any", "bg-BG, de-DE");
             Assert.AreEqual("bg-BG", param.Cultures.ElementAt(0).Name);
             Assert.AreEqual("de-DE", param.Cultures.ElementAt(1).Name);
         }
 
         [Test]
-        public void ThrowsExceptionOnNullValue()
+        public void ThrowsExceptionOnNullCulturesList()
         {
-            Assert.Throws<ArgumentNullException>(() => new MultiCultureInfoSetting(null));
+            Assert.Throws<ArgumentNullException>(() => new MultiCultureInfoSetting("Any", null));
         }
     }
 }

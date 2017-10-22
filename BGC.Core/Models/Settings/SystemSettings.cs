@@ -14,21 +14,18 @@ namespace BGC.Core
     /// </summary>
     public class SystemSettings
     {
-        public MultiCultureInfoSetting AvailableCultures { get; private set; } = new MultiCultureInfoSetting()
+        public MultiCultureInfoSetting AvailableCultures { get; private set; } = new MultiCultureInfoSetting(nameof(AvailableCultures))
         {
-            Name = nameof(AvailableCultures),
             Description = "The languages the encyclopedia can be displayed in."
         };
 
-        public MultiCultureInfoSetting SelectedCultures { get; private set; } = new MultiCultureInfoSetting()
+        public MultiCultureInfoSetting SelectedCultures { get; private set; } = new MultiCultureInfoSetting(nameof(SelectedCultures))
         {
-            Name = nameof(SelectedCultures),
             Description = "The languages the encyclopedia will be available in.",
         };
 
-        public Setting EmailInvitationMessage { get; private set; } = new Setting()
+        public Setting EmailInvitationMessage { get; private set; } = new Setting(nameof(EmailInvitationMessage))
         {
-            Name = nameof(EmailInvitationMessage),
             Description = "The content of the email message that will be sent to invited users.",
         };
 

@@ -14,6 +14,21 @@ namespace BGC.Core
     [DebuggerTypeProxy(typeof(SettingDebugView))]
     public partial class Setting : BgcEntity<long>, IParameter<string>
     {
+        public static T Rename<T>(T setting, string newName) where T : Setting
+        {
+            Shield.ArgumentNotNull(setting, nameof(setting)).ThrowOnError();
+            Shield.ArgumentNotNull(newName, nameof(newName)).ThrowOnError();
+
+            T result = Activator.CreateInstance(typeof(T), nonPublic: true) as T;
+            result.Name = newName;
+            result.StringValue = setting.StringValue;
+            result.Description = setting.Description;
+            result.Priority = setting.Priority;
+            result.Id = setting.Id;
+
+            return result;
+        }
+
         internal void SetReadOnly() => IsReadOnly = true;
 
         protected void SetValue<T>(ref T backingStore, T value)
@@ -28,6 +43,7 @@ namespace BGC.Core
         }
 
         private string _name;
+        [Required]
         public string Name
         {
             get
@@ -35,7 +51,7 @@ namespace BGC.Core
                 return _name;
             }
 
-            set
+            protected set
             {
                 SetValue(ref _name, value);
             }
@@ -87,6 +103,17 @@ namespace BGC.Core
             {
                 SetValue(ref _priority, value);
             }
+        }
+
+        protected Setting()
+        {
+        }
+
+        public Setting(string name)
+        {
+            Shield.IsNotNullOrEmpty(name).ThrowOnError();
+
+            Name = name;
         }
 
         public sealed override string ToString() => StringValue;

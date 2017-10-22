@@ -38,11 +38,13 @@ namespace BGC.Core
             }
         }
 
-        protected CultureInfoSetting()
+        protected CultureInfoSetting() :
+            base()
         {
         }
 
-        public CultureInfoSetting(CultureInfo locale = null)
+        public CultureInfoSetting(string name, CultureInfo locale = null) :
+            base(name)
         {
             Locale = locale;
         }

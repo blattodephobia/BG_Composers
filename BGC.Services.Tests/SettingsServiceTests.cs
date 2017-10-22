@@ -20,13 +20,13 @@ namespace BGC.Services.Tests.SettingsServiceTests
                 .Setup(x => x.All())
                 .Returns(new List<Setting>()
                 {
-                        new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application }
+                        new DateTimeSetting("TestSetting") { Priority = SettingPriority.Application }
                 }.AsQueryable());
 
             BgcUser mockUser = new BgcUser("Alice");
             mockUser.UserSettings = new List<Setting>()
                 {
-                    new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User }
+                    new DateTimeSetting("TestSetting") { Priority = SettingPriority.User }
                 };
 
             SettingsService service = new SettingsService(mockSettingsRepo.Object, mockUser);
@@ -37,11 +37,11 @@ namespace BGC.Services.Tests.SettingsServiceTests
         [Test]
         public void CanHandleNullUser()
         {
-            DateTimeSetting result = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application };
+            DateTimeSetting result = new DateTimeSetting("TestSetting") { Priority = SettingPriority.Application };
             Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
             mockSettingsRepo
                 .Setup(x => x.All())
-                .Returns(new List<Setting>() { result, new DateTimeSetting() { Name = "OtherSetting" } }.AsQueryable());
+                .Returns(new List<Setting>() { result, new DateTimeSetting("OtherSetting") }.AsQueryable());
 
             SettingsService service = new SettingsService(mockSettingsRepo.Object);
             Setting setting = service.ReadSetting("TestSetting");
@@ -51,9 +51,9 @@ namespace BGC.Services.Tests.SettingsServiceTests
         [Test]
         public void FindSettingWithMultipleUsers()
         {
-            DateTimeSetting appSetting = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.Application };
-            DateTimeSetting userSetting1 = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User };
-            DateTimeSetting userSetting2 = new DateTimeSetting() { Name = "TestSetting", Priority = SettingPriority.User };
+            DateTimeSetting appSetting = new DateTimeSetting("TestSetting") { Priority = SettingPriority.Application };
+            DateTimeSetting userSetting1 = new DateTimeSetting("TestSetting") { Priority = SettingPriority.User };
+            DateTimeSetting userSetting2 = new DateTimeSetting("TestSetting") { Priority = SettingPriority.User };
 
             Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
             mockSettingsRepo

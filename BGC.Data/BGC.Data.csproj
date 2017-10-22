@@ -115,6 +115,10 @@
     <Compile Include="Migrations\201710092017423_Composer_DatesAndOrder.Designer.cs">
       <DependentUpon>201710092017423_Composer_DatesAndOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201710222000295_Settings_RequiredName.cs" />
+    <Compile Include="Migrations\201710222000295_Settings_RequiredName.Designer.cs">
+      <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -152,6 +156,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710092017423_Composer_DatesAndOrder.resx">
       <DependentUpon>201710092017423_Composer_DatesAndOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710222000295_Settings_RequiredName.resx">
+      <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

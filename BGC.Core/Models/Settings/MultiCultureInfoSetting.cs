@@ -52,12 +52,18 @@ namespace BGC.Core
             }
         }
 
-        public MultiCultureInfoSetting()
+        protected MultiCultureInfoSetting() :
+            base()
         {
         }
 
-        public MultiCultureInfoSetting(string culturesList) :
-            this()
+        public MultiCultureInfoSetting(string name) :
+            base(name)
+        {
+        }
+
+        public MultiCultureInfoSetting(string name, string culturesList = null) :
+            base(name)
         {
             this.StringValue = culturesList.ArgumentNotNull();
         }
