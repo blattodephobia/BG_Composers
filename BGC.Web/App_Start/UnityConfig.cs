@@ -115,7 +115,7 @@ namespace BGC.Web.App_Start
             profile.LocaleKey = "locale";
             container.RegisterInstance(profile);
 
-            container.RegisterInstance<IGeoLocationService>(new DynamicMaxMinServiceProvider(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb"));
+            container.RegisterInstance<IGeoLocationService>(new DynamicMaxMindServiceProvider(HttpRuntime.AppDomainAppPath + @"App_Data\Geolocation\GeoLite2-Country.mmdb"));
         }
     }
 }

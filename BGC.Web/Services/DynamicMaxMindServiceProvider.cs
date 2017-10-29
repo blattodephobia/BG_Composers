@@ -8,7 +8,7 @@ using BGC.Web.Models;
 
 namespace BGC.Web.Services
 {
-    public class DynamicMaxMinServiceProvider : IGeoLocationService
+    public class DynamicMaxMindServiceProvider : IGeoLocationService
     {
         private readonly FileSystemWatcher _directoryWatcher;
         private MemoryStream _db;
@@ -59,7 +59,7 @@ namespace BGC.Web.Services
             }
         }
 
-        public DynamicMaxMinServiceProvider(string path)
+        public DynamicMaxMindServiceProvider(string path)
         {
             _fileName = Path.GetFileName(path);
             Initialize(path);
