@@ -336,8 +336,8 @@
     <Compile Include="Models\ContinentInfo.cs" />
     <Compile Include="Models\CountryInfo.cs" />
     <Compile Include="Models\GeoLocation.cs" />
+    <Compile Include="Services\DynamicMaxMindServiceProvider.cs" />
     <Compile Include="Models\WebApplicationSettings.cs" />
-    <Compile Include="Services\DynamicMaxMinServiceProvider.cs" />
     <Compile Include="Services\IGeoLocationService.cs" />
     <Compile Include="Models\IpAddressInfo.cs" />
     <Compile Include="Models\RequestContextLocale.cs" />
