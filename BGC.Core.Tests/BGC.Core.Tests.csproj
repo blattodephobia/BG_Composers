@@ -85,6 +85,7 @@
     <Compile Include="Models\Settings\AvailableCulturesInitializerTests.cs" />
     <Compile Include="Models\UserProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ServiceExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

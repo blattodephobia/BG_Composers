@@ -29,16 +29,27 @@ namespace BGC.Services
 
         public Setting ReadSetting(string name)
         {
+            Shield.IsNotNullOrEmpty(name, nameof(name)).ThrowOnError();
+
             List<Setting> matchingSettings = new List<Setting>();
             matchingSettings.AddRange(Settings.All().Where(s => s.Name == name));
             matchingSettings.AddRange(CurrentUser?.UserSettings.Where(s => s.Name == name) ?? Enumerable.Empty<Setting>());
 
-            return matchingSettings.OrderBy(setting => (int)setting.Priority).LastOrDefault();
+            return matchingSettings.OrderByDescending(setting => (int)setting.Priority).FirstOrDefault();
         }
 
-        public T ReadSetting<T>(string name) where T : Setting
+        public void WriteSetting(Setting setting)
         {
-            return (T)ReadSetting(name);
+            Settings.Insert(setting);
+
+            SaveAll();
+        }
+
+        public void DeleteSetting(Setting setting)
+        {
+            Settings.Delete(setting);
+
+            SaveAll();
         }
     }
 }

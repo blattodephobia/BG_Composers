@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Services;
 using NUnit.Framework;
 using Moq;
 using System;

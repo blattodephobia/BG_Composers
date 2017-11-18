@@ -96,8 +96,11 @@ namespace TestUtils
 
         public static Mock<ISettingsService> GetMockSettingsService(IList<Setting> settingsRepo = null)
         {
-            var mockService = new Mock<MockSettingsService>(settingsRepo);
-            mockService.Setup(x => x.ReadSetting(It.IsNotNull<string>())).Returns((string name) => settingsRepo?.Where(s => s.Name == name).OrderByDescending(s => s.Priority).FirstOrDefault());
+            var mockService = new Mock<ISettingsService>();
+            mockService.Setup(x => x.ReadSetting(It.IsNotNull<string>())).Returns((string name) =>
+            {
+                return settingsRepo?.Where(s => s.Name == name).OrderByDescending(s => s.Priority).FirstOrDefault();
+            });
             return mockService.As<ISettingsService>();
         }
 

@@ -12,6 +12,7 @@ namespace BGC.Core.Services
     {
         /// <summary>
         /// Finds the highest priority setting that the service can currently access by using the given setting's name.
+        /// Returns null, if no <see cref="Setting"/> with the given <paramref name="name"/> exists.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -19,12 +20,17 @@ namespace BGC.Core.Services
         Setting ReadSetting(string name);
 
         /// <summary>
-        /// Finds the highest priority setting that the service can currently access by using the given setting's name and attempts to cast
-        /// it to its actual derived type.
+        /// Stores or updates a <see cref="Setting"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <param name="setting"></param>
+        void WriteSetting(Setting setting);
+
+        /// <summary>
+        /// Deletes the specified <see cref="Setting"/> from the service's backing store. The <see cref="Setting"/>'s <see cref="Setting.Priority"/> property
+        /// is taken into account.
+        /// </summary>
         /// <param name="name"></param>
-        /// <returns></returns>
-        T ReadSetting<T>(string name) where T : Setting;
+        /// <param name="priority"></param>
+        void DeleteSetting(Setting setting);
     }
 }
