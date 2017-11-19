@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Core
 {
-    public class CultureInfoSetting : Setting
+    public class CultureInfoSetting : Setting, IParameter<CultureInfo>
     {
         private CultureInfo _locale;
         [NotMapped]
@@ -35,6 +35,19 @@ namespace BGC.Core
             set
             {
                 SetValue(ref _locale, new CultureInfo(value));
+            }
+        }
+
+        CultureInfo IParameter<CultureInfo>.Value
+        {
+            get
+            {
+                return Locale;
+            }
+
+            set
+            {
+                Locale = value;
             }
         }
 
