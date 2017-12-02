@@ -21,7 +21,7 @@ namespace BGC.Services.Tests.SettingsServiceTests
                 .Setup(x => x.All())
                 .Returns(new List<Setting>()
                 {
-                        new DateTimeSetting("TestSetting") { Priority = SettingPriority.Application }
+                    new DateTimeSetting("TestSetting") { Priority = SettingPriority.Application }
                 }.AsQueryable());
 
             BgcUser mockUser = new BgcUser("Alice");
