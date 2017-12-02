@@ -51,8 +51,9 @@ namespace BGC.Core
                 return _name;
             }
 
-            protected set
+            set
             {
+                Shield.AssertOperation(nameof(Name), value != null, $"The {nameof(Name)} property cannot be null.").ThrowOnError();
                 SetValue(ref _name, value);
             }
         }

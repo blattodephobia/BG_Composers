@@ -101,6 +101,7 @@ namespace TestUtils
             {
                 return settingsRepo?.Where(s => s.Name == name).OrderByDescending(s => s.Priority).FirstOrDefault();
             });
+            mockService.Setup(x => x.WriteSetting(It.IsAny<Setting>())).Callback((Setting s) => settingsRepo?.Add(s));
             return mockService.As<ISettingsService>();
         }
 
