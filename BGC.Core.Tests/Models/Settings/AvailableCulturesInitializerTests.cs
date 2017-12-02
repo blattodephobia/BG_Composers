@@ -56,7 +56,7 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
             {
                 new ComposerArticle(third, CultureInfo.GetCultureInfo("bg-BG")),
                 new ComposerArticle(third, CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(third, CultureInfo.GetCultureInfo("en-UK")),
+                new ComposerArticle(third, CultureInfo.GetCultureInfo("en-GB")),
             };
 
             var composerRepo = new List<Composer>() { first, second, third };
