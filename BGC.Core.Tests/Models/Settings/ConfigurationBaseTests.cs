@@ -85,7 +85,7 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                config.SupportedType = new CultureInfo("jp-JP");
+                config.SupportedType = new CultureInfo("ja-JP");
             });
         }
     }

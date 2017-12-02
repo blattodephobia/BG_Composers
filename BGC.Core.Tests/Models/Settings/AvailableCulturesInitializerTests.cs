@@ -48,7 +48,7 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
             {
                 new ComposerArticle(second, CultureInfo.GetCultureInfo("bg-BG")),
                 new ComposerArticle(second, CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(second, CultureInfo.GetCultureInfo("jp-JP"))
+                new ComposerArticle(second, CultureInfo.GetCultureInfo("ja-JP"))
             };
 
             Composer third = new Composer();
