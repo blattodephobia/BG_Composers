@@ -32,7 +32,7 @@ namespace BGC.Services
             Shield.IsNotNullOrEmpty(name, nameof(name)).ThrowOnError();
 
             List<Setting> matchingSettings = new List<Setting>();
-            matchingSettings.AddRange(Settings.All().Where(s => s.Name == name));
+            matchingSettings.AddRange(Settings.All().Where(s => s.Name == name && s.Priority == SettingPriority.Application));
             matchingSettings.AddRange(CurrentUser?.UserSettings.Where(s => s.Name == name) ?? Enumerable.Empty<Setting>());
 
             return matchingSettings.OrderByDescending(setting => (int)setting.Priority).FirstOrDefault();

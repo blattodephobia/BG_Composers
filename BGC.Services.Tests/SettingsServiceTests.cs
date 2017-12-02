@@ -67,5 +67,28 @@ namespace BGC.Services.Tests.SettingsServiceTests
             DateTimeSetting setting = service.ReadSetting<DateTimeSetting>("TestSetting");
             Assert.AreSame(userSetting1, setting);
         }
+
+        [Test]
+        public void DoesntReturnOtherUsersSettings()
+        {
+            string setting1Name = "TestSetting1";
+            string setting2Name = "TestSetting2";
+            DateTimeSetting appSetting = new DateTimeSetting(setting2Name) { Priority = SettingPriority.Application };
+            DateTimeSetting userSetting1 = new DateTimeSetting(setting1Name) { Priority = SettingPriority.User };
+            DateTimeSetting userSetting2 = new DateTimeSetting(setting2Name) { Priority = SettingPriority.User };
+
+            Mock<IRepository<Setting>> mockSettingsRepo = new Mock<IRepository<Setting>>();
+            mockSettingsRepo
+                .Setup(x => x.All())
+                .Returns(new List<Setting>() { appSetting, userSetting2, userSetting1 }.AsQueryable());
+
+            BgcUser user = new BgcUser("Alice") { UserSettings = new List<Setting>() { userSetting1 } };
+
+            SettingsService service = new SettingsService(mockSettingsRepo.Object, user);
+
+            Setting expected = appSetting;
+            Setting actual = service.ReadSetting(setting2Name);
+            Assert.AreSame(expected, actual, "The service returns the wrong user's setting.");
+        }
     }
 }
