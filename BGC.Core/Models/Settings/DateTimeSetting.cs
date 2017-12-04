@@ -23,6 +23,8 @@ namespace BGC.Core
         /// </summary>
         public static readonly IFormatProvider FormatProvider = CultureInfo.GetCultureInfo("en-US");
 
+        public override Type ValueType => typeof(DateTime);
+
         public override string StringValue
         {
             get

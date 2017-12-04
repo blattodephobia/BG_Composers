@@ -17,6 +17,8 @@ namespace BGC.Core
         private IEnumerable<CultureInfo> _cultures;
         private string _string;
 
+        public override Type ValueType => typeof(IEnumerable<CultureInfo>);
+
         public override string StringValue
         {
             get

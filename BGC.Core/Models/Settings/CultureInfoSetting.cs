@@ -25,6 +25,8 @@ namespace BGC.Core
             }
         }
 
+        public override Type ValueType => typeof(CultureInfo);
+
         public override string StringValue
         {
             get

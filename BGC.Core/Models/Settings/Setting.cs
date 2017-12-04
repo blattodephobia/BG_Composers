@@ -77,6 +77,9 @@ namespace BGC.Core
             }
         }
 
+        [NotMapped]
+        public virtual Type ValueType => typeof(string);
+
         private string _stringValue;
         [Unicode]
         public virtual string StringValue
