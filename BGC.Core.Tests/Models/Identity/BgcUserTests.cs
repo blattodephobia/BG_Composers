@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TestUtils;
 
 namespace BGC.Core.Tests.Models.Identity.BgcUserTests
 {
@@ -55,6 +56,20 @@ namespace BGC.Core.Tests.Models.Identity.BgcUserTests
             string base64String = Convert.ToBase64String(new byte[BgcUser.PASSWORD_RESET_TOKEN_LENGTH]);
             StringLengthAttribute strLengthAttr = typeof(BgcUser).GetProperty(nameof(BgcUser.PasswordResetTokenHash)).GetCustomAttribute<StringLengthAttribute>();
             Assert.AreEqual(base64String.Length, strLengthAttr.MaximumLength);
+        }
+    }
+    
+    public class AddSettingTests : TestFixtureBase
+    {
+        [Test]
+        public void SetsOwnerStamp()
+        {
+            var user = new BgcUser("user");
+
+            Setting setting = new Setting("name");
+            user.AddSetting(setting);
+
+            Assert.AreEqual(user.UserName, setting.OwnerStamp);
         }
     }
 

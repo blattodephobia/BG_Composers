@@ -42,7 +42,19 @@ namespace BGC.Core
          */
         public string PasswordResetTokenHash { get; set; }
 
-        public virtual ICollection<Setting> UserSettings { get; set; }
+        private ICollection<Setting> _userSettings;
+        public virtual ICollection<Setting> UserSettings
+        {
+            get
+            {
+                return _userSettings ?? (_userSettings = new HashSet<Setting>());
+            }
+
+            set
+            {
+                _userSettings = value;
+            }
+        }
 
         public override string UserName
         {
@@ -94,6 +106,14 @@ namespace BGC.Core
             {
                 PasswordResetTokenHash = null;
             }
+        }
+
+        public void AddSetting(Setting setting)
+        {
+            Shield.ArgumentNotNull(setting).ThrowOnError();
+
+            setting.OwnerStamp = UserName;
+            UserSettings.Add(setting);
         }
 
         /// <summary>
