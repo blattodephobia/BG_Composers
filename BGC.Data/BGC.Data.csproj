@@ -119,6 +119,10 @@
     <Compile Include="Migrations\201710222000295_Settings_RequiredName.Designer.cs">
       <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712041040275_Settings_OwnerStamp.cs" />
+    <Compile Include="Migrations\201712041040275_Settings_OwnerStamp.Designer.cs">
+      <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,6 +163,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201710222000295_Settings_RequiredName.resx">
       <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712041040275_Settings_OwnerStamp.resx">
+      <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

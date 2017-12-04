@@ -106,6 +106,21 @@ namespace BGC.Core
             }
         }
 
+        private string _ownerStamp;
+        [MaxLength(64)]
+        public string OwnerStamp
+        {
+            get
+            {
+                return _ownerStamp;
+            }
+
+            set
+            {
+                _ownerStamp = value;
+            }
+        }
+
         protected Setting()
         {
         }
