@@ -83,6 +83,7 @@
     <Compile Include="Models\Permissions\ISendInvitePermission.cs" />
     <Compile Include="Models\Permissions\IUserSettingsPermission.cs" />
     <Compile Include="Models\SearchResult.cs" />
+    <Compile Include="Models\Settings\ApplicationConfiguration.cs" />
     <Compile Include="Models\Settings\AvailableCulturesInitializer.cs" />
     <Compile Include="Models\Settings\ConfigurationBase.cs" />
     <Compile Include="Models\Settings\CultureInfoSetting.cs" />
