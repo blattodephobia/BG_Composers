@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestUtils;
+using static TestUtils.MockUtilities;
+using BGC.Core.Exceptions;
 
 namespace BGC.Services.Tests.SettingsServiceTests
 {
-    [TestFixture]
-    public class FindSettingTests
+    public class FindSettingTests : TestFixtureBase
     {
         [Test]
         public void GetsHighestPrioritySettingFirst()
@@ -89,6 +91,82 @@ namespace BGC.Services.Tests.SettingsServiceTests
             Setting expected = appSetting;
             Setting actual = service.ReadSetting(setting2Name);
             Assert.AreSame(expected, actual, "The service returns the wrong user's setting.");
+        }
+    }
+
+    public class WriteSettingsTest : TestFixtureBase
+    {
+        [Test]
+        public void UpdatesExistingSetting()
+        {
+            var existingSetting = new Setting("TestSetting");
+            List<Setting> backingStore = new List<Setting>() { existingSetting };
+            IRepository<Setting> settings = GetMockRepository(backingStore).Object;
+
+            var svc = new SettingsService(settings);
+            string testValue = "TestHarness";
+            svc.WriteSetting(new Setting(existingSetting.Name) { StringValue = testValue });
+
+            Assert.AreEqual(testValue, existingSetting.StringValue);
+        }
+
+        [Test]
+        public void UpdatesExistingSetting_DifferentType()
+        {
+            var existingSetting = new DateTimeSetting("TestSetting");
+            List<Setting> backingStore = new List<Setting>() { existingSetting };
+            IRepository<Setting> settings = GetMockRepository(backingStore).Object;
+
+            var svc = new SettingsService(settings);
+            var testValue = new DateTime(2000, 1, 1);
+            svc.WriteSetting(new DateTimeSetting(existingSetting.Name) { Date = testValue });
+
+            Assert.AreEqual(testValue, existingSetting.Date);
+        }
+
+        [Test]
+        public void DoesntUpdateOtherUsersSettings()
+        {
+            var existingSetting1 = new DateTimeSetting("TestSetting");
+            var existingSetting2 = new DateTimeSetting(existingSetting1.Name) { OwnerStamp = "TheTest" };
+            List<Setting> backingStore = new List<Setting>() { existingSetting2, existingSetting1 };
+            IRepository<Setting> settings = GetMockRepository(backingStore).Object;
+
+            var svc = new SettingsService(settings);
+            var testValue = new DateTime(2000, 1, 1);
+            svc.WriteSetting(new DateTimeSetting(existingSetting1.Name) { Date = testValue });
+
+            Assert.AreEqual(testValue, existingSetting1.Date);
+            Assert.AreNotEqual(testValue, existingSetting2.Date);
+        }
+
+        [Test]
+        public void UpdatesSettingsWithSameBaseType()
+        {
+            var existingSetting = new DateTimeSetting("TestSetting");
+            List<Setting> backingStore = new List<Setting>() { existingSetting };
+            IRepository<Setting> settings = GetMockRepository(backingStore).Object;
+
+            var svc = new SettingsService(settings);
+            var testValue = new DateTime(2000, 1, 1);
+            var settingWrapper = new Mock<DateTimeSetting>(existingSetting.Name) { CallBase = true };
+            settingWrapper.Object.Date = testValue;
+
+            svc.WriteSetting(settingWrapper.Object);
+
+            Assert.AreEqual(testValue, existingSetting.Date);
+        }
+
+        [Test]
+        public void ThrowsExceptionIfWrongSettingType()
+        {
+            var existingSetting = new DateTimeSetting("TestSetting") { Date = new DateTime(2000, 1, 1) };
+            List<Setting> backingStore = new List<Setting>() { existingSetting };
+            IRepository<Setting> settings = GetMockRepository(backingStore).Object;
+
+            var svc = new SettingsService(settings);
+
+            Assert.Throws<SettingException>(() => svc.WriteSetting(new Setting(existingSetting.Name) { StringValue = existingSetting.StringValue }));
         }
     }
 }

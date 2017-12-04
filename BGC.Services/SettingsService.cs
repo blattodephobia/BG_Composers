@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Core.Exceptions;
 using BGC.Core.Services;
 using CodeShield;
 using System;
@@ -40,7 +41,22 @@ namespace BGC.Services
 
         public void WriteSetting(Setting setting)
         {
-            Settings.Insert(setting);
+            Shield.ArgumentNotNull(setting).ThrowOnError();
+
+            Setting existingSetting = Settings.All().FirstOrDefault(s => s.Name == setting.Name && s.OwnerStamp == setting.OwnerStamp);
+            if (existingSetting != null)
+            {
+                Shield.Assert(
+                    setting,
+                    setting.ValueType == existingSetting.ValueType,
+                    (Setting s) => new SettingException($"The type of the setting {setting.Name} conflicts with the type of the existing setting bearing the same name.")).ThrowOnError();
+
+                existingSetting.StringValue = setting.StringValue;
+            }
+            else
+            {
+                Settings.Insert(setting);
+            }
 
             SaveAll();
         }
