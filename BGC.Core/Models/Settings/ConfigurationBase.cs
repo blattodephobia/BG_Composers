@@ -23,23 +23,22 @@ namespace BGC.Core
 
         private void Cache<T>(string settingName)
         {
-            string fullName = GetFullSettingName(settingName);
-            if (!_cache.ContainsKey(fullName))
+            if (!_cache.ContainsKey(settingName))
             {
-                Setting setting = _svc.ReadSetting(fullName);
+                Setting setting = _svc.ReadSetting(settingName);
                 if (setting == null)
                 {
-                    setting = _factory.GetSetting<T>(fullName) as Setting;
+                    setting = _factory.GetSetting<T>(settingName) as Setting;
                     _svc.WriteSetting(setting);
                 }
 
                 Shield.Assert(
-                    value: fullName,
+                    value: settingName,
                     condition: setting is IParameter<T>,
                     exceptionProvider: (string name) => new InvalidOperationException($"The setting {name} doesn't implement {typeof(IParameter<T>)}"))
                     .ThrowOnError();
 
-                _cache.Add(fullName, setting);
+                _cache.Add(settingName, setting);
             }
         }
 

@@ -88,5 +88,17 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
                 config.SupportedType = new CultureInfo("ja-JP");
             });
         }
+
+        [Test]
+        public void SetsAndReadsSettingsWithPrefix()
+        {
+            List<Setting> settingsRepo = new List<Setting>();
+            Mock<ISettingsService> svc = GetMockSettingsService(settingsRepo);
+            var config = new ConfigurationBaseProxy(svc.Object, "Global");
+
+            string cultureCode = "en-US";
+            config.SupportedType = CultureInfo.GetCultureInfo(cultureCode);
+            Assert.AreEqual(cultureCode, config.SupportedType.Name);
+        }
     }
 }
