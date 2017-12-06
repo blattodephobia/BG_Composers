@@ -55,6 +55,7 @@ namespace T4MVC
         public BGC.Web.Areas.Administration.Controllers.AuthenticationController Authentication = new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController();
         public BGC.Web.Areas.Administration.Controllers.EditController Edit = new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController();
         public BGC.Web.Areas.Administration.Controllers.GlossaryController Glossary = new BGC.Web.Areas.Administration.Controllers.T4MVC_GlossaryController();
+        public BGC.Web.Areas.Administration.Controllers.SettingsController Settings = new BGC.Web.Areas.Administration.Controllers.T4MVC_SettingsController();
         public BGC.Web.Areas.Administration.Controllers.UserManagementController UserManagement = new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController();
         public T4MVC.Administration.SharedController Shared = new T4MVC.Administration.SharedController();
         public Dictionary<string, ControllerBase> Controllers = new Dictionary<string, ControllerBase>()
@@ -63,6 +64,7 @@ namespace T4MVC
            { "Authentication" , new BGC.Web.Areas.Administration.Controllers.T4MVC_AuthenticationController() },
            { "Edit" , new BGC.Web.Areas.Administration.Controllers.T4MVC_EditController() },
            { "Glossary" , new BGC.Web.Areas.Administration.Controllers.T4MVC_GlossaryController() },
+           { "Settings" , new BGC.Web.Areas.Administration.Controllers.T4MVC_SettingsController() },
            { "UserManagement" , new BGC.Web.Areas.Administration.Controllers.T4MVC_UserManagementController() },
         };
 
@@ -75,6 +77,7 @@ namespace T4MVC
            { "Authentication" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.AuthenticationController")) },
            { "Edit" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.EditController")) },
            { "Glossary" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.GlossaryController")) },
+           { "Settings" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.SettingsController")) },
            { "UserManagement" , ActionCollection.FromType(Type.GetType("BGC.Web.Areas.Administration.Controllers.UserManagementController")) },
         };
     }

@@ -101,7 +101,15 @@ namespace TestUtils
             {
                 return settingsRepo?.Where(s => s.Name == name).OrderByDescending(s => s.Priority).FirstOrDefault();
             });
-            mockService.Setup(x => x.WriteSetting(It.IsAny<Setting>())).Callback((Setting s) => settingsRepo?.Add(s));
+            mockService.Setup(x => x.WriteSetting(It.IsAny<Setting>())).Callback((Setting s) =>
+            {
+                int existingElemIndex = settingsRepo?.IndexOf(s) ?? -1;
+                if (existingElemIndex >= 0)
+                {
+                    settingsRepo.RemoveAt(existingElemIndex);
+                }
+                settingsRepo?.Add(s);
+            });
             return mockService.As<ISettingsService>();
         }
 

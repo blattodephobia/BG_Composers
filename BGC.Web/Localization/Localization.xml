@@ -49,6 +49,30 @@
       </LocalizedString>
       </Update>
     </Edit>
+    <Settings>
+      <ApplicationSettings>
+        <LocalizedString key="Title">
+          <Translation culture="en-US">Global settings</Translation>
+          <Translation culture="de-DE">Globale Einstellungen</Translation>
+          <Translation culture="bg-BG">Глобални настройки</Translation>
+        </LocalizedString>
+        <LocalizedString key="SettingName">
+          <Translation culture="en-US">Setting name</Translation>
+          <Translation culture="de-DE">Einstellungname</Translation>
+          <Translation culture="bg-BG">Име на настройка</Translation>
+        </LocalizedString>
+        <LocalizedString key="SettingType">
+          <Translation culture="en-US">Setting type</Translation>
+          <Translation culture="de-DE">Einstellungtype</Translation>
+          <Translation culture="bg-BG">Тип данни на настройка</Translation>
+        </LocalizedString>
+        <LocalizedString key="SettingValue">
+          <Translation culture="en-US">Setting value</Translation>
+          <Translation culture="de-DE">Einstellungwert</Translation>
+          <Translation culture="bg-BG">Стойност на настройка</Translation>
+        </LocalizedString>
+      </ApplicationSettings>
+    </Settings>
     <Glossary>
       <ListGlossary>
         <LocalizedString key="Glossary">

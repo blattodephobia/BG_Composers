@@ -265,6 +265,9 @@
     <Compile Include="Administration.GlossaryController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
+    <Compile Include="Administration.SettingsController.generated.cs">
+      <DependentUpon>T4MVC.tt</DependentUpon>
+    </Compile>
     <Compile Include="Administration.SharedController.generated.cs">
       <DependentUpon>T4MVC.tt</DependentUpon>
     </Compile>
@@ -282,11 +285,13 @@
     <Compile Include="Areas\Administration\Controllers\AccountController.cs" />
     <Compile Include="Areas\Administration\Controllers\AdministrationControllerBase.cs" />
     <Compile Include="Areas\Administration\Controllers\GlossaryController.cs" />
+    <Compile Include="Areas\Administration\Controllers\SettingsController.cs" />
     <Compile Include="Areas\Administration\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Administration\Controllers\AuthenticationController.cs" />
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
+    <Compile Include="Areas\Administration\Models\SettingWebModel.cs" />
     <Compile Include="Areas\Administration\Models\UserLocaleDependencyValue.cs" />
     <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\AddArticleViewModel.cs" />
@@ -385,6 +390,7 @@
     <Content Include="Areas\Administration\Views\Edit\Update.cshtml" />
     <Content Include="Areas\Administration\Views\Glossary\ListGlossary.cshtml" />
     <Content Include="Areas\Administration\Views\Glossary\Edit.cshtml" />
+    <Content Include="Areas\Administration\Views\Settings\ApplicationSettings.cshtml" />
     <None Include="Areas\Public\Resources\css\public.less" />
     <Content Include="Areas\Public\Views\Main\Search.cshtml" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />

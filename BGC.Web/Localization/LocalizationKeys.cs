@@ -24,6 +24,16 @@ public class Update
             public const string ExplainOrder = "Administration.Edit.Update.ExplainOrder";
 }
 }
+public class Settings
+{
+        public class ApplicationSettings
+        {
+                    public const string Title = "Administration.Settings.ApplicationSettings.Title";
+                    public const string SettingName = "Administration.Settings.ApplicationSettings.SettingName";
+                    public const string SettingType = "Administration.Settings.ApplicationSettings.SettingType";
+                    public const string SettingValue = "Administration.Settings.ApplicationSettings.SettingValue";
+}
+}
 public class Glossary
 {
         public class ListGlossary

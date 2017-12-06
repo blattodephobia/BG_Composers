@@ -49,6 +49,15 @@
                     <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
                     <xs:element name="ListGlossary" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                     <xs:element name="Edit" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                    <xs:element name="Delete" type="ViewElement" minOccurs="0" maxOccurs="1"/>
+                  </xs:choice>
+                </xs:complexType>
+              </xs:element>
+              <xs:element minOccurs="0" maxOccurs="1" name="Settings">
+                <xs:complexType>
+                  <xs:choice minOccurs="0" maxOccurs="unbounded">
+                    <xs:element name="LocalizedString" type="LocalizedString" minOccurs="0" maxOccurs="unbounded"/>
+                    <xs:element name="ApplicationSettings" type="ViewElement" minOccurs="0" maxOccurs="1"/>
                   </xs:choice>
                 </xs:complexType>
               </xs:element>

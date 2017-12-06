@@ -1,0 +1,53 @@
+﻿@using BGC.Web.Areas.Administration.Models
+
+@model ApplicationSettingsWritePermissionViewModel
+
+@{
+    ViewBag.Title = Localize(Administration.Settings.ApplicationSettings.Title);
+}
+
+@section sidebar_content
+{
+    <div class="sidebar-actions-container">
+        <button type="submit" form="settingsForm" class="btn btn-lg btn-success btn-block">
+            <i class="ace-icon fa fa-floppy-o"></i>
+            <span>@Localize(Global.Save)</span>
+        </button>
+    </div>
+}
+
+<div class="page-content">
+    <h2 class="header lighter green">@ViewBag.Title</h2>
+    <form id="settingsForm" method="post">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <td>@Localize(Administration.Settings.ApplicationSettings.SettingName)</td>
+                    <td>@Localize(Administration.Settings.ApplicationSettings.SettingType)</td>
+                    <td>@Localize(Administration.Settings.ApplicationSettings.SettingValue)</td>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Settings.Count; i++)
+                {
+                    <tr>
+                        <td>@Model.Settings[i].Name</td>
+                        <td>@Model.Settings[i].Type</td>
+                        <td>
+                            @if (Model.Settings[i].Type == typeof(string))
+                            {
+                                <div>@Html.TextAreaFor(m => m.Settings[i].Value)</div>
+                            }
+                            else
+                            {
+                                <div>@Html.TextBoxFor(m => m.Settings[i].Value)</div>
+                            }
+                            @Html.HiddenFor(m => m.Settings[i].TypeName)
+                            @Html.HiddenFor(m => m.Settings[i].Name)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+</div>
