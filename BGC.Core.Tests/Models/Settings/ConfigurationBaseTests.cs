@@ -101,4 +101,57 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
             Assert.AreEqual(cultureCode, config.SupportedType.Name);
         }
     }
+
+    [TestFixture]
+    public class GetSettingNamesTests
+    {
+        private class ConfigurationBaseNamesProxy : ConfigurationBase
+        {
+            public object Property1
+            {
+                get
+                {
+                    return ReadValue<object>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+
+            public CultureInfo Property2
+            {
+                get
+                {
+                    return ReadValue<CultureInfo>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+
+            public ConfigurationBaseNamesProxy(ISettingsService svc, string prefix) :
+                base(svc, prefix, null)
+            {
+            }
+        }
+
+        [Test]
+        public void GetsAllFullyQualifiedSettingNames()
+        {
+            string @namespace = "System.Test";
+            var config = new ConfigurationBaseNamesProxy(GetMockSettingsService().Object, @namespace);
+
+            var expectedNames = new[]
+            {
+                $"{@namespace}.{nameof(ConfigurationBaseNamesProxy.Property1)}",
+                $"{@namespace}.{nameof(ConfigurationBaseNamesProxy.Property2)}",
+            };
+
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedNames.OrderBy(x => x), config.GetSettingNames().OrderBy(x => x)));
+        }
+    }
 }

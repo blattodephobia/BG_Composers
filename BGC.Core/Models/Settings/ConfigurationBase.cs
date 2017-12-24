@@ -63,6 +63,8 @@ namespace BGC.Core
             return result.Value;
         }
 
+        public IEnumerable<string> GetSettingNames() => GetType().GetProperties().Select(p => GetFullSettingName(p.Name));
+
         public ConfigurationBase(ISettingsService settingsService, string implicitSettingsNamePrefix = null, SettingsFactory factory = null)
         {
             Shield.ArgumentNotNull(settingsService, nameof(settingsService)).ThrowOnError();
