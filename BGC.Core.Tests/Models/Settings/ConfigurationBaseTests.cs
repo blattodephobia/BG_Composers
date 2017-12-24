@@ -154,4 +154,73 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
             Assert.IsTrue(Enumerable.SequenceEqual(expectedNames.OrderBy(x => x), config.GetSettingNames().OrderBy(x => x)));
         }
     }
+
+    [TestFixture]
+    public class DescriptionTests
+    {
+        private class ConfigurationBaseDescriptionProxy : ConfigurationBase
+        {
+            public const string DESCRIBED_PROEPRTY_DESCRIPTION = "Description";
+
+            public ConfigurationBaseDescriptionProxy(ISettingsService svc) :
+                base(svc)
+            {
+
+            }
+
+            [System.ComponentModel.Description(DESCRIBED_PROEPRTY_DESCRIPTION)] // there's a conflict between System.ComponentModel.Description and NUnitFramework.Description
+            public int DescribedProperty
+            {
+                get
+                {
+                    return ReadValue<int>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+
+            public double PropertyWithNoDescription
+            {
+                get
+                {
+                    return ReadValue<double>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+        }
+
+        [Test]
+        public void GetsDescriptionForProperty()
+        {
+            var config = new ConfigurationBaseDescriptionProxy(GetMockSettingsService().Object);
+
+            Assert.AreEqual(ConfigurationBaseDescriptionProxy.DESCRIBED_PROEPRTY_DESCRIPTION, config.GetDescriptionFor(nameof(config.DescribedProperty)));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullName()
+        {
+            var config = new ConfigurationBaseDescriptionProxy(GetMockSettingsService().Object);
+
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                config.GetDescriptionFor(null);
+            });
+        }
+
+        [Test]
+        public void ReturnsEmptyStringIfNoDescription()
+        {
+            var config = new ConfigurationBaseDescriptionProxy(GetMockSettingsService().Object);
+
+            Assert.AreEqual(string.Empty, config.GetDescriptionFor(nameof(config.PropertyWithNoDescription)));
+        }
+    }
 }
