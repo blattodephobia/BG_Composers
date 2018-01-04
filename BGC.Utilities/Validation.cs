@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeShield
 {
+    [DebuggerStepThrough]
     public struct Validation<T>
     {
         public T Value { get; private set; }
