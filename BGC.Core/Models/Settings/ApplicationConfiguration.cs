@@ -26,5 +26,18 @@ namespace BGC.Core
                 SetValue(value);
             }
         }
+
+        public string InvitationSubject
+        {
+            get
+            {
+                return ReadValue<string>();
+            }
+
+            set
+            {
+                SetValue(value);
+            }
+        }
     }
 }

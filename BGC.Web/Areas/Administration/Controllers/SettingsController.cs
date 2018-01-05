@@ -15,12 +15,15 @@ namespace BGC.Web.Areas.Administration.Controllers
     public partial class SettingsController : AdministrationControllerBase
     {
         private ISettingsService _settingsService;
+        private ApplicationConfiguration _globalSettings;
+
+        public ApplicationConfiguration GlobalSettings => _globalSettings ?? (_globalSettings = new ApplicationConfiguration(_settingsService));
 
         [Permissions(nameof(IApplicationSettingsWritePermission))]
         public virtual ActionResult ApplicationSettings()
         {
-            var appSettings = from property in typeof(ApplicationConfiguration).GetProperties()
-                              select new SettingWebModel(property.Name, property.PropertyType);
+            var appSettings = from setting in GlobalSettings.AllSettings()
+                              select new SettingWebModel(setting.Name, setting.ValueType);
             ApplicationSettingsWritePermissionViewModel vm = new ApplicationSettingsWritePermissionViewModel()
             {
                 Settings = appSettings.ToList()
@@ -37,9 +40,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
             foreach (SettingWebModel webModelSetting in vm.Settings)
             {
-                configType
-                    .GetProperty(webModelSetting.Name)
-                    .SetValue(config, Convert.ChangeType(webModelSetting.Value, webModelSetting.Type));
+                config.SetValue(webModelSetting.Value, webModelSetting.Name);
             }
 
             return ApplicationSettings();

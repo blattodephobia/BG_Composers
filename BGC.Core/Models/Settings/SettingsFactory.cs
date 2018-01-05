@@ -11,12 +11,20 @@ namespace BGC.Core
 {
     public partial class SettingsFactory : IServiceProvider
     {
-        public virtual IParameter<T> GetSetting<T>(string name)
+        public virtual IParameter<T> GetSetting<T>(string name) => (IParameter<T>)GetSetting(name, typeof(T));
+
+        public virtual Setting GetSetting(string name, Type iParameterImplementationType)
         {
             Shield.ArgumentNotNull(name, nameof(name)).ThrowOnError();
-            Shield.AssertOperation(typeof(T), SettingsMap.ContainsKey(typeof(T)), $"There is no conversion defined between {typeof(T)} and a corresponding implementation of {typeof(IParameter<>)}").ThrowOnError();
+            Shield.ArgumentNotNull(iParameterImplementationType, nameof(iParameterImplementationType)).ThrowOnError();
 
-            return SettingsMap[typeof(T)].Invoke(name) as IParameter<T>;
+            Shield.AssertOperation(
+                value: iParameterImplementationType,
+                condition: SettingsMap.ContainsKey(iParameterImplementationType),
+                message: $"There is no conversion defined between {iParameterImplementationType} and a corresponding implementation of {typeof(IParameter<>)}")
+                .ThrowOnError();
+
+            return SettingsMap[iParameterImplementationType].Invoke(name);
         }
 
         object IServiceProvider.GetService(Type serviceType)
@@ -24,7 +32,7 @@ namespace BGC.Core
             Shield.ArgumentNotNull(serviceType, nameof(serviceType)).ThrowOnError();
             Shield.AssertOperation(serviceType, SettingsMap.ContainsKey(serviceType), $"There is no {nameof(Setting)} object supporting {serviceType}.").ThrowOnError();
 
-            return Activator.CreateInstance(SettingsMap[serviceType].Method.ReturnType);
+            return SettingsMap[serviceType].Invoke("<unknown>");
         }
     }
 }

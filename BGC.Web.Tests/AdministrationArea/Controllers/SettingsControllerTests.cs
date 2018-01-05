@@ -26,7 +26,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.SettingsControllerTests
 
             var vm = (ctrl.ApplicationSettings() as ViewResult).Model as ApplicationSettingsWritePermissionViewModel;
             IEnumerable<string> expectedPropertiesNames = typeof(ApplicationConfiguration).GetProperties().Select(p => p.Name).OrderBy(x => x);
-            IEnumerable<string> actualPropertiesNames = vm.Settings.Select(s => s.Name).OrderBy(x => x);
+            IEnumerable<string> actualPropertiesNames = vm.Settings.Select(s => s.Name.Substring(s.Name.LastIndexOf(".") + 1)).OrderBy(x => x);
 
             Assert.IsTrue(expectedPropertiesNames.SequenceEqual(actualPropertiesNames));
         }
@@ -65,7 +65,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.SettingsControllerTests
             }
             ctrl.ApplicationSettings_Post(vm);
 
-            IEnumerable<string> expectedSettingNames = repo.Select(s => s.Name.Substring(s.Name.LastIndexOf(".") + 1)).OrderBy(x => x);
+            IEnumerable<string> expectedSettingNames = repo.Select(s => s.Name).OrderBy(x => x);
             IEnumerable<string> actualSettingNames = vm.Settings.Select(s => s.Name).OrderBy(x => x);
 
             Assert.IsTrue(expectedSettingNames.SequenceEqual(actualSettingNames));

@@ -14,9 +14,9 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
 {
     public class ReadSettingTests : TestFixtureBase
     {
-        private class ConfigurationBaseProxy : ConfigurationBase
+        private class ConfigurationBaseReadProxy : ConfigurationBase
         {
-            public ConfigurationBaseProxy(ISettingsService svc, string settingsPrefix, SettingsFactory factory = null) :
+            public ConfigurationBaseReadProxy(ISettingsService svc, string settingsPrefix, SettingsFactory factory = null) :
                 base(svc, settingsPrefix, factory)
             {
             }
@@ -55,7 +55,7 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
         [Test]
         public void ReadsSetting()
         {
-            ConfigurationBaseProxy config = new ConfigurationBaseProxy(GetMockSettingsService().Object, null);
+            ConfigurationBaseReadProxy config = new ConfigurationBaseReadProxy(GetMockSettingsService().Object, null);
             string cultureCode = "de-DE";
             config.SupportedType = new CultureInfo(cultureCode);
 
@@ -67,11 +67,24 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
         {
             List<Setting> settingsRepo = new List<Setting>();
             Mock<ISettingsService> svc = GetMockSettingsService(settingsRepo);
-            ConfigurationBaseProxy config = new ConfigurationBaseProxy(svc.Object, null);
+            ConfigurationBaseReadProxy config = new ConfigurationBaseReadProxy(svc.Object, null);
 
             config.SupportedType = new CultureInfo("bg-BG");
 
             Assert.IsNotNull(settingsRepo.FirstOrDefault(s => s.Name == nameof(config.SupportedType)));
+        }
+
+        [Test]
+        public void AcceptsFullAndShortSettingNames()
+        {
+            string prefix = "Standard";
+            var config = new ConfigurationBaseReadProxy(GetMockSettingsService().Object, prefix);
+
+            var testCulture = new CultureInfo("cs-CZ");
+            config.SupportedType = testCulture;
+
+            Assert.AreEqual(testCulture, config.ReadValue<CultureInfo>(nameof(config.SupportedType)));
+            Assert.AreEqual(testCulture, config.ReadValue<CultureInfo>($"{prefix}.{nameof(config.SupportedType)}"));
         }
 
         [Test]
@@ -81,9 +94,9 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
             Mock<ISettingsService> faultySettingsService = GetMockSettingsService(settingsRepo);
             faultySettingsService.Setup(x => x.ReadSetting(It.IsAny<string>())).Returns(new Setting("wrong"));
 
-            ConfigurationBaseProxy config = new ConfigurationBaseProxy(faultySettingsService.Object, null);
+            ConfigurationBaseReadProxy config = new ConfigurationBaseReadProxy(faultySettingsService.Object, null);
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<SettingTypeMismatchException>(() =>
             {
                 config.SupportedType = new CultureInfo("ja-JP");
             });
@@ -94,7 +107,7 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
         {
             List<Setting> settingsRepo = new List<Setting>();
             Mock<ISettingsService> svc = GetMockSettingsService(settingsRepo);
-            var config = new ConfigurationBaseProxy(svc.Object, "Global");
+            var config = new ConfigurationBaseReadProxy(svc.Object, "Global");
 
             string cultureCode = "en-US";
             config.SupportedType = CultureInfo.GetCultureInfo(cultureCode);
@@ -102,16 +115,79 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
         }
     }
 
-    [TestFixture]
-    public class GetSettingNamesTests
+    public class SetValueTests : TestFixtureBase
     {
-        private class ConfigurationBaseNamesProxy : ConfigurationBase
+        private class ConfigurationBaseWriteProxy : ConfigurationBase
         {
-            public object Property1
+            public ConfigurationBaseWriteProxy(ISettingsService svc, string settingsPrefix, SettingsFactory factory = null) :
+                base(svc, settingsPrefix, factory)
+            {
+            }
+
+            public new T ReadValue<T>(string name) => base.ReadValue<T>(name);
+
+            public new void SetValue<T>(T value, string name) => base.SetValue(value, name);
+
+            public object MissingConfigurationPropertySetting
             {
                 get
                 {
                     return ReadValue<object>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+
+            public CultureInfo SupportedType
+            {
+                get
+                {
+                    return ReadValue<CultureInfo>();
+                }
+
+                set
+                {
+                    SetValue(value);
+                }
+            }
+        }
+
+        [Test]
+        public void AcceptsFullSettingNames()
+        {
+            string prefix = "Test.Default";
+            var config = new ConfigurationBaseWriteProxy(GetMockSettingsService().Object, prefix);
+            var testCulture = new CultureInfo("cs-CZ");
+
+            config.SetValue(testCulture, $"{prefix}.{nameof(config.SupportedType)}");
+
+            Assert.AreEqual(testCulture, config.SupportedType);
+        }
+
+        [Test]
+        public void AcceptsShortSettingNames()
+        {
+            var config = new ConfigurationBaseWriteProxy(GetMockSettingsService().Object, null);
+            var testCulture = new CultureInfo("cs-CZ");
+
+            config.SetValue(testCulture, nameof(config.SupportedType));
+
+            Assert.AreEqual(testCulture, config.SupportedType);
+        }
+    }
+    
+    public class AllSettingsTests : TestFixtureBase
+    {
+        private class ConfigurationBaseNamesProxy : ConfigurationBase
+        {
+            public string Property1
+            {
+                get
+                {
+                    return ReadValue<string>();
                 }
 
                 set
@@ -151,12 +227,39 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
                 $"{@namespace}.{nameof(ConfigurationBaseNamesProxy.Property2)}",
             };
 
-            Assert.IsTrue(Enumerable.SequenceEqual(expectedNames.OrderBy(x => x), config.GetSettingNames().OrderBy(x => x)));
+            Assert.IsTrue(Enumerable.SequenceEqual(expectedNames.OrderBy(x => x), config.AllSettings().Select(s => s.Name).OrderBy(x => x)));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfMismatchInSettingAndPropertyType()
+        {
+            List<Setting> repo = new List<Setting>()
+            {
+                new DateTimeSetting(nameof(ConfigurationBaseNamesProxy.Property2)) // Property2 is of type CultureInfo
+            };
+
+            var config = new ConfigurationBaseNamesProxy(GetMockSettingsService(repo).Object, null);
+
+            Assert.Throws<SettingTypeMismatchException>(() =>
+            {
+                config.AllSettings();
+            });
+        }
+
+        [Test]
+        public void NoExceptionIfSettingAndPropertyTypesMatch()
+        {
+            List<Setting> repo = new List<Setting>()
+            {
+                new Setting(nameof(ConfigurationBaseNamesProxy.Property1))
+            };
+
+            var config = new ConfigurationBaseNamesProxy(GetMockSettingsService(repo).Object, null);
+            config.AllSettings();
         }
     }
-
-    [TestFixture]
-    public class DescriptionTests
+    
+    public class DescriptionTests : TestFixtureBase
     {
         private class ConfigurationBaseDescriptionProxy : ConfigurationBase
         {
