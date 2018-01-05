@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Exceptions
+namespace BGC.Core
 {
     public class SettingException : BgcException
     {

@@ -9,7 +9,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
 using static TestUtils.MockUtilities;
-using BGC.Core.Exceptions;
 
 namespace BGC.Services.Tests.SettingsServiceTests
 {

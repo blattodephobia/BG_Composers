@@ -58,6 +58,7 @@
     <Compile Include="Exceptions\DuplicateEntityException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\SettingException.cs" />
+    <Compile Include="Exceptions\SettingTypeMismatchException.cs" />
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
     <Compile Include="IRepository.cs" />
