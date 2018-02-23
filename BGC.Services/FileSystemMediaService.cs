@@ -16,19 +16,19 @@ namespace BGC.Services
         protected IRepository<MediaTypeInfo> MetaDataRepository { get; private set; }
         protected IRepository<ComposerArticle> ArticleRepository { get; private set; }
 
-        public MediaTypeInfo GetMedia(Guid guid)
+        public MultimediaContent GetMedia(Guid guid)
         {
-            MediaTypeInfo result = MetaDataRepository.All().FirstOrDefault(media => media.StorageId == guid);
-            if (result != null)
-            {
-                result.Content = GuidToFileName(guid).OpenRead();
-            }
+            MediaTypeInfo metadata = MetaDataRepository.All().FirstOrDefault(media => media.StorageId == guid);
+            var result = metadata != null
+                ? new MultimediaContent(GuidToFileName(guid)?.OpenRead(), metadata)
+                : null;
+
             return result;
         }
 
         public override Stream GetEntry(Guid id)
         {
-            return GetMedia(id)?.Content;
+            return GetMedia(id)?.Data;
         }
 
         public override Guid StoreEntry(Stream data)

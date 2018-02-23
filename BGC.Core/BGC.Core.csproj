@@ -77,6 +77,7 @@
     <Compile Include="Models\Identity\EditorRole.cs" />
     <Compile Include="Models\Invitation.cs" />
     <Compile Include="Models\Media\MediaTypeInfo.cs" />
+    <Compile Include="Models\Media\MultimediaContent.cs" />
     <Compile Include="Models\Permissions\ArticleManagementPermission.cs" />
     <Compile Include="Models\Permissions\GlossaryManagementPermission.cs" />
     <Compile Include="Models\Permissions\IApplicationSettingsWritePermission.cs" />

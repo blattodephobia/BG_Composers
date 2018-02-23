@@ -16,6 +16,6 @@ namespace BGC.Core.Services
         Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null);
 
         [OperationContract]
-        MediaTypeInfo GetMedia(Guid mediaId);
+        MultimediaContent GetMedia(Guid storageId);
     }
 }

@@ -83,6 +83,24 @@ namespace TestUtils
             return mockStore;
         }
 
+        public static Mock<IMediaService> GetMockMediaService(IEnumerable<MediaTypeInfo> mediaRepo = null, Func<MediaTypeInfo, Stream> contentCallback = null)
+        {
+            var mock = new Mock<IMediaService>();
+            mediaRepo = mediaRepo ?? Enumerable.Empty<MediaTypeInfo>();
+            contentCallback = contentCallback ?? ((MediaTypeInfo m) => null);
+            mock
+                .Setup(m => m.GetMedia(It.IsAny<Guid>()))
+                .Returns((Guid storageId) =>
+                {
+                    MediaTypeInfo metadata = mediaRepo.FirstOrDefault(m => m.StorageId == storageId);
+                    return metadata != null
+                    ? new MultimediaContent(contentCallback(metadata), metadata)
+                    : null;
+                });
+
+            return mock;
+        }
+
         public static Mock<IIdentityMessageService> GetMockEmailService(Action<IdentityMessage> callback)
         {
             var mockEmailService = new Mock<IIdentityMessageService>();

@@ -26,10 +26,10 @@ namespace BGC.Web.Areas.Public.Controllers
 
         public virtual ActionResult Get(Guid resourceId)
         {
-            MediaTypeInfo media = storageService.GetMedia(resourceId);
+            MultimediaContent media = storageService.GetMedia(resourceId);
             return (media == null)
                 ? HttpNotFound() as ActionResult
-                : File(media.Content, media.MimeType.ToString(), media.OriginalFileName) as ActionResult;
+                : File(media.Data, media.Metadata.MimeType.ToString(), media.Metadata.OriginalFileName) as ActionResult;
         }
 
         [HttpPost]

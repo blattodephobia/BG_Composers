@@ -59,9 +59,6 @@ namespace BGC.Core
                 this.asociatedArticles = value;
             }
         }
-
-        [NotMapped]
-        public Stream Content { get; set; }
         
         [Unicode, Required, MaxLength(255)]
         public string OriginalFileName { get; set; }
