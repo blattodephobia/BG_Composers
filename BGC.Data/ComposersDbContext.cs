@@ -108,6 +108,9 @@ namespace BGC.Data
             modelBuilder.Entity<MediaTypeInfo>().Property(media => media.StorageId).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 
             modelBuilder.Entity<Invitation>().HasMany(invitation => invitation.AvailableRoles).WithMany();
+
+            modelBuilder.Entity<ComposerProfile>().HasOptional(p => p.ProfilePicture).WithOptionalPrincipal();
+            modelBuilder.Entity<ComposerProfile>().HasMany(p => p.SelectedWorks).WithMany();
 		}
 
 		public IRepository<T> GetRepository<T>()

@@ -123,6 +123,10 @@
     <Compile Include="Migrations\201712041040275_Settings_OwnerStamp.Designer.cs">
       <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802222119222_ComposerProfile.cs" />
+    <Compile Include="Migrations\201802222119222_ComposerProfile.Designer.cs">
+      <DependentUpon>201802222119222_ComposerProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -166,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712041040275_Settings_OwnerStamp.resx">
       <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802222119222_ComposerProfile.resx">
+      <DependentUpon>201802222119222_ComposerProfile.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -86,6 +86,8 @@ namespace BGC.Core
 
         public bool HasNamesakes { get; set; }
 
+        public virtual ComposerProfile Profile { get; set; }
+
         public virtual ICollection<ComposerName> LocalizedNames
         {
             get
