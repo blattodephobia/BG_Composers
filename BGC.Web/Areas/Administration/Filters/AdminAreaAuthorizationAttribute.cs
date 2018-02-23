@@ -15,7 +15,7 @@ namespace BGC.Web.Areas.Administration
 {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
     public sealed class AdminAreaAuthorizationAttribute : AuthorizeAttribute
-	{
+    {
         private static IEnumerable<string> GetAvailablePermissions(HttpContextBase httpContext)
         {
             return (httpContext.User.Identity as ClaimsIdentity).FindAll(nameof(IPermission)).Select(c => c.Value);
@@ -33,7 +33,7 @@ namespace BGC.Web.Areas.Administration
 
             return result;
         }
-        
+
         internal static PermissionsAttribute GetRequiredPermissions(MethodInfo action)
         {
             PermissionsAttribute attr = action.GetCustomAttribute<PermissionsAttribute>() ?? GetPermissionsFromDeclaringTypes(action);
@@ -46,17 +46,12 @@ namespace BGC.Web.Areas.Administration
             {
                 return false;
             }
-            
+
             return requiredPermissions?.IsAuthorized(availablePermissions) ?? true;
         }
 
-		private string GetActionUrl(RequestContext context, ActionResult action)
-		{
-			return new UrlHelper(context).ActionAbsolute(action);
-		}
-
-		protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
-		{
+        internal void HandleUnauthorizedRequestInternal(AuthorizationContext filterContext, string loginUrl)
+        {
             if (filterContext.HttpContext.User?.Identity.IsAuthenticated ?? false)
             {
                 filterContext.Result = new ViewResult()
@@ -68,18 +63,29 @@ namespace BGC.Web.Areas.Administration
             }
             else
             {
-                string returnUrl = filterContext.RequestContext.HttpContext.Request.CurrentExecutionFilePath;
-                string loginUrl = GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login());
+                HttpRequestBase request = filterContext.RequestContext.HttpContext.Request;
+                string query = request.QueryString.Keys.Cast<string>().ToStringAggregate(key => $"{key}={request.QueryString[key]}", "&");
+                string returnUrl = string.IsNullOrEmpty(query)
+                    ? request.CurrentExecutionFilePath :
+                    $"{request.CurrentExecutionFilePath}?{query}";
 
                 if (filterContext.Controller.TempData.ContainsKey(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl))
                 {
                     filterContext.Controller.TempData.Remove(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl);
                 }
-
                 filterContext.Controller.TempData.Add(WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl, returnUrl);
+
                 filterContext.Result = new RedirectResult(loginUrl);
             }
-		}
+        }
+
+
+        private string GetActionUrl(RequestContext context, ActionResult action)
+        {
+            return new UrlHelper(context).ActionAbsolute(action);
+        }
+
+        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext) => HandleUnauthorizedRequestInternal(filterContext, GetActionUrl(filterContext.RequestContext, MVC.Administration.Authentication.Login()));
 
         private MethodInfo ResolveAction(HttpContextBase httpContext)
         {
@@ -127,5 +133,5 @@ namespace BGC.Web.Areas.Administration
             base()
         {
         }
-	}
+    }
 }

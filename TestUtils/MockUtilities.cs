@@ -174,11 +174,11 @@ namespace TestUtils
             return mockManager;
         }
 
-        public static Mock<IPrincipal> GetMockUser(string name)
+        public static Mock<IPrincipal> GetMockUser(string name, bool isAuthenticated = true)
         {
             var identity = new Mock<IIdentity>();
             identity.SetupGet(x => x.Name).Returns(name);
-            identity.SetupGet(x => x.IsAuthenticated).Returns(true);
+            identity.SetupGet(x => x.IsAuthenticated).Returns(isAuthenticated);
 
             var result = new Mock<IPrincipal>();
             result.SetupGet(x => x.Identity).Returns(identity.Object);
@@ -195,7 +195,17 @@ namespace TestUtils
         public static Mock<RequestContext> GetMockRequestContext(HttpRequestBase request = null, HttpResponseBase response = null)
         {
             var result = new Mock<RequestContext>();
-            result.SetupGet(r => r.HttpContext).Returns(GetMockHttpContextBase(request, response).Object);
+            result
+                .SetupGet(r => r.HttpContext)
+                .Returns(GetMockHttpContextBase(request, response).Object);
+
+            result
+                .Setup(x => x.RouteData)
+                .Returns(new RouteData()
+                {
+                    Route = new Mock<RouteBase>().Object,
+                    RouteHandler = new Mock<IRouteHandler>().Object
+                });
 
             return result;
         }
@@ -207,6 +217,14 @@ namespace TestUtils
             result.SetupGet(x => x.Response).Returns(response);
 
             return result;
+        }
+
+        public static Mock<ControllerBase> GetMockController()
+        {
+            var controller = new Mock<ControllerBase>();
+            controller.SetupAllProperties();
+
+            return controller;
         }
 
         public static Mock<IComposerDataService> GetMockComposerService(IList<Composer> composers)

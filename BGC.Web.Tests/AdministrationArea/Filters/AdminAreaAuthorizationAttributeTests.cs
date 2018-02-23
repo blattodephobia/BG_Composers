@@ -1,13 +1,18 @@
 ﻿using BGC.Core;
 using BGC.Web.Areas.Administration;
+using Moq;
+using Moq.Protected;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Mvc;
+using static TestUtils.MockUtilities;
 
 namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttributeTests
 {
@@ -150,6 +155,73 @@ namespace BGC.Web.Tests.AdministrationArea.Filters.AdminAreaAuthorizationAttribu
                         
             Assert.AreEqual(1, reqPermissions.Count());
             Assert.AreEqual(CLASS_PERMISSION, reqPermissions.First());
+        }
+    }
+
+    [TestFixture]
+    public class HandleUnauthorizedRequestTests
+    {
+        [Test]
+        public void PreservesOriginalURLAfterAuthentication_NoParameters()
+        {
+            Uri originalRequestUrl = new Uri("http://localhost/action");
+
+            var attribute = new AdminAreaAuthorizationAttribute();
+            var filterContext = new AuthorizationContext();
+            var mockRequest = GetMockRequestBase(MockBehavior.Loose);
+            mockRequest.Setup(x => x.CurrentExecutionFilePath).Returns(originalRequestUrl.AbsolutePath);
+            mockRequest.Setup(x => x.QueryString).Returns(new NameValueCollection());
+            filterContext.HttpContext = GetMockHttpContextBase(mockRequest.Object).Object;
+            filterContext.HttpContext.User = GetMockUser("test", true).Object;
+            filterContext.Controller = GetMockController().Object;
+
+            attribute.HandleUnauthorizedRequestInternal(filterContext, "http://localhost/someLoginUrl");
+
+            string actualReturnUrl = filterContext.Controller.TempData[WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl].ToString();
+            Assert.AreEqual(originalRequestUrl.PathAndQuery, actualReturnUrl);
+        }
+
+        [Test]
+        public void PreservesOriginalURLAfterAuthentication_OneParameter()
+        {
+            Uri originalRequestUrl = new Uri("http://localhost/action?param1=1");
+            var query = new NameValueCollection();
+            query.Add("param1", "1");
+
+            var attribute = new AdminAreaAuthorizationAttribute();
+            var filterContext = new AuthorizationContext();
+            var mockRequest = GetMockRequestBase(MockBehavior.Loose);
+            mockRequest.Setup(x => x.CurrentExecutionFilePath).Returns(originalRequestUrl.AbsolutePath);
+            mockRequest.Setup(x => x.QueryString).Returns(query);
+            filterContext.HttpContext = GetMockHttpContextBase(mockRequest.Object).Object;
+            filterContext.HttpContext.User = GetMockUser("test", true).Object;
+            filterContext.Controller = GetMockController().Object;
+
+            attribute.HandleUnauthorizedRequestInternal(filterContext, "http://localhost/someLoginUrl");
+
+            Assert.AreEqual(originalRequestUrl.PathAndQuery, (filterContext.Controller.TempData[WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl]));
+        }
+
+        [Test]
+        public void PreservesOriginalURLAfterAuthentication_MultipleParameters()
+        {
+            Uri originalRequestUrl = new Uri("http://localhost/action?param1=1&param2=self");
+            var query = new NameValueCollection();
+            query.Add("param1", "1");
+            query.Add("param2", "self");
+
+            var attribute = new AdminAreaAuthorizationAttribute();
+            var filterContext = new AuthorizationContext();
+            var mockRequest = GetMockRequestBase(MockBehavior.Loose);
+            mockRequest.Setup(x => x.CurrentExecutionFilePath).Returns(originalRequestUrl.AbsolutePath);
+            mockRequest.Setup(x => x.QueryString).Returns(query);
+            filterContext.HttpContext = GetMockHttpContextBase(mockRequest.Object).Object;
+            filterContext.HttpContext.User = GetMockUser("test", true).Object;
+            filterContext.Controller = GetMockController().Object;
+
+            attribute.HandleUnauthorizedRequestInternal(filterContext, "http://localhost/someLoginUrl");
+
+            Assert.AreEqual(originalRequestUrl.PathAndQuery, (filterContext.Controller.TempData[WebApiApplication.DataKeys.AdministrationArea.LoginSuccessReturnUrl]));
         }
     }
 }
