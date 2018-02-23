@@ -8,144 +8,146 @@
     ViewBag.Title = Localize(Global.ApplicationName);
 }
 
-@if (Model.Alphabet.Length == 1)
-{
-    <div class="row">
-        <nav class="navbar navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
-                </div>
-
-                <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
-                    @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", @class = "navbar-form navbar-left", role = "search" }))
-                    {
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input name="query" class="form-control input-wide" type="text" placeholder="@Localize(Public.Main.SearchCaption)" />
-                                    </td>
-                                    <td>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="glyphicon glyphicon-search"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    }
-                </div>
-            </div>
-        </nav>
-    </div>
-
-    <div class="text-center">
-        <h2 class="text-primary">@Model.Alphabet[0]</h2>
-    </div>
-    if (Model.Articles.ContainsKey(Model.Alphabet[0]))
+<div class="col-lg-offset-2 col-lg-8">
+    @if (Model.Alphabet.Length == 1)
     {
-        <div class="list-group">
-            @{
-                IList<ComposerArticle> currentArticleLinks = Model.Articles[Model.Alphabet[0]];
-                for (int i = 0; i < currentArticleLinks.Count; i++)
-                {
-                    ComposerArticle article = currentArticleLinks[i];
-                    if (i % 2 == 0)
+        <div class="row">
+            <nav class="navbar navbar-fixed-top">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
+                    </div>
+
+                    <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-2">
+                        @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { id = "searchForm", target = "_self", @class = "navbar-form navbar-left", role = "search" }))
+                        {
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input name="query" class="form-control input-wide" type="text" placeholder="@Localize(Public.Main.SearchCaption)" />
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="text-center">
+            <h2 class="text-primary">@Model.Alphabet[0]</h2>
+        </div>
+        if (Model.Articles.ContainsKey(Model.Alphabet[0]))
+        {
+            <div class="list-group">
+                @{
+                    IList<ComposerArticle> currentArticleLinks = Model.Articles[Model.Alphabet[0]];
+                    for (int i = 0; i < currentArticleLinks.Count; i++)
                     {
-                        <div class="list-group-item col-md-5">
-                            @Html.ActionLink(article.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(article.Composer.Id))
+                        ComposerArticle article = currentArticleLinks[i];
+                        if (i % 2 == 0)
+                        {
+                            <div class="list-group-item col-md-5">
+                                @Html.ActionLink(article.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(article.Composer.Id))
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="list-group-item col-md-offset-2 col-md-5">
+                                @Html.ActionLink(article.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(article.Composer.Id))
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                @Localize(Public.Main.Index.NoArticles)
+            </div>
+        }
+    }
+    else
+    {
+        <div class="panel panel-default stretch emphasis-element">
+            <div class="panel-body">
+                <table class="fuck-css-centering emphasis-element">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="text-center">
+                                    <h2>@Localize(Public.Main.Index.Welcome)</h2>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { @class = "searchForm", target = "_self", role = "search" }))
+                                {
+                                    <table class="fuck-css-centering stretch">
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input name="query" class="form-control input-lg" placeholder="@Localize(Public.Main.SearchCaption)" />
+                                                </td>
+                                                <td class="fit-content">
+                                                    <button type="submit" class="btn btn-lg btn-primary">
+                                                        <i class="glyphicon glyphicon-search"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                }
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="captioned-separator block-before-lg center">
+            <a class="btn btn-primary" data-toggle="collapse" data-target="#browseIndex">
+                <i data-icon-hide="ace-icon glyphicon glyphicon-triangle-bottom" data-icon-show="ace-icon glyphicon glyphicon-triangle-right" class="ace-icon glyphicon glyphicon-triangle-right"></i>
+                @Localize(Public.Main.Index.OrBrowse)
+            </a>
+        </div>
+
+        <div id="browseIndex" class="collapse well">
+            <div class="text-center">
+                @for (int i = 0; i < Model.Alphabet.Length; i++)
+                {
+                    char group = Model.Alphabet[i];
+                    if (Model.Articles.ContainsKey(group))
+                    {
+                        <div class="dropdown center">
+                            @Html.ActionLink(group.ToString(), MVC.Public.Main.Index(group), new { @class = "dropbtn center text-primary" })
+                            <div class="dropdown-content">
+                                @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
+                                {
+                                    Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.Composer.Id));
+                                }
+                            </div>
                         </div>
                     }
                     else
                     {
-                        <div class="list-group-item col-md-offset-2 col-md-5">
-                            @Html.ActionLink(article.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(article.Composer.Id))
-                        </div>
+                        <span class="disabled text-medium">@group</span>
                     }
                 }
-            }
+            </div>
         </div>
     }
-    else
-    {
-        <div class="text-center">
-            @Localize(Public.Main.Index.NoArticles)
-        </div>
-    }
-}
-else
-{
-    <div class="panel panel-default stretch emphasis-element">
-        <div class="panel-body">
-            <table class="fuck-css-centering emphasis-element">
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="text-center">
-                                <h2>@Localize(Public.Main.Index.Welcome)</h2>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            @using (Html.BeginForm(MVC.Public.Main.ActionNames.Search, MVC.Public.Main.Name, FormMethod.Get, new { @class = "searchForm", target = "_self", role = "search" }))
-                            {
-                                <table class="fuck-css-centering stretch">
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                <input name="query" class="form-control input-lg" placeholder="@Localize(Public.Main.SearchCaption)" />
-                                            </td>
-                                            <td class="fit-content">
-                                                <button type="submit" class="btn btn-lg btn-primary">
-                                                    <i class="glyphicon glyphicon-search"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            }
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-        
-    <div class="captioned-separator block-before-lg center">
-        <a class="btn btn-primary" data-toggle="collapse" data-target="#browseIndex">
-            <i data-icon-hide="ace-icon glyphicon glyphicon-triangle-bottom" data-icon-show="ace-icon glyphicon glyphicon-triangle-right" class="ace-icon glyphicon glyphicon-triangle-right"></i>
-            @Localize(Public.Main.Index.OrBrowse)
-        </a>
-    </div>
-
-    <div id="browseIndex" class="collapse well">
-        <div class="text-center">
-            @for (int i = 0; i < Model.Alphabet.Length; i++)
-            {
-                char group = Model.Alphabet[i];
-                if (Model.Articles.ContainsKey(group))
-                {
-                    <div class="dropdown center">
-                        @Html.ActionLink(group.ToString(), MVC.Public.Main.Index(group), new { @class = "dropbtn center text-primary" })
-                        <div class="dropdown-content">
-                            @foreach (ComposerArticle link in Model.Articles.ContainsKey(group) ? Model.Articles[group] : Enumerable.Empty<ComposerArticle>())
-                            {
-                                Html.ActionLink(link.LocalizedName.GetEasternOrderFullName(), MVC.Public.Main.Read(link.Composer.Id));
-                            }
-                        </div>
-                    </div>
-                }
-                else
-                {
-                    <span class="disabled text-medium">@group</span>
-                }
-            }
-        </div>
-    </div>
-}
+</div>
 
 @section footer {
     <ul class="list-inline">

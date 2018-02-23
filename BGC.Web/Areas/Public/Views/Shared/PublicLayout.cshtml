@@ -32,23 +32,10 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-3">
-                @if (IsSectionDefined("additionalContent"))
-                {
-                    <section id="additionalContent">
-                        @RenderSection("additionalContent")
-                    </section>
-                }
-            </div>
-
-            <div class="col-lg-6">
-                <section id="content" class="center">
-                    @RenderBody()
-                </section>
-            </div>
-        </div>
-
+        <section id="content" class="center">
+            @RenderBody()
+        </section>
+        
         <footer>
             @RenderSection("footer", required: false)
         </footer>
