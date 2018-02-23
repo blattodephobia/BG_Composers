@@ -9,10 +9,13 @@ namespace BGC.Web.Areas.Administration.ViewModels
     public class AddComposerViewModel : ViewModelBase
     {
         public List<AddArticleViewModel> Articles { get; set; }
+        
+        public List<string> ImageSources { get; set; }
 
         public AddComposerViewModel()
         {
             Articles = new List<AddArticleViewModel>();
+            ImageSources = new List<string>();
         }
 
         public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles)

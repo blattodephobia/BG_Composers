@@ -46,3 +46,7 @@ h1 {
 .name-edit-header input {
     width: 400px;
 }
+
+.image-container img {
+    max-width: 100%;
+}

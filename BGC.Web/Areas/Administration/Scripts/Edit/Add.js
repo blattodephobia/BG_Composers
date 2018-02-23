@@ -58,7 +58,6 @@ $(document).ready(function ()
                 {
                     var localDiv = div;
                     var complete = (event.loaded / event.total * 100 | 0);
-                    localDiv.innerHTML = complete;
                 }
             };
 
@@ -69,7 +68,9 @@ $(document).ready(function ()
                     var localDiv = div;
                     var img = document.createElement("img");
                     img.src = this.responseText;
-                    localDiv.appendChild(img);
+                    $(localDiv).append($(img));
+                    var imageIndex = $("#imgInputs > input[type='hidden']").length;
+                    $("#imgInputs").append('<input name="ImageSources[' + imageIndex + ']" type="hidden" value="' + this.responseText + '"></input>');
                 }
             };
 

@@ -36,7 +36,12 @@
             </div>
         </div>
         <div>
-            <div id="uploadedImages"></div>
+            <div id="uploadedImages" class="image-container">
+                @foreach (string imgSource in Model.ImageSources)
+                {
+                    <img src="@imgSource"/>
+                }
+            </div>
         </div>
     </div>
 }
@@ -92,6 +97,13 @@
                     </div>
                 }
             </div>
+        </div>
+
+        <div id="imgInputs">
+            @for (int i = 0; i < Model.ImageSources.Count; i++)
+            {
+                @Html.HiddenFor(m => Model.ImageSources[i])
+            }
         </div>
     }
 </div>
