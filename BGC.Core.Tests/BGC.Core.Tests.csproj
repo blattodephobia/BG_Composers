@@ -71,6 +71,7 @@
     <Compile Include="Models\BgcEntityTests.cs" />
     <Compile Include="Models\BgcRoleTests.cs" />
     <Compile Include="Models\ComposerNameTests.cs" />
+    <Compile Include="Models\ComposerProfileTests.cs" />
     <Compile Include="Models\ComposerTests.cs" />
     <Compile Include="Models\CultureSupportSettingTests.cs" />
     <Compile Include="Models\DateTimeSettingTests.cs" />
