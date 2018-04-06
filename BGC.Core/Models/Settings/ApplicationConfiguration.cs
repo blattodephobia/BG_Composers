@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using BGC.Core.Services;
 
 namespace BGC.Core
@@ -14,11 +15,11 @@ namespace BGC.Core
         {
         }
 
-        public string InvitationMessage
+        public XmlDocument InvitationMessage
         {
             get
             {
-                return ReadValue<string>();
+                return ReadValue<XmlDocument>();
             }
 
             set
