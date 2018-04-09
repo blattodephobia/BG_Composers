@@ -15,6 +15,15 @@ namespace BGC.Web.Areas.Public.Controllers
 {
     public partial class ResourcesController : Controller
     {
+        public static Uri GetLocalResourceUri(UrlHelper helper, Guid id)
+        {
+            return new UriBuilder()
+            {
+                Path = helper.Action(MVC.Public.Resources.ActionNames.Get, MVC.Public.Resources.Name),
+                Query = Expressions.GetQueryString((ResourcesController rc) => rc.Get(id)),
+            }.Uri;
+        }
+
         private IMediaService storageService;
 
         public ResourcesController(IMediaService storageService)
@@ -36,12 +45,8 @@ namespace BGC.Web.Areas.Public.Controllers
         public virtual ActionResult Upload(HttpPostedFileBase file)
         {
             Guid id = storageService.AddMedia(new ContentType(file.ContentType), file.InputStream, file.FileName);
-            var urlBuilder = new UriBuilder(Request.Url.AbsoluteUri)
-            {
-                Path = Url.Action(MVC.Public.Resources.ActionNames.Get, MVC.Public.Resources.Name),
-                Query = Expressions.GetQueryString(() => Get(id)),
-            };
-            return Content(urlBuilder.Uri.AbsoluteUri);
+            Uri resourceUri = GetLocalResourceUri(Url, id);
+            return Content(resourceUri.AbsoluteUri);
         }
     }
 }

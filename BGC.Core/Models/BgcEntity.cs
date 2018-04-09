@@ -74,5 +74,5 @@ namespace BGC.Core
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual TKey Id { get; set; }
-	}
+    }
 }

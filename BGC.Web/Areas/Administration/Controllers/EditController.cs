@@ -1,10 +1,13 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
 using BGC.Web.Areas.Administration.ViewModels;
+using BGC.Web.Areas.Public.Controllers;
 using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
@@ -16,8 +19,9 @@ namespace BGC.Web.Areas.Administration.Controllers
         private static readonly XName ImgTagName = XName.Get("img");
 
         private IComposerDataService _composersService;
-        private ISettingsService settingsService;
+        private ISettingsService _settingsService;
         private IArticleContentService _articleStorageService;
+        private IMediaService _mediaService;
 
         private static IEnumerable<XElement> GetImageTags(XElement htmlRoot)
         {
@@ -41,11 +45,37 @@ namespace BGC.Web.Areas.Administration.Controllers
             return result;
         }
 
-        public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService)
+        private string GetImageUrl(MediaTypeInfo media)
+        {
+            return media.ExternalLocation ?? ResourcesController.GetLocalResourceUri(Url, media.StorageId).AbsolutePath;
+        }
+
+        private List<MediaTypeInfo> IdentifyImages(AddComposerViewModel vm)
+        {
+            return vm.ImageSources.Select(s =>
+            {
+                var uri = new Uri(s);
+                MediaTypeInfo result = null;
+                if (uri.Host == Request.Url.Host)
+                {
+                    NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
+                    Guid id = Guid.Parse(query[MVC.Public.Resources.GetParams.resourceId]);
+                    result = _mediaService.GetMedia(id)?.Metadata;
+                }
+                else
+                {
+                    result = MediaTypeInfo.NewExternalMedia(uri.AbsoluteUri, new ContentType("image/*"));
+                }
+                return result;
+            }).ToList();
+        }
+
+        public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService, IMediaService mediaService)
         {
             _composersService = composersService.ArgumentNotNull(nameof(composersService)).GetValueOrThrow();
-            this.settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
+            _settingsService = settingsService.ArgumentNotNull(nameof(settingsService)).GetValueOrThrow();
             _articleStorageService = articleStorageService.ArgumentNotNull(nameof(articleStorageService)).GetValueOrThrow();
+            _mediaService = mediaService.ArgumentNotNull(nameof(mediaService)).GetValueOrThrow();
         }
 
         [Permissions(nameof(IArticleManagementPermission))]
@@ -86,6 +116,10 @@ namespace BGC.Web.Areas.Administration.Controllers
                     LocalizedName = name
                 });
             }
+
+            newComposer.Profile = newComposer.Profile ?? new ComposerProfile();
+            newComposer.Profile.Media = IdentifyImages(editedData);
+
             _composersService.AddOrUpdate(newComposer);
 
             return RedirectToAction(nameof(List));
@@ -104,7 +138,8 @@ namespace BGC.Web.Areas.Administration.Controllers
                     Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
                     FullName = composer.GetName(a.Language).FullName,
                     Language = a.Language,
-                }).ToList()
+                }).ToList(),
+                ImageSources = composer.Profile?.Images().Select(m => GetImageUrl(m)).ToList()
             };
 
             return View(model);
@@ -134,6 +169,13 @@ namespace BGC.Web.Areas.Administration.Controllers
                     });
                 }
             }
+
+            ComposerProfile profile = editingComposer.Profile ?? new ComposerProfile()
+            {
+                Media = IdentifyImages(editedData)
+            };
+
+            editingComposer.Profile = profile;
             _composersService.AddOrUpdate(editingComposer);
 
             return RedirectToAction(MVC.Administration.Edit.List());

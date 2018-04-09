@@ -13,6 +13,15 @@ namespace BGC.Core
     [Table(nameof(MediaTypeInfo) + "s")] // Entity Framework maps this entity to "MediaTypeInfoes", which is incorrect
     public class MediaTypeInfo : BgcEntity<long>
     {
+        public static MediaTypeInfo NewExternalMedia(string location, ContentType mimeType = null)
+        {
+            MediaTypeInfo result = new MediaTypeInfo();
+            result.ExternalLocation = location;
+            result.MimeType = mimeType ?? new ContentType(MediaTypeNames.Application.Octet);
+
+            return result;
+        }
+
         private ContentType mimeType;
         private ICollection<ComposerArticle> asociatedArticles;
 
@@ -60,11 +69,19 @@ namespace BGC.Core
             }
         }
         
-        [Unicode, Required, MaxLength(255)]
+        [Unicode, MaxLength(255)]
         public string OriginalFileName { get; set; }
+
+        [MaxLength(512)]
+        public string ExternalLocation { get; set; }
 
         // This constructor is added for Entity Framework's sake
         protected MediaTypeInfo()
+        {
+        }
+
+        public MediaTypeInfo(string contentType) :
+            this(null, contentType)
         {
         }
 
@@ -75,8 +92,18 @@ namespace BGC.Core
 
         public MediaTypeInfo(string fileName, ContentType contentType)
         {
-            this.OriginalFileName = fileName;
-            this.MimeType = contentType;
+            OriginalFileName = fileName;
+            MimeType = contentType;
+        }
+
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return (obj as MediaTypeInfo)?.Id == Id;
         }
     }
 }

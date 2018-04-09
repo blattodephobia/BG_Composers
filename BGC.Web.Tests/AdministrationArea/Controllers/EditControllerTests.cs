@@ -10,6 +10,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 using static TestUtils.MockUtilities;
 
 namespace BGC.Web.Tests.AdministrationArea.Controllers
@@ -20,6 +22,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
         private EditController _controller;
         private Composer _composer;
         private Dictionary<Guid, string> _articleStorage;
+        private List<MediaTypeInfo> _mediaStorage;
         private CultureInfo _language;
 
         [SetUp]
@@ -40,11 +43,17 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
                 { _composer.Articles.First().StorageId, "B" }
             };
             Mock<IArticleContentService> articleService = GetMockArticleService(_articleStorage);
-            
+
+            _mediaStorage = new List<MediaTypeInfo>();
             _controller = new EditController(
                 composersService: GetMockComposerService(new List<Composer>() { _composer }).Object,
                 settingsService: GetMockSettingsService().Object,
-                articleStorageService: articleService.Object);
+                articleStorageService: articleService.Object,
+                mediaService: GetMockMediaService(_mediaStorage).Object);
+            Mock<HttpRequestBase> request = GetMockRequestBase(MockBehavior.Loose);
+            request.Setup(x => x.Url).Returns(new Uri("http://localhost/"));
+
+            _controller.ControllerContext = new ControllerContext() { HttpContext = GetMockHttpContextBase(request.Object).Object };
         }
 
         [Test]
@@ -110,6 +119,31 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             });
             
             Assert.AreEqual("John Smith", _composer.GetName(_language).FullName);
+        }
+
+        [Test]
+        public void AssignsCorrectImageLocations()
+        {
+            byte[] guidId1 = new byte[16];
+            guidId1[15] = 1;
+            Guid localId = new Guid(guidId1);
+            _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
+            string externalImageLocation = $"http://google.com/someImage.jpg";
+
+            _controller.Update_Post(new UpdateComposerViewModel()
+            {
+                ComposerId = _composer.Id,
+                ImageSources = new List<string>()
+                {
+                    $"http://localhost/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}",
+                    externalImageLocation
+                }
+            });
+
+            IEnumerable<MediaTypeInfo> images = _composer.Profile.Media;
+
+            Assert.IsNotNull(images.FirstOrDefault(m => m.ExternalLocation == externalImageLocation));
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
         }
 
         [Test]

@@ -1,6 +1,7 @@
 ﻿using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace BGC.Core
         private static bool IsImage(MediaTypeInfo media) => media?.MimeType.MediaType.StartsWith("image/") ?? false;
 
         private MediaTypeInfo _profilePicture;
+        [NotMapped]
         public virtual MediaTypeInfo ProfilePicture
         {
             get
@@ -27,17 +29,52 @@ namespace BGC.Core
             }
         }
 
-        private ICollection<MediaTypeInfo> _selectedWorks;
-        public virtual ICollection<MediaTypeInfo> SelectedWorks
+        public IEnumerable<MediaTypeInfo> Images() => Media.Where(m => IsImage(m));
+
+        private ICollection<MediaTypeInfo> _media;
+        [NotMapped]
+        public virtual ICollection<MediaTypeInfo> Media
         {
             get
             {
-                return _selectedWorks ?? (_selectedWorks = new HashSet<MediaTypeInfo>());
+                return _media ?? (_media = new HashSet<MediaTypeInfo>());
             }
 
             set
             {
-                _selectedWorks = value;
+                _media = value;
+            }
+        }
+
+        /// <summary>
+        /// Adds images from the <paramref name="media"/> collection or updates existing ones.
+        /// </summary>
+        /// <param name="media"></param>
+        public void UpdateMedia(IEnumerable<MediaTypeInfo> media)
+        {
+            List<MediaTypeInfo> mediaToUpdate = new List<MediaTypeInfo>();
+
+            foreach (MediaTypeInfo m in media)
+            {
+                Shield.Assert(
+                    value: m,
+                    condition: m != null,
+                    exceptionProvider: (x) => new InvalidOperationException($"Cannot add or update a null value.")).ThrowOnError();
+
+                if (Media.Contains(m))
+                {
+                    mediaToUpdate.Add(m);
+                }
+                else
+                {
+                    Media.Add(m);
+                }
+            }
+
+            foreach (MediaTypeInfo m in mediaToUpdate)
+            {
+                Media.Remove(m);
+                Media.Add(m);
             }
         }
     }
