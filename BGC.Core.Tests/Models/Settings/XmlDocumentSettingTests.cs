@@ -23,7 +23,7 @@ namespace BGC.Core.Tests.Models.Settings
         public void StringCtor()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
 
             Assert.AreEqual("root", setting.Document.DocumentElement.Name);
             Assert.AreEqual(xmlString, setting.StringValue);
@@ -36,7 +36,7 @@ namespace BGC.Core.Tests.Models.Settings
             var doc = new XmlDocument();
             doc.LoadXml(xmlString);
 
-            var setting = new XmlDocumentSetting(doc);
+            var setting = new XmlDocumentSetting("name", doc);
 
             Assert.AreEqual("root", setting.Document.DocumentElement.Name);
             Assert.AreEqual(xmlString, setting.StringValue);
@@ -66,37 +66,40 @@ namespace BGC.Core.Tests.Models.Settings
         }
 
         [Test]
-        public void ThrowsExceptionIfNullString()
+        public void AcceptsNullString()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
 
-            Assert.Throws<InvalidOperationException>(() => setting.StringValue = null);
+            setting.StringValue = null;
+            Assert.IsNull(setting.Document);
         }
 
         [Test]
-        public void ThrowsExceptionIfEmptyString()
+        public void AcceptsWhitespaceString()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
 
-            Assert.Throws<InvalidOperationException>(() => setting.StringValue = " ");
+            setting.StringValue = " ";
+            Assert.IsNull(setting.Document);
         }
 
         [Test]
-        public void ThrowsExceptionIfNullDocument()
+        public void AcceptsNullDocument()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
 
-            Assert.Throws<InvalidOperationException>(() => setting.Document = null);
+            setting.Document = null;
+            Assert.IsNull(setting.StringValue);
         }
 
         [Test]
         public void UpdatesStringValueIfXmlDocumentIsUpdated()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
 
             string node = "node";
             XmlNode newNode = setting.Document.CreateNode(XmlNodeType.Element, node, setting.Document.NamespaceURI);
@@ -106,10 +109,32 @@ namespace BGC.Core.Tests.Models.Settings
         }
 
         [Test]
+        public void AcceptsNullValuesFromDocumentProperty()
+        {
+            string xmlString = @"<root></root>";
+            var setting = new XmlDocumentSetting("name", xmlString);
+
+            setting.Document = null;
+
+            Assert.IsNull(setting.StringValue);
+        }
+
+        [Test]
+        public void AcceptsNullValuesFromStringValueProperty()
+        {
+            string xmlString = @"<root></root>";
+            var setting = new XmlDocumentSetting("name", xmlString);
+
+            setting.StringValue = null;
+
+            Assert.IsNull(setting.Document);
+        }
+
+        [Test]
         public void DoesntUpdateStringValueForOldXmlDocuments()
         {
             string xmlString = @"<root></root>";
-            var setting = new XmlDocumentSetting(xmlString);
+            var setting = new XmlDocumentSetting("name", xmlString);
             XmlDocument oldDoc = setting.Document;
 
             string newXmlString = @"<root2></root2>";

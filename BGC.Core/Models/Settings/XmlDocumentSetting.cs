@@ -15,18 +15,26 @@ namespace BGC.Core
         {
             if (doc == null) return;
 
-            doc.NodeChanged += Doc_NodeChanged;
-            doc.NodeInserted += Doc_NodeChanged;
-            doc.NodeRemoved += Doc_NodeChanged;
+            doc.NodeChanged += OnDocumentNodeChanged;
+            doc.NodeInserted += OnDocumentNodeChanged;
+            doc.NodeRemoved += OnDocumentNodeChanged;
         }
 
         private void UnsubscribeEvents(XmlDocument doc)
         {
             if (doc == null) return;
 
-            doc.NodeChanged -= Doc_NodeChanged;
-            doc.NodeInserted -= Doc_NodeChanged;
-            doc.NodeRemoved -= Doc_NodeChanged;
+            doc.NodeChanged -= OnDocumentNodeChanged;
+            doc.NodeInserted -= OnDocumentNodeChanged;
+            doc.NodeRemoved -= OnDocumentNodeChanged;
+        }
+
+        protected virtual XmlDocument LoadXml(string xml)
+        {
+            XmlDocument result = new XmlDocument();
+            result.LoadXml(xml);
+
+            return result;
         }
 
         public override string StringValue
@@ -38,20 +46,24 @@ namespace BGC.Core
 
             set
             {
-                Shield.AssertOperation(value, !string.IsNullOrWhiteSpace(value), $"{nameof(StringValue)} cannot be null or whitespace.").ThrowOnError();
-
                 UnsubscribeEvents(_document);
 
-                var doc = new XmlDocument();
-                doc.LoadXml(value);
-                base.StringValue = value;
-                _document = doc;
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    _document = LoadXml(value);
+                }
+                else
+                {
+                    _document = null;
+                }
 
-                SubscribeEvents(doc);
+                base.StringValue = value;
+
+                SubscribeEvents(_document);
             }
         }
 
-        private void Doc_NodeChanged(object sender, XmlNodeChangedEventArgs e)
+        protected virtual void OnDocumentNodeChanged(object sender, XmlNodeChangedEventArgs e)
         {
             base.StringValue = (sender as XmlDocument).InnerXml;
         }
@@ -60,7 +72,7 @@ namespace BGC.Core
 
         private XmlDocument _document;
         [NotMapped]
-        public XmlDocument Document
+        public virtual XmlDocument Document
         {
             get
             {
@@ -69,14 +81,12 @@ namespace BGC.Core
 
             set
             {
-                Shield.AssertOperation(value, value != null, $"{nameof(Document)} property cannot be null.").ThrowOnError();
-
                 UnsubscribeEvents(_document);
 
                 _document = value;
-                base.StringValue = _document.InnerXml;
+                base.StringValue = _document?.InnerXml;
 
-                SubscribeEvents(value);
+                SubscribeEvents(_document);
             }
         }
 
@@ -92,12 +102,20 @@ namespace BGC.Core
         {
         }
 
-        public XmlDocumentSetting(XmlDocument doc)
+        public XmlDocumentSetting(string name) :
+            base(name)
+        {
+
+        }
+
+        public XmlDocumentSetting(string name, XmlDocument doc) :
+            base(name)
         {
             Document = doc;
         }
 
-        public XmlDocumentSetting(string xml)
+        public XmlDocumentSetting(string name, string xml) :
+            base(name)
         {
             StringValue = xml;
         }

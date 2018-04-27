@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Xml;
+using System.Web;
 
 namespace BGC.Core
 {
@@ -10,8 +12,10 @@ namespace BGC.Core
         {
  { typeof(CultureInfo), (string name) => new CultureInfoSetting(name) },
  { typeof(DateTime), (string name) => new DateTimeSetting(name) },
+ { typeof(HtmlString), (string name) => new HtmlEncodedStringSetting(name) },
  { typeof(IEnumerable<CultureInfo>), (string name) => new MultiCultureInfoSetting(name) },
  { typeof(string), (string name) => new Setting(name) },
+ { typeof(XmlDocument), (string name) => new XmlDocumentSetting(name) },
         };
     }
 }
