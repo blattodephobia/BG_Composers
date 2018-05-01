@@ -15,7 +15,7 @@ namespace BGC.Core
     /// </summary>
     public class HtmlEncodedStringSetting : XmlDocumentSetting, IParameter<HtmlString>
     {
-        private static readonly Regex XmlSpecialCharactersRegex = new Regex("[&<>'\"]", RegexOptions.Compiled);
+        private static readonly Regex XmlSpecialCharactersRegex = new Regex("[<>'\"]", RegexOptions.Compiled);
         private static readonly string PseudoRootElementFormatString = "<article_pseudo>{0}</article_pseudo>";
         private static readonly string PseudoRootElement = "article_pseudo";
         

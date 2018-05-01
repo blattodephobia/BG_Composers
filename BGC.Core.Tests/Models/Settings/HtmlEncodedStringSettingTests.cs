@@ -76,6 +76,15 @@ namespace BGC.Core.Tests.Models.Settings.HtmlDocumentSettingTests
             }
 
             [Test]
+            public void DoesntReEncodeEncodedStrings()
+            {
+                var setting = new HtmlEncodedStringSetting("setting");
+                setting.StringValue = EncodedCommonHtml;
+
+                Assert.AreEqual(EncodedCommonHtml, setting.StringValue);
+            }
+
+            [Test]
             public void SetsHtmlStringWhenNullValue()
             {
                 var setting = new HtmlEncodedStringSetting("setting");
