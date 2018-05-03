@@ -36,7 +36,7 @@ namespace BGC.Core
 
             set
             {
-                SetValue(ref _locale, new CultureInfo(value));
+                SetValue(ref _locale, value != null ? new CultureInfo(value) : null);
             }
         }
 

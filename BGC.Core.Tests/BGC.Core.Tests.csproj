@@ -85,6 +85,7 @@
     <Compile Include="Models\SearchResultTests.cs" />
     <Compile Include="Models\Settings\AvailableCulturesInitializerTests.cs" />
     <Compile Include="Models\Settings\ConfigurationBaseTests.cs" />
+    <Compile Include="Models\Settings\CultureInfoSettingTests.cs" />
     <Compile Include="Models\Settings\HtmlEncodedStringSettingTests.cs" />
     <Compile Include="Models\Settings\XmlDocumentSettingTests.cs" />
     <Compile Include="Models\UserProfileTests.cs" />
