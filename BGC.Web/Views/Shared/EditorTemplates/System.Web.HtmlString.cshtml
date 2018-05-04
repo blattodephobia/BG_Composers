@@ -1,0 +1,11 @@
+﻿@model HtmlContentSettingWebModel
+
+@using System.Linq.Expressions
+
+@{ 
+    Expression<Func<SettingWebModel, string>> valueSelectorLambda = (SettingWebModel m) => Model.Value;
+    string propertyHtmlElementName = Html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(ExpressionHelper.GetExpressionText(valueSelectorLambda));
+    <textarea class="tinymce" name="@propertyHtmlElementName">
+        @Html.Raw(!string.IsNullOrWhiteSpace(Model.Value) ? HttpUtility.HtmlDecode(Model.Value) : "")
+    </textarea>
+}

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 
 namespace BGC.Web.Areas.Administration.Controllers
 {
@@ -23,7 +24,9 @@ namespace BGC.Web.Areas.Administration.Controllers
         public virtual ActionResult ApplicationSettings()
         {
             var appSettings = from setting in GlobalSettings.AllSettings()
-                              select new SettingWebModel(setting.Name, setting.ValueType);
+                              select typeof(IHtmlString).IsAssignableFrom(setting.ValueType)
+                                  ? new HtmlContentSettingWebModel(setting.Name, setting.ValueType, setting.StringValue)
+                                  : new SettingWebModel(setting.Name, setting.ValueType, setting.StringValue);
             ApplicationSettingsWritePermissionViewModel vm = new ApplicationSettingsWritePermissionViewModel()
             {
                 Settings = appSettings.ToList()

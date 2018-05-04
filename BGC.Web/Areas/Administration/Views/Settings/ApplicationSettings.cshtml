@@ -1,6 +1,4 @@
-﻿@using BGC.Web.Areas.Administration.Models
-
-@model ApplicationSettingsWritePermissionViewModel
+﻿@model ApplicationSettingsWritePermissionViewModel
 
 @{
     ViewBag.Title = Localize(Administration.Settings.ApplicationSettings.Title);
@@ -34,14 +32,7 @@
                         <td>@Model.Settings[i].Name</td>
                         <td>@Model.Settings[i].Type</td>
                         <td>
-                            @if (Model.Settings[i].Type == typeof(string))
-                            {
-                                <div>@Html.TextAreaFor(m => m.Settings[i].Value)</div>
-                            }
-                            else
-                            {
-                                <div>@Html.TextBoxFor(m => m.Settings[i].Value)</div>
-                            }
+                            <div>@Html.EditorFor(m => m.Settings[i], Model.Settings[i].TypeName)</div>
                             @Html.HiddenFor(m => m.Settings[i].TypeName)
                             @Html.HiddenFor(m => m.Settings[i].Name)
                         </td>
@@ -51,3 +42,16 @@
         </table>
     </form>
 </div>
+
+@section scripts
+{
+    @if (MVC.Debugging)
+    {
+        <script src="http://cdn.tinymce.com/4/tinymce.js" crossorigin="anonymous"></script> @*integrity="sha384-ZLmGcx7NndDoJD1tvNLyxHbAgPmytCoUoJaZE9jgXaHtwusXSYf8STW0nS0404nY" attribute removed due to compatibility issues with Firefox *@
+    }
+    else
+    {
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.3.13/tinymce.min.js" crossorigin="anonymous"></script> @*integrity="sha384-UjGxx2YJw/Y9s7bFilng+uZ6gYzCSZqfQGli4HdOmweqmbJBMGuPbkZdkmrzxUk9" attribute removed due to compatibility issues with Firefox *@
+    }
+    <script src="~/Areas/Administration/Scripts/Settings/Settings.js"></script>
+}

@@ -30,6 +30,7 @@
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
     <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -291,6 +292,7 @@
     <Compile Include="Areas\Administration\Controllers\EditController.cs" />
     <Compile Include="Areas\Administration\Filters\AdminAreaAuthorizationAttribute.cs" />
     <Compile Include="Areas\Administration\Filters\PermissionsAttribute.cs" />
+    <Compile Include="Areas\Administration\Models\HtmlContentSettingWebModel.cs" />
     <Compile Include="Areas\Administration\Models\SettingWebModel.cs" />
     <Compile Include="Areas\Administration\Models\UserLocaleDependencyValue.cs" />
     <Compile Include="Areas\Administration\ViewModels\ActivitiesViewModel.cs" />
@@ -381,6 +383,7 @@
     <Content Include="Areas\Administration\Resources\css\glossary\edit.css" />
     <Content Include="Areas\Administration\Scripts\Edit\Add.js" />
     <Content Include="Areas\Administration\Scripts\Glossary\ListGlossary.js" />
+    <Content Include="Areas\Administration\Scripts\Settings\Settings.js" />
     <Content Include="Areas\Administration\ViewModels\Permissions\PermissionsViewModelGen.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>PermissionsViewModelGen1.cs</LastGenOutput>
@@ -530,6 +533,8 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>T4MVC.cs</LastGenOutput>
     </None>
+    <Content Include="Views\Shared\EditorTemplates\System.Web.HtmlString.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\System.String.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Media\" />

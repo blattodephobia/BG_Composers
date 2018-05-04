@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace BGC.Web.Areas.Administration.Models
 {
@@ -14,17 +15,18 @@ namespace BGC.Web.Areas.Administration.Models
 
         public string TypeName { get; set; }
 
-        public string Value { get; set; }
+        public virtual string Value { get; set; }
 
         public SettingWebModel()
         {
         }
 
-        public SettingWebModel(string name, Type type)
+        public SettingWebModel(string name, Type type, string value = null)
         {
             Name = name;
             TypeName = type.FullName;
             _type = type;
+            Value = value;
         }
     }
 }
