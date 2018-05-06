@@ -12,21 +12,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TestUtils;
 using static TestUtils.MockUtilities;
 
-namespace BGC.Web.Tests.AdministrationArea.Controllers
+namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
 {
-    [TestFixture]
-    public class UpdateTests
+    public class UpdateTests : TestFixtureBase
     {
         private EditController _controller;
         private Composer _composer;
         private Dictionary<Guid, string> _articleStorage;
         private List<MediaTypeInfo> _mediaStorage;
         private CultureInfo _language;
-
-        [SetUp]
-        public void Setup()
+ 
+        public override void BeforeEachTest()
         {
             _composer = new Composer();
             _language = CultureInfo.GetCultureInfo("de-DE");
@@ -167,6 +166,18 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers
             Guid articleId = _composer.GetArticle(_language).StorageId;
             Assert.AreEqual(sameName, _composer.GetName(_language).FullName);
             Assert.AreNotSame(sameName, _composer.GetName(_language).FullName); // strings are equal, but the underlying references haven't been modified
+        }
+
+        [Test]
+        public void OverwritesOldMediaCollection()
+        {
+            _composer.Profile.Media = new MediaTypeInfo[] { new MediaTypeInfo("image/jpeg") { ExternalLocation = "www.google.com" } };
+
+            string newImageLocation = "http://google.com/else";
+            _controller.Update_Post(new UpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new string[] { newImageLocation }));
+
+            Assert.AreEqual(1, _composer.Profile.Media.Count);
+            Assert.AreEqual(newImageLocation, _composer.Profile.Media.First().ExternalLocation);
         }
     }
 }

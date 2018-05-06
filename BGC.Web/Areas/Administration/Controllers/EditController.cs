@@ -170,10 +170,8 @@ namespace BGC.Web.Areas.Administration.Controllers
                 }
             }
 
-            ComposerProfile profile = editingComposer.Profile ?? new ComposerProfile()
-            {
-                Media = IdentifyImages(editedData)
-            };
+            ComposerProfile profile = editingComposer.Profile ?? new ComposerProfile();
+            profile.Media = IdentifyImages(editedData);
 
             editingComposer.Profile = profile;
             _composersService.AddOrUpdate(editingComposer);

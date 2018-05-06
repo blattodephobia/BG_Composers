@@ -14,5 +14,10 @@ namespace TestUtils
         public virtual void OneTimeSetUp()
         {
         }
+
+        [SetUp]
+        public virtual void BeforeEachTest()
+        {
+        }
     }
 }
