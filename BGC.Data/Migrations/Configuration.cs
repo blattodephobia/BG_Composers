@@ -157,5 +157,10 @@ namespace BGC.Data.Migrations
                 }
             }
         }
+
+        public Configuration()
+        {
+            CodeGenerator = new MySqlCodeGenerator();
+        }
     }
 }

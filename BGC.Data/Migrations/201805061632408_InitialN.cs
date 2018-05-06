@@ -3,7 +3,7 @@ namespace BGC.Data.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class InitialN : DbMigration
     {
         public override void Up()
         {
@@ -14,6 +14,8 @@ namespace BGC.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Language = c.String(nullable: false, maxLength: 5, storeType: "nvarchar"),
                         StorageId = c.Guid(nullable: false),
+                        IsArchived = c.Boolean(nullable: false),
+                        CreatedUtc = c.DateTime(nullable: false, precision: 0),
                         Composer_Id = c.Guid(nullable: false),
                         LocalizedName_Id = c.Long(nullable: false),
                     })
@@ -29,8 +31,15 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
+                        DateOfBirth = c.DateTime(precision: 0),
+                        DateOfDeath = c.DateTime(precision: 0),
+                        Order = c.Int(nullable: false),
+                        HasNamesakes = c.Boolean(nullable: false),
+                        Profile_Id = c.Guid(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ComposerProfiles", t => t.Profile_Id)
+                .Index(t => t.Profile_Id);
             
             CreateTable(
                 "dbo.ComposerNames",
@@ -39,8 +48,8 @@ namespace BGC.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         Language = c.String(nullable: false, maxLength: 5, storeType: "nvarchar"),
                         FirstName = c.String(maxLength: 32, storeType: "nvarchar"),
-                        LastName = c.String(maxLength: 32, storeType: "nvarchar"),
-                        FullName = c.String(maxLength: 128, storeType: "nvarchar"),
+                        LastName = c.String(nullable: false, maxLength: 32, storeType: "nvarchar"),
+                        FullName = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                         Composer_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
@@ -51,16 +60,47 @@ namespace BGC.Data.Migrations
                 .Index(t => t.Composer_Id);
             
             CreateTable(
+                "dbo.ComposerProfiles",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
                 "dbo.MediaTypeInfos",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
                         MimeTypeInternal = c.String(nullable: false, unicode: false),
                         StorageId = c.Guid(nullable: false),
-                        OriginalFileName = c.String(nullable: false, maxLength: 255, storeType: "nvarchar"),
+                        OriginalFileName = c.String(maxLength: 255, storeType: "nvarchar"),
+                        ExternalLocation = c.String(maxLength: 512, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.StorageId);
+            
+            CreateTable(
+                "dbo.GlossaryEntries",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false, identity: true),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.GlossaryDefinitions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Language = c.String(nullable: false, unicode: false),
+                        Term = c.String(nullable: false, maxLength: 1000, storeType: "nvarchar"),
+                        Definition = c.String(nullable: false, maxLength: 1000, storeType: "nvarchar"),
+                        GlossaryEntry_Id = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.GlossaryEntries", t => t.GlossaryEntry_Id, cascadeDelete: true)
+                .Index(t => t.GlossaryEntry_Id);
             
             CreateTable(
                 "dbo.Invitations",
@@ -116,6 +156,7 @@ namespace BGC.Data.Migrations
                         Id = c.Long(nullable: false, identity: true),
                         MustChangePassword = c.Boolean(nullable: false),
                         PasswordResetTokenHash = c.String(maxLength: 44, unicode: false),
+                        UserName = c.String(nullable: false, maxLength: 32, storeType: "nvarchar"),
                         Email = c.String(maxLength: 256, storeType: "nvarchar"),
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(unicode: false),
@@ -126,7 +167,6 @@ namespace BGC.Data.Migrations
                         LockoutEndDateUtc = c.DateTime(precision: 0),
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(nullable: false, maxLength: 32, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
@@ -161,10 +201,11 @@ namespace BGC.Data.Migrations
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
-                        Name = c.String(unicode: false),
+                        Name = c.String(nullable: false, unicode: false),
                         Description = c.String(maxLength: 1000, storeType: "nvarchar"),
                         StringValue = c.String(maxLength: 1000, storeType: "nvarchar"),
                         Priority = c.Int(nullable: false),
+                        OwnerStamp = c.String(maxLength: 64, storeType: "nvarchar"),
                         Date = c.DateTime(precision: 0),
                         Discriminator = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                     })
@@ -237,10 +278,12 @@ namespace BGC.Data.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.BgcRolePermission", "Permission_Id", "dbo.Permissions");
             DropForeignKey("dbo.BgcRolePermission", "BgcRole_Id", "dbo.AspNetRoles");
+            DropForeignKey("dbo.GlossaryDefinitions", "GlossaryEntry_Id", "dbo.GlossaryEntries");
             DropForeignKey("dbo.MediaTypeInfoComposerArticles", "ComposerArticle_Id", "dbo.ComposerArticles");
             DropForeignKey("dbo.MediaTypeInfoComposerArticles", "MediaTypeInfo_Id", "dbo.MediaTypeInfos");
             DropForeignKey("dbo.ComposerArticles", "LocalizedName_Id", "dbo.ComposerNames");
             DropForeignKey("dbo.ComposerArticles", "Composer_Id", "dbo.Composers");
+            DropForeignKey("dbo.Composers", "Profile_Id", "dbo.ComposerProfiles");
             DropForeignKey("dbo.ComposerNames", "Composer_Id", "dbo.Composers");
             DropIndex("dbo.InvitationBgcRoles", new[] { "BgcRole_Id" });
             DropIndex("dbo.InvitationBgcRoles", new[] { "Invitation_Id" });
@@ -257,11 +300,13 @@ namespace BGC.Data.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Invitations", new[] { "Sender_Id" });
+            DropIndex("dbo.GlossaryDefinitions", new[] { "GlossaryEntry_Id" });
             DropIndex("dbo.MediaTypeInfos", new[] { "StorageId" });
             DropIndex("dbo.ComposerNames", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerNames", new[] { "FullName" });
             DropIndex("dbo.ComposerNames", new[] { "LastName" });
             DropIndex("dbo.ComposerNames", new[] { "FirstName" });
+            DropIndex("dbo.Composers", new[] { "Profile_Id" });
             DropIndex("dbo.ComposerArticles", new[] { "LocalizedName_Id" });
             DropIndex("dbo.ComposerArticles", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerArticles", new[] { "StorageId" });
@@ -277,7 +322,10 @@ namespace BGC.Data.Migrations
             DropTable("dbo.Permissions");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Invitations");
+            DropTable("dbo.GlossaryDefinitions");
+            DropTable("dbo.GlossaryEntries");
             DropTable("dbo.MediaTypeInfos");
+            DropTable("dbo.ComposerProfiles");
             DropTable("dbo.ComposerNames");
             DropTable("dbo.Composers");
             DropTable("dbo.ComposerArticles");

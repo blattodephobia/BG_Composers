@@ -6,14 +6,14 @@ namespace BGC.Data.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.1.2-31219")]
-    public sealed partial class ComposerName_RequiredFields : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
+    public sealed partial class InitialN : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(ComposerName_RequiredFields));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialN));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710072122346_ComposerName_RequiredFields"; }
+            get { return "201805061632408_InitialN"; }
         }
         
         string IMigrationMetadata.Source

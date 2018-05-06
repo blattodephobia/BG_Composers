@@ -97,39 +97,12 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="DataLayerDependencyRegistration.cs" />
-    <Compile Include="Migrations\201706241032555_Initial.cs" />
-    <Compile Include="Migrations\201706241032555_Initial.Designer.cs">
-      <DependentUpon>201706241032555_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201706241955076_ArticlesArchivability.cs" />
-    <Compile Include="Migrations\201706241955076_ArticlesArchivability.Designer.cs">
-      <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708061727168_Glossary.cs" />
-    <Compile Include="Migrations\201708061727168_Glossary.Designer.cs">
-      <DependentUpon>201708061727168_Glossary.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710072122346_ComposerName_RequiredFields.cs" />
-    <Compile Include="Migrations\201710072122346_ComposerName_RequiredFields.Designer.cs">
-      <DependentUpon>201710072122346_ComposerName_RequiredFields.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710092017423_Composer_DatesAndOrder.cs" />
-    <Compile Include="Migrations\201710092017423_Composer_DatesAndOrder.Designer.cs">
-      <DependentUpon>201710092017423_Composer_DatesAndOrder.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201710222000295_Settings_RequiredName.cs" />
-    <Compile Include="Migrations\201710222000295_Settings_RequiredName.Designer.cs">
-      <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712041040275_Settings_OwnerStamp.cs" />
-    <Compile Include="Migrations\201712041040275_Settings_OwnerStamp.Designer.cs">
-      <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201802222119222_ComposerProfile.cs" />
-    <Compile Include="Migrations\201802222119222_ComposerProfile.Designer.cs">
-      <DependentUpon>201802222119222_ComposerProfile.cs</DependentUpon>
+    <Compile Include="Migrations\201805061632408_InitialN.cs" />
+    <Compile Include="Migrations\201805061632408_InitialN.Designer.cs">
+      <DependentUpon>201805061632408_InitialN.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\MySqlCodeGenerator.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -156,29 +129,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706241032555_Initial.resx">
-      <DependentUpon>201706241032555_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201706241955076_ArticlesArchivability.resx">
-      <DependentUpon>201706241955076_ArticlesArchivability.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708061727168_Glossary.resx">
-      <DependentUpon>201708061727168_Glossary.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710072122346_ComposerName_RequiredFields.resx">
-      <DependentUpon>201710072122346_ComposerName_RequiredFields.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710092017423_Composer_DatesAndOrder.resx">
-      <DependentUpon>201710092017423_Composer_DatesAndOrder.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201710222000295_Settings_RequiredName.resx">
-      <DependentUpon>201710222000295_Settings_RequiredName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712041040275_Settings_OwnerStamp.resx">
-      <DependentUpon>201712041040275_Settings_OwnerStamp.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201802222119222_ComposerProfile.resx">
-      <DependentUpon>201802222119222_ComposerProfile.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805061632408_InitialN.resx">
+      <DependentUpon>201805061632408_InitialN.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
