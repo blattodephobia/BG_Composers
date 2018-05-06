@@ -24,8 +24,7 @@ namespace BGC.Services.Tests
 
             FileSystemMediaService service = new FileSystemMediaService(
                 new DirectoryInfo(Environment.CurrentDirectory),
-                mockMediaRepo.Object,
-                mockArticleRepo.Object);
+                mockMediaRepo.Object);
             Guid missingId = new Guid(11, 22, 33, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
 
             Assert.IsNull(service.GetMedia(missingId));

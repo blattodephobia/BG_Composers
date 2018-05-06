@@ -41,7 +41,7 @@ namespace BGC.WebAPI.Tests.PublicArea.Controllers
         {
             Mock<IMediaService> mockMediaService = new Mock<IMediaService>();
             Guid fakeId = new Guid(Enumerable.Range(0, 16).Select(i => (byte)i).ToArray());
-            mockMediaService.Setup(s => s.AddMedia(It.IsAny<ContentType>(), It.IsAny<Stream>(), It.IsAny<string>(), It.IsAny<Guid?>())).Returns(fakeId);
+            mockMediaService.Setup(s => s.AddMedia(It.IsAny<ContentType>(), It.IsAny<Stream>(), It.IsAny<string>())).Returns(fakeId);
             ResourcesController ctrl = new ResourcesController(mockMediaService.Object);
             ctrl.ControllerContext = GetMockControllerContext(ctrl);
             ctrl.Url = new UrlHelper(new RequestContext(ctrl.ControllerContext.HttpContext, new RouteData()), new RouteCollection());

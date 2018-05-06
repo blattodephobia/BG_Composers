@@ -14,7 +14,6 @@ namespace BGC.Services
     internal class FileSystemMediaService : FileSystemStorageService<Stream>, IMediaService
     {
         protected IRepository<MediaTypeInfo> MetaDataRepository { get; private set; }
-        protected IRepository<ComposerArticle> ArticleRepository { get; private set; }
 
         public MultimediaContent GetMedia(Guid guid)
         {
@@ -62,28 +61,24 @@ namespace BGC.Services
             }
         }
 
-        public Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null)
+        public Guid AddMedia(ContentType contentType, Stream data, string fileName)
         {
             Guid storageId = StoreEntry(data);
             var mediaEntry = new MediaTypeInfo(fileName, contentType) { StorageId = storageId };
             MetaDataRepository.Insert(mediaEntry);
-            if (articleId != null)
-            {
-                ArticleRepository.All().FirstOrDefault(article => article.StorageId == articleId)?.Media.Add(mediaEntry);
-            }
+
             SaveAll();
+
             return storageId;
 
         }
 
         public FileSystemMediaService(
             [Dependency(ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey)] DirectoryInfo storageDir,
-            IRepository<MediaTypeInfo> metaDataRepository,
-            IRepository<ComposerArticle> articleRepository) :
+            IRepository<MediaTypeInfo> metaDataRepository) :
             base(storageDir)
         {
             MetaDataRepository = metaDataRepository;
-            ArticleRepository = articleRepository;
         }
     }
 }

@@ -13,7 +13,7 @@ namespace BGC.Core.Services
     public interface IMediaService
     {
         [OperationContract]
-        Guid AddMedia(ContentType contentType, Stream data, string fileName, Guid? articleId = null);
+        Guid AddMedia(ContentType contentType, Stream data, string fileName);
 
         [OperationContract]
         MultimediaContent GetMedia(Guid storageId);
