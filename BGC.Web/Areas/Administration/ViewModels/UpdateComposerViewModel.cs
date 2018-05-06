@@ -10,5 +10,14 @@ namespace BGC.Web.Areas.Administration.ViewModels
         public Guid ComposerId { get; set; }
 
         public int? Order { get; set; }
+
+        public UpdateComposerViewModel()
+        {
+        }
+
+        public UpdateComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<string> imageSources) :
+            base(articles, imageSources)
+        {
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BGC.Web.ViewModels;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,19 @@ namespace BGC.Web.Areas.Administration.ViewModels
 
         public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles)
         {
+            Shield.ArgumentNotNull(articles).ThrowOnError();
+
             Articles = articles.ToList();
+            ImageSources = new List<string>();
+        }
+
+        public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<string> imageSources)
+        {
+            Shield.ArgumentNotNull(articles).ThrowOnError();
+            Shield.ArgumentNotNull(imageSources).ThrowOnError();
+
+            Articles = articles.ToList();
+            ImageSources = imageSources.ToList();
         }
     }
 }

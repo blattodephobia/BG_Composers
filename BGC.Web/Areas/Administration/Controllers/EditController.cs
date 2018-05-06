@@ -130,16 +130,16 @@ namespace BGC.Web.Areas.Administration.Controllers
         public virtual ActionResult Update(Guid composerId)
         {
             Composer composer = _composersService.FindComposer(composerId);
-            var model = new UpdateComposerViewModel()
+            IEnumerable<AddArticleViewModel> articles = composer.GetArticles().OrderBy(a => a.Language.Name).Select(a => new AddArticleViewModel()
+            {
+                Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
+                FullName = composer.GetName(a.Language).FullName,
+                Language = a.Language,
+            });
+            IEnumerable<string> imageSources = composer.Profile?.Images().Select(m => GetImageUrl(m)) ?? Enumerable.Empty<string>();
+            var model = new UpdateComposerViewModel(articles, imageSources)
             {
                 Order = composer.HasNamesakes ? (int?)composer.Order : null,
-                Articles = composer.GetArticles().OrderBy(a => a.Language.Name).Select(a => new AddArticleViewModel()
-                {
-                    Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
-                    FullName = composer.GetName(a.Language).FullName,
-                    Language = a.Language,
-                }).ToList(),
-                ImageSources = composer.Profile?.Images().Select(m => GetImageUrl(m)).ToList()
             };
 
             return View(model);
