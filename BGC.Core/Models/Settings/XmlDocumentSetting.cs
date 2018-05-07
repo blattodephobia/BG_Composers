@@ -94,8 +94,15 @@ namespace BGC.Core
 
         XmlDocument IParameter<XmlDocument>.Value
         {
-            get => Document;
-            set => Document = value;
+            get
+            {
+                return Document;
+            }
+
+            set
+            {
+                Document = value;
+            }
         }
 
         protected XmlDocumentSetting()

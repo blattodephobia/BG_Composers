@@ -171,6 +171,17 @@ namespace BGC.Core
 
         string IParameter<HtmlString>.Name => base.Name;
 
-        HtmlString IParameter<HtmlString>.Value { get => HtmlString; set => HtmlString = value; }
+        HtmlString IParameter<HtmlString>.Value
+        {
+            get
+            {
+                return HtmlString;
+            }
+
+            set
+            {
+                HtmlString = value;
+            }
+        }
     }
 }

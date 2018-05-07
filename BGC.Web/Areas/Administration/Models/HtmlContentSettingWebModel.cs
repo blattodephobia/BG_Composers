@@ -9,7 +9,18 @@ namespace BGC.Web.Areas.Administration.Models
     public class HtmlContentSettingWebModel : SettingWebModel
     {
         [AllowHtml]
-        public override string Value { get => base.Value; set => base.Value = value; }
+        public override string Value
+        {
+            get
+            {
+                return base.Value;
+            }
+
+            set
+            {
+                base.Value = value;
+            }
+        }
 
         public HtmlContentSettingWebModel()
         {
