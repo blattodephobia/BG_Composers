@@ -63,6 +63,7 @@
     <Compile Include="MultiValueDependencySource.cs" />
     <Compile Include="MultiValueFifoDependencySource.cs" />
     <Compile Include="MultiValueLifoDependencySource.cs" />
+    <Compile Include="NumericExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shield.cs" />
     <Compile Include="TypeDiscovery.cs" />

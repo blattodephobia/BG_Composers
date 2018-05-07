@@ -1,4 +1,5 @@
 ﻿@using BGC.Web.Controllers
+@using BGC.Utilities
 
 @{
     ViewBag.Title = Localize(Administration.Edit.List.PublishedArticles);
@@ -30,7 +31,7 @@
             string composerName = composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName();
             if (composer.HasNamesakes)
             {
-                composerName = string.Format("{0} ({1})", composerName, composer.RomanNumeralOrder);
+                composerName = string.Format("{0} ({1})", composerName, composer.Order.ToRomanNumeral());
             }
             <li class="info">
                 @Html.ActionLink(
