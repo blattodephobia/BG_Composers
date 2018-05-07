@@ -85,6 +85,7 @@ namespace BGC.Core
 
             Setting setting = _cache[fullSettingName];
             setting.StringValue = value;
+            _svc.WriteSetting(setting);
         }
 
         public T ReadValue<T>([CallerMemberName] string settingName = null)

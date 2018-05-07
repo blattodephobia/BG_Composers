@@ -38,8 +38,8 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.SettingsControllerTests
             SettingsController ctrl = new SettingsController(svc.Object);
 
             var vm = (ctrl.ApplicationSettings() as ViewResult).Model as ApplicationSettingsWritePermissionViewModel;
-            IEnumerable<Type> expectedPropertiesTypes = typeof(ApplicationConfiguration).GetProperties().Select(p => p.PropertyType).OrderBy(x => x);
-            IEnumerable<Type> actualPropertiesTypes = vm.Settings.Select(s => s.Type).OrderBy(x => x);
+            IEnumerable<Type> expectedPropertiesTypes = typeof(ApplicationConfiguration).GetProperties().Select(p => p.PropertyType).OrderBy(x => x.FullName);
+            IEnumerable<Type> actualPropertiesTypes = vm.Settings.Select(s => s.Type).OrderBy(x => x.FullName);
 
             Assert.IsTrue(expectedPropertiesTypes.SequenceEqual(actualPropertiesTypes));
         }
@@ -52,17 +52,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.SettingsControllerTests
             SettingsController ctrl = new SettingsController(svc.Object);
             
             var vm = (ctrl.ApplicationSettings() as ViewResult).Model as ApplicationSettingsWritePermissionViewModel;
-            foreach (SettingWebModel webModel in vm.Settings)
-            {
-                if (webModel.Type.GetConstructor(Type.EmptyTypes) != null)
-                {
-                    webModel.Value = Activator.CreateInstance(webModel.Type).ToString();
-                }
-                else
-                {
-                    webModel.Value = null;
-                }
-            }
+
             ctrl.ApplicationSettings_Post(vm);
 
             IEnumerable<string> expectedSettingNames = repo.Select(s => s.Name).OrderBy(x => x);

@@ -47,6 +47,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -91,6 +92,7 @@
     <Compile Include="Models\Settings\AvailableCulturesInitializer.cs" />
     <Compile Include="Models\Settings\ConfigurationBase.cs" />
     <Compile Include="Models\Settings\CultureInfoSetting.cs" />
+    <Compile Include="Models\Settings\HtmlEncodedStringSetting.cs" />
     <Compile Include="Models\Settings\SettingsFactory.cs" />
     <Compile Include="Models\Settings\DefaultSettingsFactory.SettingsTypeMap.cs">
       <AutoGen>True</AutoGen>
@@ -101,6 +103,7 @@
     <Compile Include="Models\Permissions\SendInvitePermission.cs" />
     <Compile Include="Models\Settings\SettingInitializer.cs" />
     <Compile Include="Models\Settings\SystemSettings.cs" />
+    <Compile Include="Models\Settings\XmlDocumentSetting.cs" />
     <Compile Include="Models\UserProfile.cs" />
     <Compile Include="Services\IGlossaryService.cs" />
     <Compile Include="Services\ISearchService.cs" />

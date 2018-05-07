@@ -177,6 +177,47 @@ namespace BGC.Core.Tests.Models.Settings.ConfigurationBaseTests
 
             Assert.AreEqual(testCulture, config.SupportedType);
         }
+
+        [Test]
+        public void StoresValueFromPropertyInBackingStore()
+        {
+            List<Setting> settingsStore = new List<Setting>();
+            var config = new ConfigurationBaseWriteProxy(GetMockSettingsService(settingsStore).Object, null);
+
+            config.SupportedType = new CultureInfo("es-ES");
+
+            var setting = settingsStore[0] as CultureInfoSetting;
+
+            Assert.IsNotNull(setting, $"Expected a setting of type {typeof(CultureInfoSetting)}, but got null. This could be due to a failed cast.");
+            Assert.AreEqual("es-ES", setting.Locale.Name);
+        }
+
+        [Test]
+        public void StoresValueMethodInBackingStore()
+        {
+            List<Setting> settingsStore = new List<Setting>();
+            Mock<ISettingsService> svc = GetMockSettingsService(settingsStore);
+            svc.Setup(x => x.WriteSetting(It.IsAny<CultureInfoSetting>())).Callback((Setting setting2) =>
+            {
+                Setting existingSetting = settingsStore.FirstOrDefault(s => s.Name == setting2.Name);
+                if (existingSetting == null)
+                {
+                    existingSetting = new CultureInfoSetting(setting2.Name, (setting2 as CultureInfoSetting).Locale);
+                    settingsStore.Add(existingSetting);
+                }
+
+                existingSetting.StringValue = setting2.StringValue;
+            });
+            var config = new ConfigurationBaseWriteProxy(svc.Object, null);
+
+            (config as ConfigurationBase).SetValue("es-ES", nameof(config.SupportedType));
+
+            Assert.AreEqual(1, settingsStore.Count, "Setting has not been added to the backing store.");
+
+            var setting = settingsStore[0] as CultureInfoSetting;
+
+            Assert.AreEqual("es-ES", setting.Locale.Name);
+        }
     }
     
     public class AllSettingsTests : TestFixtureBase

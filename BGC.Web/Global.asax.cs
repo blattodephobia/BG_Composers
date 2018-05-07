@@ -33,6 +33,25 @@ namespace BGC.Web
             }
 		}
 
+        private static ActionResult SelectErrorResult(RequestContext requestContext)
+        {
+            ActionResult responseResult = requestContext.HttpContext.Request.IsAjaxRequest() ?
+                new JsonResult() // when the request is ajax the system can automatically handle a mistake with a JSON response. then overwrites the default response
+                {
+                    Data = new { success = false, serverError = (int)HttpStatusCode.InternalServerError },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                } as ActionResult
+                :
+                new ViewResult()
+                {
+                    ViewData = new ViewDataDictionary(new ErrorViewModel(
+                        statusCode: HttpStatusCode.InternalServerError,
+                        description: LocalizationKeys.Global.InternalServerError)),
+                    ViewName = MVC.Shared.Views.Error
+                } as ActionResult;
+            return responseResult;
+        }
+
 		protected void Application_Start()
 		{
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -54,20 +73,7 @@ namespace BGC.Web
                 RequestContext requestContext = ((MvcHandler)httpContext.CurrentHandler).RequestContext;
                 ControllerBase controller = factory.CreateController(requestContext, MVC.Public.Main.Name) as ControllerBase;
                 controller.ControllerContext = new ControllerContext(requestContext, controller);
-                ActionResult responseResult = requestContext.HttpContext.Request.IsAjaxRequest() ?
-                    new JsonResult() // when the request is ajax the system can automatically handle a mistake with a JSON response. then overwrites the default response
-                    {
-                        Data = new { success = false, serverError = (int)HttpStatusCode.InternalServerError },
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                    } as ActionResult
-                    :
-                    new ViewResult()
-                    {
-                        ViewData = new ViewDataDictionary(new ErrorViewModel(
-                            statusCode: HttpStatusCode.InternalServerError,
-                            description: LocalizationKeys.Global.InternalServerError)),
-                        ViewName = MVC.Shared.Views.Error
-                    } as ActionResult;
+                ActionResult responseResult = SelectErrorResult(requestContext);
                 responseResult.ExecuteResult(controller.ControllerContext);
 
                 httpContext.Response.End();
