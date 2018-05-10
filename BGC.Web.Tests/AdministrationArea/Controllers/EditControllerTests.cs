@@ -65,7 +65,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
                 {
                     new AddArticleViewModel()
                     {
-                        FullName = _composer.GetName(_language).FullName,
+                        FullName = _composer.Name[_language].FullName,
                         Content = "b",
                         Language = _language
                     }
@@ -88,7 +88,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
                 {
                     new AddArticleViewModel()
                     {
-                        FullName = _composer.GetName(_language).FullName,
+                        FullName = _composer.Name[_language].FullName,
                         Content = sameContent,
                         Language = _language
                     }
@@ -117,7 +117,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
                 }
             });
             
-            Assert.AreEqual("John Smith", _composer.GetName(_language).FullName);
+            Assert.AreEqual("John Smith", _composer.Name[_language].FullName);
         }
 
         [Test]
@@ -148,7 +148,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         [Test]
         public void DoesntUpdateNameIfSameFullName()
         {
-            string sameName = new string(_composer.GetName(_language).FullName.ToArray());
+            string sameName = new string(_composer.Name[_language].FullName.ToArray());
             _controller.Update_Post(new UpdateComposerViewModel()
             {
                 ComposerId = _composer.Id,
@@ -164,8 +164,8 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             });
 
             Guid articleId = _composer.GetArticle(_language).StorageId;
-            Assert.AreEqual(sameName, _composer.GetName(_language).FullName);
-            Assert.AreNotSame(sameName, _composer.GetName(_language).FullName); // strings are equal, but the underlying references haven't been modified
+            Assert.AreEqual(sameName, _composer.Name[_language].FullName);
+            Assert.AreNotSame(sameName, _composer.Name[_language].FullName); // strings are equal, but the underlying references haven't been modified
         }
 
         [Test]

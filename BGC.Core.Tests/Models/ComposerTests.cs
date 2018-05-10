@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestUtils;
 
 namespace BGC.Core.Tests.Models.ComposerTests
 {
@@ -64,6 +65,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void GetsNonArchivedArticlesOnly()
         {
             var c = new Composer();
+            c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
             c.Articles = new List<ComposerArticle>()
             {
                 new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
@@ -109,7 +111,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
             var germanName = new ComposerName("John", "de-DE");
             c.LocalizedNames = new List<ComposerName>() { germanName };
 
-            ComposerName actualName = c.GetName(CultureInfo.GetCultureInfo("de-DE"));
+            ComposerName actualName = c.Name[CultureInfo.GetCultureInfo("de-DE")];
 
             Assert.AreEqual(germanName, actualName);
         }
@@ -121,9 +123,42 @@ namespace BGC.Core.Tests.Models.ComposerTests
             var germanName = new ComposerName("John", "de-DE");
             c.LocalizedNames = new List<ComposerName>() { germanName };
 
-            ComposerName actualName = c.GetName(new CultureInfo("de-DE"));
+            ComposerName actualName = c.Name[new CultureInfo("de-DE")];
 
             Assert.AreEqual(germanName, actualName);
+        }
+    }
+
+    public class AddNameTests : TestFixtureBase
+    {
+        [Test]
+        public void ThrowsExceptionIfNullLocale()
+        {
+            var c = new Composer();
+            Assert.Throws<ArgumentNullException>(() => c.Name[null] = new ComposerName("J.J. Abrams", "en-US"));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullName()
+        {
+            var c = new Composer();
+            Assert.Throws<ArgumentNullException>(() => c.Name[CultureInfo.GetCultureInfo("en-US")] = null);
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNameLocaleMismatch()
+        {
+            var c = new Composer();
+            Assert.Throws<InvalidOperationException>(() => c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "fr-FR"));
+        }
+
+        [Test]
+        public void AcceptsNameWithMatchingLocale()
+        {
+            var c = new Composer();
+            c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+
+            Assert.AreEqual("John Smith", c.Name[CultureInfo.GetCultureInfo("en-US")].FullName);
         }
     }
 

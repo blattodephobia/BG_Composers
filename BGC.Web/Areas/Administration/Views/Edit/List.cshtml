@@ -26,9 +26,9 @@
     </div>
 
     <ul class="list-unstyled">
-        @foreach (Composer composer in Model.Composers.OrderBy(c => c.GetName(CurrentLocale).GetEasternOrderFullName()))
+        @foreach (Composer composer in Model.Composers.OrderBy(c => c.Name[CurrentLocale].GetEasternOrderFullName()))
         {
-            string composerName = composer.GetName((ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue).GetEasternOrderFullName();
+            string composerName = composer.Name[(ViewContext.Controller as  BgcControllerBase).CurrentLocale.EffectiveValue].GetEasternOrderFullName();
             if (composer.HasNamesakes)
             {
                 composerName = string.Format("{0} ({1})", composerName, composer.Order.ToRomanNumeral());

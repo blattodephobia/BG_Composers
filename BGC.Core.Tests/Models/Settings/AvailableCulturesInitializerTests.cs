@@ -16,6 +16,9 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_ConsistentDb()
         {
             Composer first = new Composer();
+            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
+
             first.Articles = new List<ComposerArticle>() { new ComposerArticle(first, CultureInfo.GetCultureInfo("en-US")), new ComposerArticle(first, CultureInfo.GetCultureInfo("bg-BG")) };
 
             Composer second = new Composer();
@@ -36,6 +39,13 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_SomeCulturesMissing()
         {
             Composer first = new Composer();
+            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
+            first.Name[CultureInfo.GetCultureInfo("de-DE")] = new ComposerName("John Smith", "de-DE");
+            first.Name[CultureInfo.GetCultureInfo("fr-FR")] = new ComposerName("John Smith", "fr-FR");
+            first.Name[CultureInfo.GetCultureInfo("en-GB")] = new ComposerName("John Smith", "en-GB");
+            first.Name[CultureInfo.GetCultureInfo("ja-JP")] = new ComposerName("John Smith", "ja-JP");
+
             first.Articles = new List<ComposerArticle>()
             {
                 new ComposerArticle(first, CultureInfo.GetCultureInfo("en-US")),
@@ -71,6 +81,10 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_AllCulturesInconsistent()
         {
             Composer first = new Composer();
+            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
+            first.Name[CultureInfo.GetCultureInfo("de-DE")] = new ComposerName("John Smith", "de-DE");
+            first.Name[CultureInfo.GetCultureInfo("fr-FR")] = new ComposerName("John Smith", "fr-FR");
             first.Articles = new List<ComposerArticle>() { new ComposerArticle(first, CultureInfo.GetCultureInfo("en-US")) };
 
             Composer second = new Composer();

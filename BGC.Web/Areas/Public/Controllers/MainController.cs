@@ -71,7 +71,7 @@ namespace BGC.Web.Areas.Public.Controllers
             return View(new ArticleViewModel()
             {
                 Text = _articleStorageService.GetEntry(composer.GetArticle(CurrentLocale.EffectiveValue).StorageId),
-                Title = composer.GetName(CurrentLocale.EffectiveValue).FullName
+                Title = composer.Name[CurrentLocale.EffectiveValue].FullName
             });
         }
 
@@ -84,7 +84,7 @@ namespace BGC.Web.Areas.Public.Controllers
                            where composer != null
                            select composer.GetArticle(CurrentLocale.EffectiveValue))
                            .Distinct(ComposerArticle.Comparers.ByComposerEqualityComparer)
-                           .ToDictionary(a => a.Composer.Id, a => a.Composer.GetName(CurrentLocale.EffectiveValue).FullName)
+                           .ToDictionary(a => a.Composer.Id, a => a.Composer.Name[CurrentLocale.EffectiveValue].FullName)
             };
             return View(vm);
         }

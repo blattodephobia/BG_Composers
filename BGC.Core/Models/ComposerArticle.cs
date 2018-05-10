@@ -82,7 +82,7 @@ namespace BGC.Core
             this()
         {
             Composer = composer;
-            LocalizedName = composer.GetName(culture);
+            LocalizedName = composer.Name[culture];
             Language = culture;
         }
 	}

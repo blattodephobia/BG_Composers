@@ -204,11 +204,11 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             });
 
             Assert.IsTrue(mockRepo
-                .Where(c => c.GetName(CultureInfo.GetCultureInfo("en-US")).FullName == "John Smith")
+                .Where(c => c.Name[CultureInfo.GetCultureInfo("en-US")].FullName == "John Smith")
                 .All(c => c.HasNamesakes));
 
             Assert.IsFalse(mockRepo
-                .Where(c => c.GetName(CultureInfo.GetCultureInfo("en-US")).FullName != "John Smith")
+                .Where(c => c.Name[CultureInfo.GetCultureInfo("en-US")].FullName != "John Smith")
                 .All(c => c.HasNamesakes));
         }
     }

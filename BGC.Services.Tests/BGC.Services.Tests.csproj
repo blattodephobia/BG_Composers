@@ -99,6 +99,10 @@
       <Project>{92d59b09-84dc-4938-b447-2dedcc22b038}</Project>
       <Name>BGC.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233E69-FF24-41D8-B779-9DD446202D8D}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestUtils\TestUtils.csproj">
       <Project>{641df2ed-ce8c-4266-805e-b44ca073529f}</Project>
       <Name>TestUtils</Name>

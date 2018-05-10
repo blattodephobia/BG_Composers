@@ -133,7 +133,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             IEnumerable<AddArticleViewModel> articles = composer.GetArticles().OrderBy(a => a.Language.Name).Select(a => new AddArticleViewModel()
             {
                 Content = _articleStorageService.GetEntry(composer.GetArticle(a.Language).StorageId),
-                FullName = composer.GetName(a.Language).FullName,
+                FullName = composer.Name[a.Language].FullName,
                 Language = a.Language,
             });
             IEnumerable<string> imageSources = composer.Profile?.Images().Select(m => GetImageUrl(m)) ?? Enumerable.Empty<string>();
@@ -154,7 +154,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
             foreach (AddArticleViewModel newArticle in editedData.Articles)
             {
-                ComposerName name = editingComposer.GetName(newArticle.Language);
+                ComposerName name = editingComposer.Name[newArticle.Language];
                 if (name.FullName != newArticle.FullName)
                 {
                     name.FullName = newArticle.FullName;

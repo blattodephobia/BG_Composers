@@ -1,4 +1,5 @@
-﻿using CodeShield;
+﻿using BGC.Utilities;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,12 +13,26 @@ namespace BGC.Core
 {
 	public class Composer : BgcEntity<Guid>
 	{
-        private const int ORDER_MAX_VALUE = 3998;
-
         private ICollection<ComposerName> _localizedNames;
         private ICollection<ComposerArticle> _articles;
         private bool _getHashCodeCalled;
         private Guid _id;
+
+        private ComposerName GetName(CultureInfo locale)
+        {
+            Shield.ArgumentNotNull(locale).ThrowOnError();
+
+            return LocalizedNames.First(n => n.Language.Equals(locale));
+        }
+
+        private void AddName(CultureInfo locale, ComposerName name)
+        {
+            Shield.ArgumentNotNull(locale).ThrowOnError();
+            Shield.ArgumentNotNull(name).ThrowOnError();
+            Shield.AssertOperation(name, name.Language.Equals(locale)).ThrowOnError();
+
+            LocalizedNames.Add(name);
+        }
 
         public override Guid Id
         {
@@ -141,13 +156,7 @@ namespace BGC.Core
             return result;
         }
 
-        public ComposerName GetName(CultureInfo language)
-        {
-            Shield.ArgumentNotNull(language).ThrowOnError();
-
-            ComposerName result = LocalizedNames?.FirstOrDefault(name => name.Language.Equals(language));
-            return result;
-        }
+        public Indexer<CultureInfo, ComposerName> Name { get; private set; }
 
         public override int GetHashCode()
         {
@@ -160,6 +169,11 @@ namespace BGC.Core
         {
             Composer other = obj as Composer;
             return other != null && other.Id == Id;
+        }
+
+        public Composer()
+        {
+            Name = new Indexer<CultureInfo, ComposerName>(GetName, AddName);
         }
 	}
 }
