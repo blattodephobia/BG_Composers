@@ -56,8 +56,10 @@
     <Compile Include="DependencyValueTests.cs" />
     <Compile Include="EncryptionExtensionsTests.cs" />
     <Compile Include="EnumerableExtensionsTests.cs" />
+    <Compile Include="EnumerableIndexerTests.cs" />
     <Compile Include="ExpressionsTests.cs" />
     <Compile Include="HttpCookieSingleValueDependencySourceTests.cs" />
+    <Compile Include="IndexerTests.cs" />
     <Compile Include="LambdaCaptureFieldAccessorTests.cs" />
     <Compile Include="LazyOrderedEnumerableTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,6 +71,10 @@
     <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
       <Project>{05233e69-ff24-41d8-b779-9dd446202d8d}</Project>
       <Name>BGC.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{641DF2ED-CE8C-4266-805E-B44CA073529F}</Project>
+      <Name>TestUtils</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

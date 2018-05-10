@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitStream.cs" />
+    <Compile Include="EnumerableIndexer.cs" />
+    <Compile Include="Indexer.cs" />
     <Compile Include="DebuggerDisplayKeyValuePair.cs" />
     <Compile Include="DiscoverableAttribute.cs" />
     <Compile Include="DiscoverableHierarchyAttribute.cs" />
