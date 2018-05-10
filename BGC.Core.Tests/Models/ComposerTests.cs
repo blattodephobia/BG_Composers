@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core.Tests.Models
+namespace BGC.Core.Tests.Models.ComposerTests
 {
     [TestFixture]
     public class GetArticleTests
@@ -60,16 +60,17 @@ namespace BGC.Core.Tests.Models
     [TestFixture]
     public class GetArticlesTests
     {
+        [Test]
         public void GetsNonArchivedArticlesOnly()
         {
             var c = new Composer();
             c.Articles = new List<ComposerArticle>()
-        {
-            new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-            new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-            new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = false },
-            new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-        };
+            {
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = false },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+            };
 
             Assert.AreSame(c.Articles.ElementAt(2), c.GetArticles().Single());
         }
