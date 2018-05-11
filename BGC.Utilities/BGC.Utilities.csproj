@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="BitStream.cs" />
     <Compile Include="EnumerableIndexer.cs" />
+    <Compile Include="HashExtensions.cs" />
     <Compile Include="Indexer.cs" />
     <Compile Include="DebuggerDisplayKeyValuePair.cs" />
     <Compile Include="DiscoverableAttribute.cs" />

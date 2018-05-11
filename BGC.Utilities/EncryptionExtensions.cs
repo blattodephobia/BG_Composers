@@ -154,51 +154,6 @@ namespace BGC.Utilities
             }
         }
 
-        public static byte[] GetHashCode<THashAlgorithm>(this byte[] source , byte[] salt = null)
-            where THashAlgorithm : HashAlgorithm, new()
-        {
-            Shield.ArgumentNotNull(source, nameof(source)).ThrowOnError();
-
-            using (THashAlgorithm hash = new THashAlgorithm())
-            {
-                byte[] buffer;
-                if (salt != null)
-                {
-                    buffer = new byte[source.Length + salt.Length];
-                    source.CopyTo(buffer, 0);
-                    salt.CopyTo(buffer, source.Length);
-                }
-                else
-                {
-                    buffer = source;
-                }
-
-                return hash.ComputeHash(buffer);
-            }
-        }
-
-        public static byte[] GetHashCode<THashAlgorithm>(this object @object, byte[] salt = null)
-            where THashAlgorithm : HashAlgorithm, new()
-        {
-            Shield.ArgumentNotNull(@object, nameof(@object));
-
-            byte[] objAsArray = @object as byte[];
-            if (objAsArray != null)
-            {
-                return objAsArray.GetHashCode<THashAlgorithm>(salt);
-            }
-            else using (var stream = new MemoryStream())
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, @object);
-                if (salt != null)
-                {
-                    stream.Write(salt, 0, salt.Length);
-                }
-                return stream.ToArray().GetHashCode<THashAlgorithm>(salt);
-            }
-        }
-
         private static byte[] ReadByteArray(Stream s)
         {
             byte[] rawLength = new byte[sizeof(int)];

@@ -23,6 +23,18 @@ namespace CodeShield
             return new Validation<IEnumerable<T>>(collection, (collection?.Any() ?? false) ? (Func<IEnumerable<T>, Exception>)null : x => new InvalidOperationException("Collection cannot be null or empty." + (objName != null ? $"Object name: {objName}" : "")));
         }
 
+        /// <summary>
+        /// Returns a <see cref="Validation{T}"/> object that will throw an <see cref="ArgumentNullException"/> if
+        /// the <param name="collection">collection is null or empty.</param>
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="objName">The name of the variable to validate.</param>
+        /// <returns></returns>
+        public static Validation<IEnumerable<T>> ArgumentNotNullOrEmpty<T>(this IEnumerable<T> collection, string objName = null)
+        {
+            return new Validation<IEnumerable<T>>(collection, (collection?.Any() ?? false) ? (Func<IEnumerable<T>, Exception>)null : x => new ArgumentNullException((objName != null ? $"Object name: {objName}" : ""), "Collection cannot be null or empty."));
+        }
+
         public static Validation<string> IsNotNullOrEmpty(this string s, string objName = null)
         {
             if (string.IsNullOrEmpty(s))

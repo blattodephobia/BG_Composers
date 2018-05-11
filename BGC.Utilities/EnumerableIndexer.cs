@@ -21,5 +21,7 @@ namespace BGC.Utilities
         }
 
         public IEnumerable<KeyValuePair<TKey, TValue>> All() => _enumerateCallback.Invoke();
+
+        public IEnumerable<TValue> Values() => All().Select(kvp => kvp.Value);
     }
 }

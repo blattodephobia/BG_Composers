@@ -58,6 +58,7 @@
     <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="EnumerableIndexerTests.cs" />
     <Compile Include="ExpressionsTests.cs" />
+    <Compile Include="HashExtensionsTests.cs" />
     <Compile Include="HttpCookieSingleValueDependencySourceTests.cs" />
     <Compile Include="IndexerTests.cs" />
     <Compile Include="LambdaCaptureFieldAccessorTests.cs" />
