@@ -6,7 +6,7 @@
     <ProjectGuid>{E4263F1D-2E17-485D-8D37-9163218C87D0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BGC.Data.Tests</RootNamespace>
+    <RootNamespace>BGC.Data</RootNamespace>
     <AssemblyName>BGC.Data.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,6 +37,30 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">
+      <Project>{E3CB843A-3420-4A76-91C8-E4DB0688FEF5}</Project>
+      <Name>BGC.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BGC.Data\BGC.Data.csproj">
+      <Project>{ce3c7a0c-ba3e-4ffc-80a3-2dc1c2ffee7c}</Project>
+      <Name>BGC.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TestUtils\TestUtils.csproj">
+      <Project>{641DF2ED-CE8C-4266-805E-B44CA073529F}</Project>
+      <Name>TestUtils</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
