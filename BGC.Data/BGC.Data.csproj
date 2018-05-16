@@ -105,6 +105,14 @@
     <Compile Include="Migrations\MySqlCodeGenerator.cs" />
     <Compile Include="MySqlRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Relational\ArticleMedia.cs" />
+    <Compile Include="Relational\ArticleRelationalDto.cs" />
+    <Compile Include="Relational\ComposerRelationalDto.cs" />
+    <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
+    <Compile Include="Relational\NameRelationalDto.cs" />
+    <Compile Include="Relational\ProfileMedia.cs" />
+    <Compile Include="Relational\ProfileRelationalDto.cs" />
+    <Compile Include="Relational\RelationdalDtoBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
