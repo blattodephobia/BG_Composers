@@ -163,7 +163,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 ComposerArticle existingArticle = editingComposer.GetArticle(newArticle.Language);
                 if (newArticle.Content != _articleStorageService.GetEntry(existingArticle.StorageId))
                 {
-                    editingComposer.AddArticle(new ComposerArticle(editingComposer, newArticle.Language)
+                    editingComposer.AddArticle(new ComposerArticle(editingComposer, name, newArticle.Language)
                     {
                         StorageId = _articleStorageService.StoreEntry(newArticle.Content)
                     });

@@ -50,8 +50,25 @@ namespace BGC.Core
         /// </summary>
 		public Guid StorageId { get; set; }
 
+        private ComposerName _localizedName;
         [Required]
-		public virtual ComposerName LocalizedName { get; set; }
+		public virtual ComposerName LocalizedName
+        {
+            get
+            {
+                return _localizedName;
+            }
+
+            set
+            {
+                Shield.ArgumentNotNull(value).ThrowOnError();
+                Shield.AssertOperation(value, value.Language.Equals(Language), $"The specified name's locale didn't match the locale of the article. Expected {Language.Name}, but was {value.Language.Name}.").ThrowOnError();
+                Shield.AssertOperation(value, value.Composer == null || value.Composer.Equals(Composer), $"The name {value.FullName} belongs to a composer other than this object's assigned composer.").ThrowOnError();
+                Shield.ValueNotNull(value, nameof(LocalizedName)).ThrowOnError();
+
+                _localizedName = value;
+            }
+        }
 
         [Required]
         public virtual Composer Composer { get; set; }
@@ -78,12 +95,17 @@ namespace BGC.Core
             CreatedUtc = DateTime.UtcNow;
         }
 
-        public ComposerArticle(Composer composer, CultureInfo culture):
+        public ComposerArticle(Composer composer, ComposerName name, CultureInfo culture):
             this()
         {
+            Shield.ArgumentNotNull(composer).ThrowOnError();
+            Shield.ArgumentNotNull(culture).ThrowOnError();
+            Shield.ArgumentNotNull(name).ThrowOnError();
+            Shield.Assert(culture, culture.Equals(name.Language), x => new InvalidOperationException($"The {nameof(culture)} parameter is different than the {nameof(name)} parameter's locale.")).ThrowOnError();
+
             Composer = composer;
-            LocalizedName = composer.Name[culture];
             Language = culture;
+            LocalizedName = name;
         }
 	}
 }
