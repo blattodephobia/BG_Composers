@@ -68,10 +68,10 @@ namespace BGC.Core.Tests.Models.ComposerTests
             c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
             c.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = false },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = false },
+                new ComposerArticle(c, CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
             };
 
             Assert.AreSame(c.Articles.ElementAt(2), c.GetArticles().Single());

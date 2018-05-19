@@ -70,7 +70,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             for (int i = 0; i < composers.Count; i++)
             {
                 Composer cmp = composers[i];
-                cmp.AddArticle(new ComposerArticle(cmp, cmp.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US"))
+                cmp.AddArticle(new ComposerArticle(cmp, CultureInfo.GetCultureInfo("en-US"))
                 {
                     LocalizedName = cmp.LocalizedNames.First(),
                     StorageId = new Guid(Enumerable.Range(0, 16).Select((_byte, index) => index == 15 ? (byte)(i) : (byte)0).ToArray())

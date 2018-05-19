@@ -29,12 +29,12 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         {
             _composer = new Composer();
             _language = CultureInfo.GetCultureInfo("de-DE");
-            _composer.Name[_language] = new ComposerName("Petar Stupel", _language);
+            _composer.LocalizedNames = new List<ComposerName>() { new ComposerName("Petar Stupel", _language) };
             byte[] guid = new byte[16];
             guid[15] = 1;
             _composer.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(_composer, _composer.Name[_language], _language) { StorageId = new Guid(guid) }
+                new ComposerArticle(_composer, _language) { StorageId = new Guid(guid) }
             };
 
             _articleStorage = new Dictionary<Guid, string>()
