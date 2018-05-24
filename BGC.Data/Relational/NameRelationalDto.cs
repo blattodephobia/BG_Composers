@@ -15,14 +15,17 @@ namespace BGC.Data.Relational
         [Key]
         public int Id { get; set; }
 
+        [Required]
         [ForeignKey(nameof(ComposerRelationalDto))]
         public Guid Composer_Id { get; set; }
 
         public ComposerRelationalDto Composer { get; set; }
 
+        [Required]
         [MaxLength(5)]
         public string Language { get; set; }
 
+        [Required]
         [MaxLength(128)]
         public string FullName { get; set; }
     }

@@ -15,7 +15,7 @@ namespace BGC.Data.Relational
         [Key]
         public int Id { get; set; }
 
-        public string MimeTypeInternal { get; set; }
+        public string MimeType { get; set; }
 
         [Index]
         public Guid StorageId { get; set; }

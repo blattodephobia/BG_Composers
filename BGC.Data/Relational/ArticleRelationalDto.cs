@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,8 +12,11 @@ namespace BGC.Data.Relational
     [Table(nameof(ComposerArticle))]
     internal class ArticleRelationalDto : RelationdalDtoBase
     {
+        [Key]
         public int Id { get; set; }
 
+        [Required]
+        [MaxLength(5)]
         public string Language { get; set; }
 
         public DateTime CreatedUtc { get; set; }
@@ -20,6 +24,7 @@ namespace BGC.Data.Relational
         [Index]
 		public Guid StorageId { get; set; }
 
+        [Required]
         [ForeignKey(nameof(Composer))]
         public Guid Composer_Id { get; set; }
 

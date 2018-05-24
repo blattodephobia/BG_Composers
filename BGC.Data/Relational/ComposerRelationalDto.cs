@@ -12,6 +12,7 @@ namespace BGC.Data.Relational
     [Table(nameof(Composer))]
     internal class ComposerRelationalDto : RelationdalDtoBase
     {
+        [Key]
         public Guid Id { get; set; }
 
         public DateTime? DateOfBirth { get; set; }
@@ -23,8 +24,6 @@ namespace BGC.Data.Relational
         /// </summary>
         [Range(0, int.MaxValue)]
         public int Order { get; set; }
-
-        public bool HasNamesakes { get; set; }
 
         [ForeignKey(nameof(Profile))]
         public int? Profile_Id { get; set; }
