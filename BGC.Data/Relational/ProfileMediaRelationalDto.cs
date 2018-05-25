@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(ComposerProfile) + "_" + nameof(MediaTypeInfo))]
-    internal class ProfileMedia : RelationdalDtoBase
+    internal class ProfileMediaRelationalDto : RelationdalDtoBase
     {
         [Key, Column(Order = 0)]
         [ForeignKey(nameof(Profile))]
