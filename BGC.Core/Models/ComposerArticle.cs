@@ -107,5 +107,20 @@ namespace BGC.Core
             Language = culture;
             LocalizedName = name;
         }
-	}
+
+        public override bool Equals(object obj)
+        {
+            ComposerArticle other = obj as ComposerArticle;
+            if (other == null) return false;
+
+            return
+                Language.Equals(other.Language) &&
+                IsArchived == other.IsArchived &&
+                CreatedUtc == other.CreatedUtc &&
+                Composer.Id == other.Composer.Id &&
+                StorageId == other.StorageId;
+        }
+
+        public override int GetHashCode() => StorageId.GetHashCode();
+    }
 }

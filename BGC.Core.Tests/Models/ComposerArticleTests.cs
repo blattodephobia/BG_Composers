@@ -67,4 +67,100 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
             Assert.Throws<InvalidOperationException>(() => new ComposerArticle(composer2, name, name.Language));
         }
     }
+
+    public class EqualsTest : TestFixtureBase
+    {
+        [Test]
+        public void EqualsOther()
+        {
+            var id1 = new Guid(1, 0, 0, new byte[8]);
+            var id2 = new Guid(id1.ToByteArray());
+
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id1,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+            var article2 = new ComposerArticle(new Composer() { Id = id2 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id2,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+
+            Assert.AreEqual(article1, article2);
+        }
+
+        [Test]
+        public void NotEqualsNull()
+        {
+            var id1 = new Guid(1, 0, 0, new byte[8]);
+
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id1,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+
+            Assert.AreNotEqual(null, article1);
+            Assert.AreNotEqual(article1, null);
+        }
+
+        [Test]
+        public void EqualsSelf()
+        {
+            var id1 = new Guid(1, 0, 0, new byte[8]);
+
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id1,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+            
+            Assert.AreEqual(article1, article1);
+        }
+
+        [Test]
+        public void NotEqualsOther()
+        {
+            var id1 = new Guid(1, 0, 0, new byte[8]);
+            var id2 = new Guid(2, 2, 2, new byte[8]);
+
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id1,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+            var article2 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            {
+                IsArchived = true,
+                StorageId = id1,
+                CreatedUtc = new DateTime(2001, 1, 2),
+            };
+
+            Assert.AreEqual(article1, article2);
+            article2.StorageId = id2;
+            Assert.AreNotEqual(article1, article2);
+            article2.StorageId = id1;
+
+            Assert.AreEqual(article1, article2);
+            article2.CreatedUtc = new DateTime();
+            Assert.AreNotEqual(article1, article2);
+            article2.CreatedUtc = article1.CreatedUtc;
+
+            Assert.AreEqual(article1, article2);
+            article2.IsArchived = false;
+            Assert.AreNotEqual(article1, article2);
+            article2.IsArchived = true;
+
+            Assert.AreEqual(article1, article2);
+            article2.Composer.Id = id2;
+            Assert.AreNotEqual(article1, article2);
+
+        }
+    }
 }
