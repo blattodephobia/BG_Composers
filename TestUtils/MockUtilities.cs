@@ -10,6 +10,7 @@ using Microsoft.Owin.Security;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -61,6 +62,41 @@ namespace TestUtils
             return mockStore;
         }
 
+        public static Mock<INonQueryableRepository<TKey, TEntity>> GetMockNonQueryRepo<TKey, TEntity>(Dictionary<TKey, TEntity> backingStore)
+            where TKey : struct
+            where TEntity : BgcEntity<TKey>
+        {
+            var result = new Mock<INonQueryableRepository<TKey, TEntity>>();
+            result.Setup(r => r.AddOrUpdate(It.IsAny<TEntity>())).Callback((TEntity entity) =>
+            {
+                if (backingStore.ContainsKey(entity.Id))
+                {
+                    backingStore[entity.Id] = entity;
+                }
+                else
+                {
+                    backingStore.Add(entity.Id, entity);
+                }
+            });
+
+            result.Setup(r => r.Delete(It.IsAny<TKey[]>())).Callback((TKey[] keys) =>
+            {
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    if (backingStore.ContainsKey(keys[i])) backingStore.Remove(keys[i]);
+                }
+            });
+
+            result.Setup(r => r.Find(It.IsAny<TKey>())).Returns((TKey key) =>
+            {
+                TEntity entity;
+                backingStore.TryGetValue(key, out entity);
+                return entity;
+            });
+
+            return result;
+        }
+
         public static Mock<IUserPasswordStore<BgcUser, long>> GetMockPasswordStore(BgcUser mockUser, Mock chainMock = null)
         {
             var mockStore = chainMock?.As<IUserPasswordStore<BgcUser, long>>() ?? new Mock<IUserPasswordStore<BgcUser, long>>();
@@ -99,6 +135,27 @@ namespace TestUtils
                 });
 
             return mock;
+        }
+
+        /// <summary>
+        /// Returns a mock <see cref="IDbSet{TEntity}"/> using a <see cref="List{T}"/> as a backing store.
+        /// Note that the <see cref="IDbSet{TEntity}.Find(object[])"/> method will throw an exception by default and
+        /// must be stubbed manually by consuming tests (for the time being).
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="backingStore"></param>
+        /// <returns></returns>
+        public static Mock<IDbSet<T>> GetMockDbSet<T>(List<T> backingStore = null)
+            where T : class
+        {
+            var result = new Mock<IDbSet<T>>();
+            backingStore = backingStore ?? new List<T>();
+            result.Setup(r => r.Add(It.IsAny<T>())).Callback((T obj) => backingStore.Add(obj));
+            result.Setup(r => r.Attach(It.IsAny<T>())).Callback((T obj) => backingStore.Add(obj));
+            result.Setup(r => r.Remove(It.IsAny<T>())).Callback((T obj) => backingStore.Remove(obj));
+            result.Setup(r => r.Find(It.IsAny<object[]>())).Throws<NotImplementedException>();
+
+            return result;
         }
 
         public static Mock<IIdentityMessageService> GetMockEmailService(Action<IdentityMessage> callback)
