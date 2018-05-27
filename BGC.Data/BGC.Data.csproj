@@ -108,6 +108,9 @@
     <Compile Include="Relational\ArticleMediaRelationalDto.cs" />
     <Compile Include="Relational\ArticleRelationalDto.cs" />
     <Compile Include="Relational\ComposerRelationalDto.cs" />
+    <Compile Include="Relational\EntityFrameworkRepository.cs" />
+    <Compile Include="Relational\Mappings\ComposerMapper.cs" />
+    <Compile Include="Relational\Mappings\RelationalMapper.cs" />
     <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
     <Compile Include="Relational\NameRelationalDto.cs" />
     <Compile Include="Relational\ProfileMediaRelationalDto.cs" />
