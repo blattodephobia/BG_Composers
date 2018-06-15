@@ -16,9 +16,9 @@ namespace BGC.Data.Relational
         where TRelationalDto : RelationdalDtoBase, new()
     {
         private readonly IDbSet<TRelationalDto> _dbSet;
-        private readonly RelationalMapper<TKey, TEntity, TRelationalDto> _mapper;
+        private readonly RelationalMapper<TEntity, TRelationalDto> _mapper;
 
-        public EntityFrameworkRepository(RelationalMapper<TKey, TEntity, TRelationalDto> mapper, IDbSet<TRelationalDto> dbSet)
+        public EntityFrameworkRepository(RelationalMapper<TEntity, TRelationalDto> mapper, IDbSet<TRelationalDto> dbSet)
         {
             Shield.ArgumentNotNull(mapper).ThrowOnError();
             Shield.ArgumentNotNull(dbSet).ThrowOnError();
@@ -27,7 +27,7 @@ namespace BGC.Data.Relational
             _dbSet = dbSet;
         }
 
-        public void AddOrUpdate(TEntity entity)
+        public virtual void AddOrUpdate(TEntity entity)
         {
             Shield.ArgumentNotNull(entity).ThrowOnError();
 
@@ -44,7 +44,7 @@ namespace BGC.Data.Relational
             }
         }
 
-        public void Delete(params TKey[] keys)
+        public virtual void Delete(params TKey[] keys)
         {
             Shield.ArgumentNotNull(keys).ThrowOnError();
 
@@ -66,7 +66,7 @@ namespace BGC.Data.Relational
             }
         }
 
-        public TEntity Find(TKey key)
+        public virtual TEntity Find(TKey key)
         {
             TRelationalDto dto = _dbSet.Find(key);
             if (dto != null)

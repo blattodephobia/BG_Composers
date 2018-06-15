@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ComposerMapper : RelationalMapper<Guid, Composer, ComposerRelationalDto>
+    internal class ComposerMapper : RelationalMapper<Composer, ComposerRelationalDto>
     {
-        public override void CopyData(Composer source, ComposerRelationalDto target)
+        public override ComposerRelationalDto CopyData(Composer source, ComposerRelationalDto target)
         {
             Shield.ArgumentNotNull(source).ThrowOnError();
             Shield.ArgumentNotNull(target).ThrowOnError();
@@ -19,6 +19,8 @@ namespace BGC.Data.Relational.Mappings
             target.DateOfBirth = source.DateOfBirth;
             target.DateOfDeath = source.DateOfDeath;
             target.Order = source.Order;
+
+            return target;
         }
 
         public override Composer ToEntity(ComposerRelationalDto dto)

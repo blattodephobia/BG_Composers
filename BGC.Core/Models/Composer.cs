@@ -138,7 +138,7 @@ namespace BGC.Core
             Articles.Add(article);
         }
 
-        public IEnumerable<ComposerArticle> GetArticles() => Articles?.Where(a => !a.IsArchived) ?? Enumerable.Empty<ComposerArticle>();
+        public IEnumerable<ComposerArticle> GetArticles(bool includeArchived = false) => Articles?.Where(a => !a.IsArchived || (a.IsArchived && includeArchived)) ?? Enumerable.Empty<ComposerArticle>();
 
         /// <summary>
         /// Gets a <see cref="ComposerArticle"/> that hasn't been archived in the specified language.
@@ -156,7 +156,7 @@ namespace BGC.Core
             return result;
         }
 
-        public Indexer<CultureInfo, ComposerName> Name { get; private set; }
+        public EnumerableIndexer<CultureInfo, ComposerName> Name { get; private set; }
 
         public override int GetHashCode()
         {
@@ -173,7 +173,7 @@ namespace BGC.Core
 
         public Composer()
         {
-            Name = new Indexer<CultureInfo, ComposerName>(GetName, AddName);
+            Name = new EnumerableIndexer<CultureInfo, ComposerName>(GetName, AddName, () => LocalizedNames.Select(name => new KeyValuePair<CultureInfo, ComposerName>(name.Language, name)));
         }
 	}
 }

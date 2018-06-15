@@ -13,7 +13,7 @@ namespace BGC.Data.Relational
     internal class NameRelationalDto : RelationdalDtoBase
     {
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [ForeignKey(nameof(ComposerRelationalDto))]

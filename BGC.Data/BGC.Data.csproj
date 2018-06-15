@@ -107,9 +107,19 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relational\ArticleMediaRelationalDto.cs" />
     <Compile Include="Relational\ArticleRelationalDto.cs" />
+    <Compile Include="Relational\ManyToMany\ArticleNavigationalDto.cs" />
+    <Compile Include="Relational\ManyToMany\ComposerNavigationalDto.cs" />
     <Compile Include="Relational\ComposerRelationalDto.cs" />
     <Compile Include="Relational\EntityFrameworkRepository.cs" />
+    <Compile Include="Relational\ManyToMany\INavigationalDto.cs" />
+    <Compile Include="Relational\Mappings\ArticleMapper.cs" />
+    <Compile Include="Relational\Mappings\ComposerBreakdown.cs" />
+    <Compile Include="Relational\Mappings\ComposerBuilder.cs" />
     <Compile Include="Relational\Mappings\ComposerMapper.cs" />
+    <Compile Include="Relational\Mappings\DomainBreakdownBase.cs" />
+    <Compile Include="Relational\Mappings\DomainBuilderBase.cs" />
+    <Compile Include="Relational\Mappings\NameMapper.cs" />
+    <Compile Include="Relational\Mappings\ProfileMapper.cs" />
     <Compile Include="Relational\Mappings\RelationalMapper.cs" />
     <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
     <Compile Include="Relational\NameRelationalDto.cs" />
@@ -143,6 +153,9 @@
     <EmbeddedResource Include="Migrations\201805061632408_InitialN.resx">
       <DependentUpon>201805061632408_InitialN.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Relational\Write\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
