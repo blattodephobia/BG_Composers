@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Moq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
@@ -145,15 +146,44 @@ namespace TestUtils
         /// <typeparam name="T"></typeparam>
         /// <param name="backingStore"></param>
         /// <returns></returns>
-        public static Mock<IDbSet<T>> GetMockDbSet<T>(List<T> backingStore = null)
+        public static Mock<DbSet<T>> GetMockDbSet<T>(List<T> backingStore = null)
             where T : class
         {
-            var result = new Mock<IDbSet<T>>();
+            var result = new Mock<DbSet<T>>();
             backingStore = backingStore ?? new List<T>();
             result.Setup(r => r.Add(It.IsAny<T>())).Callback((T obj) => backingStore.Add(obj));
             result.Setup(r => r.Attach(It.IsAny<T>())).Callback((T obj) => backingStore.Add(obj));
             result.Setup(r => r.Remove(It.IsAny<T>())).Callback((T obj) => backingStore.Remove(obj));
+            result.Setup(r => r.RemoveRange(It.IsAny<IEnumerable<T>>())).Callback((IEnumerable<T> range) =>
+            {
+                foreach (T item in range ?? Enumerable.Empty<T>())
+                {
+                    backingStore.Remove(item);
+                }
+            });
             result.Setup(r => r.Find(It.IsAny<object[]>())).Throws<NotImplementedException>();
+
+            return result;
+        }
+
+        public static Mock<DbSet> GetMockDbSet(IList backingStore = null)
+        {
+            var result = new Mock<DbSet>();
+            backingStore = backingStore ?? new List<object>();
+            result.Setup(r => r.Add(It.IsAny<object>())).Callback((object obj) => backingStore.Add(obj));
+            result.Setup(r => r.Attach(It.IsAny<object>())).Callback((object obj) => backingStore.Add(obj));
+            result.Setup(r => r.Remove(It.IsAny<object>())).Callback((object obj) => backingStore.Remove(obj));
+            result.Setup(r => r.Find(It.IsAny<object[]>())).Throws<NotImplementedException>();
+
+            return result;
+
+        }
+
+        public static Mock<DbContext> GetMockDbContext(Func<Type, DbSet> setFactory = null)
+        {
+            var result = new Mock<DbContext>();
+
+            result.Setup(d => d.Set(It.IsNotNull<Type>())).Returns(setFactory);
 
             return result;
         }

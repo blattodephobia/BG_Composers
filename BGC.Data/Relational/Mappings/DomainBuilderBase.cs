@@ -1,4 +1,5 @@
 ﻿using BGC.Data.Relational.ManyToMany;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,15 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational.Mappings
 {
     internal abstract class DomainBuilderBase<TDto, TEntity>
-        where TDto : RelationdalDtoBase, INavigationalDto
+        where TDto : RelationdalDtoBase
     {
-        public abstract TEntity Build(TDto dto);
+        protected abstract TEntity BuildInternal(TDto dto);
+
+        public TEntity Build(TDto dto)
+        {
+            Shield.ArgumentNotNull(dto).ThrowOnError();
+
+            return BuildInternal(dto);
+        }
     }
 }

@@ -9,24 +9,12 @@ using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
 
-namespace BGC.Data.ComposerMapperTests
+namespace BGC.Data.Relational.Mappings.ComposerMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
         private readonly ComposerMapper _mapper = new ComposerMapper();
-
-        [Test]
-        public void ThrowsExceptionIfNullSource()
-        {
-            Assert.Throws<ArgumentNullException>(() => _mapper.CopyData(null, new ComposerRelationalDto()));
-        }
-
-        [Test]
-        public void ThrowsExceptionIfNullTarget()
-        {
-            Assert.Throws<ArgumentNullException>(() => _mapper.CopyData(new Composer(), null));
-        }
-
+        
         [Test]
         public void CopiesDataCorrectly()
         {
@@ -45,16 +33,11 @@ namespace BGC.Data.ComposerMapperTests
             Assert.AreEqual(dto.DateOfDeath, composer.DateOfDeath);
             Assert.AreEqual(dto.Order, composer.Order);
         }
-    }
-
-    public class ToEntityTests : TestFixtureBase
-    {
-        private readonly ComposerMapper _mapper = new ComposerMapper();
 
         [Test]
         public void ThrowsExceptionIfNullSource()
         {
-            Assert.Throws<ArgumentNullException>(() => _mapper.ToEntity(null));
+            Assert.Throws<ArgumentNullException>(() => _mapper.CopyData(null, new Composer()));
         }
 
         [Test]
@@ -68,7 +51,7 @@ namespace BGC.Data.ComposerMapperTests
                 Order = 3,
             };
 
-            Composer entity = _mapper.ToEntity(dto);
+            Composer entity = _mapper.CopyData(dto, new Composer());
 
             Assert.AreEqual(dto.Id, entity.Id);
             Assert.AreEqual(dto.DateOfBirth, entity.DateOfBirth);

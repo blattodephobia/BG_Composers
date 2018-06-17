@@ -47,6 +47,10 @@
       <Project>{ce3c7a0c-ba3e-4ffc-80a3-2dc1c2ffee7c}</Project>
       <Name>BGC.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233E69-FF24-41D8-B779-9DD446202D8D}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TestUtils\TestUtils.csproj">
       <Project>{641DF2ED-CE8C-4266-805E-B44CA073529F}</Project>
       <Name>TestUtils</Name>
@@ -76,8 +80,15 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComposerMapperTests.cs" />
+    <Compile Include="Relational\Mappings\ArticleMapperTests.cs" />
+    <Compile Include="Relational\Mappings\ComposerBreakdownTests.cs" />
+    <Compile Include="Relational\Mappings\ComposerBuilderTests.cs" />
+    <Compile Include="Relational\Mappings\ComposerMapperTests.cs" />
     <Compile Include="EntityFrameworkRepositoryTests.cs" />
+    <Compile Include="Relational\Mappings\DomainBreakdownTests.cs" />
+    <Compile Include="Relational\Mappings\DomainBuilderTests.cs" />
+    <Compile Include="Relational\Mappings\NameMapperTests.cs" />
+    <Compile Include="Relational\Mappings\RelationalMapperTests.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

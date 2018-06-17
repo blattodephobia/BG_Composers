@@ -10,7 +10,7 @@ namespace BGC.Data.Relational.Mappings
 {
     internal class ComposerMapper : RelationalMapper<Composer, ComposerRelationalDto>
     {
-        public override ComposerRelationalDto CopyData(Composer source, ComposerRelationalDto target)
+        protected override void CopyDataInternal(Composer source, ComposerRelationalDto target)
         {
             Shield.ArgumentNotNull(source).ThrowOnError();
             Shield.ArgumentNotNull(target).ThrowOnError();
@@ -19,21 +19,14 @@ namespace BGC.Data.Relational.Mappings
             target.DateOfBirth = source.DateOfBirth;
             target.DateOfDeath = source.DateOfDeath;
             target.Order = source.Order;
-
-            return target;
         }
 
-        public override Composer ToEntity(ComposerRelationalDto dto)
+        protected override void CopyDataInternal(ComposerRelationalDto source, Composer target)
         {
-            Shield.ArgumentNotNull(dto).ThrowOnError();
-
-            return new Composer()
-            {
-                Id = dto.Id,
-                DateOfBirth = dto.DateOfBirth,
-                DateOfDeath = dto.DateOfDeath,
-                Order = dto.Order,
-            };
+            target.Id = source.Id;
+            target.DateOfBirth = source.DateOfBirth;
+            target.DateOfDeath = source.DateOfDeath;
+            target.Order = source.Order;
         }
     }
 }

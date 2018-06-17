@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeShield;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,13 @@ namespace BGC.Data.Relational.Mappings
 {
     internal abstract class DomainBreakdownBase<TEntity>
     {
-        public abstract IEnumerable<RelationdalDtoBase> Breakdown(TEntity entity);
+        protected abstract IEnumerable<RelationdalDtoBase> BreakdownInternal(TEntity entity);
+
+        public IEnumerable<RelationdalDtoBase> Breakdown(TEntity entity)
+        {
+            Shield.ArgumentNotNull(entity).ThrowOnError();
+
+            return BreakdownInternal(entity);
+        }
     }
 }

@@ -114,10 +114,12 @@
     <Compile Include="Relational\ManyToMany\INavigationalDto.cs" />
     <Compile Include="Relational\Mappings\ArticleMapper.cs" />
     <Compile Include="Relational\Mappings\ComposerBreakdown.cs" />
+    <Compile Include="Relational\Mappings\ComposerMappers.cs" />
     <Compile Include="Relational\Mappings\ComposerBuilder.cs" />
     <Compile Include="Relational\Mappings\ComposerMapper.cs" />
     <Compile Include="Relational\Mappings\DomainBreakdownBase.cs" />
     <Compile Include="Relational\Mappings\DomainBuilderBase.cs" />
+    <Compile Include="Relational\Mappings\MediaTypeInfoMapper.cs" />
     <Compile Include="Relational\Mappings\NameMapper.cs" />
     <Compile Include="Relational\Mappings\ProfileMapper.cs" />
     <Compile Include="Relational\Mappings\RelationalMapper.cs" />

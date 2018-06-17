@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,9 @@ namespace BGC.Data.Relational.Mappings
         private readonly NameMapper _nameMapper;
         private readonly ArticleMapper _articleMapper;
         private readonly ProfileMapper _profileMapper;
+        private readonly MediaTypeInfoMapper _mediaTypeInfoMapper;
 
-        public override IEnumerable<RelationdalDtoBase> Breakdown(Composer entity)
+        protected override IEnumerable<RelationdalDtoBase> BreakdownInternal(Composer entity)
         {
             List<RelationdalDtoBase> dtos = new List<RelationdalDtoBase>();
             ComposerRelationalDto composer = new ComposerRelationalDto();
@@ -22,30 +24,37 @@ namespace BGC.Data.Relational.Mappings
             dtos.Add(composer);
 
             var nameDtos = from nameKvp in entity.Name.All()
-                           let dto = _nameMapper.CopyData(nameKvp.Value, new NameRelationalDto())
+                           let dto = _nameMapper.CopyData(nameKvp.Value, new NameRelationalDto() { Composer = composer })
                            select dto;
             dtos.AddRange(nameDtos);
 
             var articleDtos = from article in entity.GetArticles(includeArchived: true)
-                              let dto = _articleMapper.CopyData(article, new ArticleRelationalDto())
+                              let dto = _articleMapper.CopyData(article, new ArticleRelationalDto() { Composer = composer })
                               select dto;
             dtos.AddRange(articleDtos);
-
-            if (entity.Profile != null)
+            
+            ProfileRelationalDto profile = _profileMapper.CopyData(entity.Profile);
+            if (profile != null)
             {
-                ProfileRelationalDto profile = _profileMapper.CopyData(entity.Profile, new ProfileRelationalDto());
+                IEnumerable<MediaTypeInfoRelationalDto> media = entity.Profile?.Media.Select(m => _mediaTypeInfoMapper.CopyData(m, new MediaTypeInfoRelationalDto()));
+
+                dtos.Add(_mediaTypeInfoMapper.CopyData(entity.Profile.ProfilePicture, new MediaTypeInfoRelationalDto()));
                 dtos.Add(profile);
+                dtos.AddRange(media);
             }
 
             return dtos;
         }
 
-        public ComposerBreakdown(ComposerMapper composerMapper, NameMapper nameMapper, ArticleMapper articleMapper, ProfileMapper profileMapper)
+        public ComposerBreakdown(ComposerMappers mappers)
         {
-            _composerMapper = composerMapper;
-            _nameMapper = nameMapper;
-            _articleMapper = articleMapper;
-            _profileMapper = profileMapper;
+            Shield.ArgumentNotNull(mappers).ThrowOnError();
+
+            _composerMapper = mappers.ComposerMapper;
+            _nameMapper = mappers.NameMapper;
+            _articleMapper = mappers.ArticleMapper;
+            _profileMapper = mappers.ProfileMapper;
+            _mediaTypeInfoMapper = mappers.MediaTypeInfoMapper;
         }
     }
 }

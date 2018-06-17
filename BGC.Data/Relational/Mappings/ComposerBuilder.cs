@@ -2,6 +2,7 @@
 using BGC.Data.Relational.ManyToMany;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,32 +15,43 @@ namespace BGC.Data.Relational.Mappings
         private readonly NameMapper _nameMapper;
         private readonly ArticleMapper _articleMapper;
         private readonly ProfileMapper _profileMapper;
+        private readonly MediaTypeInfoMapper _mediaMapper;
 
-        public ComposerBuilder(ComposerMapper composerMapper, NameMapper nameMapper, ArticleMapper articleMapper, ProfileMapper profileMapper)
+        public ComposerBuilder(ComposerMappers mappers) :
+            this(mappers.ComposerMapper, mappers.NameMapper, mappers.ArticleMapper, mappers.ProfileMapper, mappers.MediaTypeInfoMapper)
+        {
+
+        }
+
+        public ComposerBuilder(ComposerMapper composerMapper, NameMapper nameMapper, ArticleMapper articleMapper, ProfileMapper profileMapper, MediaTypeInfoMapper mediaMapper)
         {
             _composerMapper = composerMapper;
             _nameMapper = nameMapper;
             _articleMapper = articleMapper;
             _profileMapper = profileMapper;
+            _mediaMapper = mediaMapper;
         }
 
-        public override Composer Build(ComposerNavigationalDto dto)
+        protected override Composer BuildInternal(ComposerNavigationalDto dto)
         {
-            Composer result = _composerMapper.ToEntity(dto);
+            Composer result = _composerMapper.CopyData(dto, new Composer());
+
+            foreach (NameRelationalDto name in dto.LocalizedNames)
+            {
+                ComposerName domainName = _nameMapper.CopyData(name, new ComposerName(name.FullName, name.Language));
+                result.Name[domainName.Language] = domainName;
+            }
+
             foreach (ArticleNavigationalDto article in dto.Articles)
             {
-                result.AddArticle(_articleMapper.ToEntity(article));
+                var culture = CultureInfo.GetCultureInfo(article.Language);
+                result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
             }
 
             if (dto.Profile != null)
             {
-                result.Profile = _profileMapper.ToEntity(dto.Profile);
-            }
-
-            foreach (NameRelationalDto name in dto.LocalizedNames)
-            {
-                ComposerName domainName = _nameMapper.ToEntity(name);
-                result.Name[domainName.Language] = domainName;
+                result.Profile = _profileMapper.CopyData(dto.Profile, new ComposerProfile());
+                result.Profile.ProfilePicture = _mediaMapper.CopyData(dto.Profile.ProfilePicture, new MediaTypeInfo(dto.Profile.ProfilePicture.MimeType));
             }
 
             return result;

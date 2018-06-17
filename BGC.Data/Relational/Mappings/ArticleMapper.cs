@@ -12,31 +12,22 @@ namespace BGC.Data.Relational.Mappings
     {
         private readonly ComposerMapper _composerMapper;
 
-        public override ArticleRelationalDto CopyData(ComposerArticle source, ArticleRelationalDto target)
+        protected override void CopyDataInternal(ComposerArticle source, ArticleRelationalDto target)
         {
             target.CreatedUtc = source.CreatedUtc;
             target.Id = source.Id;
             target.IsArchived = source.IsArchived;
             target.Language = source.Language.Name;
             target.StorageId = source.StorageId;
-
-            return target;
         }
 
-        public override ComposerArticle ToEntity(ArticleRelationalDto dto)
+        protected override void CopyDataInternal(ArticleRelationalDto source, ComposerArticle target)
         {
-            ComposerArticle result = new ComposerArticle(_composerMapper.ToEntity(dto.Composer), null, CultureInfo.GetCultureInfo(dto.Language));
-            result.CreatedUtc = dto.CreatedUtc;
-            result.Id = dto.Id;
-            result.IsArchived = dto.IsArchived;
-            result.StorageId = dto.StorageId;
-
-            return result;
-        }
-
-        public ArticleMapper(ComposerMapper composerMapper)
-        {
-            _composerMapper = composerMapper;
+            target.CreatedUtc = source.CreatedUtc;
+            target.Id = source.Id;
+            target.IsArchived = source.IsArchived;
+            target.StorageId = source.StorageId;
+            target.Language = CultureInfo.GetCultureInfo(source.Language);
         }
     }
 }

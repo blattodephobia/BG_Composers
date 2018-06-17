@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Data.Relational.ManyToMany;
 using BGC.Data.Relational.Mappings;
 using CodeShield;
 using System;
@@ -10,73 +11,59 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational
 {
-    internal class EntityFrameworkRepository<TKey, TEntity, TRelationalDto> : INonQueryableRepository<TKey, TEntity>
+    internal abstract class EntityFrameworkRepository<TKey, TEntity, TRelationalDto, TNavigationalDto> : INonQueryableRepository<TKey, TEntity>
         where TKey : struct
         where TEntity : BgcEntity<TKey>
         where TRelationalDto : RelationdalDtoBase, new()
+        where TNavigationalDto : TRelationalDto, INavigationalDto, new()
     {
-        private readonly IDbSet<TRelationalDto> _dbSet;
-        private readonly RelationalMapper<TEntity, TRelationalDto> _mapper;
+        private readonly DbContext _dbContext;
+        private readonly DomainBuilderBase<TNavigationalDto, TEntity> _builder;
+        private readonly DomainBreakdownBase<TEntity> _breakdown;
 
-        public EntityFrameworkRepository(RelationalMapper<TEntity, TRelationalDto> mapper, IDbSet<TRelationalDto> dbSet)
+        public EntityFrameworkRepository(DomainBuilderBase<TNavigationalDto, TEntity> builder, DomainBreakdownBase<TEntity> breakdown, DbContext context)
         {
-            Shield.ArgumentNotNull(mapper).ThrowOnError();
-            Shield.ArgumentNotNull(dbSet).ThrowOnError();
+            Shield.ArgumentNotNull(builder).ThrowOnError();
+            Shield.ArgumentNotNull(breakdown).ThrowOnError();
+            Shield.ArgumentNotNull(context).ThrowOnError();
 
-            _mapper = mapper;
-            _dbSet = dbSet;
+            _builder = builder;
+            _breakdown = breakdown;
+            _dbContext = context;
         }
 
-        public virtual void AddOrUpdate(TEntity entity)
+        protected abstract void AddOrUpdateInternal(TEntity entity);
+
+        public void AddOrUpdate(TEntity entity)
         {
             Shield.ArgumentNotNull(entity).ThrowOnError();
 
-            TRelationalDto dto = _dbSet.Find(entity.Id);
-            if (dto == null)
-            {
-                dto = new TRelationalDto();
-                _mapper.CopyData(entity, dto);
-                _dbSet.Add(dto);
-            }
-            else
-            {
-                _mapper.CopyData(entity, dto);
-            }
+            AddOrUpdateInternal(entity);
         }
 
         public virtual void Delete(params TKey[] keys)
         {
             Shield.ArgumentNotNull(keys).ThrowOnError();
 
+            IDbSet<TRelationalDto> dbSet = _dbContext.Set<TRelationalDto>();
             var deleteObjects = from key in keys
-                                let dto = _dbSet.Find(key)
+                                let dto = dbSet.Find(key)
                                 where dto != null
                                 select dto;
 
-            if (_dbSet is DbSet<TRelationalDto>)
+            if (dbSet is DbSet<TRelationalDto>)
             {
-                (_dbSet as DbSet<TRelationalDto>).RemoveRange(deleteObjects);
+                (dbSet as DbSet<TRelationalDto>).RemoveRange(deleteObjects);
             }
             else
             {
                 foreach (TRelationalDto dto in deleteObjects)
                 {
-                    _dbSet.Remove(dto);
+                    dbSet.Remove(dto);
                 }
             }
         }
 
-        public virtual TEntity Find(TKey key)
-        {
-            TRelationalDto dto = _dbSet.Find(key);
-            if (dto != null)
-            {
-                return _mapper.ToEntity(dto);
-            }
-            else
-            {
-                return null;
-            }
-        }
+        public abstract TEntity Find(TKey key);
     }
 }
