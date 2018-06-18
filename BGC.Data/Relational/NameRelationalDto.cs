@@ -16,7 +16,7 @@ namespace BGC.Data.Relational
         public long Id { get; set; }
 
         [Required]
-        [ForeignKey(nameof(ComposerRelationalDto))]
+        [ForeignKey(nameof(Composer))]
         public Guid Composer_Id { get; set; }
 
         public ComposerRelationalDto Composer { get; set; }

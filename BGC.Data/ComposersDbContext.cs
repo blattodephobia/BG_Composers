@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Models;
 using BGC.Data.Conventions;
+using BGC.Data.Relational;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
@@ -17,13 +18,13 @@ namespace BGC.Data
 	{
         public DbSet<Setting> Settings { get; set; }
 
-		public DbSet<Composer> Composers { get; set; }
+		public DbSet<ComposerRelationalDto> Composers { get; set; }
 
-		public DbSet<ComposerArticle> ComposerArticles { get; set; }
+		public DbSet<ArticleRelationalDto> ComposerArticles { get; set; }
 
-		public DbSet<ComposerName> LocalizedComposerNames { get; set; }
+		public DbSet<NameRelationalDto> LocalizedComposerNames { get; set; }
 
-        public DbSet<MediaTypeInfo> ContentMedia { get; set; }
+        public DbSet<MediaTypeInfoRelationalDto> ContentMedia { get; set; }
 
         public DbSet<Invitation> Invitations { get; set; }
 
@@ -76,16 +77,8 @@ namespace BGC.Data
 			modelBuilder.Entity<BgcUserRole>().HasKey(userRole => new { userRole.UserId, userRole.RoleId });
 
 			modelBuilder.Entity<BgcUserClaim>().HasKey(userClaim => userClaim.Id);
-                        
-            modelBuilder.Entity<ComposerName>()
-                .Property(name => name.LanguageInternal)
-                .HasColumnName(nameof(ComposerName.Language))
-                .IsRequired();
 
-            modelBuilder.Entity<ComposerArticle>()
-                .Property(entry => entry.LanguageInternal)
-                .HasColumnName(nameof(ComposerArticle.Language))
-                .IsRequired();
+            modelBuilder.Entity<ComposerRelationalDto>().HasOptional(c => c.Profile).WithRequired();
 
             modelBuilder.Entity<GlossaryDefinition>()
                 .Property(definition => definition.LanguageInternal)
@@ -96,16 +89,9 @@ namespace BGC.Data
                 .HasMany(d => d.Definitions)
                 .WithRequired()
                 .WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<ComposerArticle>()
-                .Property(entry => entry.StorageId);
                         
             modelBuilder.Entity<Setting>().Property(s => s.Description).IsUnicode();
             modelBuilder.Entity<Setting>().Property(s => s.StringValue).IsUnicode();
-
-            modelBuilder.Entity<MediaTypeInfo>().HasMany(media => media.AsociatedArticles).WithMany(article => article.Media);
-            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.MimeTypeInternal).IsRequired();
-            modelBuilder.Entity<MediaTypeInfo>().Property(media => media.StorageId).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute()));
 
             modelBuilder.Entity<Invitation>().HasMany(invitation => invitation.AvailableRoles).WithMany();
 		}

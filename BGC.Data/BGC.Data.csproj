@@ -97,9 +97,9 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="DataLayerDependencyRegistration.cs" />
-    <Compile Include="Migrations\201805061632408_InitialN.cs" />
-    <Compile Include="Migrations\201805061632408_InitialN.Designer.cs">
-      <DependentUpon>201805061632408_InitialN.cs</DependentUpon>
+    <Compile Include="Migrations\201806180720437_Initial.cs" />
+    <Compile Include="Migrations\201806180720437_Initial.Designer.cs">
+      <DependentUpon>201806180720437_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MySqlCodeGenerator.cs" />
@@ -152,12 +152,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805061632408_InitialN.resx">
-      <DependentUpon>201805061632408_InitialN.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Relational\Write\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Relational\Write\" />
+    <EmbeddedResource Include="Migrations\201806180720437_Initial.resx">
+      <DependentUpon>201806180720437_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Data.Relational;
 using BGC.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -98,46 +99,48 @@ namespace BGC.Data.Migrations
 #if DEBUG
                 byte[] id = new byte[16];
                 id[id.Length - 1] = 1;
-                Composer pStupel = new Composer() { Id = new Guid(id) };
+                ComposerRelationalDto pStupel = new ComposerRelationalDto() { Id = new Guid(id) };
 
-                ComposerName[] names = new[]
+                NameRelationalDto[] names = new[]
                 {
-                    new ComposerName("Petar Stupel", "en-US")
+                    new NameRelationalDto
                     {
+                        FullName = "Petar Stupel",
+                        Language = "en-US",
                         Composer = pStupel
                     },
-                    new ComposerName("Петър Ступел", "bg-BG")
+                    new NameRelationalDto()
                     {
+                        FullName = "Петър Ступел",
+                        Language = "bg-BG",
                         Composer = pStupel
                     },
-                    new ComposerName("Петър Ступел", "de-DE")
+                    new NameRelationalDto()
                     {
+                        FullName = "Petar Stupel",
+                        Language = "de-DE",
                         Composer = pStupel
                     }
                 };
-
-                pStupel.LocalizedNames = names;
-                pStupel.Articles = new HashSet<ComposerArticle>()
+                
+                var articles = new HashSet<ArticleRelationalDto>()
                 {
-                    new ComposerArticle()
+                    new ArticleRelationalDto()
                     {
                         Composer = pStupel,
-                        LocalizedName = pStupel.LocalizedNames.ElementAt(0),
-                        Language = pStupel.LocalizedNames.ElementAt(0).Language,
+                        Language = names[0].Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000001")
                     },
-                    new ComposerArticle()
+                    new ArticleRelationalDto()
                     {
                         Composer = pStupel,
-                        LocalizedName = pStupel.LocalizedNames.ElementAt(1),
-                        Language = pStupel.LocalizedNames.ElementAt(1).Language,
+                        Language = names[1].Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000002")
                     },
-                    new ComposerArticle()
+                    new ArticleRelationalDto()
                     {
                         Composer = pStupel,
-                        LocalizedName = pStupel.LocalizedNames.ElementAt(2),
-                        Language = pStupel.LocalizedNames.ElementAt(2).Language,
+                        Language = names[2].Language,
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000003")
                     }
                 };
