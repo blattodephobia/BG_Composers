@@ -3,17 +3,27 @@ using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal abstract class RelationalMapper<TEntity, TDto>
-        where TDto : RelationdalDtoBase, new()
+    internal abstract class RelationalMapperBase<TEntity, TDto>
+        where TDto : RelationdalDtoBase
     {
         protected abstract void CopyDataInternal(TEntity source, TDto target);
 
         protected abstract void CopyDataInternal(TDto source, TEntity target);
+
+        protected abstract Expression<Func<TDto, bool>> GetComparisonInternal(TEntity entity);
+
+        public Expression<Func<TDto, bool>> GetPredicateFor(TEntity entity)
+        {
+            Shield.ArgumentNotNull(entity).ThrowOnError();
+
+            return GetComparisonInternal(entity);
+        }
 
         /// <summary>
         /// Copies the properties of <paramref name="source"/> or maps them to <paramref name="target"/>.
@@ -22,11 +32,10 @@ namespace BGC.Data.Relational.Mappings
         /// <param name="target">The target relational DTO. If <paramref name="source"/> is not null,
         /// but <paramref name="target"/> is, a new instance of <typeparamref name="TDto"/> will be created.</param>
         /// <returns>The instance of <typeparamref name="TDto"/> that was passed or instantiated.</returns>
-        public TDto CopyData(TEntity source, TDto target = null)
+        public TDto CopyData(TEntity source, TDto target)
         {
-            if (source != null)
+            if (source != null && target != null)
             {
-                target = target ?? new TDto();
                 CopyDataInternal(source, target);
             }
 

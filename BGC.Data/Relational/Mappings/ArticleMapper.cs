@@ -5,12 +5,20 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ArticleMapper : RelationalMapper<ComposerArticle, ArticleRelationalDto>
+    internal class ArticleMapper : RelationalMapperBase<ComposerArticle, ArticleRelationalDto>
     {
         private readonly ComposerMapper _composerMapper;
+
+        protected override Expression<Func<ArticleRelationalDto, bool>> GetComparisonInternal(ComposerArticle entity)
+        {
+            Expression<Func<ArticleRelationalDto, bool>> result = (dto) => dto.StorageId == entity.StorageId;
+
+            return result;
+        }
 
         protected override void CopyDataInternal(ComposerArticle source, ArticleRelationalDto target)
         {

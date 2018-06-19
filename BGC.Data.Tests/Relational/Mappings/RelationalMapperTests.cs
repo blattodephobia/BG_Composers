@@ -8,12 +8,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
+using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings.RelationalMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
-        private class MapperImpl : RelationalMapper<MediaTypeInfo, MediaTypeInfoRelationalDto>
+        private class MapperImpl : RelationalMapperBase<MediaTypeInfo, MediaTypeInfoRelationalDto>
         {
             protected override void CopyDataInternal(MediaTypeInfo source, MediaTypeInfoRelationalDto target)
             {
@@ -25,6 +26,8 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
                 CopyToEntityCallback?.Invoke(source, target);
             }
 
+            protected override Expression<Func<MediaTypeInfoRelationalDto, bool>> GetComparisonInternal(MediaTypeInfo entity) => (dto) => dto.StorageId == entity.StorageId;
+
             public Action<MediaTypeInfo, MediaTypeInfoRelationalDto> CopyToDtoCallback { get; set; }
 
             public Action<MediaTypeInfoRelationalDto, MediaTypeInfo> CopyToEntityCallback { get; set; }
@@ -33,7 +36,7 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
         [Test]
         public void DoesntCopyIfNullSource()
         {
-            var mapper = new Mock<RelationalMapper<MediaTypeInfo, MediaTypeInfoRelationalDto>>();
+            var mapper = new Mock<RelationalMapperBase<MediaTypeInfo, MediaTypeInfoRelationalDto>>();
             MediaTypeInfoRelationalDto target = new MediaTypeInfoRelationalDto();
             mapper.Object.CopyData(null, target);
 
@@ -48,6 +51,17 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
         public void ThrowsExceptionIfNullEntityTarget()
         {
             Assert.Throws<ArgumentNullException>(() => new MapperImpl().CopyData(new MediaTypeInfoRelationalDto(), null));
+        }
+    }
+
+    public class GetPredicateForTests : TestFixtureBase
+    {
+        [Test]
+        public void ThrowsExceptionIfNullEntity()
+        {
+            var mock = new Mock<RelationalMapperBase<Composer, ComposerRelationalDto>>();
+
+            Assert.Throws<ArgumentNullException>(() => mock.Object.GetPredicateFor(null));
         }
     }
 }

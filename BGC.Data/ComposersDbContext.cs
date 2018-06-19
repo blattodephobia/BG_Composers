@@ -2,6 +2,7 @@
 using BGC.Core.Models;
 using BGC.Data.Conventions;
 using BGC.Data.Relational;
+using BGC.Data.Relational.Mappings;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
@@ -14,7 +15,10 @@ using System.Linq;
 namespace BGC.Data
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
-	internal class ComposersDbContext : IdentityDbContext<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>, IUnitOfWork
+	internal class ComposersDbContext :
+        IdentityDbContext<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>,
+        IUnitOfWork,
+        IDtoFactory
 	{
         public DbSet<Setting> Settings { get; set; }
 
@@ -106,6 +110,12 @@ namespace BGC.Data
             where T : class
         {
             Entry(entity).State = state;
+        }
+
+        public TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalMapperBase<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase
+        {
+            DbSet<TRelationalDto> set = Set<TRelationalDto>();
+            return set.FirstOrDefault(mapper.GetPredicateFor(entity)) ?? set.Create<TRelationalDto>();
         }
     }
 }

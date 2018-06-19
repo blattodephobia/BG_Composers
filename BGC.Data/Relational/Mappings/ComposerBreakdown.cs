@@ -33,7 +33,7 @@ namespace BGC.Data.Relational.Mappings
                               select dto;
             dtos.AddRange(articleDtos);
             
-            ProfileRelationalDto profile = _profileMapper.CopyData(entity.Profile);
+            ProfileRelationalDto profile = _profileMapper.CopyData(entity.Profile, new ProfileRelationalDto());
             if (profile != null)
             {
                 IEnumerable<MediaTypeInfoRelationalDto> media = entity.Profile?.Media.Select(m => _mediaTypeInfoMapper.CopyData(m, new MediaTypeInfoRelationalDto()));

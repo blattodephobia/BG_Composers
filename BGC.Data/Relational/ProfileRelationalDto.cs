@@ -13,7 +13,7 @@ namespace BGC.Data.Relational
     internal class ProfileRelationalDto : RelationdalDtoBase
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         [ForeignKey(nameof(Composer))]

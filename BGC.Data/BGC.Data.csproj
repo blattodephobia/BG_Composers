@@ -97,10 +97,6 @@
     <Compile Include="ComposersDbContext.cs" />
     <Compile Include="Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="DataLayerDependencyRegistration.cs" />
-    <Compile Include="Migrations\201806180720437_Initial.cs" />
-    <Compile Include="Migrations\201806180720437_Initial.Designer.cs">
-      <DependentUpon>201806180720437_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\MySqlCodeGenerator.cs" />
     <Compile Include="MySqlRepository.cs" />
@@ -119,10 +115,11 @@
     <Compile Include="Relational\Mappings\ComposerMapper.cs" />
     <Compile Include="Relational\Mappings\DomainBreakdownBase.cs" />
     <Compile Include="Relational\Mappings\DomainBuilderBase.cs" />
+    <Compile Include="Relational\Mappings\IDtoFactory.cs" />
     <Compile Include="Relational\Mappings\MediaTypeInfoMapper.cs" />
     <Compile Include="Relational\Mappings\NameMapper.cs" />
     <Compile Include="Relational\Mappings\ProfileMapper.cs" />
-    <Compile Include="Relational\Mappings\RelationalMapper.cs" />
+    <Compile Include="Relational\Mappings\RelationalMapperBase.cs" />
     <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
     <Compile Include="Relational\NameRelationalDto.cs" />
     <Compile Include="Relational\ProfileMediaRelationalDto.cs" />
@@ -153,11 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Relational\Write\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201806180720437_Initial.resx">
-      <DependentUpon>201806180720437_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

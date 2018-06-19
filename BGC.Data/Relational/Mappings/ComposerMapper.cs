@@ -5,11 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ComposerMapper : RelationalMapper<Composer, ComposerRelationalDto>
+    internal class ComposerMapper : RelationalMapperBase<Composer, ComposerRelationalDto>
     {
+        protected override Expression<Func<ComposerRelationalDto, bool>> GetComparisonInternal(Composer entity) => (dto) => dto.Id == entity.Id;
+
         protected override void CopyDataInternal(Composer source, ComposerRelationalDto target)
         {
             Shield.ArgumentNotNull(source).ThrowOnError();
