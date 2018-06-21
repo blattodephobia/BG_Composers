@@ -43,6 +43,11 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
 
     internal class BreakdownProxy : DomainBreakdownBase<Composer>
     {
+        public BreakdownProxy() :
+            base(new Mock<IDtoFactory>().Object)
+        {
+        }
+
         protected override IEnumerable<RelationdalDtoBase> BreakdownInternal(Composer entity)
         {
             return new[] { new ComposerRelationalDto() };

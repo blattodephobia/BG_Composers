@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using Moq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,13 +17,19 @@ namespace BGC.Data.Relational.Mappings.ComposerBreakdownTests
         [Test]
         public void ThrowsExceptionIfNullMappersObject()
         {
-            Assert.Throws<ArgumentNullException>(() => new ComposerBreakdown(null));
+            Assert.Throws<ArgumentNullException>(() => new ComposerBreakdown(null, new Mock<IDtoFactory>().Object));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullDtoFactory()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ComposerBreakdown(new ComposerMappers(), null));
         }
     }
 
     public class BreakdownTests : TestFixtureBase
     {
-        private readonly ComposerBreakdown _breakdown = new ComposerBreakdown(new ComposerMappers());
+        private readonly ComposerBreakdown _breakdown = new ComposerBreakdown(new ComposerMappers(), new MockDtoFactory());
         
         [Test]
         public void BreakdownNames()
@@ -90,6 +97,64 @@ namespace BGC.Data.Relational.Mappings.ComposerBreakdownTests
 
             Assert.IsNotNull(otherMediaDto, "Profile picture wasn't copied at all.");
             Assert.AreEqual(otherMedia.StorageId, otherMediaDto.StorageId);
+        }
+
+        [Test]
+        public void SetsComposerPrincipalOnArticles()
+        {
+            Composer c = new Composer() { Id = new Guid(2, 2, 2, new byte[8]) };
+            var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US"), CultureInfo.GetCultureInfo("en-US"));
+            var article2 = new ComposerArticle(c, new ComposerName("John Smith", "de-DE"), CultureInfo.GetCultureInfo("de-DE"));
+            c.AddArticle(article1);
+            c.AddArticle(article2);
+
+            IEnumerable<ArticleRelationalDto> dtos = _breakdown.Breakdown(c).OfType<ArticleRelationalDto>();
+
+            Assert.AreEqual(2, dtos.Count());
+            Assert.IsTrue(dtos.All(d => d.Composer.Id == c.Id));
+        }
+
+        [Test]
+        public void SetsComposerPrincipalOnNames()
+        {
+            Composer c = new Composer() { Id = new Guid(3, 3, 3, new byte[8]) };
+            var name1 = new ComposerName("John Smith", "en-US");
+            var name2 = new ComposerName("John Smith", "de-DE");
+            c.Name[name1.Language] = name1;
+            c.Name[name2.Language] = name2;
+
+            List<NameRelationalDto> names = _breakdown.Breakdown(c).OfType<NameRelationalDto>().ToList();
+
+            Assert.AreEqual(2, names.Count);
+            Assert.IsTrue(names.All(n => n.Composer.Id == c.Id));
+        }
+
+        [Test]
+        public void SetsComposerPrincipalOnProfile()
+        {
+            Composer c = new Composer() { Id = new Guid(4, 4, 4, new byte[8]) };
+            var profile = new ComposerProfile();
+            c.Profile = profile;
+
+            Assert.AreEqual(c.Id, _breakdown.Breakdown(c).OfType<ProfileRelationalDto>().First().Composer.Id);
+        }
+
+        [Test]
+        public void BreaksDownMedia()
+        {
+            Composer c = new Composer() { Id = new Guid(4, 4, 4, new byte[8]) };
+            var profile = new ComposerProfile();
+            c.Profile = profile;
+
+            var profilePic = new MediaTypeInfo("pic.jpg", MediaTypeNames.Image.Jpeg) { StorageId = new Guid(1, 0, 0, new byte[8]) };
+            var otherMedia = new MediaTypeInfo("demo.mp3", MediaTypeNames.Application.Octet) { StorageId = new Guid(2, 0, 0, new byte[8]) };
+            profile.ProfilePicture = profilePic;
+            profile.Media.Add(otherMedia);
+
+            IEnumerable<MediaTypeInfoRelationalDto> media = _breakdown.Breakdown(c).OfType<MediaTypeInfoRelationalDto>();
+
+            Assert.AreEqual(1, media.Count(m => m.StorageId == profilePic.StorageId && m.OriginalFileName == profilePic.OriginalFileName));
+            Assert.AreEqual(1, media.Count(m => m.StorageId == otherMedia.StorageId && m.OriginalFileName == otherMedia.OriginalFileName));
         }
     }
 }

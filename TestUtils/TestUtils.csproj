@@ -123,6 +123,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MockDtoFactory.cs" />
     <Compile Include="MockUtilities.cs" />
     <Compile Include="PlatformUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,6 +141,10 @@
     <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">
       <Project>{e3cb843a-3420-4a76-91c8-e4db0688fef5}</Project>
       <Name>BGC.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BGC.Data\BGC.Data.csproj">
+      <Project>{ce3c7a0c-ba3e-4ffc-80a3-2dc1c2ffee7c}</Project>
+      <Name>BGC.Data</Name>
     </ProjectReference>
     <ProjectReference Include="..\BGC.Web\BGC.Web.csproj">
       <Project>{692E9131-A0B6-427B-9600-34BE6777700F}</Project>

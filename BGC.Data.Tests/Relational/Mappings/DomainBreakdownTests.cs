@@ -15,7 +15,7 @@ namespace BGC.Data.Relational.Mappings.DomainBreakdownTests
         [Test]
         public void ThrowsExceptionIfNullEntity()
         {
-            var mock = new Mock<DomainBreakdownBase<Composer>>();
+            var mock = new Mock<DomainBreakdownBase<Composer>>(new MockDtoFactory());
 
             Assert.Throws<ArgumentNullException>(() => mock.Object.Breakdown(null));
         }

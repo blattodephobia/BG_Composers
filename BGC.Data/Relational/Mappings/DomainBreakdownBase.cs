@@ -11,11 +11,20 @@ namespace BGC.Data.Relational.Mappings
     {
         protected abstract IEnumerable<RelationdalDtoBase> BreakdownInternal(TEntity entity);
 
+        protected IDtoFactory DtoFactory { get; private set; }
+
         public IEnumerable<RelationdalDtoBase> Breakdown(TEntity entity)
         {
             Shield.ArgumentNotNull(entity).ThrowOnError();
 
             return BreakdownInternal(entity);
+        }
+
+        protected DomainBreakdownBase(IDtoFactory dtoFactory)
+        {
+            Shield.ArgumentNotNull(dtoFactory).ThrowOnError();
+
+            DtoFactory = dtoFactory;
         }
     }
 }
