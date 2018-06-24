@@ -10,11 +10,11 @@ namespace BGC.Data.Relational.Mappings
 {
     internal class ComposerBuilder : DomainBuilderBase<ComposerRelationalDto, Composer>
     {
-        private readonly ComposerMapper _composerMapper;
-        private readonly NameMapper _nameMapper;
-        private readonly ArticleMapper _articleMapper;
-        private readonly ProfileMapper _profileMapper;
-        private readonly MediaTypeInfoMapper _mediaMapper;
+        private readonly ComposerPropertyMapper _composerMapper;
+        private readonly NamePropertyMapper _nameMapper;
+        private readonly ArticlePropertyMapper _articleMapper;
+        private readonly ProfilePropertyMapper _profileMapper;
+        private readonly MediaTypeInfoPropertyMapper _mediaMapper;
 
         public ComposerBuilder(ComposerMappers mappers) :
             this(mappers.ComposerMapper, mappers.NameMapper, mappers.ArticleMapper, mappers.ProfileMapper, mappers.MediaTypeInfoMapper)
@@ -22,7 +22,7 @@ namespace BGC.Data.Relational.Mappings
 
         }
 
-        public ComposerBuilder(ComposerMapper composerMapper, NameMapper nameMapper, ArticleMapper articleMapper, ProfileMapper profileMapper, MediaTypeInfoMapper mediaMapper)
+        public ComposerBuilder(ComposerPropertyMapper composerMapper, NamePropertyMapper nameMapper, ArticlePropertyMapper articleMapper, ProfilePropertyMapper profileMapper, MediaTypeInfoPropertyMapper mediaMapper)
         {
             _composerMapper = composerMapper;
             _nameMapper = nameMapper;

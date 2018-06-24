@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal abstract class RelationalMapperBase<TEntity, TDto>
+    internal abstract class RelationalPropertyMapper<TEntity, TDto>
         where TDto : RelationdalDtoBase
     {
         protected abstract void CopyDataInternal(TEntity source, TDto target);

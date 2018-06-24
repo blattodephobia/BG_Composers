@@ -14,7 +14,7 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
-        private class MapperImpl : RelationalMapperBase<MediaTypeInfo, MediaTypeInfoRelationalDto>
+        private class MapperImpl : RelationalPropertyMapper<MediaTypeInfo, MediaTypeInfoRelationalDto>
         {
             protected override void CopyDataInternal(MediaTypeInfo source, MediaTypeInfoRelationalDto target)
             {
@@ -36,7 +36,7 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
         [Test]
         public void DoesntCopyIfNullSource()
         {
-            var mapper = new Mock<RelationalMapperBase<MediaTypeInfo, MediaTypeInfoRelationalDto>>();
+            var mapper = new Mock<RelationalPropertyMapper<MediaTypeInfo, MediaTypeInfoRelationalDto>>();
             MediaTypeInfoRelationalDto target = new MediaTypeInfoRelationalDto();
             mapper.Object.CopyData(null, target);
 
@@ -59,7 +59,7 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
         [Test]
         public void ThrowsExceptionIfNullEntity()
         {
-            var mock = new Mock<RelationalMapperBase<Composer, ComposerRelationalDto>>();
+            var mock = new Mock<RelationalPropertyMapper<Composer, ComposerRelationalDto>>();
 
             Assert.Throws<ArgumentNullException>(() => mock.Object.GetPredicateFor(null));
         }

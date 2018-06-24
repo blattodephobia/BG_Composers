@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ComposerMapper : RelationalMapperBase<Composer, ComposerRelationalDto>
+    internal class ComposerPropertyMapper : RelationalPropertyMapper<Composer, ComposerRelationalDto>
     {
         protected override Expression<Func<ComposerRelationalDto, bool>> GetComparisonInternal(Composer entity) => (dto) => dto.Id == entity.Id;
 

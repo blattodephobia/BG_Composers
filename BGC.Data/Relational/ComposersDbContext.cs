@@ -114,7 +114,7 @@ namespace BGC.Data.Relational
             Entry(entity).State = state;
         }
 
-        public TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalMapperBase<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase
+        public TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase
         {
             DbSet<TRelationalDto> set = Set<TRelationalDto>();
             return set.FirstOrDefault(mapper.GetPredicateFor(entity)) ?? set.Create<TRelationalDto>();

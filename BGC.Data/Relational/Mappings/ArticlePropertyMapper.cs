@@ -9,9 +9,9 @@ using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ArticleMapper : RelationalMapperBase<ComposerArticle, ArticleRelationalDto>
+    internal class ArticlePropertyMapper : RelationalPropertyMapper<ComposerArticle, ArticleRelationalDto>
     {
-        private readonly ComposerMapper _composerMapper;
+        private readonly ComposerPropertyMapper _composerMapper;
 
         protected override Expression<Func<ArticleRelationalDto, bool>> GetComparisonInternal(ComposerArticle entity)
         {

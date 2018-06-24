@@ -12,7 +12,7 @@ namespace BGC.Data.Relational.Mappings.ArticleMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
-        private readonly ArticleMapper _mapper = new ArticleMapper();
+        private readonly ArticlePropertyMapper _mapper = new ArticlePropertyMapper();
 
         [Test]
         public void CopiesDataCorrectly()
@@ -34,7 +34,7 @@ namespace BGC.Data.Relational.Mappings.ArticleMapperTests
 
     public class ToEntityTests : TestFixtureBase
     {
-        private readonly ComposerMapper _mapper = new ComposerMapper();
+        private readonly ComposerPropertyMapper _mapper = new ComposerPropertyMapper();
 
         [Test]
         public void ThrowsExceptionIfNullSource()

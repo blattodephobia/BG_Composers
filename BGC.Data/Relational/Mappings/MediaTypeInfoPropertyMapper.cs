@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class MediaTypeInfoMapper : RelationalMapperBase<MediaTypeInfo, MediaTypeInfoRelationalDto>
+    internal class MediaTypeInfoPropertyMapper : RelationalPropertyMapper<MediaTypeInfo, MediaTypeInfoRelationalDto>
     {
         protected override Expression<Func<MediaTypeInfoRelationalDto, bool>> GetComparisonInternal(MediaTypeInfo entity) => (dto) => dto.StorageId == entity.StorageId;
 

@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 namespace BGC.Data.Relational.Mappings
 {
     // for the moment, there are no simple properties to be transferred from the entity to the DTO; that's why the mapper is virtually empty
-    internal class ProfileMapper : RelationalMapperBase<ComposerProfile, ProfileRelationalDto>
+    internal class ProfilePropertyMapper : RelationalPropertyMapper<ComposerProfile, ProfileRelationalDto>
     {
         protected override void CopyDataInternal(ComposerProfile source, ProfileRelationalDto target)
         {

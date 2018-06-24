@@ -10,7 +10,7 @@ namespace TestUtils
 {
     public class MockDtoFactory : IDtoFactory
     {
-        TRelationalDto IDtoFactory.GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalMapperBase<TEntity, TRelationalDto> keyMapper)
+        TRelationalDto IDtoFactory.GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> keyMapper)
         {
             return ActivateObject(typeof(TRelationalDto)) as TRelationalDto;
         }

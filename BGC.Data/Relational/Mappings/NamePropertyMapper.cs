@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class NameMapper : RelationalMapperBase<ComposerName, NameRelationalDto>
+    internal class NamePropertyMapper : RelationalPropertyMapper<ComposerName, NameRelationalDto>
     {
         protected override Expression<Func<NameRelationalDto, bool>> GetComparisonInternal(ComposerName entity) => (dto) => dto.FullName == entity.FullName && dto.Composer_Id == entity.Composer.Id;
 

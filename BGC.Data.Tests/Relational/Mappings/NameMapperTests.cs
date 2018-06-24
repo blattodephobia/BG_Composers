@@ -11,7 +11,7 @@ namespace BGC.Data.Relational.Mappings.NameMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
-        private readonly NameMapper _mapper = new NameMapper();
+        private readonly NamePropertyMapper _mapper = new NamePropertyMapper();
 
         [Test]
         public void CopiesDataToDto()

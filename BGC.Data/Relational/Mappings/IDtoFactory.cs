@@ -8,6 +8,6 @@ namespace BGC.Data.Relational.Mappings
 {
     internal interface IDtoFactory
     {
-        TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalMapperBase<TEntity, TRelationalDto> keyMapper) where TRelationalDto : RelationdalDtoBase;
+        TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> keyMapper) where TRelationalDto : RelationdalDtoBase;
     }
 }

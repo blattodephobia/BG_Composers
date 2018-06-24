@@ -13,7 +13,7 @@ namespace BGC.Data.Relational.Mappings.ComposerMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {
-        private readonly ComposerMapper _mapper = new ComposerMapper();
+        private readonly ComposerPropertyMapper _mapper = new ComposerPropertyMapper();
         
         [Test]
         public void CopiesDataCorrectly()

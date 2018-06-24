@@ -8,18 +8,18 @@ namespace BGC.Data.Relational.Mappings
 {
     internal class ComposerMappers
     {
-        public virtual ComposerMapper ComposerMapper { get; private set; }
-        public virtual NameMapper NameMapper { get; private set; }
-        public virtual ArticleMapper ArticleMapper { get; private set; }
-        public virtual ProfileMapper ProfileMapper { get; private set; }
-        public virtual MediaTypeInfoMapper MediaTypeInfoMapper { get; private set; }
+        public virtual ComposerPropertyMapper ComposerMapper { get; private set; }
+        public virtual NamePropertyMapper NameMapper { get; private set; }
+        public virtual ArticlePropertyMapper ArticleMapper { get; private set; }
+        public virtual ProfilePropertyMapper ProfileMapper { get; private set; }
+        public virtual MediaTypeInfoPropertyMapper MediaTypeInfoMapper { get; private set; }
 
         public ComposerMappers() :
-            this(new ComposerMapper(), new NameMapper(), new ArticleMapper(), new ProfileMapper(), new MediaTypeInfoMapper())
+            this(new ComposerPropertyMapper(), new NamePropertyMapper(), new ArticlePropertyMapper(), new ProfilePropertyMapper(), new MediaTypeInfoPropertyMapper())
         {
         }
 
-        public ComposerMappers(ComposerMapper composerMapper, NameMapper nameMapper, ArticleMapper articleMapper, ProfileMapper profileMapper, MediaTypeInfoMapper mediaTypeInfoMapper)
+        public ComposerMappers(ComposerPropertyMapper composerMapper, NamePropertyMapper nameMapper, ArticlePropertyMapper articleMapper, ProfilePropertyMapper profileMapper, MediaTypeInfoPropertyMapper mediaTypeInfoMapper)
         {
             ComposerMapper = composerMapper;
             NameMapper = nameMapper;

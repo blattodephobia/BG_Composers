@@ -10,11 +10,11 @@ namespace BGC.Data.Relational.Mappings
 {
     internal class ComposerBreakdown : DomainBreakdownBase<Composer>
     {
-        private readonly ComposerMapper _composerMapper;
-        private readonly NameMapper _nameMapper;
-        private readonly ArticleMapper _articleMapper;
-        private readonly ProfileMapper _profileMapper;
-        private readonly MediaTypeInfoMapper _mediaTypeInfoMapper;
+        private readonly ComposerPropertyMapper _composerMapper;
+        private readonly NamePropertyMapper _nameMapper;
+        private readonly ArticlePropertyMapper _articleMapper;
+        private readonly ProfilePropertyMapper _profileMapper;
+        private readonly MediaTypeInfoPropertyMapper _mediaTypeInfoMapper;
 
         private NameRelationalDto GetNameDto(ComposerRelationalDto principal, ComposerName entity)
         {
