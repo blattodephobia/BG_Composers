@@ -106,7 +106,6 @@
     <Compile Include="Relational\ManyToMany\ArticleNavigationalDto.cs" />
     <Compile Include="Relational\ManyToMany\ComposerNavigationalDto.cs" />
     <Compile Include="Relational\ComposerRelationalDto.cs" />
-    <Compile Include="Relational\EntityFrameworkRepository.cs" />
     <Compile Include="Relational\ManyToMany\INavigationalDto.cs" />
     <Compile Include="Relational\Mappings\ArticleMapper.cs" />
     <Compile Include="Relational\Mappings\ComposerBreakdown.cs" />
@@ -125,6 +124,7 @@
     <Compile Include="Relational\ProfileMediaRelationalDto.cs" />
     <Compile Include="Relational\ProfileRelationalDto.cs" />
     <Compile Include="Relational\RelationdalDtoBase.cs" />
+    <Compile Include="Relational\Repositories\EntityFrameworkRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

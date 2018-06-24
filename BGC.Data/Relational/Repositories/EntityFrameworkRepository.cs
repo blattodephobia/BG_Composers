@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Data.Relational
+namespace BGC.Data.Relational.Repositories
 {
     internal abstract class EntityFrameworkRepository<TKey, TEntity, TRelationalDto, TNavigationalDto> : INonQueryableRepository<TKey, TEntity>
         where TKey : struct
@@ -20,6 +20,9 @@ namespace BGC.Data.Relational
         private readonly DbContext _dbContext;
         private readonly DomainBuilderBase<TNavigationalDto, TEntity> _builder;
         private readonly DomainBreakdownBase<TEntity> _breakdown;
+
+        protected DbContext DbContext => _dbContext;
+        protected DomainBuilderBase<TNavigationalDto, TEntity> Builder => _builder;
 
         public EntityFrameworkRepository(DomainBuilderBase<TNavigationalDto, TEntity> builder, DomainBreakdownBase<TEntity> breakdown, DbContext context)
         {

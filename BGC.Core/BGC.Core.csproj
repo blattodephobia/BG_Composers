@@ -55,6 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\INonQueryableRepository.cs" />
     <Compile Include="Exceptions\BgcException.cs" />
     <Compile Include="Exceptions\DuplicateEntityException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />

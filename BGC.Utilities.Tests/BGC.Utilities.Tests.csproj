@@ -57,6 +57,7 @@
     <Compile Include="EncryptionExtensionsTests.cs" />
     <Compile Include="EnumerableExtensionsTests.cs" />
     <Compile Include="EnumerableIndexerTests.cs" />
+    <Compile Include="LambdaTypeSubstitutionTests.cs" />
     <Compile Include="ExpressionsTests.cs" />
     <Compile Include="HashExtensionsTests.cs" />
     <Compile Include="HttpCookieSingleValueDependencySourceTests.cs" />

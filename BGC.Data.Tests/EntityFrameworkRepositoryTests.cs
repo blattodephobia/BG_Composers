@@ -2,6 +2,7 @@
 using BGC.Data.Relational;
 using BGC.Data.Relational.ManyToMany;
 using BGC.Data.Relational.Mappings;
+using BGC.Data.Relational.Repositories;
 using Moq;
 using NUnit.Framework;
 using System;
