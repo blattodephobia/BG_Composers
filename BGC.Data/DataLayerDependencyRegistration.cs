@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Data.Relational;
 using CodeShield;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;

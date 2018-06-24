@@ -18,7 +18,7 @@ namespace BGC.Data.Relational
 
         [Key, Column(Order = 0)]
         [ForeignKey(nameof(Article))]
-        public int Article_Id { get; set; }
+        public long Article_Id { get; set; }
 
         [Key, Column(Order = 1)]
         [ForeignKey(nameof(MediaEntry))]

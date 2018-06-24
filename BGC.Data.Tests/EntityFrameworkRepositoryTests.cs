@@ -1,6 +1,5 @@
 ﻿using BGC.Core;
 using BGC.Data.Relational;
-using BGC.Data.Relational.ManyToMany;
 using BGC.Data.Relational.Mappings;
 using BGC.Data.Relational.Repositories;
 using Moq;
@@ -17,7 +16,7 @@ using static TestUtils.MockUtilities;
 
 namespace BGC.Data.EntityFrameworkRepositoryTests
 {
-    internal class EFRepoProxy : EntityFrameworkRepository<Guid, Composer, ComposerRelationalDto, ComposerNavigationalDto>
+    internal class EFRepoProxy : EntityFrameworkRepository<Guid, Composer, ComposerRelationalDto>
     {
         public EFRepoProxy(BuilderProxy builder, BreakdownProxy breakdown, DbContext context) : base(builder, breakdown, context)
         {
@@ -34,9 +33,9 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         }
     }
 
-    internal class BuilderProxy : DomainBuilderBase<ComposerNavigationalDto, Composer>
+    internal class BuilderProxy : DomainBuilderBase<ComposerRelationalDto, Composer>
     {
-        protected override Composer BuildInternal(ComposerNavigationalDto dto)
+        protected override Composer BuildInternal(ComposerRelationalDto dto)
         {
             return new Composer();
         }

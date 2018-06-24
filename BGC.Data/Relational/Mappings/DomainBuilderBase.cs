@@ -1,5 +1,4 @@
-﻿using BGC.Data.Relational.ManyToMany;
-using CodeShield;
+﻿using CodeShield;
 using System;
 using System.Collections.Generic;
 using System.Linq;

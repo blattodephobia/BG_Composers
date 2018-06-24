@@ -1,5 +1,4 @@
 ﻿using BGC.Core;
-using BGC.Data.Relational.ManyToMany;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -18,11 +17,11 @@ namespace BGC.Data.Relational.Mappings.ComposerBuilderTests
         [Test]
         public void BuildsComposer()
         {
-            ComposerNavigationalDto dto = new ComposerNavigationalDto()
+            ComposerRelationalDto dto = new ComposerRelationalDto()
             {
                 Articles = new[]
                 {
-                    new ArticleNavigationalDto()
+                    new ArticleRelationalDto()
                     {
                         Language = "de-DE",
                         StorageId = new Guid(1, 1, 1, new byte[8]),

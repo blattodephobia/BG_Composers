@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Data.Relational;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

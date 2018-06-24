@@ -12,7 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Infrastructure.Annotations;
 using System.Linq;
 
-namespace BGC.Data
+namespace BGC.Data.Relational
 {
 	[DbConfigurationType(typeof(MySqlEFConfiguration))]
 	internal class ComposersDbContext :
@@ -25,6 +25,8 @@ namespace BGC.Data
 		public DbSet<ComposerRelationalDto> Composers { get; set; }
 
 		public DbSet<ArticleRelationalDto> ComposerArticles { get; set; }
+
+        public DbSet<ArticleMediaRelationalDto> ArticleMedia { get; set; }
 
 		public DbSet<NameRelationalDto> LocalizedComposerNames { get; set; }
 

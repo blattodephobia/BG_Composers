@@ -31,5 +31,7 @@ namespace BGC.Data.Relational
         public ComposerRelationalDto Composer { get; set; }
 
         public bool IsArchived { get; set; }
+
+        public virtual ICollection<ArticleMediaRelationalDto> Media { get; set; }
     }
 }

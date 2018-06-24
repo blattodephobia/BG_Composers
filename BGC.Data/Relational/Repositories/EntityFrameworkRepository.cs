@@ -1,5 +1,4 @@
 ﻿using BGC.Core;
-using BGC.Data.Relational.ManyToMany;
 using BGC.Data.Relational.Mappings;
 using CodeShield;
 using System;
@@ -11,20 +10,19 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Repositories
 {
-    internal abstract class EntityFrameworkRepository<TKey, TEntity, TRelationalDto, TNavigationalDto> : INonQueryableRepository<TKey, TEntity>
+    internal abstract class EntityFrameworkRepository<TKey, TEntity, TRelationalDto> : INonQueryableRepository<TKey, TEntity>
         where TKey : struct
         where TEntity : BgcEntity<TKey>
         where TRelationalDto : RelationdalDtoBase, new()
-        where TNavigationalDto : TRelationalDto, INavigationalDto, new()
     {
         private readonly DbContext _dbContext;
-        private readonly DomainBuilderBase<TNavigationalDto, TEntity> _builder;
+        private readonly DomainBuilderBase<TRelationalDto, TEntity> _builder;
         private readonly DomainBreakdownBase<TEntity> _breakdown;
 
         protected DbContext DbContext => _dbContext;
-        protected DomainBuilderBase<TNavigationalDto, TEntity> Builder => _builder;
+        protected DomainBuilderBase<TRelationalDto, TEntity> Builder => _builder;
 
-        public EntityFrameworkRepository(DomainBuilderBase<TNavigationalDto, TEntity> builder, DomainBreakdownBase<TEntity> breakdown, DbContext context)
+        public EntityFrameworkRepository(DomainBuilderBase<TRelationalDto, TEntity> builder, DomainBreakdownBase<TEntity> breakdown, DbContext context)
         {
             Shield.ArgumentNotNull(builder).ThrowOnError();
             Shield.ArgumentNotNull(breakdown).ThrowOnError();

@@ -29,5 +29,9 @@ namespace BGC.Data.Relational
         public int? Profile_Id { get; set; }
 
         public virtual ProfileRelationalDto Profile { get; set; }
+
+        public virtual ICollection<NameRelationalDto> LocalizedNames { get; set; }
+
+        public virtual ICollection<ArticleRelationalDto> Articles { get; set; }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using BGC.Core;
-using BGC.Data.Relational.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ComposerBuilder : DomainBuilderBase<ComposerNavigationalDto, Composer>
+    internal class ComposerBuilder : DomainBuilderBase<ComposerRelationalDto, Composer>
     {
         private readonly ComposerMapper _composerMapper;
         private readonly NameMapper _nameMapper;
@@ -32,7 +31,7 @@ namespace BGC.Data.Relational.Mappings
             _mediaMapper = mediaMapper;
         }
 
-        protected override Composer BuildInternal(ComposerNavigationalDto dto)
+        protected override Composer BuildInternal(ComposerRelationalDto dto)
         {
             Composer result = _composerMapper.CopyData(dto, new Composer());
 
@@ -42,7 +41,7 @@ namespace BGC.Data.Relational.Mappings
                 result.Name[domainName.Language] = domainName;
             }
 
-            foreach (ArticleNavigationalDto article in dto.Articles)
+            foreach (ArticleRelationalDto article in dto.Articles)
             {
                 var culture = CultureInfo.GetCultureInfo(article.Language);
                 result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
