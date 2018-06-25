@@ -11,8 +11,6 @@ namespace BGC.Data.Relational.Mappings
 {
     internal class ArticlePropertyMapper : RelationalPropertyMapper<ComposerArticle, ArticleRelationalDto>
     {
-        private readonly ComposerPropertyMapper _composerMapper;
-
         protected override Expression<Func<ArticleRelationalDto, bool>> GetComparisonInternal(ComposerArticle entity)
         {
             Expression<Func<ArticleRelationalDto, bool>> result = (dto) => dto.StorageId == entity.StorageId;
