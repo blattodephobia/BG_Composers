@@ -30,8 +30,32 @@ namespace BGC.Data.Relational
 
         public virtual ProfileRelationalDto Profile { get; set; }
 
-        public virtual ICollection<NameRelationalDto> LocalizedNames { get; set; }
+        private ICollection<NameRelationalDto> _localizedNames;
+        public virtual ICollection<NameRelationalDto> LocalizedNames
+        {
+            get
+            {
+                return _localizedNames ?? (_localizedNames = new HashSet<NameRelationalDto>());
+            }
 
-        public virtual ICollection<ArticleRelationalDto> Articles { get; set; }
+            set
+            {
+                _localizedNames = value;
+            }
+        }
+
+        private ICollection<ArticleRelationalDto> _articles;
+        public virtual ICollection<ArticleRelationalDto> Articles
+        {
+            get
+            {
+                return _articles ?? (_articles = new HashSet<ArticleRelationalDto>());
+            }
+
+            set
+            {
+                _articles = value;
+            }
+        }
     }
 }
