@@ -10,26 +10,26 @@ using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
 
-namespace BGC.Data.Relational.Mappings.ComposerBreakdownTests
+namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
 {
     public class CtorTests : TestFixtureBase
     {
         [Test]
         public void ThrowsExceptionIfNullMappersObject()
         {
-            Assert.Throws<ArgumentNullException>(() => new ComposerBreakdown(null, new Mock<IDtoFactory>().Object));
+            Assert.Throws<ArgumentNullException>(() => new ComposerTypeMapper(null, new Mock<IDtoFactory>().Object));
         }
 
         [Test]
         public void ThrowsExceptionIfNullDtoFactory()
         {
-            Assert.Throws<ArgumentNullException>(() => new ComposerBreakdown(new ComposerMappers(), null));
+            Assert.Throws<ArgumentNullException>(() => new ComposerTypeMapper(new ComposerMappers(), null));
         }
     }
 
     public class BreakdownTests : TestFixtureBase
     {
-        private readonly ComposerBreakdown _breakdown = new ComposerBreakdown(new ComposerMappers(), new MockDtoFactory());
+        private readonly ComposerTypeMapper _breakdown = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
         
         [Test]
         public void BreakdownNames()
@@ -155,6 +155,35 @@ namespace BGC.Data.Relational.Mappings.ComposerBreakdownTests
 
             Assert.AreEqual(1, media.Count(m => m.StorageId == profilePic.StorageId && m.OriginalFileName == profilePic.OriginalFileName));
             Assert.AreEqual(1, media.Count(m => m.StorageId == otherMedia.StorageId && m.OriginalFileName == otherMedia.OriginalFileName));
+        }
+    }
+
+    public class BuildTests : TestFixtureBase
+    {
+        private readonly ComposerTypeMapper _mapper = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
+
+        [Test]
+        public void BuildsComposer()
+        {
+            ComposerRelationalDto dto = new ComposerRelationalDto()
+            {
+                Articles = new[]
+                {
+                    new ArticleRelationalDto()
+                    {
+                        Language = "de-DE",
+                        StorageId = new Guid(1, 1, 1, new byte[8]),
+                    }
+                },
+                LocalizedNames = new[] { new NameRelationalDto() { FullName = "John Smith", Language = "de-DE" } },
+                Profile = new ProfileRelationalDto() { ProfilePicture = new MediaTypeInfoRelationalDto() { MimeType = "image/jpeg" } },
+            };
+
+            Composer result = _mapper.Build(dto);
+
+            Assert.AreEqual(result.GetArticle(CultureInfo.GetCultureInfo("de-DE")).StorageId, dto.Articles.First().StorageId);
+            Assert.AreEqual(result.Name[CultureInfo.GetCultureInfo("de-DE")].FullName, dto.LocalizedNames.First().FullName);
+            Assert.AreEqual(result.Profile.ProfilePicture.MimeType, dto.Profile.ProfilePicture.MimeType);
         }
     }
 }

@@ -2,13 +2,14 @@
 using CodeShield;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal class ComposerBreakdown : DomainBreakdownBase<Composer>
+    internal class ComposerTypeMapper : DomainTypeMapperBase<Composer, ComposerRelationalDto>
     {
         private readonly ComposerPropertyMapper _composerMapper;
         private readonly NamePropertyMapper _nameMapper;
@@ -88,7 +89,32 @@ namespace BGC.Data.Relational.Mappings
             return dtos;
         }
 
-        public ComposerBreakdown(ComposerMappers mappers, IDtoFactory dtoFactory) :
+        protected override Composer BuildInternal(ComposerRelationalDto dto)
+        {
+            Composer result = _composerMapper.CopyData(dto, new Composer());
+
+            foreach (NameRelationalDto name in dto.LocalizedNames)
+            {
+                ComposerName domainName = _nameMapper.CopyData(name, new ComposerName(name.FullName, name.Language));
+                result.Name[domainName.Language] = domainName;
+            }
+
+            foreach (ArticleRelationalDto article in dto.Articles)
+            {
+                var culture = CultureInfo.GetCultureInfo(article.Language);
+                result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
+            }
+
+            if (dto.Profile != null)
+            {
+                result.Profile = _profileMapper.CopyData(dto.Profile, new ComposerProfile());
+                result.Profile.ProfilePicture = _mediaTypeInfoMapper.CopyData(dto.Profile.ProfilePicture, new MediaTypeInfo(dto.Profile.ProfilePicture.MimeType));
+            }
+
+            return result;
+        }
+
+        public ComposerTypeMapper(ComposerMappers mappers, IDtoFactory dtoFactory) :
             base(dtoFactory)
         {
             Shield.ArgumentNotNull(mappers).ThrowOnError();

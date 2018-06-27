@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
 
-namespace BGC.Data.Relational.Mappings.ComposerMapperTests
+namespace BGC.Data.Relational.Mappings.ComposerPropertyMapperTests
 {
     public class CopyDataTests : TestFixtureBase
     {

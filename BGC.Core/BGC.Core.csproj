@@ -55,15 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\IComposerNameDto.cs" />
+    <Compile Include="Data\IComposerRepository.cs" />
+    <Compile Include="Data\IdentityAttribute.cs" />
     <Compile Include="Data\INonQueryableRepository.cs" />
     <Compile Include="Exceptions\BgcException.cs" />
     <Compile Include="Exceptions\DuplicateEntityException.cs" />
+    <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\SettingException.cs" />
     <Compile Include="Exceptions\SettingTypeMismatchException.cs" />
     <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
-    <Compile Include="INonQueryableRepository.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\ComposerArticle.ByComposerEqualityComparer.cs" />
     <Compile Include="Models\ComposerArticle.Comparers..cs" />

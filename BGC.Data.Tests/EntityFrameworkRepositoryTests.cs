@@ -7,8 +7,10 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using TestUtils;
@@ -18,7 +20,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
 {
     internal class EFRepoProxy : EntityFrameworkRepository<Guid, Composer, ComposerRelationalDto>
     {
-        public EFRepoProxy(BuilderProxy builder, BreakdownProxy breakdown, DbContext context) : base(builder, breakdown, context)
+        public EFRepoProxy(BreakdownProxy breakdown, DbContext context) : base(breakdown, new ComposerPropertyMapper(), context)
         {
         }
 
@@ -33,15 +35,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         }
     }
 
-    internal class BuilderProxy : DomainBuilderBase<ComposerRelationalDto, Composer>
-    {
-        protected override Composer BuildInternal(ComposerRelationalDto dto)
-        {
-            return new Composer();
-        }
-    }
-
-    internal class BreakdownProxy : DomainBreakdownBase<Composer>
+    internal class BreakdownProxy : DomainTypeMapperBase<Composer, ComposerRelationalDto>
     {
         public BreakdownProxy() :
             base(new Mock<IDtoFactory>().Object)
@@ -52,20 +46,20 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             return new[] { new ComposerRelationalDto() };
         }
+
+        protected override Composer BuildInternal(ComposerRelationalDto dto)
+        {
+            return new Composer();
+        }
     }
 
     public class CtorTests : TestFixtureBase
     {
-        [Test]
-        public void ThrowsExceptionIfNullBuilder()
-        {
-            Assert.Throws<ArgumentNullException>(() => new EFRepoProxy(null, new BreakdownProxy(), new Mock<DbContext>().Object));
-        }
 
         [Test]
         public void ThrowsExceptionIfNullBreakdown()
         {
-            Assert.Throws<ArgumentNullException>(() => new EFRepoProxy(new BuilderProxy(), null, new Mock<DbContext>().Object));
+            Assert.Throws<ArgumentNullException>(() => new EFRepoProxy(null, new Mock<DbContext>().Object));
         }
 
         [Test]
@@ -73,7 +67,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                new EFRepoProxy(new BuilderProxy(), new BreakdownProxy(), null);
+                new EFRepoProxy(new BreakdownProxy(), null);
             });
         }
     }
@@ -83,7 +77,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         [Test]
         public void ThrowsExceptionIfNullEntity()
         {
-            var repo = new EFRepoProxy(new BuilderProxy(), new BreakdownProxy(), new Mock<DbContext>().Object);
+            var repo = new EFRepoProxy(new BreakdownProxy(), new Mock<DbContext>().Object);
             Assert.Throws<ArgumentNullException>(() => repo.AddOrUpdate(null));
         }
     }
@@ -93,7 +87,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         [Test]
         public void ThrowsExceptionIfNullEntity()
         {
-            var repo = new EFRepoProxy(new BuilderProxy(), new BreakdownProxy(), new Mock<DbContext>().Object);
+            var repo = new EFRepoProxy(new BreakdownProxy(), new Mock<DbContext>().Object);
 
             Assert.Throws<ArgumentNullException>(() => repo.Delete(null));
         }
@@ -108,11 +102,136 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             var ctx = new Mock<DbContext>();
             ctx.Setup(d => d.Set<ComposerRelationalDto>()).Returns(() => mockDbSet.Object);
             mockDbSet.Setup(s => s.Find(It.Is((object[] keys) => keys.Length == 1))).Returns((object[] keys) => db.Where(dto => dto.Id == (Guid)keys[0]).FirstOrDefault());
-            var repo = new EFRepoProxy(new BuilderProxy(), new BreakdownProxy(), ctx.Object);
+            var repo = new EFRepoProxy(new BreakdownProxy(), ctx.Object);
 
             repo.Delete(new Composer() { Id = id1 });
 
             Assert.IsFalse(db.Any(dto => dto.Id == id1));
+        }
+    }
+
+    public class IdentityPropertyTests : TestFixtureBase
+    {
+        private class IntermittentRepo<TKey, TEntity, TRelationalDto> : EntityFrameworkRepository<TKey, TEntity, TRelationalDto>
+            where TKey : struct
+            where TEntity : BgcEntity<TKey>
+            where TRelationalDto : RelationdalDtoBase
+        {
+            public IntermittentRepo(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, RelationalPropertyMapper<TEntity, TRelationalDto> propertyMapper, DbContext context) :
+                base(typeMapper, propertyMapper, context)
+            {
+            }
+
+            public PropertyInfo IdentityPropertyProxy => IdentityProperty;
+        }
+
+        [Identity(nameof(Key))]
+        internal class IdAttrDto : RelationdalDtoBase
+        {
+            public Guid Key { get; set; }
+
+            public long Id { get; set; }
+
+            [Key]
+            public int FalseId { get; set; }
+
+            [Key]
+            public int FalseId2 { get; set; }
+        }
+
+        private class EFGuidRepo : IntermittentRepo<long, MediaTypeInfo, IdAttrDto>
+        {
+            public EFGuidRepo() :
+                base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdAttrDto>>(new MockDtoFactory()).Object,
+                     new Mock<RelationalPropertyMapper<MediaTypeInfo, IdAttrDto>>().Object,
+                     new Mock<DbContext>().Object)
+            {
+            }
+        }
+
+        [Test]
+        public void GetsIdWithIdentityAttribute()
+        {
+            var repo = new EFGuidRepo();
+
+            Assert.AreEqual(typeof(IdAttrDto).GetProperty(nameof(IdAttrDto.Key)), repo.IdentityPropertyProxy);
+        }
+
+        internal class KeyAttrDto : RelationdalDtoBase
+        {
+            public Guid Key { get; set; }
+
+            [Key]
+            public long ActualKey { get; set; }
+        }
+
+        private class EFKeyAttrRepo : IntermittentRepo<long, MediaTypeInfo, KeyAttrDto>
+        {
+            public EFKeyAttrRepo() :
+                base(new Mock<DomainTypeMapperBase<MediaTypeInfo, KeyAttrDto>>(new MockDtoFactory()).Object,
+                     new Mock<RelationalPropertyMapper<MediaTypeInfo, KeyAttrDto>>().Object,
+                     new Mock<DbContext>().Object)
+            {
+            }
+        }
+
+        internal class IdPropertyDto : RelationdalDtoBase
+        {
+            public int Id { get; set; }
+
+            public long Key { get; set; }
+        }
+
+        [Test]
+        public void GetsIdWithKeyAttribute()
+        {
+            var repo = new EFKeyAttrRepo();
+
+            Assert.AreEqual(typeof(KeyAttrDto).GetProperty(nameof(KeyAttrDto.ActualKey)), repo.IdentityPropertyProxy);
+
+        }
+
+        private class EFIdPropertyRepo : IntermittentRepo<long, MediaTypeInfo, IdPropertyDto>
+        {
+            public EFIdPropertyRepo() :
+                base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdPropertyDto>>(new MockDtoFactory()).Object,
+                     new Mock<RelationalPropertyMapper<MediaTypeInfo, IdPropertyDto>>().Object,
+                     new Mock<DbContext>().Object)
+            {
+            }
+        }
+
+        [Test]
+        public void GetsIdWithIdProperty()
+        {
+            var repo = new EFIdPropertyRepo();
+
+            Assert.AreEqual(typeof(IdPropertyDto).GetProperty(nameof(IdPropertyDto.Id)), repo.IdentityPropertyProxy);
+        }
+
+        internal class NoIdDto : RelationdalDtoBase
+        {
+            public int Key { get; set; }
+
+            public Guid OtherProperty { get; set; }
+        }
+
+        private class EFNoIdPropertyRepo : IntermittentRepo<long, MediaTypeInfo, NoIdDto>
+        {
+            public EFNoIdPropertyRepo() :
+                base(new Mock<DomainTypeMapperBase<MediaTypeInfo, NoIdDto>>(new MockDtoFactory()).Object,
+                     new Mock<RelationalPropertyMapper<MediaTypeInfo, NoIdDto>>().Object,
+                     new Mock<DbContext>().Object)
+            {
+            }
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNoSuitableProperty()
+        {
+            var repo = new EFNoIdPropertyRepo();
+
+            Assert.Throws<MissingMemberException>(() => { PropertyInfo p = repo.IdentityPropertyProxy; });
         }
     }
 }

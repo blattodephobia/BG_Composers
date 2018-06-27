@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(ComposerName))]
-    internal class NameRelationalDto : RelationdalDtoBase
+    internal class NameRelationalDto : RelationdalDtoBase, IComposerNameDto
     {
         [Key]
         public long Id { get; set; }

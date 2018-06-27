@@ -35,9 +35,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\BGC.Core\BGC.Core.csproj">
       <Project>{E3CB843A-3420-4A76-91C8-E4DB0688FEF5}</Project>
@@ -80,15 +78,15 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Relational\Mappings\ArticleMapperTests.cs" />
-    <Compile Include="Relational\Mappings\ComposerBreakdownTests.cs" />
-    <Compile Include="Relational\Mappings\ComposerBuilderTests.cs" />
-    <Compile Include="Relational\Mappings\ComposerMapperTests.cs" />
+    <Compile Include="Relational\Mappings\ComposerTypeMapperTests.cs" />
+    <Compile Include="Relational\Mappings\ComposerPropertyMapperTests.cs" />
     <Compile Include="EntityFrameworkRepositoryTests.cs" />
-    <Compile Include="Relational\Mappings\DomainBreakdownTests.cs" />
-    <Compile Include="Relational\Mappings\DomainBuilderTests.cs" />
+    <Compile Include="Relational\Mappings\DomainTypeMapperBaseTests.cs" />
     <Compile Include="Relational\Mappings\NameMapperTests.cs" />
     <Compile Include="Relational\Mappings\RelationalMapperTests.cs" />
+    <Compile Include="Relational\Repositories\ComposersRepositoryTests.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
