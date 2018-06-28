@@ -18,6 +18,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Security.Principal;
 using System.Text;
@@ -405,6 +406,49 @@ namespace TestUtils
             return mockService;
         }
 
+        public static Mock<IComposerRepository> GetMockComposerRepository(List<Composer> backingStore = null)
+        {
+            backingStore = backingStore ?? new List<Composer>();
+            var mock = new Mock<IComposerRepository>();
+            mock
+                .Setup(r => r.Find(It.IsAny<Expression<Func<IComposerNameDto, bool>>>()))
+                .Returns<Expression<Func<IComposerNameDto, bool>>>((expr) =>
+                {
+                    HashSet<Guid> ids = new HashSet<Guid>(backingStore
+                        .SelectMany(c =>
+                        {
+                            return c.Name.All().Select(n => new NameRelationalDto() { Composer_Id = c.Id, FullName = n.Value.FullName, Language = n.Key.Name });
+                        })
+                        .Cast<IComposerNameDto>().AsQueryable()
+                        .Where(expr).ToList()
+                        .Select(d => (d as NameRelationalDto).Composer_Id));
+
+                    return backingStore.Where(c => ids.Contains(c.Id));
+                });
+
+            mock.Setup(r => r.AddOrUpdate(It.IsAny<Composer>())).Callback((Composer c) =>
+            {
+                if (!backingStore.Any(item => item.Id == c.Id))
+                {
+                    backingStore.Add(c);
+                }
+            });
+
+            mock.Setup(r => r.Find(It.IsAny<Guid>())).Returns((Guid id) => backingStore.FirstOrDefault(c => c.Id == id));
+
+            mock.Setup(r => r.Delete(It.IsAny<Guid[]>())).Callback((Guid[] ids) =>
+            {
+                HashSet<Guid> idsHash = new HashSet<Guid>(ids);
+                IEnumerable<int> deleteAtIndexes = backingStore.Select((c, index) => idsHash.Contains(c.Id) ? index : -1).Where(x => x >= 0).Reverse();
+                foreach (int index in deleteAtIndexes)
+                {
+                    backingStore.RemoveAt(index);
+                }
+            });
+
+            return mock;
+        }
+
         public static T GetActionResultModel<T>(this ActionResult result) where T : class => (result as ViewResultBase).Model as T;
 
         public static Mock<HttpRequestBase> GetMockRequestBase(MockBehavior behavior = default(MockBehavior))
@@ -430,7 +474,7 @@ namespace TestUtils
         public static Mock<ISearchService> GetMockComposerSearchService(IList<Composer> composers)
         {
             var mockService = new Mock<ISearchService>();
-            mockService.Setup(s => s.Search(It.IsAny<string>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
+            mockService.Setup(s => s.Search(It.IsAny<string>(), It.IsAny<CultureInfo>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
 
             return mockService;
         }

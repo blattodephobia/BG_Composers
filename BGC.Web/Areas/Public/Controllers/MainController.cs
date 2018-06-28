@@ -79,7 +79,7 @@ namespace BGC.Web.Areas.Public.Controllers
         {
             var vm = new SearchResultViewModel()
             {
-                Results = (from result in _searchService.Search(query)
+                Results = (from result in _searchService.Search(query, CurrentLocale.EffectiveValue)
                            let composer = _composersService.FindComposer(result.IdAsGuid())
                            where composer != null
                            select composer.GetArticle(CurrentLocale.EffectiveValue))

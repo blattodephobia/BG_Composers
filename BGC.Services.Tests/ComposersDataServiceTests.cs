@@ -11,6 +11,37 @@ using static TestUtils.MockUtilities;
 
 namespace BGC.Services.Tests.ComposerDataServiceTests
 {
+    public class CtorTests : TestFixtureBase
+    {
+
+        [Test]
+        public void ThrowsExceptionIfNullRepo1()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
+                composers: null,
+                names: GetMockRepository(new List<ComposerName>()).Object,
+                repo: GetMockComposerRepository().Object));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullRepo2()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
+                composers: GetMockRepository(new List<Composer>()).Object,
+                names: null,
+                repo: GetMockComposerRepository().Object));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullRepo3()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
+                composers: GetMockRepository(new List<Composer>()).Object,
+                names: GetMockRepository(new List<ComposerName>()).Object,
+                repo: null));
+        }
+    }
+
     public class AddOrUpdateTests : TestFixtureBase
     {
         [Test]
@@ -20,7 +51,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             {
                 new Composer() { Id = Guid.NewGuid() }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(new List<ComposerName>()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(new List<ComposerName>()).Object, GetMockComposerRepository().Object);
 
             svc.AddOrUpdate(new Composer());
 
@@ -43,7 +74,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             var duplicateComposer = new Composer()
             {
@@ -75,7 +106,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             var duplicateComposer = new Composer()
             {
@@ -118,7 +149,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             var duplicateComposer = new Composer()
             {
@@ -146,7 +177,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -168,7 +199,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -195,7 +226,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     LocalizedNames = new List<ComposerName>() { new ComposerName("Betty Boop", "en-US") }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -254,11 +285,15 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             }},
         };
 
+        private readonly ComposerDataService _svc = new ComposerDataService(
+                GetMockRepository(ComposersRepo).Object,
+                GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object,
+                GetMockComposerRepository(ComposersRepo).Object);
+
         [Test]
         public void SearchComposer_SingleKeyword()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
-            IEnumerable<string> results = svc.Search("Atanas").ToList().Select(result => result.Header).Distinct();
+            IEnumerable<string> results = _svc.Search("Atanas", new CultureInfo("en-US")).ToList().Select(result => result.Header).Distinct();
             
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual("Atanas Dalchev", results.Single(header => header == "Atanas Dalchev"));
@@ -268,8 +303,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         [Test]
         public void SearchComposer_TwoKeywords()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
-            IEnumerable<string> results = svc.Search("Petar, Dalchev").ToList().Select(result => result.Header).Distinct();
+            IEnumerable<string> results = _svc.Search("Petar, Dalchev", new CultureInfo("de-DE")).ToList().Select(result => result.Header).Distinct();
 
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual("Atanas Dalchev", results.Single(header => header == "Atanas Dalchev"));
@@ -279,8 +313,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         [Test]
         public void SearchComposer_TwoKeywords_SingleSearchPhrase()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
-            List<SearchResult> results = svc.Search("Petar Dalchev").ToList();
+            List<SearchResult> results = _svc.Search("Petar Dalchev", new CultureInfo("en-US")).ToList();
 
             Assert.AreEqual(0, results.Count);
         }
@@ -288,8 +321,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         [Test]
         public void SearchComposer_ThreeKeywords_NoMatch()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
-            List<SearchResult> results = svc.Search("Ivan, Robert, Bach").ToList();
+            List<SearchResult> results = _svc.Search("Ivan, Robert, Bach", new CultureInfo("en-US")).ToList();
 
             Assert.AreEqual(0, results.Count);
         }
@@ -297,18 +329,24 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         [Test]
         public void SearchComposer_ThreeKeywords_TwoSearchPhrases()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
-            List<SearchResult> results = svc.Search("Ivan, Панчо Владигеров").ToList();
+            List<SearchResult> results = _svc.Search("Ivan, Панчо Владигеров", new CultureInfo("bg-BG")).ToList();
 
             Assert.AreEqual("Панчо Владигеров", results.First().Header);
         }
 
         [Test]
+        public void SearchComposer_ThreeKeywords_TwoSearchPhrases_DifferentLocale()
+        {
+            List<SearchResult> results = _svc.Search("Ivan, Панчо Владигеров", new CultureInfo("en-US")).ToList();
+
+            Assert.AreEqual("Pancho Vladigerov", results.First().Header);
+        }
+
+        [Test]
         public void DoesntInsertAlreadyExistingComposer()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
             var duplicateComposer = new Composer() { Id = ComposersRepo[0].Id };
-            svc.AddOrUpdate(duplicateComposer);
+            _svc.AddOrUpdate(duplicateComposer);
 
             Assert.AreNotSame(duplicateComposer, ComposersRepo[0]);
         }
@@ -316,9 +354,8 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         [Test]
         public void InsertsNewComposer()
         {
-            var svc = new ComposerDataService(GetMockRepository(ComposersRepo).Object, GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object);
             var newComposer = new Composer() { Id = Guid.NewGuid() };
-            svc.AddOrUpdate(newComposer);
+            _svc.AddOrUpdate(newComposer);
 
             Assert.IsTrue(ComposersRepo.Contains(newComposer));
         }

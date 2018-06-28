@@ -146,6 +146,10 @@
       <Project>{ce3c7a0c-ba3e-4ffc-80a3-2dc1c2ffee7c}</Project>
       <Name>BGC.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\BGC.Utilities\BGC.Utilities.csproj">
+      <Project>{05233E69-FF24-41D8-B779-9DD446202D8D}</Project>
+      <Name>BGC.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BGC.Web\BGC.Web.csproj">
       <Project>{692E9131-A0B6-427B-9600-34BE6777700F}</Project>
       <Name>BGC.Web</Name>
