@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
 using BGC.Data.Relational;
+using BGC.Data.Relational.Repositories;
 using CodeShield;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -20,6 +21,7 @@ namespace BGC.Data
 	{
         private static readonly Dictionary<Type, Action<IUnityContainer, LifetimeManager, string>> RegistrationDelegates = new Dictionary<Type, Action<IUnityContainer, LifetimeManager, string>>()
         {
+            { typeof(IComposerRepository),       (c, lm, name) => c.RegisterType<IComposerRepository, ComposersRepository>(name, lm) },
             { typeof(IRepository<>),             (c, lm, name) => c.RegisterType(typeof(IRepository<>), typeof(MySqlRepository<>), name, lm) },
             { typeof(IUnitOfWork),               (c, lm, name) => c.RegisterType<IUnitOfWork, ComposersDbContext>(name, lm, new InjectionConstructor()) },
             { typeof(DbContext),                 (c, lm, name) => c.RegisterType<DbContext, ComposersDbContext>(name, lm, new InjectionConstructor()) },
