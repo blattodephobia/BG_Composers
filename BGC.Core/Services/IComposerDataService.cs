@@ -12,7 +12,7 @@ namespace BGC.Core.Services
 	public interface IComposerDataService
 	{
 		[OperationContract]
-		IList<Composer> GetAllComposers();
+		IEnumerable<Composer> GetAllComposers();
 
         [OperationContract]
         Composer FindComposer(Guid id);

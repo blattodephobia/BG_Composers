@@ -50,7 +50,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             return View(new ActivitiesViewModel()
             {
                 PermittedActions = validActivities,
-                PublishedComposersCount = _composerService.GetAllComposers().Count
+                PublishedComposersCount = _composerService.GetAllComposers().Count()
             });
         }
 

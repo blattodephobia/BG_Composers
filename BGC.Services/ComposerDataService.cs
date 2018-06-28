@@ -38,7 +38,7 @@ namespace BGC.Services
             ComposersRepo = repo;
         }
 
-        public IList<Composer> GetAllComposers() => Composers.All().ToList();
+        public IEnumerable<Composer> GetAllComposers() => ComposersRepo.Find(selector: dto => true);
 
         public void AddOrUpdate(Composer composer)
         {

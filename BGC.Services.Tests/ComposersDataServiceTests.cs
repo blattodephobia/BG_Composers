@@ -42,6 +42,45 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         }
     }
 
+    public class GetAllComposersTests : TestFixtureBase
+    {
+        private ComposerDataService _svc;
+        private List<Composer> _composers = new List<Composer>();
+
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+            _svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository<ComposerName>().Object, GetMockComposerRepository(_composers).Object);
+        }
+
+        public override void BeforeEachTest()
+        {
+            base.BeforeEachTest();
+
+            _composers.Clear();
+        }
+
+        [Test]
+        public void ReturnsAllComposersFromRepo()
+        {
+            _composers.AddRange(new[]
+            {
+                new Composer() { Id = new Guid(1, 0, 0, new byte[8]) },
+                new Composer() { Id = new Guid(2, 0, 0, new byte[8]) },
+                new Composer() { Id = new Guid(3, 0, 0, new byte[8]) },
+                new Composer() { Id = new Guid(4, 0, 0, new byte[8]) },
+            });
+
+            List<Guid> ids1 = _svc.GetAllComposers().Select(c => c.Id).ToList();
+            List<Guid> ids2 = _composers.Select(c => c.Id).ToList();
+
+            ids1.Sort((x, y) => x.CompareTo(y));
+            ids2.Sort((x, y) => x.CompareTo(y));
+
+            Assert.IsTrue(ids1.SequenceEqual(ids2));
+        }
+    }
+
     public class AddOrUpdateTests : TestFixtureBase
     {
         [Test]

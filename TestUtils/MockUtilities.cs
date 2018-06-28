@@ -242,8 +242,10 @@ namespace TestUtils
             return new Mock<SignInManager<BgcUser, long>>(mockManager, authManager);
         }
 
-        public static Mock<IRepository<T>> GetMockRepository<T>(List<T> entities) where T : class
+        public static Mock<IRepository<T>> GetMockRepository<T>(List<T> entities = null) where T : class
         {
+            entities = entities ?? new List<T>();
+
             var mockRepo = new Mock<IRepository<T>>();
             mockRepo
                 .Setup(m => m.All())
@@ -417,7 +419,15 @@ namespace TestUtils
                     HashSet<Guid> ids = new HashSet<Guid>(backingStore
                         .SelectMany(c =>
                         {
-                            return c.Name.All().Select(n => new NameRelationalDto() { Composer_Id = c.Id, FullName = n.Value.FullName, Language = n.Key.Name });
+                            IEnumerable<NameRelationalDto> names = c.Name.All().Select(n => new NameRelationalDto() { Composer_Id = c.Id, FullName = n.Value.FullName, Language = n.Key.Name });
+                            if (!names.Any())
+                            {
+                                return new[] { new NameRelationalDto() { Composer_Id = c.Id, FullName = "", Language = "" } };
+                            }
+                            else
+                            {
+                                return names;
+                            }
                         })
                         .Cast<IComposerNameDto>().AsQueryable()
                         .Where(expr).ToList()
