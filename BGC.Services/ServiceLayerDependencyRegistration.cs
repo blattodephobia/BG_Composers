@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Data;
 using CodeShield;
 using Microsoft.Practices.Unity;
 using System;

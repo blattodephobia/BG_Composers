@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using BGC.Data;
+using Microsoft.AspNet.Identity;
 using Moq;
 using NUnit.Framework;
 using System;

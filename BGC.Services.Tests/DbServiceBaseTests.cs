@@ -8,6 +8,7 @@ using Moq;
 using System.Runtime.CompilerServices;
 using BGC.Services;
 using System.Data.Entity;
+using BGC.Data;
 
 namespace BGC.Core.Tests
 {

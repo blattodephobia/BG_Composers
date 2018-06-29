@@ -1,4 +1,5 @@
 ﻿using BGC.Core.Exceptions;
+using BGC.Data;
 using BGC.Utilities;
 using CodeShield;
 using Microsoft.AspNet.Identity;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BGC.Core
+namespace BGC.Data
 {
     public interface IUnitOfWork : IDisposable
     {

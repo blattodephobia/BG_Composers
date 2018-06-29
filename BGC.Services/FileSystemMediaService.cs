@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using BGC.Core;
 using System.Net.Mime;
 using Microsoft.Practices.Unity;
+using BGC.Data;
 
 namespace BGC.Services
 {

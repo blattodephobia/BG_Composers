@@ -1,4 +1,5 @@
 ﻿using BGC.Core.Exceptions;
+using BGC.Data;
 using Microsoft.AspNet.Identity;
 using Moq;
 using NUnit.Framework;
