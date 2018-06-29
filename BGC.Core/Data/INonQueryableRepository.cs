@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data
 {
-    public interface INonQueryableRepository<TKey, TEntity>
+    public interface INonQueryableRepository<TKey, TEntity> : IDbPersist
         where TKey : struct
         where TEntity : BgcEntity<TKey>
     {

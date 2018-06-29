@@ -58,6 +58,7 @@
     <Compile Include="Data\IComposerNameDto.cs" />
     <Compile Include="Data\IComposerRepository.cs" />
     <Compile Include="Data\IDbConnect.cs" />
+    <Compile Include="Data\IDbPersist.cs" />
     <Compile Include="Data\IdentityAttribute.cs" />
     <Compile Include="Data\INonQueryableRepository.cs" />
     <Compile Include="Data\IRepository.cs" />

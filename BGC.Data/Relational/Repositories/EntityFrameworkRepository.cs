@@ -62,10 +62,10 @@ namespace BGC.Data.Relational.Repositories
 
         protected DbContext DbContext => _dbContext;
         protected DomainTypeMapperBase<TEntity, TRelationalDto> TypeMapper => _typeMapper;
-        
+
         private PropertyInfo _identityProperty;
         protected virtual PropertyInfo IdentityProperty => _identityProperty ?? (_identityProperty = GetIdentityProperty());
-        
+
         protected Expression<Func<TRelationalDto, bool>> GetFindPredicate(TKey key)
         {
             ParameterExpression dto = Expression.Parameter(typeof(TRelationalDto), nameof(dto));
@@ -80,7 +80,7 @@ namespace BGC.Data.Relational.Repositories
             Shield.ArgumentNotNull(typeMapper).ThrowOnError();
             Shield.ArgumentNotNull(propertyMapper).ThrowOnError();
             Shield.ArgumentNotNull(context).ThrowOnError();
-            
+
             _typeMapper = typeMapper;
             _propertyMapper = propertyMapper;
             _dbContext = context;
@@ -134,5 +134,7 @@ namespace BGC.Data.Relational.Repositories
 
             return null;
         }
+
+        public void SaveChanges() => _dbContext.SaveChanges();
     }
 }

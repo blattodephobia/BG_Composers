@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using BGC.Services;
 using System.Data.Entity;
 using BGC.Data;
+using TestUtils;
 
 namespace BGC.Core.Tests
 {
@@ -26,6 +27,8 @@ namespace BGC.Core.Tests
 
         public IEnumerable<IDbConnect> GetDbConnectMembers() => GetDatbaseConnectedObjects();
 
+        public IEnumerable<IDbPersist> GetDbConnectMembers2() => GetDatabaseConnectedObjects2();
+
         public BasicServiceImplementation()
         {
         }
@@ -35,6 +38,7 @@ namespace BGC.Core.Tests
     {
         internal IRepository<MockEntity> MockRepo1 { get; set; }
         internal IRepository<MockEntity> MockRepo2 { get; set; }
+        internal IDbPersist MockRepo3 { get; set; }
 
         public CustomNonEmptyService()
         {
@@ -152,10 +156,29 @@ namespace BGC.Core.Tests
             Assert.AreSame(commonUnitOfWork, testObj.GetCommonUnitOfWork());
         }
     }
-
-    [TestFixture]
-    public class GetDbConnectMembersTest
+    
+    public class GetDbConnectMembersTest : TestFixtureBase
     {
+        private CustomNonEmptyService _testObj;
+
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+
+            IUnitOfWork commonUnitOfWork = new Mock<IUnitOfWork>().Object;
+            Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
+            Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
+            Mock<IDbPersist> mockRepo3 = new Mock<IDbPersist>();
+            mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+            mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
+            _testObj = new CustomNonEmptyService()
+            {
+                MockRepo1 = mockRepo1.Object,
+                MockRepo2 = mockRepo2.Object,
+                MockRepo3 = mockRepo3.Object
+            };
+        }
+
         [Test]
         public void ReturnsEmptyCollectionWhenNoDbConnectedObjects()
         {
@@ -166,17 +189,13 @@ namespace BGC.Core.Tests
         [Test]
         public void ReturnsCorrectDbConnectedMembers()
         {
-            IUnitOfWork commonUnitOfWork = new Mock<IUnitOfWork>().Object;
-            Mock<IRepository<MockEntity>> mockRepo1 = new Mock<IRepository<MockEntity>>();
-            Mock<IRepository<MockEntity>> mockRepo2 = new Mock<IRepository<MockEntity>>();
-            mockRepo1.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
-            mockRepo2.SetupGet(x => x.UnitOfWork).Returns(commonUnitOfWork);
-            CustomNonEmptyService testObj = new CustomNonEmptyService()
-            {
-                MockRepo1 = mockRepo1.Object,
-                MockRepo2 = mockRepo2.Object
-            };
-            Assert.AreEqual(2, testObj.GetDbConnectMembers().Count());
+            Assert.AreEqual(2, _testObj.GetDbConnectMembers().Count());
+        }
+
+        [Test]
+        public void ReturnsCorrectDbPersistMembers()
+        {
+            Assert.AreSame(_testObj.MockRepo3, _testObj.GetDbConnectMembers2().Single());
         }
     }
 }

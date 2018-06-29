@@ -234,4 +234,19 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             Assert.Throws<MissingMemberException>(() => { PropertyInfo p = repo.IdentityPropertyProxy; });
         }
     }
+
+    public class SaveChangesTests : TestFixtureBase
+    {
+        [Test]
+        public void CallsUnderlyingDbContext()
+        {
+            Mock<DbContext> ctx = GetMockDbContext();
+            //ctx.Setup(c => c.SaveChanges());
+            var repo = new EFRepoProxy(new BreakdownProxy(), ctx.Object);
+
+            repo.SaveChanges();
+
+            ctx.Verify(c => c.SaveChanges());
+        }
+    }
 }
