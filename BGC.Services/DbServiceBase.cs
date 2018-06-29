@@ -39,7 +39,7 @@ namespace BGC.Services
 			}
 		}
 
-        protected IEnumerable<IDbConnect> GetDatbaseConnectedObjects()
+        protected IEnumerable<IDbConnect> GetDatabaseConnectedObjects()
         {
             return DbConnectMemberAccessors[_currentType].Invoke(this);
         }
@@ -51,7 +51,7 @@ namespace BGC.Services
         
         protected void SaveAll()
         {
-            foreach (IDbConnect dbConnection in GetDatbaseConnectedObjects())
+            foreach (IDbConnect dbConnection in GetDatabaseConnectedObjects())
             {
                 dbConnection.UnitOfWork.SaveChanges();
             }

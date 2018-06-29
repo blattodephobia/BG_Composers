@@ -25,7 +25,7 @@ namespace BGC.Core.Tests
             return this.CommonUnitOfWork;
         }
 
-        public IEnumerable<IDbConnect> GetDbConnectMembers() => GetDatbaseConnectedObjects();
+        public IEnumerable<IDbConnect> GetDbConnectMembers() => GetDatabaseConnectedObjects();
 
         public IEnumerable<IDbPersist> GetDbConnectMembers2() => GetDatabaseConnectedObjects2();
 
