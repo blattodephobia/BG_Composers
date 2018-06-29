@@ -57,17 +57,18 @@
   <ItemGroup>
     <Compile Include="Data\IComposerNameDto.cs" />
     <Compile Include="Data\IComposerRepository.cs" />
+    <Compile Include="Data\IDbConnect.cs" />
     <Compile Include="Data\IdentityAttribute.cs" />
     <Compile Include="Data\INonQueryableRepository.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Exceptions\BgcException.cs" />
     <Compile Include="Exceptions\DuplicateEntityException.cs" />
     <Compile Include="Exceptions\DuplicateKeyException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\SettingException.cs" />
     <Compile Include="Exceptions\SettingTypeMismatchException.cs" />
-    <Compile Include="IDbConnect.cs" />
     <Compile Include="IDependencyRegistration.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="Models\ComposerArticle.ByComposerEqualityComparer.cs" />
     <Compile Include="Models\ComposerArticle.Comparers..cs" />
     <Compile Include="Models\ComposerProfile.cs" />
@@ -116,7 +117,6 @@
     <Compile Include="Services\ServiceExtensions.cs" />
     <Compile Include="SingletonRepository.cs" />
     <Compile Include="UnicodeAttribute.cs" />
-    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Models\IParameter.cs" />
     <Compile Include="Models\Permissions\ApplicationSettingsWritePermission.cs" />
     <Compile Include="Models\Permissions\Permission.cs" />
