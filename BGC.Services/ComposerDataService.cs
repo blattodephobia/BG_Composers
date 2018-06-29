@@ -68,7 +68,12 @@ namespace BGC.Services
             SaveAll();
         }
 
-        public IList<ComposerName> GetNames(CultureInfo culture) => Names.All().Where(c => c.LanguageInternal == culture.Name).ToList();
+        public IList<ComposerName> GetNames(CultureInfo culture)
+        {
+            Shield.ArgumentNotNull(culture).ThrowOnError();
+
+            return ComposersRepo.Find(name => name.Language == culture.Name).Select(c => c.Name[culture]).ToList();
+        }
 
         public IEnumerable<SearchResult> Search(string query, CultureInfo locale)
         {

@@ -399,4 +399,43 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             Assert.IsTrue(ComposersRepo.Contains(newComposer));
         }
     }
+
+    public class GetNamesTests : TestFixtureBase
+    {
+        private ComposerDataService _svc;
+        private List<Composer> _composers = new List<Composer>();
+
+        public string[] _enNames = new[] { "One", "Two", "Three", "Four" };
+        public string[] _bgNames = new[] { "Едно", "Две", "Три", "Четири" };
+
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+            _svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository<ComposerName>().Object, GetMockComposerRepository(_composers).Object);
+
+            _composers.AddRange(Enumerable.Range(0, 4).Select(i =>
+            {
+                Composer fakeComposer = new Composer();
+                fakeComposer.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName(_enNames[i], CultureInfo.GetCultureInfo("en-US"));
+                fakeComposer.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName(_bgNames[i], CultureInfo.GetCultureInfo("bg-BG"));
+
+                return fakeComposer;
+            }));
+        }
+        
+        [Test]
+        public void ThrowsExceptionIfNullLocale()
+        {
+            Assert.Throws<ArgumentNullException>(() => _svc.GetNames(null));
+        }
+
+        [Test]
+        public void GetsAllNamesWithGivenLocale()
+        {
+            HashSet<string> names = new HashSet<string>(_svc.GetNames(CultureInfo.GetCultureInfo("bg-BG")).Select(n => n.FullName));
+
+            Assert.AreEqual(_bgNames.Length, names.Count);
+            Assert.IsTrue(_bgNames.All(s => names.Contains(s)));
+        }
+    }
 }
