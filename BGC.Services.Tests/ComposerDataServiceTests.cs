@@ -13,44 +13,22 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
 {
     public class CtorTests : TestFixtureBase
     {
-
         [Test]
-        public void ThrowsExceptionIfNullRepo1()
+        public void ThrowsExceptionIfNullRepo()
         {
-            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
-                composers: null,
-                names: GetMockRepository(new List<ComposerName>()).Object,
-                repo: GetMockComposerRepository().Object));
-        }
-
-        [Test]
-        public void ThrowsExceptionIfNullRepo2()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
-                composers: GetMockRepository(new List<Composer>()).Object,
-                names: null,
-                repo: GetMockComposerRepository().Object));
-        }
-
-        [Test]
-        public void ThrowsExceptionIfNullRepo3()
-        {
-            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(
-                composers: GetMockRepository(new List<Composer>()).Object,
-                names: GetMockRepository(new List<ComposerName>()).Object,
-                repo: null));
+            Assert.Throws<ArgumentNullException>(() => new ComposerDataService(repo: null));
         }
     }
 
     public class GetAllComposersTests : TestFixtureBase
     {
         private ComposerDataService _svc;
-        private List<Composer> _composers = new List<Composer>();
+        private readonly List<Composer> _composers = new List<Composer>();
 
         public override void OneTimeSetUp()
         {
             base.OneTimeSetUp();
-            _svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository<ComposerName>().Object, GetMockComposerRepository(_composers).Object);
+            _svc = new ComposerDataService(GetMockComposerRepository(_composers).Object);
         }
 
         public override void BeforeEachTest()
@@ -97,7 +75,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                 mockRepo[i].Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName(i.ToString(), CultureInfo.GetCultureInfo("en-US"));
             }
 
-            var svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository(new List<ComposerName>()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             svc.AddOrUpdate(new Composer() { Id = new Guid(5, 6, 7, new byte[8]) });
 
@@ -121,7 +99,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -154,7 +132,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -199,7 +177,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     DateAdded = new DateTime(2000, 1, 2)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -228,7 +206,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -250,7 +228,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockComposerRepository().Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -279,7 +257,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     DateAdded = new DateTime(2000, 1, 2)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
+            var svc = new ComposerDataService(GetMockComposerRepository(mockRepo).Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -338,16 +316,13 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             }},
         };
 
-        private readonly ComposerDataService _svc = new ComposerDataService(
-                GetMockRepository(ComposersRepo).Object,
-                GetMockRepository(ComposersRepo.SelectMany(c => c.LocalizedNames).ToList()).Object,
-                GetMockComposerRepository(ComposersRepo).Object);
+        private readonly ComposerDataService _svc = new ComposerDataService(GetMockComposerRepository(ComposersRepo).Object);
 
         [Test]
         public void SearchComposer_SingleKeyword()
         {
             IEnumerable<string> results = _svc.Search("Atanas", new CultureInfo("en-US")).ToList().Select(result => result.Header).Distinct();
-            
+
             Assert.AreEqual(2, results.Count());
             Assert.AreEqual("Atanas Dalchev", results.Single(header => header == "Atanas Dalchev"));
             Assert.AreEqual("John Atanasoff", results.Single(header => header == "John Atanasoff"));
@@ -417,7 +392,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
     public class GetNamesTests : TestFixtureBase
     {
         private ComposerDataService _svc;
-        private List<Composer> _composers = new List<Composer>();
+        private readonly List<Composer> _composers = new List<Composer>();
 
         public string[] _enNames = new[] { "One", "Two", "Three", "Four" };
         public string[] _bgNames = new[] { "Едно", "Две", "Три", "Четири" };
@@ -425,7 +400,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         public override void OneTimeSetUp()
         {
             base.OneTimeSetUp();
-            _svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository<ComposerName>().Object, GetMockComposerRepository(_composers).Object);
+            _svc = new ComposerDataService(GetMockComposerRepository(_composers).Object);
 
             _composers.AddRange(Enumerable.Range(0, 4).Select(i =>
             {
@@ -436,7 +411,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                 return fakeComposer;
             }));
         }
-        
+
         [Test]
         public void ThrowsExceptionIfNullLocale()
         {
@@ -450,6 +425,39 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
 
             Assert.AreEqual(_bgNames.Length, names.Count);
             Assert.IsTrue(_bgNames.All(s => names.Contains(s)));
+        }
+    }
+
+    public class FindComposerTests : TestFixtureBase
+    {
+        private readonly List<Composer> _composers;
+        private readonly ComposerDataService _svc;
+
+        public FindComposerTests()
+        {
+            _composers = new List<Composer>()
+            {
+                new Composer() { Id = new Guid(1, 2, 3, new byte[8]) },
+                new Composer() { Id = new Guid(4, 5, 6, new byte[8]) },
+            };
+
+            _svc = new ComposerDataService(GetMockComposerRepository(_composers).Object);
+        }
+
+        [Test]
+        public void FindsComposer()
+        {
+            Composer entity = _svc.FindComposer(_composers[0].Id);
+
+            Assert.AreEqual(_composers[0].Id, entity.Id);
+        }
+
+        [Test]
+        public void ReturnsNullIfComposerNotFound()
+        {
+            Composer entity = _svc.FindComposer(new Guid(9, 9, 9, new byte[8]));
+
+            Assert.IsNull(entity);
         }
     }
 }

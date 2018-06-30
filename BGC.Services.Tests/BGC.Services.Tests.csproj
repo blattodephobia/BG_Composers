@@ -75,7 +75,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="ComposersDataServiceTests.cs" />
+    <Compile Include="ComposerDataServiceTests.cs" />
     <Compile Include="EmailServiceTests.cs" />
     <Compile Include="FileSystemMediaStorageServiceTests.cs" />
     <Compile Include="FileSystemTextStorageServiceTests.cs" />

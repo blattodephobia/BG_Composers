@@ -13,13 +13,11 @@ namespace BGC.Services
 {
     internal class ComposerDataService : DbServiceBase, IComposerDataService, ISearchService
     {
-        protected IComposerRepository ComposersRepo { get; private set; }
-        protected IRepository<Composer> Composers { get; private set; }
-        protected IRepository<ComposerName> Names { get; private set; }
+        private readonly IComposerRepository _composersRepo;
 
         private IEnumerable<SearchResult> SearchInternal(IEnumerable<string> keywords, CultureInfo locale)
         {
-            IEnumerable<Composer> results = ComposersRepo.Find(name => keywords.Any(keyword => name.FullName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())));
+            IEnumerable<Composer> results = _composersRepo.Find(name => keywords.Any(keyword => name.FullName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())));
             return results.Select(composer => new SearchResult(composer.Id)
             {
                 Header = composer.Name[locale].FullName,
@@ -27,18 +25,14 @@ namespace BGC.Services
             });
         }
 
-        public ComposerDataService(IRepository<Composer> composers, IRepository<ComposerName> names, IComposerRepository repo)
+        public ComposerDataService(IComposerRepository repo)
         {
-            Shield.ArgumentNotNull(composers, nameof(composers)).ThrowOnError();
-            Shield.ArgumentNotNull(names, nameof(names)).ThrowOnError();
             Shield.ArgumentNotNull(repo, nameof(repo)).ThrowOnError();
 
-            Composers = composers;
-            Names = names;
-            ComposersRepo = repo;
+            _composersRepo = repo;
         }
 
-        public IEnumerable<Composer> GetAllComposers() => ComposersRepo.Find(selector: dto => true);
+        public IEnumerable<Composer> GetAllComposers() => _composersRepo.Find(selector: dto => true);
 
         public void AddOrUpdate(Composer composer)
         {
@@ -46,7 +40,7 @@ namespace BGC.Services
 
             HashSet<string> currentNames = new HashSet<string>(composer.Name.All().Select(n => n.Value.FullName));
             List<Composer> duplicateComposers = new List<Composer>() { composer };
-            duplicateComposers.AddRange(ComposersRepo.Find(name => currentNames.Contains(name.FullName)));
+            duplicateComposers.AddRange(_composersRepo.Find(name => currentNames.Contains(name.FullName)));
             duplicateComposers.Sort((c1, c2) => DateTime.Compare(c1.DateAdded ?? DateTime.MaxValue, c2.DateAdded ?? DateTime.MaxValue)); // sorting by DateTime.MaxValue to make sure a composer who hasn't been added yet is last in the list
 
             if (duplicateComposers.Any())
@@ -58,7 +52,7 @@ namespace BGC.Services
                 }
             }
 
-            ComposersRepo.AddOrUpdate(composer);
+            _composersRepo.AddOrUpdate(composer);
             SaveAll();
         }
 
@@ -66,7 +60,7 @@ namespace BGC.Services
         {
             Shield.ArgumentNotNull(culture).ThrowOnError();
 
-            return ComposersRepo.Find(name => name.Language == culture.Name).Select(c => c.Name[culture]).ToList();
+            return _composersRepo.Find(name => name.Language == culture.Name).Select(c => c.Name[culture]).ToList();
         }
 
         public IEnumerable<SearchResult> Search(string query, CultureInfo locale)
@@ -80,6 +74,6 @@ namespace BGC.Services
             return searchResult;
         }
 
-        public Composer FindComposer(Guid id) => Composers.All().FirstOrDefault(c => c.Id == id);
+        public Composer FindComposer(Guid id) => _composersRepo.Find(id);
     }
 }
