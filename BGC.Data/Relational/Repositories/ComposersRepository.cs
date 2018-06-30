@@ -20,12 +20,36 @@ namespace BGC.Data.Relational.Repositories
         {
         }
 
+        protected override void AddOrUpdateInternal(Composer entity)
+        {
+            bool dateAddedChanged = false;
+            try
+            {
+                if (entity.DateAdded == null)
+                {
+                    entity.DateAdded = DateTime.UtcNow;
+                    dateAddedChanged = true;
+                }
+
+                base.AddOrUpdateInternal(entity);
+            }
+            catch
+            {
+                if (dateAddedChanged)
+                {
+                    entity.DateAdded = null;
+                }
+
+                throw;
+            }
+        }
+
         public IEnumerable<Composer> Find(Expression<Func<IComposerNameDto, bool>> selector)
         {
             Shield.ArgumentNotNull(selector).ThrowOnError();
 
             Expression<Func<NameRelationalDto, bool>> mappedSelector = _expressionMap.ChangeLambdaType(selector);
-            IQueryable<ComposerRelationalDto> queryResult = DbContext.Set<NameRelationalDto>().Where(mappedSelector).Select(name => name.Composer);
+            var queryResult = DbContext.Set<NameRelationalDto>().Where(mappedSelector).GroupBy(n => n.Composer_Id).Select(group => group.First().Composer);
 
             List<Composer> result = new List<Composer>();
             foreach (ComposerRelationalDto dto in queryResult)

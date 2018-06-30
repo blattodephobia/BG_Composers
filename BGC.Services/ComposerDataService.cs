@@ -44,27 +44,21 @@ namespace BGC.Services
         {
             Shield.ArgumentNotNull(composer, nameof(composer)).ThrowOnError();
 
-            if (!Composers.All().Any(c => c.Id == composer.Id))
-            {
-                Composers.Insert(composer);
-            }
+            HashSet<string> currentNames = new HashSet<string>(composer.Name.All().Select(n => n.Value.FullName));
+            List<Composer> duplicateComposers = new List<Composer>() { composer };
+            duplicateComposers.AddRange(ComposersRepo.Find(name => currentNames.Contains(name.FullName)));
+            duplicateComposers.Sort((c1, c2) => DateTime.Compare(c1.DateAdded ?? DateTime.MaxValue, c2.DateAdded ?? DateTime.MaxValue)); // sorting by DateTime.MaxValue to make sure a composer who hasn't been added yet is last in the list
 
-            var duplicateNames = from name in composer.LocalizedNames
-                                 join existingName in Names.All() on name.FullName equals existingName.FullName
-                                 where existingName.Composer.Id != composer.Id &&
-                                       existingName.LanguageInternal == name.LanguageInternal
-                                 group existingName by existingName.LanguageInternal into duplicateName
-                                 select duplicateName;
-            if (duplicateNames.Any())
+            if (duplicateComposers.Any())
             {
-                composer.Order = duplicateNames.Max(group => group.Count());
-                composer.HasNamesakes = true;
-                foreach (Composer namesake in duplicateNames.SelectMany(group => group).Select(name => name.Composer).Distinct())
+                for (int i = 0; i < duplicateComposers.Count; i++)
                 {
-                    namesake.HasNamesakes = true;
+                    duplicateComposers[i].Order = i;
+                    duplicateComposers[i].HasNamesakes = duplicateComposers.Count > 1;
                 }
             }
 
+            ComposersRepo.AddOrUpdate(composer);
             SaveAll();
         }
 

@@ -20,6 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,11 @@ namespace TestUtils
             var assemblyFileName = new FileInfo(typeof(MockUtilities).Assembly.Location);
             SampleLocalization.Load(assemblyFileName.Directory.GetFiles(@"SampleLoc.xml").First().OpenRead());
         }
+
+        public static readonly Func<Type, DbSet> DefaultSetFactory = (delegate (Type t)
+        {
+            return GetMockDbSet().Object;
+        });
 
         public static readonly XmlDocument SampleLocalization;
         public static Mock<IUserStore<BgcUser, long>> GetMockUserStore(BgcUser mockUser = null, Mock chainMock = null)
@@ -142,6 +148,25 @@ namespace TestUtils
             return mock;
         }
 
+        public static Mock<DbSet> GetMockDbSet(ArrayList backingStore = null)
+        {
+            backingStore = backingStore ?? new ArrayList();
+
+            var result = new Mock<DbSet>();
+            result.Setup(r => r.Add(It.IsAny<object>())).Callback((object obj) => backingStore.Add(obj));
+            result.Setup(r => r.Attach(It.IsAny<object>())).Callback((object obj) => backingStore.Add(obj));
+            result.Setup(r => r.Remove(It.IsAny<object>())).Callback((object obj) => backingStore.Remove(obj));
+            result.Setup(r => r.RemoveRange(It.IsAny<IEnumerable>())).Callback((IEnumerable range) =>
+            {
+                foreach (object item in range ?? Enumerable.Empty<object>())
+                {
+                    backingStore.Remove(item);
+                }
+            });
+
+            return result;
+        }
+
         /// <summary>
         /// Returns a mock <see cref="IDbSet{TEntity}"/> using a <see cref="List{T}"/> as a backing store.
         /// Note that the <see cref="IDbSet{TEntity}.Find(object[])"/> method will throw an exception by default and
@@ -180,6 +205,7 @@ namespace TestUtils
         {
             var result = new Mock<DbContext>();
 
+            setFactory = setFactory ?? DefaultSetFactory;
             result.Setup(d => d.Set(It.IsNotNull<Type>())).Returns(setFactory);
 
             return result;

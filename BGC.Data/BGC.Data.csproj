@@ -98,6 +98,10 @@
     <Compile Include="Migrations\201806241343578_Initial.Designer.cs">
       <DependentUpon>201806241343578_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201806301533276_Composer_DateAdded.cs" />
+    <Compile Include="Migrations\201806301533276_Composer_DateAdded.Designer.cs">
+      <DependentUpon>201806301533276_Composer_DateAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Relational\ComposersDbContext.cs" />
     <Compile Include="Relational\Conventions\UnicodeSupportConvention.cs" />
     <Compile Include="DataLayerDependencyRegistration.cs" />
@@ -151,6 +155,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201806241343578_Initial.resx">
       <DependentUpon>201806241343578_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806301533276_Composer_DateAdded.resx">
+      <DependentUpon>201806301533276_Composer_DateAdded.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

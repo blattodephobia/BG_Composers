@@ -19,6 +19,7 @@ namespace BGC.Data.Relational.Mappings
             Shield.ArgumentNotNull(target).ThrowOnError();
 
             target.Id = source.Id;
+            target.DateAdded = source.DateAdded ?? DateTime.MinValue;
             target.DateOfBirth = source.DateOfBirth;
             target.DateOfDeath = source.DateOfDeath;
             target.Order = source.Order;
@@ -27,6 +28,14 @@ namespace BGC.Data.Relational.Mappings
         protected override void CopyDataInternal(ComposerRelationalDto source, Composer target)
         {
             target.Id = source.Id;
+            if (source.DateAdded == DateTime.MinValue)
+            {
+                target.DateAdded = null;
+            }
+            else
+            {
+                target.DateAdded = source.DateAdded;
+            }
             target.DateOfBirth = source.DateOfBirth;
             target.DateOfDeath = source.DateOfDeath;
             target.Order = source.Order;

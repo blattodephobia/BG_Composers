@@ -15,6 +15,12 @@ namespace BGC.Data.Relational
         [Key]
         public Guid Id { get; set; }
 
+        /* Although the Composer entity's DateAdded property is nullable, the DTO is expected to always have a value in a normal workflow.
+         * To prevent complications from an additional nullable property, a special DateTime value should be used to identify nulls. This
+         * means either default(DateTime), DateTime.MaxValue, DateTime.MinValue; the implementation is up to the property mapper.
+         * */
+        public DateTime DateAdded { get; set; }
+
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? DateOfDeath { get; set; }

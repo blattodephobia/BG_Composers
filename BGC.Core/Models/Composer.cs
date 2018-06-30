@@ -49,6 +49,8 @@ namespace BGC.Core
             }
         }
 
+        public DateTime? DateAdded { get; set; }
+
         public DateTime? DateOfBirth { get; set; }
 
         public DateTime? DateOfDeath { get; set; }

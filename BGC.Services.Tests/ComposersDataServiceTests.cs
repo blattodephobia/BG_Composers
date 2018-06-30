@@ -88,11 +88,18 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
         {
             List<Composer> mockRepo = new List<Composer>()
             {
-                new Composer() { Id = Guid.NewGuid() }
+                new Composer() { Id = new Guid(1, 0, 0, new byte[8]) },
+                new Composer() { Id = new Guid(2, 3, 4, new byte[8]) }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(new List<ComposerName>()).Object, GetMockComposerRepository().Object);
 
-            svc.AddOrUpdate(new Composer());
+            for (int i = 0; i < mockRepo.Count; i++)
+            {
+                mockRepo[i].Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName(i.ToString(), CultureInfo.GetCultureInfo("en-US"));
+            }
+
+            var svc = new ComposerDataService(GetMockRepository<Composer>().Object, GetMockRepository(new List<ComposerName>()).Object, GetMockComposerRepository(mockRepo).Object);
+
+            svc.AddOrUpdate(new Composer() { Id = new Guid(5, 6, 7, new byte[8]) });
 
             Assert.AreEqual(0, mockRepo.Last().Order);
         }
@@ -110,10 +117,11 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     {
                         new ComposerName(duplicateName, "en-US"),
                         new ComposerName("asd", "bg-BG"),
-                    }
+                    },
+                    DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -142,10 +150,11 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                     {
                         new ComposerName(duplicateName, "en-US"),
                         new ComposerName("asd", "bg-BG"),
-                    }
+                    },
+                    DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -175,7 +184,8 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                         new ComposerName(duplicateName, "en-US"),
                         new ComposerName(duplicateName, "de-DE"),
                         new ComposerName("asd", "bg-BG"),
-                    }
+                    },
+                    DateAdded = new DateTime(2000, 1, 1)
                 },
                 new Composer()
                 {
@@ -185,10 +195,11 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                         new ComposerName(duplicateName, "en-US"),
                         new ComposerName("dkk", "de-DE"),
                         new ComposerName("asd", "bg-BG"),
-                    }
+                    },
+                    DateAdded = new DateTime(2000, 1, 2)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
 
             var duplicateComposer = new Composer()
             {
@@ -202,7 +213,7 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
             };
             svc.AddOrUpdate(duplicateComposer);
 
-            Assert.AreEqual(2, mockRepo.Last().Order, "Wrong order when there are duplicate names in some of the supported cultures.");
+            Assert.AreEqual(2, duplicateComposer.Order, "Wrong order when there are duplicate names in some of the supported cultures.");
         }
 
         [Test]
@@ -213,10 +224,11 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                 new Composer()
                 {
                     Id = Guid.NewGuid(),
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") },
+                    DateAdded = new DateTime(2000, 1, 1)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
 
             svc.AddOrUpdate(new Composer()
             {
@@ -257,15 +269,17 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
                 new Composer()
                 {
                     Id = Guid.NewGuid(),
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") }
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") },
+                    DateAdded = new DateTime(2000, 1, 1)
                 },
                 new Composer()
                 {
                     Id = Guid.NewGuid(),
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("Betty Boop", "en-US") }
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("Betty Boop", "en-US") },
+                    DateAdded = new DateTime(2000, 1, 2)
                 }
             };
-            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository().Object);
+            var svc = new ComposerDataService(GetMockRepository(mockRepo).Object, GetMockRepository(mockRepo.SelectMany(c => c.LocalizedNames).ToList()).Object, GetMockComposerRepository(mockRepo).Object);
 
             svc.AddOrUpdate(new Composer()
             {
