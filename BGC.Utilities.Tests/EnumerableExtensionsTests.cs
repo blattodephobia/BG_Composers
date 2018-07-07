@@ -1,11 +1,13 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TestUtils;
 
-namespace BGC.Utilities.Tests
+namespace BGC.Utilities.Tests.EnumerableExtensionsTests
 {
     [TestFixture]
     public class ToStringAggregateTests
@@ -47,6 +49,43 @@ namespace BGC.Utilities.Tests
         {
             IEnumerable<string> nullCollection = null;
             Assert.Throws<ArgumentNullException>(() => nullCollection.ToStringAggregate("asd"));
+        }
+    }
+
+    public class AddRangeTests : TestFixtureBase
+    {
+        [Test]
+        public void AddsItemsIfCollection()
+        {
+            var coll = new Collection<int>();
+            var items = new[] { 1, 2, 3 };
+            EnumerableExtensions.AddRange(coll, items);
+
+            Assert.IsTrue(items.SequenceEqual(coll));
+        }
+
+        [Test]
+        public void AddsItemsIfList()
+        {
+            ICollection<int> list = new List<int>();
+            var items = new[] { 1, 2, 3 };
+            EnumerableExtensions.AddRange(list, items);
+
+            Assert.IsTrue(items.SequenceEqual(list));
+
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullCollection()
+        {
+            Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.AddRange(null, new[] { 2, 3 }));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullItems()
+        {
+            var coll = new Collection<int>();
+            Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.AddRange(coll, null));
         }
     }
 }

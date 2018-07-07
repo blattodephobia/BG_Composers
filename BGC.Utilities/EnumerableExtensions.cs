@@ -43,9 +43,17 @@ namespace BGC.Utilities
             Shield.ArgumentNotNull(collection).ThrowOnError();
             Shield.ArgumentNotNull(items).ThrowOnError();
 
-            foreach (T item in items)
+            List<T> list = collection as List<T>;
+            if (list != null)
             {
-                collection.Add(item);
+                list.AddRange(items);
+            }
+            else
+            {
+                foreach (T item in items)
+                {
+                    collection.Add(item);
+                }
             }
         }
     }
