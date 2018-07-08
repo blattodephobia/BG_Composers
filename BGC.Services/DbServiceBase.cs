@@ -49,6 +49,7 @@ namespace BGC.Services
             return DbPersistMemberAccessors[_currentType].Invoke(this);
         }
         
+        [Obsolete("It's better to call the appropriate save changes method on each IDbConnect of IDbPersist than to rely on this common logic.")]
         protected void SaveAll()
         {
             foreach (IDbConnect dbConnection in GetDatabaseConnectedObjects())

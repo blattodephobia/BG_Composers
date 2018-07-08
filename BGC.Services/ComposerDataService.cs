@@ -53,7 +53,7 @@ namespace BGC.Services
             }
 
             _composersRepo.AddOrUpdate(composer);
-            SaveAll();
+            _composersRepo.SaveChanges();
         }
 
         public IList<ComposerName> GetNames(CultureInfo culture)
