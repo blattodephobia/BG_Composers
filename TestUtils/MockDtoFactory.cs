@@ -17,7 +17,7 @@ namespace TestUtils
 
         public virtual object ActivateObject(Type type)
         {
-            return Activator.CreateInstance(type);
+            return Activator.CreateInstance(type, nonPublic: true);
         }
     }
 }
