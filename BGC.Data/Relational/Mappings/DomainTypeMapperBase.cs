@@ -25,6 +25,8 @@ namespace BGC.Data.Relational.Mappings
 
         protected abstract TEntity BuildInternal(TDto dto);
 
+        protected abstract TDto BuildDtoInternal(TEntity entity);
+
         public TEntity Build(TDto dto)
         {
             Shield.ArgumentNotNull(dto).ThrowOnError();
@@ -32,6 +34,14 @@ namespace BGC.Data.Relational.Mappings
             return BuildInternal(dto);
         }
 
+        public TDto BuildDto(TEntity entity)
+        {
+            Shield.ArgumentNotNull(entity).ThrowOnError();
+
+            return BuildDtoInternal(entity);
+        }
+
+        [Obsolete(nameof(Breakdown) + " is deprecated. Use " + nameof(BuildDto) + " instead.")]
         public IEnumerable<RelationdalDtoBase> Breakdown(TEntity entity)
         {
             Shield.ArgumentNotNull(entity).ThrowOnError();

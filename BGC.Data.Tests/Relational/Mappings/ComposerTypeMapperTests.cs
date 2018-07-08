@@ -27,12 +27,17 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         }
     }
 
-    public class BreakdownTests : TestFixtureBase
+    public class BuildDtoTests : TestFixtureBase
     {
-        private readonly ComposerTypeMapper _breakdown = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
-        
+        private readonly ComposerTypeMapper _standardBreakdown;
+
+        public BuildDtoTests()
+        {
+            _standardBreakdown = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
+        }
+
         [Test]
-        public void BreakdownNames()
+        public void MapNames()
         {
             Composer c = new Composer();
             var name1 = new ComposerName("John Smith", "en-US");
@@ -40,7 +45,7 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             c.Name[name1.Language] = name1;
             c.Name[name2.Language] = name2;
 
-            List<NameRelationalDto> names = _breakdown.Breakdown(c).OfType<NameRelationalDto>().ToList();
+            ICollection<NameRelationalDto> names = _standardBreakdown.BuildDto(c).LocalizedNames;
 
             NameRelationalDto name1Dto = names.FirstOrDefault(n => n.Language == name1.Language.Name);
             NameRelationalDto name2Dto = names.FirstOrDefault(n => n.Language == name2.Language.Name);
@@ -55,7 +60,7 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         }
 
         [Test]
-        public void BreakdownArticles()
+        public void MapArticles()
         {
             Composer c = new Composer();
             var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US"), CultureInfo.GetCultureInfo("en-US"));
@@ -63,22 +68,22 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             c.AddArticle(article1);
             c.AddArticle(article2);
 
-            List<ArticleRelationalDto> articles = _breakdown.Breakdown(c).OfType<ArticleRelationalDto>().ToList();
+            ICollection<ArticleRelationalDto> articles = _standardBreakdown.BuildDto(c).Articles;
 
             ArticleRelationalDto article1Dto = articles.FirstOrDefault(a => a.Language == article1.Language.Name);
             ArticleRelationalDto article2Dto = articles.FirstOrDefault(a => a.Language == article2.Language.Name);
 
-            Assert.IsNotNull(article1Dto, "Article wasn't copied at all.");
+            Assert.IsNotNull(article1Dto, "Article 1 wasn't copied at all.");
             Assert.AreEqual(article1.StorageId, article1Dto.StorageId);
             Assert.AreEqual(article1.Composer.Id, article1Dto.Composer.Id);
 
-            Assert.IsNotNull(article2Dto, "Article wasn't copied at all.");
+            Assert.IsNotNull(article2Dto, "Article 2 wasn't copied at all.");
             Assert.AreEqual(article2.StorageId, article2Dto.StorageId);
             Assert.AreEqual(article2.Composer.Id, article2Dto.Composer.Id);
         }
 
         [Test]
-        public void BreakdownProfile()
+        public void MapProfile()
         {
             Composer c = new Composer();
             var profile = new ComposerProfile();
@@ -88,14 +93,15 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             profile.ProfilePicture = profilePic;
             profile.Media.Add(otherMedia);
 
-            List<MediaTypeInfoRelationalDto> media = _breakdown.Breakdown(c).OfType<MediaTypeInfoRelationalDto>().ToList();
-            var profilePicDto = media.FirstOrDefault(m => m.StorageId == profilePic.StorageId);
-            var otherMediaDto = media.FirstOrDefault(m => m.StorageId == otherMedia.StorageId);
+            ComposerRelationalDto dto = _standardBreakdown.BuildDto(c);
+            ICollection<MediaTypeInfoRelationalDto> media = dto.Media;
+            MediaTypeInfoRelationalDto profilePicDto = dto.ProfilePicture;
+            MediaTypeInfoRelationalDto otherMediaDto = media.FirstOrDefault(m => m.StorageId == otherMedia.StorageId);
 
             Assert.IsNotNull(profilePicDto, "Profile picture wasn't copied at all.");
             Assert.AreEqual(profilePic.StorageId, profilePicDto.StorageId);
 
-            Assert.IsNotNull(otherMediaDto, "Profile picture wasn't copied at all.");
+            Assert.IsNotNull(otherMediaDto, "Music wasn't copied at all.");
             Assert.AreEqual(otherMedia.StorageId, otherMediaDto.StorageId);
         }
 
@@ -108,10 +114,10 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             c.AddArticle(article1);
             c.AddArticle(article2);
 
-            IEnumerable<ArticleRelationalDto> dtos = _breakdown.Breakdown(c).OfType<ArticleRelationalDto>();
+            ICollection<ArticleRelationalDto> dtos = _standardBreakdown.BuildDto(c).Articles;
 
-            Assert.AreEqual(2, dtos.Count());
-            Assert.IsTrue(dtos.All(d => d.Composer.Id == c.Id));
+            Assert.AreEqual(2, dtos.Count);
+            Assert.IsTrue(dtos.All(d => d.Composer != null));
         }
 
         [Test]
@@ -123,24 +129,14 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             c.Name[name1.Language] = name1;
             c.Name[name2.Language] = name2;
 
-            List<NameRelationalDto> names = _breakdown.Breakdown(c).OfType<NameRelationalDto>().ToList();
+            ICollection<NameRelationalDto> names = _standardBreakdown.BuildDto(c).LocalizedNames;
 
             Assert.AreEqual(2, names.Count);
-            Assert.IsTrue(names.All(n => n.Composer.Id == c.Id));
+            Assert.IsTrue(names.All(n => n.Composer!= null));
         }
-
+        
         [Test]
-        public void SetsComposerPrincipalOnProfile()
-        {
-            Composer c = new Composer() { Id = new Guid(4, 4, 4, new byte[8]) };
-            var profile = new ComposerProfile();
-            c.Profile = profile;
-
-            Assert.AreEqual(c.Id, _breakdown.Breakdown(c).OfType<ProfileRelationalDto>().First().Composer.Id);
-        }
-
-        [Test]
-        public void BreaksDownMedia()
+        public void MapsMedia()
         {
             Composer c = new Composer() { Id = new Guid(4, 4, 4, new byte[8]) };
             var profile = new ComposerProfile();
@@ -151,10 +147,46 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             profile.ProfilePicture = profilePic;
             profile.Media.Add(otherMedia);
 
-            IEnumerable<MediaTypeInfoRelationalDto> media = _breakdown.Breakdown(c).OfType<MediaTypeInfoRelationalDto>();
+            ComposerRelationalDto composer = _standardBreakdown.BuildDto(c);
+            ICollection<MediaTypeInfoRelationalDto> media = composer.Media;
 
-            Assert.AreEqual(1, media.Count(m => m.StorageId == profilePic.StorageId && m.OriginalFileName == profilePic.OriginalFileName));
+            Assert.AreEqual(profilePic.StorageId, composer.ProfilePicture.StorageId);
             Assert.AreEqual(1, media.Count(m => m.StorageId == otherMedia.StorageId && m.OriginalFileName == otherMedia.OriginalFileName));
+        }
+
+        [Test]
+        public void RemovesMissingItems()
+        {
+            Mock<MockDtoFactory> factory = new Mock<MockDtoFactory>() { CallBase = true };
+            ComposerTypeMapper mapper = new ComposerTypeMapper(new ComposerMappers(), factory.Object);
+            Guid[] idPool = new Guid[] { new Guid(1, 2, 3, new byte[8]), new Guid(4, 5, 6, new byte[8]), new Guid(7, 8, 9, new byte[8]) };
+            ComposerRelationalDto dto = new ComposerRelationalDto()
+            {
+                Media = new List<MediaTypeInfoRelationalDto>()
+                {
+                    new MediaTypeInfoRelationalDto() { StorageId = idPool[0] },
+                    new MediaTypeInfoRelationalDto() { StorageId = idPool[1] },
+                },
+                Articles = new List<ArticleRelationalDto>()
+                {
+                    new ArticleRelationalDto() { StorageId = idPool[2] }
+                },
+            };
+            factory.Setup(x => x.ActivateObject(It.Is<Type>(type => type == typeof(ComposerRelationalDto)))).Returns((Type t) => dto);
+
+            var entity = new Composer()
+            {
+                Profile = new ComposerProfile()
+                {
+                    Media = new List<MediaTypeInfo>() { new MediaTypeInfo(@"image/*") { StorageId = idPool[0] } }
+                }
+            };
+
+            ComposerRelationalDto result = mapper.BuildDto(entity);
+
+            Assert.AreEqual(1, result.Media.Count);
+            Assert.AreEqual(idPool[0], result.Media.First().StorageId);
+            Assert.AreEqual(0, result.Articles.Count);
         }
     }
 
@@ -176,14 +208,12 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
                     }
                 },
                 LocalizedNames = new[] { new NameRelationalDto() { FullName = "John Smith", Language = "de-DE" } },
-                Profile = new ProfileRelationalDto() { ProfilePicture = new MediaTypeInfoRelationalDto() { MimeType = "image/jpeg" } },
             };
 
             Composer result = _mapper.Build(dto);
 
             Assert.AreEqual(result.GetArticle(CultureInfo.GetCultureInfo("de-DE")).StorageId, dto.Articles.First().StorageId);
             Assert.AreEqual(result.Name[CultureInfo.GetCultureInfo("de-DE")].FullName, dto.LocalizedNames.First().FullName);
-            Assert.AreEqual(result.Profile.ProfilePicture.MimeType, dto.Profile.ProfilePicture.MimeType);
         }
     }
 }

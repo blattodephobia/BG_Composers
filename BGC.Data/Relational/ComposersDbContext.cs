@@ -47,6 +47,9 @@ namespace BGC.Data.Relational
 		{
 			Database.SetInitializer<ComposersDbContext>(new CreateDatabaseIfNotExists<ComposersDbContext>());
             this.RequireUniqueEmail = true;
+
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = true;
 		}
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -84,8 +87,6 @@ namespace BGC.Data.Relational
 
 			modelBuilder.Entity<BgcUserClaim>().HasKey(userClaim => userClaim.Id);
 
-            modelBuilder.Entity<ComposerRelationalDto>().HasOptional(c => c.Profile).WithRequired();
-
             modelBuilder.Entity<GlossaryDefinition>()
                 .Property(definition => definition.LanguageInternal)
                 .HasColumnName(nameof(GlossaryDefinition.Language))
@@ -114,10 +115,15 @@ namespace BGC.Data.Relational
             Entry(entity).State = state;
         }
 
-        public TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase
+        public TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> mapper)
+            where TRelationalDto : RelationdalDtoBase
         {
             DbSet<TRelationalDto> set = Set<TRelationalDto>();
-            return set.FirstOrDefault(mapper.GetPredicateFor(entity)) ?? set.Create<TRelationalDto>();
+            TRelationalDto result = entity != null
+                ? set.FirstOrDefault(mapper.GetPredicateFor(entity)) ?? set.Create<TRelationalDto>()
+                : set.Create<TRelationalDto>();
+
+            return result;
         }
     }
 }

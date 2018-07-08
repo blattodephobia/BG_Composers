@@ -94,13 +94,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201806241343578_Initial.cs" />
-    <Compile Include="Migrations\201806241343578_Initial.Designer.cs">
-      <DependentUpon>201806241343578_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201806301533276_Composer_DateAdded.cs" />
-    <Compile Include="Migrations\201806301533276_Composer_DateAdded.Designer.cs">
-      <DependentUpon>201806301533276_Composer_DateAdded.cs</DependentUpon>
+    <Compile Include="Migrations\201807071519072_Initial.cs" />
+    <Compile Include="Migrations\201807071519072_Initial.Designer.cs">
+      <DependentUpon>201807071519072_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Relational\ComposersDbContext.cs" />
     <Compile Include="Relational\Conventions\UnicodeSupportConvention.cs" />
@@ -120,7 +116,6 @@
     <Compile Include="Relational\Mappings\IDtoFactory.cs" />
     <Compile Include="Relational\Mappings\MediaTypeInfoPropertyMapper.cs" />
     <Compile Include="Relational\Mappings\NamePropertyMapper.cs" />
-    <Compile Include="Relational\Mappings\ProfilePropertyMapper.cs" />
     <Compile Include="Relational\Mappings\RelationalPropertyMapper.cs" />
     <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
     <Compile Include="Relational\NameRelationalDto.cs" />
@@ -153,11 +148,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201806241343578_Initial.resx">
-      <DependentUpon>201806241343578_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201806301533276_Composer_DateAdded.resx">
-      <DependentUpon>201806301533276_Composer_DateAdded.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201807071519072_Initial.resx">
+      <DependentUpon>201807071519072_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

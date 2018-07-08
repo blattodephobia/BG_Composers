@@ -10,14 +10,14 @@ using TestUtils;
 
 namespace BGC.Data.Relational.Mappings.DomainBreakdownTests
 {
-    public class BreakdownTests : TestFixtureBase
+    public class BuildDtoTests : TestFixtureBase
     {
         [Test]
         public void ThrowsExceptionIfNullEntity()
         {
             var mock = new Mock<DomainTypeMapperBase<Composer, ComposerRelationalDto>>(new MockDtoFactory());
 
-            Assert.Throws<ArgumentNullException>(() => mock.Object.Breakdown(null));
+            Assert.Throws<ArgumentNullException>(() => mock.Object.BuildDto(null));
         }
     }
 

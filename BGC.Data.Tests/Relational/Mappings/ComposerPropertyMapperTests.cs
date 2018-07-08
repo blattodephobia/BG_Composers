@@ -19,7 +19,6 @@ namespace BGC.Data.Relational.Mappings.ComposerPropertyMapperTests
         public void CopiesDataCorrectly()
         {
             var composer = new Composer();
-            composer.Id = new Guid(7, 1, 5, new byte[8]);
             composer.DateAdded = new DateTime(2018, 1, 1);
             composer.DateOfBirth = new DateTime(1970, 2, 2);
             composer.DateOfDeath = new DateTime(2070, 2, 2);
@@ -29,11 +28,22 @@ namespace BGC.Data.Relational.Mappings.ComposerPropertyMapperTests
 
             _mapper.CopyData(composer, dto);
 
-            Assert.AreEqual(composer.Id, dto.Id);
             Assert.AreEqual(composer.DateAdded, dto.DateAdded);
             Assert.AreEqual(composer.DateOfBirth, dto.DateOfBirth);
             Assert.AreEqual(composer.DateOfDeath, dto.DateOfDeath);
             Assert.AreEqual(composer.Order, dto.Order);
+        }
+
+        [Test]
+        public void LeavesOutIdForDbGeneration()
+        {
+            var composer = new Composer();
+            composer.Id = new Guid(7, 1, 5, new byte[8]);
+            var dto = new ComposerRelationalDto();
+
+            _mapper.CopyData(composer, dto);
+
+            Assert.AreEqual(default(Guid), dto.Id);
         }
 
         [Test]

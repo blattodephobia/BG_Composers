@@ -144,6 +144,8 @@ namespace BGC.Data.Migrations
                         StorageId = Guid.Parse("00000000-0000-0000-0000-000000000003")
                     }
                 };
+                pStupel.LocalizedNames.AddRange(names);
+                pStupel.Articles.AddRange(articles);
                 context.Composers.AddOrUpdate(composer => composer.Id, pStupel);
 #endif
                 context.SaveChanges();

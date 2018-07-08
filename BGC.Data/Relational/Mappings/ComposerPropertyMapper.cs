@@ -18,7 +18,6 @@ namespace BGC.Data.Relational.Mappings
             Shield.ArgumentNotNull(source).ThrowOnError();
             Shield.ArgumentNotNull(target).ThrowOnError();
 
-            target.Id = source.Id;
             target.DateAdded = source.DateAdded ?? DateTime.MinValue;
             target.DateOfBirth = source.DateOfBirth;
             target.DateOfDeath = source.DateOfDeath;
