@@ -10,10 +10,15 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(Composer))]
-    internal class ComposerRelationalDto : RelationdalDtoBase
+    public class ComposerRelationalDto : RelationdalDtoBase
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
+        public virtual ICollection<NameRelationalDto> LocalizedNames { get; set; } = new HashSet<NameRelationalDto>();
+
+        public virtual ICollection<ArticleRelationalDto> Articles { get; set; } = new HashSet<ArticleRelationalDto>();
 
         /* Although the Composer entity's DateAdded property is nullable, the DTO is expected to always have a value in a normal workflow.
          * To prevent complications from an additional nullable property, a special DateTime value should be used to identify nulls. This
@@ -31,37 +36,16 @@ namespace BGC.Data.Relational
         [Range(0, int.MaxValue)]
         public int Order { get; set; }
 
-        [ForeignKey(nameof(Profile))]
-        public int? Profile_Id { get; set; }
+        [ForeignKey(nameof(ProfilePicture))]
+        public int? ProfilPicture_Id { get; set; }
 
-        public virtual ProfileRelationalDto Profile { get; set; }
+        public virtual MediaTypeInfoRelationalDto ProfilePicture { get; set; }
 
-        private ICollection<NameRelationalDto> _localizedNames;
-        public virtual ICollection<NameRelationalDto> LocalizedNames
+        public virtual ICollection<MediaTypeInfoRelationalDto> Media { get; set; } = new HashSet<MediaTypeInfoRelationalDto>();
+
+        internal protected ComposerRelationalDto()
         {
-            get
-            {
-                return _localizedNames ?? (_localizedNames = new HashSet<NameRelationalDto>());
-            }
 
-            set
-            {
-                _localizedNames = value;
-            }
-        }
-
-        private ICollection<ArticleRelationalDto> _articles;
-        public virtual ICollection<ArticleRelationalDto> Articles
-        {
-            get
-            {
-                return _articles ?? (_articles = new HashSet<ArticleRelationalDto>());
-            }
-
-            set
-            {
-                _articles = value;
-            }
         }
     }
 }

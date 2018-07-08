@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational
 {
-    internal class RelationdalDtoBase
+    public abstract class RelationdalDtoBase
     {
+        protected RelationdalDtoBase()
+        {
+        }
     }
 }

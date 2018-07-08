@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(ComposerName))]
-    internal class NameRelationalDto : RelationdalDtoBase, IComposerNameDto
+    public class NameRelationalDto : RelationdalDtoBase, IComposerNameDto
     {
         [Key]
         public long Id { get; set; }
@@ -19,7 +19,7 @@ namespace BGC.Data.Relational
         [ForeignKey(nameof(Composer))]
         public Guid Composer_Id { get; set; }
 
-        public ComposerRelationalDto Composer { get; set; }
+        public virtual ComposerRelationalDto Composer { get; set; }
 
         [Required]
         [MaxLength(5)]
@@ -28,5 +28,21 @@ namespace BGC.Data.Relational
         [Required]
         [MaxLength(128)]
         public string FullName { get; set; }
+
+        internal protected NameRelationalDto()
+        {
+        }
+
+        public override int GetHashCode() => Id.GetHashCode();
+
+        public override bool Equals(object obj)
+        {
+            NameRelationalDto other = obj as NameRelationalDto;
+            return
+                Id == other?.Id &&
+                Composer_Id == other?.Composer_Id &&
+                Language == other?.Language &&
+                FullName == other?.FullName;
+        }
     }
 }

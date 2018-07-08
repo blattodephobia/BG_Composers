@@ -13,17 +13,23 @@ namespace BGC.Data.Relational
     internal class ProfileRelationalDto : RelationdalDtoBase
     {
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
-        [Required]
-        [ForeignKey(nameof(Composer))]
-        public Guid Composer_Id { get; set; }
+        public Guid EntityId { get; set; } 
 
         public ComposerRelationalDto Composer { get; set; }
+
+        [ForeignKey(nameof(Composer))]
+        public Guid Composer_Id { get; set; }
 
         [ForeignKey(nameof(ProfilePicture))]
         public int? ProfilePicture_Id { get; set; }
 
         public MediaTypeInfoRelationalDto ProfilePicture { get; set; }
+
+        internal protected ProfileRelationalDto()
+        {
+
+        }
     }
 }

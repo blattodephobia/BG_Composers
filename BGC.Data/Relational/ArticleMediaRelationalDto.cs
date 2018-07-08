@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(ComposerArticle) + "_" + nameof(MediaTypeInfo))]
-    internal class ArticleMediaRelationalDto : RelationdalDtoBase
+    public class ArticleMediaRelationalDto : RelationdalDtoBase
     {
         public ArticleRelationalDto Article { get; set; }
 
@@ -23,5 +23,9 @@ namespace BGC.Data.Relational
         [Key, Column(Order = 1)]
         [ForeignKey(nameof(MediaEntry))]
         public int MediaEntry_Id { get; set; }
+
+        internal protected ArticleMediaRelationalDto()
+        {
+        }
     }
 }
