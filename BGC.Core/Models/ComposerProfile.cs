@@ -47,7 +47,7 @@ namespace BGC.Core
         }
 
         /// <summary>
-        /// Adds images from the <paramref name="media"/> collection or updates existing ones.
+        /// Adds images from the <paramref name="media"/> collection or replaces existing ones with the newer versions.
         /// </summary>
         /// <param name="media"></param>
         public void UpdateMedia(IEnumerable<MediaTypeInfo> media)
