@@ -16,7 +16,7 @@ namespace BGC.Data.Relational.Repositories
     {
         private readonly LambdaTypeSubstitution<IComposerNameDto, NameRelationalDto> _expressionMap = new LambdaTypeSubstitution<IComposerNameDto, NameRelationalDto>();
 
-        public ComposersRepository(ComposerTypeMapper typeMapper, ComposerPropertyMapper propertyMapper, DbContext context) : base(typeMapper, propertyMapper, context)
+        public ComposersRepository(ComposerTypeMapper typeMapper, DbContext context) : base(typeMapper, context)
         {
         }
 
@@ -49,8 +49,8 @@ namespace BGC.Data.Relational.Repositories
             Shield.ArgumentNotNull(selector).ThrowOnError();
 
             Expression<Func<NameRelationalDto, bool>> mappedSelector = _expressionMap.ChangeLambdaType(selector);
-            var queryResult = DbContext.Set<NameRelationalDto>().Where(mappedSelector).GroupBy(n => n.Composer_Id).Select(group => group.First().Composer);
-
+            var queryResult = DbContext.Set<NameRelationalDto>().Where(mappedSelector).GroupBy(n => n.Composer_Id).Select(group => group.FirstOrDefault().Composer).ToList();
+            
             List<Composer> result = new List<Composer>();
             foreach (ComposerRelationalDto dto in queryResult)
             {

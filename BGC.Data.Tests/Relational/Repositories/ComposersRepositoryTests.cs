@@ -34,7 +34,6 @@ namespace BGC.Data.Relational.Repositories.ComposersRepositoryTests
             mockContext.Setup(d => d.Set<NameRelationalDto>()).Returns(namesSet);
             _composersRepository = new ComposersRepository(
                 typeMapper: new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory()),
-                propertyMapper: new ComposerPropertyMapper(),
                 context: mockContext.Object);
         }
 
@@ -93,6 +92,8 @@ namespace BGC.Data.Relational.Repositories.ComposersRepositoryTests
     {
         private ComposersRepository _repo;
         private bool _throwException = false;
+        private Mock<DbContext> _ctx;
+        private Mock<DbSet<ComposerRelationalDto>> _composerSet;
 
         private DbSet CustomDbSetFactory(Type t)
         {
@@ -106,6 +107,18 @@ namespace BGC.Data.Relational.Repositories.ComposersRepositoryTests
             }
         }
 
+        private DbSet<ComposerRelationalDto> CustomDbSetFactory()
+        {
+            if (_throwException)
+            {
+                throw new Exception();
+            }
+            else
+            {
+                return _composerSet.Object;
+            }
+        }
+
         public override void BeforeEachTest()
         {
             base.BeforeEachTest();
@@ -115,10 +128,12 @@ namespace BGC.Data.Relational.Repositories.ComposersRepositoryTests
 
         public override void OneTimeSetUp()
         {
-            Mock<DbContext> ctx = GetMockDbContext();
-            ctx.Setup(x => x.Set(It.IsAny<Type>())).Returns<Type>(CustomDbSetFactory);
+            _composerSet = GetMockDbSet<ComposerRelationalDto>();
+            _ctx = GetMockDbContext();
+            _ctx.Setup(x => x.Set(It.IsAny<Type>())).Returns<Type>(CustomDbSetFactory);
+            _ctx.Setup(x => x.Set<ComposerRelationalDto>()).Returns(CustomDbSetFactory);
 
-            _repo = new ComposersRepository(new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory()), new ComposerPropertyMapper(), ctx.Object);
+            _repo = new ComposersRepository(new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory()), _ctx.Object);
         }
 
         [Test]
@@ -135,12 +150,12 @@ namespace BGC.Data.Relational.Repositories.ComposersRepositoryTests
         [Test]
         public void DoesntSetDateAddedIfException()
         {
-            Composer entity = new Composer() { DateAdded = DateTime.MinValue };
+            Composer entity = new Composer();
             _throwException = true;
 
             Assert.Throws<Exception>(() => _repo.AddOrUpdate(entity));
 
-            Assert.AreEqual(DateTime.MinValue, entity.DateAdded);
+            Assert.AreEqual(null, entity.DateAdded);
         }
     }
 }

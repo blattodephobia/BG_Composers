@@ -20,7 +20,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
 {
     internal class EFRepoProxy : EntityFrameworkRepository<Guid, Composer, ComposerRelationalDto>
     {
-        public EFRepoProxy(BreakdownProxy breakdown, DbContext context) : base(breakdown, new ComposerPropertyMapper(), context)
+        public EFRepoProxy(BreakdownProxy breakdown, DbContext context) : base(breakdown, context)
         {
         }
 
@@ -44,7 +44,12 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
 
         protected override IEnumerable<RelationdalDtoBase> BreakdownInternal(Composer entity)
         {
-            return new[] { new ComposerRelationalDto() };
+            return new[] { BuildDtoInternal(entity) };
+        }
+
+        protected override ComposerRelationalDto BuildDtoInternal(Composer entity)
+        {
+            return new ComposerRelationalDto();
         }
 
         protected override Composer BuildInternal(ComposerRelationalDto dto)
@@ -117,8 +122,8 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             where TEntity : BgcEntity<TKey>
             where TRelationalDto : RelationdalDtoBase
         {
-            public IntermittentRepo(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, RelationalPropertyMapper<TEntity, TRelationalDto> propertyMapper, DbContext context) :
-                base(typeMapper, propertyMapper, context)
+            public IntermittentRepo(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, DbContext context) :
+                base(typeMapper, context)
             {
             }
 
@@ -143,7 +148,6 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             public EFGuidRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdAttrDto>>(new MockDtoFactory()).Object,
-                     new Mock<RelationalPropertyMapper<MediaTypeInfo, IdAttrDto>>().Object,
                      new Mock<DbContext>().Object)
             {
             }
@@ -169,7 +173,6 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             public EFKeyAttrRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, KeyAttrDto>>(new MockDtoFactory()).Object,
-                     new Mock<RelationalPropertyMapper<MediaTypeInfo, KeyAttrDto>>().Object,
                      new Mock<DbContext>().Object)
             {
             }
@@ -195,7 +198,6 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             public EFIdPropertyRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdPropertyDto>>(new MockDtoFactory()).Object,
-                     new Mock<RelationalPropertyMapper<MediaTypeInfo, IdPropertyDto>>().Object,
                      new Mock<DbContext>().Object)
             {
             }
@@ -220,7 +222,6 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             public EFNoIdPropertyRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, NoIdDto>>(new MockDtoFactory()).Object,
-                     new Mock<RelationalPropertyMapper<MediaTypeInfo, NoIdDto>>().Object,
                      new Mock<DbContext>().Object)
             {
             }

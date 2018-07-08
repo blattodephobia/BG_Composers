@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,7 +22,11 @@ namespace BGC.Data.Relational.Repositories
     {
         private readonly DbContext _dbContext;
         private readonly DomainTypeMapperBase<TEntity, TRelationalDto> _typeMapper;
-        private readonly RelationalPropertyMapper<TEntity, TRelationalDto> _propertyMapper;
+
+        private TRelationalDto FindFromContext(TKey key)
+        {
+            return DbContext.Set<TRelationalDto>().FirstOrDefault(GetFindPredicate(key));
+        }
 
         private PropertyInfo GetIdentityProperty()
         {
@@ -75,22 +80,23 @@ namespace BGC.Data.Relational.Repositories
             return result;
         }
 
-        public EntityFrameworkRepository(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, RelationalPropertyMapper<TEntity, TRelationalDto> propertyMapper, DbContext context)
+        public EntityFrameworkRepository(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, DbContext context)
         {
             Shield.ArgumentNotNull(typeMapper).ThrowOnError();
-            Shield.ArgumentNotNull(propertyMapper).ThrowOnError();
             Shield.ArgumentNotNull(context).ThrowOnError();
 
             _typeMapper = typeMapper;
-            _propertyMapper = propertyMapper;
             _dbContext = context;
         }
 
         protected virtual void AddOrUpdateInternal(TEntity entity)
         {
-            foreach (RelationdalDtoBase dto in _typeMapper.Breakdown(entity))
+            TRelationalDto dto = _typeMapper.BuildDto(entity);
+            DbSet<TRelationalDto> set = DbContext.Set<TRelationalDto>();
+
+            if (FindFromContext(entity.Id) == null)
             {
-                DbContext.Set(dto.GetType()).Add(dto);
+                set.Add(dto);
             }
         }
 
@@ -126,7 +132,7 @@ namespace BGC.Data.Relational.Repositories
 
         public virtual TEntity Find(TKey key)
         {
-            TRelationalDto dto = DbContext.Set<TRelationalDto>().FirstOrDefault(GetFindPredicate(key));
+            TRelationalDto dto = FindFromContext(key);
             if (dto != null)
             {
                 return TypeMapper.Build(dto);
