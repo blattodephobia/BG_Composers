@@ -55,6 +55,7 @@ namespace BGC.Web.App_Start
         {
             var dataLayerDependencyRegistration = new DataLayerDependencyRegistration(container);
             dataLayerDependencyRegistration.RegisterType(typeof(IRepository<>));
+            dataLayerDependencyRegistration.RegisterType(typeof(IComposerRepository));
             dataLayerDependencyRegistration.RegisterType(typeof(DbContext), new PerRequestLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IUnitOfWork), new PerRequestLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IUserStore<BgcUser, long>));
