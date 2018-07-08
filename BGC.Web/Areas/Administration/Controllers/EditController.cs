@@ -106,7 +106,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             Composer newComposer = new Composer();
             for (int i = 0; i < editedData.Articles.Count; i++)
             {
-                var name = new ComposerName(editedData.Articles[i].FullName, editedData.Articles[i].Language);
+                var name = new ComposerName(editedData.Articles[i].FullName, editedData.Articles[i].Language) { Composer = newComposer };
                 newComposer.LocalizedNames.Add(name);
                 newComposer.AddArticle(new ComposerArticle()
                 {
