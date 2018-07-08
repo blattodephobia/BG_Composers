@@ -180,14 +180,15 @@ namespace BGC.Core.Tests.Models.ComposerTests
         }
     }
 
-    [TestFixture]
-    public class AddArticleTests
+    public class AddArticleTests : TestFixtureBase
     {
         [Test]
-        public void ThrowsExceptionIfArticleIsArchived()
+        public void DoesntAddArchivedArticle()
         {
             var composer = new Composer();
-            Assert.Throws<InvalidOperationException>(() => composer.AddArticle(new ComposerArticle() { IsArchived = true }));
+            composer.AddArticle(new ComposerArticle() { IsArchived = true });
+
+            Assert.AreEqual(0, composer.GetArticles().Count());
         }
 
         [Test]

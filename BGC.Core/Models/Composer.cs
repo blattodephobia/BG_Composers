@@ -126,10 +126,15 @@ namespace BGC.Core
             }
         }
 
+        /// <summary>
+        /// Adds an article related to this <see cref="Composer"/> instance.
+        /// </summary>
+        /// <param name="article">The article to add. If it's already archived, it will not be added to the entity.</param>
         public void AddArticle(ComposerArticle article)
         {
             Shield.ArgumentNotNull(article, nameof(article)).ThrowOnError();
-            Shield.AssertOperation(article, !article.IsArchived, $"Cannot add an already archived article.").ThrowOnError();
+
+            if (article.IsArchived) return;
 
             IEnumerable<ComposerArticle> articlesToArchive = Articles.Where(a => !a.IsArchived && a.Language.Equals(article.Language));
             foreach (ComposerArticle oldArticle in articlesToArchive)
