@@ -144,7 +144,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             public int FalseId2 { get; set; }
         }
 
-        private class EFGuidRepo : IntermittentRepo<long, MediaTypeInfo, IdAttrDto>
+        private class EFGuidRepo : IntermittentRepo<Guid, MediaTypeInfo, IdAttrDto>
         {
             public EFGuidRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdAttrDto>>(new MockDtoFactory()).Object,
@@ -169,7 +169,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             public long ActualKey { get; set; }
         }
 
-        private class EFKeyAttrRepo : IntermittentRepo<long, MediaTypeInfo, KeyAttrDto>
+        private class EFKeyAttrRepo : IntermittentRepo<Guid, MediaTypeInfo, KeyAttrDto>
         {
             public EFKeyAttrRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, KeyAttrDto>>(new MockDtoFactory()).Object,
@@ -194,7 +194,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
 
         }
 
-        private class EFIdPropertyRepo : IntermittentRepo<long, MediaTypeInfo, IdPropertyDto>
+        private class EFIdPropertyRepo : IntermittentRepo<Guid, MediaTypeInfo, IdPropertyDto>
         {
             public EFIdPropertyRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, IdPropertyDto>>(new MockDtoFactory()).Object,
@@ -218,7 +218,7 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             public Guid OtherProperty { get; set; }
         }
 
-        private class EFNoIdPropertyRepo : IntermittentRepo<long, MediaTypeInfo, NoIdDto>
+        private class EFNoIdPropertyRepo : IntermittentRepo<Guid, MediaTypeInfo, NoIdDto>
         {
             public EFNoIdPropertyRepo() :
                 base(new Mock<DomainTypeMapperBase<MediaTypeInfo, NoIdDto>>(new MockDtoFactory()).Object,

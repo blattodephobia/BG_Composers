@@ -17,7 +17,7 @@ namespace BGC.Core.Tests.RepositoryExtensionsTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                RepositoryExtensions.Delete<long, MediaTypeInfo>(null, new[] { new MediaTypeInfo("image/*") });
+                RepositoryExtensions.Delete<Guid, MediaTypeInfo>(null, new[] { new MediaTypeInfo("image/*") });
             });
         }
 
@@ -26,7 +26,7 @@ namespace BGC.Core.Tests.RepositoryExtensionsTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                RepositoryExtensions.Delete<long, MediaTypeInfo>(null, new[] { new MediaTypeInfo("image/*") });
+                RepositoryExtensions.Delete<Guid, MediaTypeInfo>(null, new[] { new MediaTypeInfo("image/*") });
             });
         }
 
@@ -35,18 +35,18 @@ namespace BGC.Core.Tests.RepositoryExtensionsTests
         {
             Assert.Throws<ArgumentNullException>(() =>
             {
-                RepositoryExtensions.Delete(new Mock<INonQueryableRepository<long, MediaTypeInfo>>().Object, entity: null);
+                RepositoryExtensions.Delete(new Mock<INonQueryableRepository<Guid, MediaTypeInfo>>().Object, entity: null);
             });
         }
 
         [Test]
         public void CallsMethodCorrectly1()
         {
-            var repo = new Mock<INonQueryableRepository<long, MediaTypeInfo>>();
-            long[] callback = null;
-            repo.Setup(r => r.Delete(It.IsAny<long[]>())).Callback((long[] @params) => callback = @params.ToArray());
+            var repo = new Mock<INonQueryableRepository<Guid, MediaTypeInfo>>();
+            Guid[] callback = null;
+            repo.Setup(r => r.Delete(It.IsAny<Guid[]>())).Callback((Guid[] @params) => callback = @params.ToArray());
 
-            long[] keys = new[] { 0L, 12L, 7L };
+            Guid[] keys = new[] { new Guid(1, 0, 0, new byte[8]), new Guid(2, 0, 0, new byte[8]), new Guid(3, 0, 0, new byte[8]) };
             repo.Object.Delete(keys);
 
             Assert.IsTrue(callback.SequenceEqual(keys));
@@ -55,11 +55,11 @@ namespace BGC.Core.Tests.RepositoryExtensionsTests
         [Test]
         public void CallsMethodCorrectly2()
         {
-            var repo = new Mock<INonQueryableRepository<long, MediaTypeInfo>>();
+            var repo = new Mock<INonQueryableRepository<Guid, MediaTypeInfo>>();
             MediaTypeInfo callbackObj = null;
-            repo.Setup(r => r.Delete(It.Is<long[]>(x => x.Length == 1))).Callback((long[] key) => callbackObj = new MediaTypeInfo(@"image/*") { Id = key[0] });
+            repo.Setup(r => r.Delete(It.Is<Guid[]>(x => x.Length == 1))).Callback((Guid[] key) => callbackObj = new MediaTypeInfo(@"image/*") { Id = key[0] });
 
-            MediaTypeInfo deleteEntity = new MediaTypeInfo(@"image/*") { Id = 5 };
+            MediaTypeInfo deleteEntity = new MediaTypeInfo(@"image/*") { Id = new Guid(5, 0, 0, new byte[8]) };
             repo.Object.Delete(deleteEntity);
 
             Assert.AreEqual(deleteEntity.Id, callbackObj.Id);

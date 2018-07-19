@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace BGC.Core
 {
     [Table(nameof(MediaTypeInfo) + "s")] // Entity Framework maps this entity to "MediaTypeInfoes", which is incorrect
-    public class MediaTypeInfo : BgcEntity<long>
+    public class MediaTypeInfo : BgcEntity<Guid>
     {
         public static MediaTypeInfo NewExternalMedia(string location, ContentType mimeType = null)
         {
@@ -38,6 +38,8 @@ namespace BGC.Core
                 this.mimeType = new ContentType(value);
             }   
         }
+
+        public override Guid Id { get => StorageId; set => StorageId = value; }
 
         [Index]
         public Guid StorageId { get; set; }

@@ -19,6 +19,8 @@ namespace BGC.Core.Tests.Models
             {
                 var profile = new ComposerProfile();
                 var pic = new MediaTypeInfo("profile.jpg", MediaTypeNames.Image.Jpeg);
+
+                profile.ProfilePicture = pic;
             }
 
             [Test]
@@ -39,8 +41,8 @@ namespace BGC.Core.Tests.Models
             public void DoesntAddSameImageTwice()
             {
                 ComposerProfile profile = new ComposerProfile();
-                long id1 = 1;
-                long id2 = 2;
+                Guid id1 = new Guid(1, 0, 0, new byte[8]);
+                Guid id2 = new Guid(2, 0, 0, new byte[8]);
                 profile.Media = new List<MediaTypeInfo>()
                 {
                     new MediaTypeInfo("image/*") { Id = id1 },
@@ -48,7 +50,8 @@ namespace BGC.Core.Tests.Models
                 };
 
                 MediaTypeInfo existing = new MediaTypeInfo("image/*") { Id = id1 };
-                MediaTypeInfo @new = new MediaTypeInfo("image/*") { Id = 3 };
+                MediaTypeInfo @new = new MediaTypeInfo("image/*") { Id = new Guid(3, 0, 0, new byte[8]) };
+
                 profile.UpdateMedia(new[] { existing, @new });
 
                 Assert.AreSame(existing, profile.Media.First(m => m.Id == existing.Id));
@@ -61,8 +64,8 @@ namespace BGC.Core.Tests.Models
             {
                 ComposerProfile profile = new ComposerProfile();
 
-                MediaTypeInfo txt = new MediaTypeInfo("text/plain") { Id = 1 };
-                MediaTypeInfo image = new MediaTypeInfo("image/*") { Id = 3 };
+                MediaTypeInfo txt = new MediaTypeInfo("text/plain") { Id = new Guid(1, 0, 1, new byte[8]) };
+                MediaTypeInfo image = new MediaTypeInfo("image/*") { Id =  new Guid(1, 0, 3, new byte[8]) };
                 Assert.Throws<InvalidOperationException>(() => profile.UpdateMedia(new[] { txt, image, null }));
             }
         }
