@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Repositories
 {
-    internal abstract class EntityFrameworkRepository<TKey, TEntity, TRelationalDto> : INonQueryableRepository<TKey, TEntity>
+    internal class EntityFrameworkRepository<TKey, TEntity, TRelationalDto> : INonQueryableRepository<TKey, TEntity>
         where TKey : struct
         where TEntity : BgcEntity<TKey>
         where TRelationalDto : RelationdalDtoBase
