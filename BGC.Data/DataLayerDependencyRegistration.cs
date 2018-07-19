@@ -1,6 +1,7 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
 using BGC.Data.Relational;
+using BGC.Data.Relational.Mappings;
 using BGC.Data.Relational.Repositories;
 using CodeShield;
 using Microsoft.AspNet.Identity;
@@ -23,7 +24,11 @@ namespace BGC.Data
         {
             { typeof(IComposerRepository),       (c, lm, name) =>
                 {
-                    c.RegisterType<IDtoFactory, ComposersDbContext>(name, lm);
+                    if (!c.IsRegistered<IDtoFactory>())
+                    {
+                        c.RegisterType<IDtoFactory, ComposersDbContext>(name, lm);
+                    }
+
                     c.RegisterType<IComposerRepository, ComposersRepository>(name, lm);
                 }
             },
@@ -36,7 +41,19 @@ namespace BGC.Data
 					ComposersDbContext context = container.Resolve<ComposersDbContext>();
 					return new UserStore<BgcUser, BgcRole, long, BgcUserLogin, BgcUserRole, BgcUserClaim>(context);
 				}))
-            }
+            },
+            { typeof(INonQueryableRepository<Guid, MediaTypeInfo>), (c, lm, name) =>
+                {
+                    if (!c.IsRegistered<IDtoFactory>())
+                    {
+                        c.RegisterType<IDtoFactory, ComposersDbContext>(name, lm);
+                    }
+
+                    c.RegisterType<IMediaTypeInfoRepository, MediaTypeInfoRepository>(name, lm);
+                    c.RegisterInstance(new MediaTypeInfoPropertyMapper());
+                    c.RegisterType<MediaTypeInfoTypeMapper>(new ContainerControlledLifetimeManager());
+                }
+            },
         };
 
         private readonly IUnityContainer _container;

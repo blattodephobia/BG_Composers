@@ -60,6 +60,7 @@ namespace BGC.Web.App_Start
             dataLayerDependencyRegistration.RegisterType(typeof(IUnitOfWork), new PerRequestLifetimeManager());
             dataLayerDependencyRegistration.RegisterType(typeof(IUserStore<BgcUser, long>));
             dataLayerDependencyRegistration.RegisterType(typeof(IRoleStore<BgcRole, long>));
+            dataLayerDependencyRegistration.RegisterType(typeof(INonQueryableRepository<Guid, MediaTypeInfo>));
 
             var serviceLayerDependencyRegistration = new ServiceLayerDependencyRegistration(container);
             serviceLayerDependencyRegistration.RegisterType(typeof(IComposerDataService),   container);

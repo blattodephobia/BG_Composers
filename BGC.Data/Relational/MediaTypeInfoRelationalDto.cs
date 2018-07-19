@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(MediaTypeInfo))]
+    [Identity(nameof(StorageId))]
     public class MediaTypeInfoRelationalDto : RelationdalDtoBase
     {
         [Key]

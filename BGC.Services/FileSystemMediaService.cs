@@ -14,16 +14,23 @@ namespace BGC.Services
 {
     internal class FileSystemMediaService : FileSystemStorageService<Stream>, IMediaService
     {
-        protected IRepository<MediaTypeInfo> MetaDataRepository { get; private set; }
+        private readonly IMediaTypeInfoRepository _metaDataRepository;
 
-        public MultimediaContent GetMedia(Guid guid)
+        public MultimediaContent GetMedia(Guid storageId)
         {
-            MediaTypeInfo metadata = MetaDataRepository.All().FirstOrDefault(media => media.StorageId == guid);
-            var result = metadata != null
-                ? new MultimediaContent(GuidToFileName(guid)?.OpenRead(), metadata)
-                : null;
+            try
+            {
+                MediaTypeInfo metadata = _metaDataRepository.Find(storageId);
+                var result = metadata != null
+                    ? new MultimediaContent(GuidToFileName(storageId)?.OpenRead(), metadata)
+                    : null;
 
-            return result;
+                return result;
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
         }
 
         public override Stream GetEntry(Guid id)
@@ -53,12 +60,12 @@ namespace BGC.Services
 
         public override void RemoveEntry(Guid id)
         {
-            MediaTypeInfo entry = MetaDataRepository.All().FirstOrDefault(media => media.StorageId == id);
+            MediaTypeInfo entry = _metaDataRepository.Find(id);
             if (entry != null)
             {
-                MetaDataRepository.Delete(entry);
+                _metaDataRepository.Delete(entry);
                 base.RemoveEntry(id);
-                SaveAll();
+                _metaDataRepository.SaveChanges();
             }
         }
 
@@ -66,9 +73,9 @@ namespace BGC.Services
         {
             Guid storageId = StoreEntry(data);
             var mediaEntry = new MediaTypeInfo(fileName, contentType) { StorageId = storageId };
-            MetaDataRepository.Insert(mediaEntry);
+            _metaDataRepository.AddOrUpdate(mediaEntry);
 
-            SaveAll();
+            _metaDataRepository.SaveChanges();
 
             return storageId;
 
@@ -76,10 +83,10 @@ namespace BGC.Services
 
         public FileSystemMediaService(
             [Dependency(ServiceLayerDependencyRegistration.DefaultMediaStorageDirectoryKey)] DirectoryInfo storageDir,
-            IRepository<MediaTypeInfo> metaDataRepository) :
+            IMediaTypeInfoRepository metaDataRepository) :
             base(storageDir)
         {
-            MetaDataRepository = metaDataRepository;
+            _metaDataRepository = metaDataRepository;
         }
     }
 }

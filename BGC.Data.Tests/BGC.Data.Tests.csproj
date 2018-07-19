@@ -83,6 +83,7 @@
     <Compile Include="Relational\Mappings\ComposerTypeMapperTests.cs" />
     <Compile Include="Relational\Mappings\ComposerPropertyMapperTests.cs" />
     <Compile Include="Relational\Mappings\DomainTypeMapperBaseTests.cs" />
+    <Compile Include="Relational\Mappings\MediaTypeInfoTypeMapperTests.cs" />
     <Compile Include="Relational\Mappings\NameMapperTests.cs" />
     <Compile Include="Relational\Mappings\RelationalMapperTests.cs" />
     <Compile Include="Relational\Repositories\ComposersRepositoryTests.cs" />

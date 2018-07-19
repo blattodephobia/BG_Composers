@@ -115,6 +115,7 @@
     <Compile Include="Relational\Mappings\DomainTypeMapperBase.cs" />
     <Compile Include="Relational\Mappings\IDtoFactory.cs" />
     <Compile Include="Relational\Mappings\MediaTypeInfoPropertyMapper.cs" />
+    <Compile Include="Relational\Mappings\MediaTypeInfoTypeMapper.cs" />
     <Compile Include="Relational\Mappings\NamePropertyMapper.cs" />
     <Compile Include="Relational\Mappings\RelationalPropertyMapper.cs" />
     <Compile Include="Relational\MediaTypeInfoRelationalDto.cs" />
@@ -124,6 +125,7 @@
     <Compile Include="Relational\RelationdalDtoBase.cs" />
     <Compile Include="Relational\Repositories\ComposersRepository.cs" />
     <Compile Include="Relational\Repositories\EntityFrameworkRepository.cs" />
+    <Compile Include="Relational\Repositories\MediaTypeInfoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

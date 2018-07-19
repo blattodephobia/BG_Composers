@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BGC.Data;
 
-namespace BGC.Services.Tests
+namespace BGC.Services.Tests.FileSystemMediaStorageServiceTests
 {
     [TestFixture]
     public class GetMediaTests
@@ -20,8 +20,13 @@ namespace BGC.Services.Tests
         {
             Mock<IRepository<ComposerArticle>> mockArticleRepo = new Mock<IRepository<ComposerArticle>>();
             mockArticleRepo.SetupAllProperties();
-            Mock<IRepository<MediaTypeInfo>> mockMediaRepo = new Mock<IRepository<MediaTypeInfo>>();
-            mockMediaRepo.Setup(a => a.All()).Returns(new[] { new MediaTypeInfo("file", "image/jpeg") { StorageId = new Guid(1, 2, 3, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }) } }.AsQueryable());
+            Mock<IMediaTypeInfoRepository> mockMediaRepo = new Mock<IMediaTypeInfoRepository>();
+            var media = new MediaTypeInfo("file", "image/jpeg") { StorageId = new Guid(1, 2, 3, new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 }) };
+            Dictionary <Guid, MediaTypeInfo> backingStore = new Dictionary<Guid, MediaTypeInfo>()
+            {
+                { media.StorageId, media }
+            };
+            mockMediaRepo.Setup(a => a.Find(It.IsAny<Guid>())).Returns((Guid g) => backingStore[g]);
 
             FileSystemMediaService service = new FileSystemMediaService(
                 new DirectoryInfo(Environment.CurrentDirectory),
