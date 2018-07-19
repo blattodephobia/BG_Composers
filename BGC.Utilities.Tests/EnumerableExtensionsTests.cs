@@ -88,4 +88,29 @@ namespace BGC.Utilities.Tests.EnumerableExtensionsTests
             Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.AddRange(coll, null));
         }
     }
+
+    public class AddMissingRangeTests : TestFixtureBase
+    {
+        [Test]
+        public void ThrowsExceptionIfNullSource()
+        {
+            Assert.Throws<ArgumentNullException>(() => { EnumerableExtensions.AddMissingRange(null, new int[2]); });
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullTarget()
+        {
+            Assert.Throws<ArgumentNullException>(() => { EnumerableExtensions.AddMissingRange(new int[2], null); });
+        }
+
+        [Test]
+        public void AddsMissingItemsCorrectly()
+        {
+            HashSet<int> target = new HashSet<int>() { 1, 2, 3 };
+
+            target.AddMissingRange(new[] { 3, 4 });
+
+            Assert.IsTrue(target.OrderBy(x => x).SequenceEqual(new[] { 1, 2, 3, 4 }));
+        }
+    }
 }

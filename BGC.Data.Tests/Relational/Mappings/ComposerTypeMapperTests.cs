@@ -155,7 +155,41 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         }
 
         [Test]
-        public void RemovesMissingItems()
+        public void RemovesMissingNonArticleItems()
+        {
+            Mock<MockDtoFactory> factory = new Mock<MockDtoFactory>() { CallBase = true };
+            ComposerTypeMapper mapper = new ComposerTypeMapper(new ComposerMappers(), factory.Object);
+            Guid[] idPool = new Guid[] { new Guid(1, 2, 3, new byte[8]), new Guid(4, 5, 6, new byte[8]), new Guid(7, 8, 9, new byte[8]) };
+            ComposerRelationalDto dto = new ComposerRelationalDto()
+            {
+                Media = new List<MediaTypeInfoRelationalDto>()
+                {
+                    new MediaTypeInfoRelationalDto() { StorageId = idPool[0] },
+                    new MediaTypeInfoRelationalDto() { StorageId = idPool[1] },
+                },
+                Articles = new List<ArticleRelationalDto>()
+                {
+                    new ArticleRelationalDto() { StorageId = idPool[2] }
+                },
+            };
+            factory.Setup(x => x.ActivateObject(It.Is<Type>(type => type == typeof(ComposerRelationalDto)))).Returns((Type t) => dto);
+
+            var entity = new Composer()
+            {
+                Profile = new ComposerProfile()
+                {
+                    Media = new List<MediaTypeInfo>() { new MediaTypeInfo(@"image/*") { StorageId = idPool[0] } }
+                }
+            };
+            
+            ComposerRelationalDto result = mapper.BuildDto(entity);
+
+            Assert.AreEqual(1, result.Media.Count);
+            Assert.AreEqual(idPool[0], result.Media.First().StorageId);
+        }
+
+        [Test]
+        public void PreservesArticleEntries()
         {
             Mock<MockDtoFactory> factory = new Mock<MockDtoFactory>() { CallBase = true };
             ComposerTypeMapper mapper = new ComposerTypeMapper(new ComposerMappers(), factory.Object);
@@ -182,11 +216,12 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
                 }
             };
 
+            int originalArticlesCount = dto.Articles.Count;
+
             ComposerRelationalDto result = mapper.BuildDto(entity);
 
-            Assert.AreEqual(1, result.Media.Count);
-            Assert.AreEqual(idPool[0], result.Media.First().StorageId);
-            Assert.AreEqual(0, result.Articles.Count);
+            Assert.AreEqual(originalArticlesCount, result.Articles.Count);
+
         }
     }
 

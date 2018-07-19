@@ -1,4 +1,5 @@
 ﻿using BGC.Core;
+using BGC.Utilities;
 using CodeShield;
 using System;
 using System.Collections.Generic;
@@ -108,8 +109,8 @@ namespace BGC.Data.Relational.Mappings
             var articleDtos = from article in entity.GetArticles(includeArchived: true)
                               let articleDto = GetArticleDto(composer, article)
                               select _articleMapper.CopyData(article, articleDto);
-            SyncCollection(articleDtos, composer.Articles);
-
+            composer.Articles.AddMissingRange(articleDtos);
+            
             if (entity.Profile != null)
             {
                 var mediaDtos = from media in entity.Profile.Media
@@ -141,6 +142,11 @@ namespace BGC.Data.Relational.Mappings
             {
                 var culture = CultureInfo.GetCultureInfo(article.Language);
                 result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
+            }
+
+            foreach (MediaTypeInfoRelationalDto media in dto.Media)
+            {
+                result.Profile.Media.Add(_mediaTypeInfoMapper.CopyData(media, new MediaTypeInfo(media.MimeType)));
             }
 
             return result;

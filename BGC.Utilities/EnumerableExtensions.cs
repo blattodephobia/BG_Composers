@@ -56,5 +56,25 @@ namespace BGC.Utilities
                 }
             }
         }
+
+        /// <summary>
+        /// Adds all items from <paramref name="items"/> that are not present in the <paramref name="collection"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="items"></param>
+        public static void AddMissingRange<T>(this ICollection<T> collection, IEnumerable<T> items)
+        {
+            Shield.ArgumentNotNull(collection).ThrowOnError();
+            Shield.ArgumentNotNull(items).ThrowOnError();
+            
+            foreach (T item in items)
+            {
+                if (!collection.Contains(item))
+                {
+                    collection.Add(item);
+                }
+            }
+        }
     }
 }
