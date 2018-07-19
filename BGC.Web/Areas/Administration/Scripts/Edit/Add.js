@@ -65,12 +65,16 @@ $(document).ready(function ()
             {
                 if (this.readyState == 4 && this.status == 200)
                 {
-                    var localDiv = div;
+                    var $localDiv = $(div);
                     var img = document.createElement("img");
                     img.src = this.responseText;
-                    $(localDiv).append($(img));
+                    $localDiv.append($(img));
                     var imageIndex = $("#imgInputs > input[type='hidden']").length;
-                    $("#imgInputs").append('<input name="ImageSources[' + imageIndex + ']" type="hidden" value="' + this.responseText + '"></input>');
+                    var locationHtml = '<input name="ImageSources[' + imageIndex + '].Location" type="hidden" value="' + this.responseText + '"></input>';
+                    var preferredCheckBoxHtml = '<input name="ImageSources[' + imageIndex + '].Preferred" type="checkbox" value="' + this.responseText + '"></input>';
+                    $localDiv.append(locationHtml);
+                    $localDiv.append(preferredCheckBoxHtml);
+                    $("#imgInputs").append($localDiv);
                 }
             };
 

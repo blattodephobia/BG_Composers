@@ -298,6 +298,7 @@
     <Compile Include="Areas\Administration\ViewModels\GlossaryDefinitionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\GlossaryEntryViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\GlossaryListViewModel.cs" />
+    <Compile Include="Areas\Administration\ViewModels\ImageViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ListArticlesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />

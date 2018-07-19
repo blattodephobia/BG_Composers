@@ -132,10 +132,10 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             _controller.Update_Post(new UpdateComposerViewModel()
             {
                 ComposerId = _composer.Id,
-                ImageSources = new List<string>()
+                Images = new List<ImageViewModel>()
                 {
-                    $"http://localhost/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}",
-                    externalImageLocation
+                    new ImageViewModel($"http://localhost/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}"),
+                    new ImageViewModel(externalImageLocation)
                 }
             });
 
@@ -174,7 +174,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             _composer.Profile.Media = new MediaTypeInfo[] { new MediaTypeInfo("image/jpeg") { ExternalLocation = "www.google.com" } };
 
             string newImageLocation = "http://google.com/else";
-            _controller.Update_Post(new UpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new string[] { newImageLocation }));
+            _controller.Update_Post(new UpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new[] { new ImageViewModel(newImageLocation) }));
 
             Assert.AreEqual(1, _composer.Profile.Media.Count);
             Assert.AreEqual(newImageLocation, _composer.Profile.Media.First().ExternalLocation);

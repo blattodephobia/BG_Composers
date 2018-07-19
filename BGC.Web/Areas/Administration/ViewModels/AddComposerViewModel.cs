@@ -11,12 +11,12 @@ namespace BGC.Web.Areas.Administration.ViewModels
     {
         public List<AddArticleViewModel> Articles { get; set; }
         
-        public List<string> ImageSources { get; set; }
+        public List<ImageViewModel> Images { get; set; }
 
         public AddComposerViewModel()
         {
             Articles = new List<AddArticleViewModel>();
-            ImageSources = new List<string>();
+            Images = new List<ImageViewModel>();
         }
 
         public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles)
@@ -24,16 +24,16 @@ namespace BGC.Web.Areas.Administration.ViewModels
             Shield.ArgumentNotNull(articles).ThrowOnError();
 
             Articles = articles.ToList();
-            ImageSources = new List<string>();
+            Images = new List<ImageViewModel>();
         }
 
-        public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<string> imageSources)
+        public AddComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<ImageViewModel> imageSources)
         {
             Shield.ArgumentNotNull(articles).ThrowOnError();
             Shield.ArgumentNotNull(imageSources).ThrowOnError();
 
             Articles = articles.ToList();
-            ImageSources = imageSources.ToList();
+            Images = imageSources.ToList();
         }
     }
 }

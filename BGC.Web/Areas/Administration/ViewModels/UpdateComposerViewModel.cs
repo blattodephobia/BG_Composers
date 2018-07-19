@@ -15,7 +15,7 @@ namespace BGC.Web.Areas.Administration.ViewModels
         {
         }
 
-        public UpdateComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<string> imageSources) :
+        public UpdateComposerViewModel(IEnumerable<AddArticleViewModel> articles, IEnumerable<ImageViewModel> imageSources) :
             base(articles, imageSources)
         {
         }

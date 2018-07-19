@@ -52,9 +52,9 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         private List<MediaTypeInfo> IdentifyImages(AddComposerViewModel vm)
         {
-            return vm.ImageSources.Select(s =>
+            return vm.Images.Select(s =>
             {
-                var uri = new Uri(s);
+                var uri = new Uri(s.Location);
                 MediaTypeInfo result = null;
                 if (uri.Host == Request.Url.Host)
                 {
@@ -136,7 +136,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 FullName = composer.Name[a.Language].FullName,
                 Language = a.Language,
             });
-            IEnumerable<string> imageSources = composer.Profile?.Images().Select(m => GetImageUrl(m)) ?? Enumerable.Empty<string>();
+            IEnumerable<ImageViewModel> imageSources = composer.Profile?.Images().Select(m => new ImageViewModel(GetImageUrl(m))) ?? Enumerable.Empty<ImageViewModel>();
             var model = new UpdateComposerViewModel(articles, imageSources)
             {
                 Order = composer.HasNamesakes ? (int?)composer.Order : null,
