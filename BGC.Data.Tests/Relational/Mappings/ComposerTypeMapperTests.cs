@@ -30,12 +30,29 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
     public class BuildDtoTests : TestFixtureBase
     {
         private readonly ComposerTypeMapper _standardBreakdown;
+        private readonly Func<object, object, object> _defaultIntermediateCallback;
+        private readonly MockDtoFactory _dtoFactory;
 
         public BuildDtoTests()
         {
-            _standardBreakdown = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
+            _defaultIntermediateCallback = (p, d) =>
+            {
+                if ((p is ComposerRelationalDto) && (d is MediaTypeInfoRelationalDto))
+                {
+                    return ComposerMediaRelationalDto.Create(p as ComposerRelationalDto, d as MediaTypeInfoRelationalDto);
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            };
+            _dtoFactory = new MockDtoFactory()
+            {
+                IntermediateDtoCallback = _defaultIntermediateCallback
+            };
+            _standardBreakdown = new ComposerTypeMapper(new ComposerMappers(), _dtoFactory);
         }
-
+        
         [Test]
         public void MapNames()
         {
@@ -94,9 +111,9 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             profile.Media.Add(otherMedia);
 
             ComposerRelationalDto dto = _standardBreakdown.BuildDto(c);
-            ICollection<MediaTypeInfoRelationalDto> media = dto.Media;
+            ICollection<ComposerMediaRelationalDto> media = dto.Media;
             MediaTypeInfoRelationalDto profilePicDto = dto.ProfilePicture;
-            MediaTypeInfoRelationalDto otherMediaDto = media.FirstOrDefault(m => m.StorageId == otherMedia.StorageId);
+            MediaTypeInfoRelationalDto otherMediaDto = media.FirstOrDefault(m => m.MediaEntry.StorageId == otherMedia.StorageId).MediaEntry;
 
             Assert.IsNotNull(profilePicDto, "Profile picture wasn't copied at all.");
             Assert.AreEqual(profilePic.StorageId, profilePicDto.StorageId);
@@ -148,29 +165,29 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             profile.Media.Add(otherMedia);
 
             ComposerRelationalDto composer = _standardBreakdown.BuildDto(c);
-            ICollection<MediaTypeInfoRelationalDto> media = composer.Media;
+            ICollection<ComposerMediaRelationalDto> media = composer.Media;
 
             Assert.AreEqual(profilePic.StorageId, composer.ProfilePicture.StorageId);
-            Assert.AreEqual(1, media.Count(m => m.StorageId == otherMedia.StorageId && m.OriginalFileName == otherMedia.OriginalFileName));
+            Assert.AreEqual(1, media.Count(m => m.MediaEntry.StorageId == otherMedia.StorageId && m.MediaEntry.OriginalFileName == otherMedia.OriginalFileName));
         }
 
         [Test]
         public void RemovesMissingNonArticleItems()
         {
             Mock<MockDtoFactory> factory = new Mock<MockDtoFactory>() { CallBase = true };
+            factory.SetupAllProperties();
+            factory.Object.IntermediateDtoCallback = _defaultIntermediateCallback;
             ComposerTypeMapper mapper = new ComposerTypeMapper(new ComposerMappers(), factory.Object);
             Guid[] idPool = new Guid[] { new Guid(1, 2, 3, new byte[8]), new Guid(4, 5, 6, new byte[8]), new Guid(7, 8, 9, new byte[8]) };
-            ComposerRelationalDto dto = new ComposerRelationalDto()
+            ComposerRelationalDto dto = new ComposerRelationalDto();
+            dto.Media = new List<ComposerMediaRelationalDto>()
             {
-                Media = new List<MediaTypeInfoRelationalDto>()
-                {
-                    new MediaTypeInfoRelationalDto() { StorageId = idPool[0] },
-                    new MediaTypeInfoRelationalDto() { StorageId = idPool[1] },
-                },
-                Articles = new List<ArticleRelationalDto>()
-                {
-                    new ArticleRelationalDto() { StorageId = idPool[2] }
-                },
+                ComposerMediaRelationalDto.Create(dto, new MediaTypeInfoRelationalDto() { StorageId = idPool[0] }),
+                ComposerMediaRelationalDto.Create(dto, new MediaTypeInfoRelationalDto() { StorageId = idPool[1] }),
+            };
+            dto.Articles = new List<ArticleRelationalDto>()
+            {
+                new ArticleRelationalDto() { StorageId = idPool[2] }
             };
             factory.Setup(x => x.ActivateObject(It.Is<Type>(type => type == typeof(ComposerRelationalDto)))).Returns((Type t) => dto);
 
@@ -185,26 +202,26 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
             ComposerRelationalDto result = mapper.BuildDto(entity);
 
             Assert.AreEqual(1, result.Media.Count);
-            Assert.AreEqual(idPool[0], result.Media.First().StorageId);
+            Assert.AreEqual(idPool[0], result.Media.First().MediaEntry.StorageId);
         }
 
         [Test]
         public void PreservesArticleEntries()
         {
             Mock<MockDtoFactory> factory = new Mock<MockDtoFactory>() { CallBase = true };
+            factory.SetupAllProperties();
+            factory.Object.IntermediateDtoCallback = _defaultIntermediateCallback;
             ComposerTypeMapper mapper = new ComposerTypeMapper(new ComposerMappers(), factory.Object);
             Guid[] idPool = new Guid[] { new Guid(1, 2, 3, new byte[8]), new Guid(4, 5, 6, new byte[8]), new Guid(7, 8, 9, new byte[8]) };
-            ComposerRelationalDto dto = new ComposerRelationalDto()
+            ComposerRelationalDto dto = new ComposerRelationalDto();
+            dto.Media = new List<ComposerMediaRelationalDto>()
             {
-                Media = new List<MediaTypeInfoRelationalDto>()
-                {
-                    new MediaTypeInfoRelationalDto() { StorageId = idPool[0] },
-                    new MediaTypeInfoRelationalDto() { StorageId = idPool[1] },
-                },
-                Articles = new List<ArticleRelationalDto>()
-                {
-                    new ArticleRelationalDto() { StorageId = idPool[2] }
-                },
+                ComposerMediaRelationalDto.Create(dto, new MediaTypeInfoRelationalDto() { StorageId = idPool[0] }),
+                ComposerMediaRelationalDto.Create(dto, new MediaTypeInfoRelationalDto() { StorageId = idPool[1] }),
+            };
+            dto.Articles = new List<ArticleRelationalDto>()
+            {
+                new ArticleRelationalDto() { StorageId = idPool[2] }
             };
             factory.Setup(x => x.ActivateObject(It.Is<Type>(type => type == typeof(ComposerRelationalDto)))).Returns((Type t) => dto);
 

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace BGC.Data.Relational
 {
     [Table(nameof(Composer))]
+    [Identity(nameof(Id))]
     public class ComposerRelationalDto : RelationdalDtoBase
     {
         [Key]
@@ -37,11 +38,11 @@ namespace BGC.Data.Relational
         public int Order { get; set; }
 
         [ForeignKey(nameof(ProfilePicture))]
-        public int? ProfilPicture_Id { get; set; }
+        public int? ProfilePicture_Id { get; set; }
 
         public virtual MediaTypeInfoRelationalDto ProfilePicture { get; set; }
 
-        public virtual ICollection<MediaTypeInfoRelationalDto> Media { get; set; } = new HashSet<MediaTypeInfoRelationalDto>();
+        public virtual ICollection<ComposerMediaRelationalDto> Media { get; set; } = new HashSet<ComposerMediaRelationalDto>();
 
         internal protected ComposerRelationalDto()
         {

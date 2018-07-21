@@ -18,5 +18,9 @@ namespace BGC.Data.Relational
         /// <param name="mapper"></param>
         /// <returns></returns>
         TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase;
+
+        IIntermediateRelationalDto<TPrinicpalDto, TDependantDto> GetIntermediateDto<TPrinicpalDto, TDependantDto>(TPrinicpalDto principal, TDependantDto dependantEntity)
+            where TPrinicpalDto : RelationdalDtoBase
+            where TDependantDto : RelationdalDtoBase;
     }
 }

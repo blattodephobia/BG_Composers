@@ -3,6 +3,8 @@ using BGC.Core.Models;
 using BGC.Data.Conventions;
 using BGC.Data.Relational;
 using BGC.Data.Relational.Mappings;
+using BGC.Utilities;
+using CodeShield;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
 using System;
@@ -31,6 +33,8 @@ namespace BGC.Data.Relational
 		public DbSet<NameRelationalDto> LocalizedComposerNames { get; set; }
 
         public DbSet<MediaTypeInfoRelationalDto> ContentMedia { get; set; }
+
+        public DbSet<ComposerMediaRelationalDto> ComposerMedia { get; set; }
 
         public DbSet<Invitation> Invitations { get; set; }
 
@@ -124,6 +128,35 @@ namespace BGC.Data.Relational
                 : set.Create<TRelationalDto>();
 
             return result;
+        }
+
+        public IIntermediateRelationalDto<TPrincipalDto, TDependantDto> GetIntermediateDto<TPrincipalDto, TDependantDto>(TPrincipalDto principal, TDependantDto dependantEntity)
+            where TPrincipalDto : RelationdalDtoBase
+            where TDependantDto : RelationdalDtoBase
+        {
+            object[] principalKeys = Utilities.DtoUtils.GetKeys(principal);
+            object[] dependantKeys = Utilities.DtoUtils.GetKeys(dependantEntity);
+            object[] keys = new object[principalKeys.Length + dependantKeys.Length];
+            
+            Array.Copy(principalKeys, keys, principalKeys.Length);
+            Array.Copy(dependantKeys, keys, dependantKeys.Length);
+
+            var dbSets = from property in GetType().GetProperties()
+                         let type = property.PropertyType
+                         where type.IsGenericType && type.GetGenericTypeDefinition() == typeof(DbSet<>)
+                         select type;
+            var targetDtos = from dbSet in dbSets
+                             let typeArg = dbSet.GenericTypeArguments[0]
+                             where typeof(IIntermediateRelationalDto<TPrincipalDto, TDependantDto>).IsAssignableFrom(typeArg)
+                             select typeArg;
+
+            Shield.AssertOperation(
+                typeof(IIntermediateRelationalDto<TPrincipalDto, TDependantDto>),
+                targetDtos.Count() == 1,
+                $"There are no or more than one intermediate DTOs for the relationship between {typeof(TPrincipalDto)} and {typeof(TDependantDto)}").ThrowOnError();
+
+            DbSet set = Set(targetDtos.First());
+            return (set.Find(keys) ?? set.Create()) as IIntermediateRelationalDto<TPrincipalDto, TDependantDto>;
         }
     }
 }

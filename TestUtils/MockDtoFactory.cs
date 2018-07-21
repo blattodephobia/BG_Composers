@@ -15,9 +15,16 @@ namespace TestUtils
             return ActivateObject(typeof(TRelationalDto)) as TRelationalDto;
         }
 
+        IIntermediateRelationalDto<TPrinicpalDto, TDependantDto> IDtoFactory.GetIntermediateDto<TPrinicpalDto, TDependantDto>(TPrinicpalDto principal, TDependantDto dependantEntity)
+        {
+            return (IIntermediateRelationalDto<TPrinicpalDto, TDependantDto>)IntermediateDtoCallback?.Invoke(principal, dependantEntity);
+        }
+
         public virtual object ActivateObject(Type type)
         {
             return Activator.CreateInstance(type, nonPublic: true);
         }
+
+        public Func<object, object, object> IntermediateDtoCallback { get; set; }
     }
 }

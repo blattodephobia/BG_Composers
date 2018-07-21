@@ -45,11 +45,11 @@ namespace BGC.Data.Migrations
                         DateOfBirth = c.DateTime(precision: 0),
                         DateOfDeath = c.DateTime(precision: 0),
                         Order = c.Int(nullable: false),
-                        ProfilPicture_Id = c.Int(),
+                        ProfilePicture_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.MediaTypeInfo", t => t.ProfilPicture_Id)
-                .Index(t => t.ProfilPicture_Id);
+                .ForeignKey("dbo.MediaTypeInfo", t => t.ProfilePicture_Id)
+                .Index(t => t.ProfilePicture_Id);
             
             CreateTable(
                 "dbo.ComposerName",
@@ -65,6 +65,20 @@ namespace BGC.Data.Migrations
                 .Index(t => t.Composer_Id);
             
             CreateTable(
+                "dbo.ComposerMediaRelationalDtoes",
+                c => new
+                    {
+                        Composer_Id = c.Guid(nullable: false),
+                        MediaTypeInfo_Id = c.Int(nullable: false),
+                        Purpose = c.String(unicode: false),
+                    })
+                .PrimaryKey(t => new { t.Composer_Id, t.MediaTypeInfo_Id })
+                .ForeignKey("dbo.Composer", t => t.Composer_Id, cascadeDelete: true)
+                .ForeignKey("dbo.MediaTypeInfo", t => t.MediaTypeInfo_Id, cascadeDelete: true)
+                .Index(t => t.Composer_Id)
+                .Index(t => t.MediaTypeInfo_Id);
+            
+            CreateTable(
                 "dbo.MediaTypeInfo",
                 c => new
                     {
@@ -73,12 +87,9 @@ namespace BGC.Data.Migrations
                         StorageId = c.Guid(nullable: false),
                         OriginalFileName = c.String(unicode: false),
                         ExternalLocation = c.String(unicode: false),
-                        ComposerRelationalDto_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composer", t => t.ComposerRelationalDto_Id)
-                .Index(t => t.StorageId)
-                .Index(t => t.ComposerRelationalDto_Id);
+                .Index(t => t.StorageId);
             
             CreateTable(
                 "dbo.GlossaryEntries",
@@ -269,8 +280,9 @@ namespace BGC.Data.Migrations
             DropForeignKey("dbo.ComposerArticle_MediaTypeInfo", "MediaEntry_Id", "dbo.MediaTypeInfo");
             DropForeignKey("dbo.ComposerArticle_MediaTypeInfo", "Article_Id", "dbo.ComposerArticle");
             DropForeignKey("dbo.ComposerArticle", "Composer_Id", "dbo.Composer");
-            DropForeignKey("dbo.Composer", "ProfilPicture_Id", "dbo.MediaTypeInfo");
-            DropForeignKey("dbo.MediaTypeInfo", "ComposerRelationalDto_Id", "dbo.Composer");
+            DropForeignKey("dbo.Composer", "ProfilePicture_Id", "dbo.MediaTypeInfo");
+            DropForeignKey("dbo.ComposerMediaRelationalDtoes", "MediaTypeInfo_Id", "dbo.MediaTypeInfo");
+            DropForeignKey("dbo.ComposerMediaRelationalDtoes", "Composer_Id", "dbo.Composer");
             DropForeignKey("dbo.ComposerName", "Composer_Id", "dbo.Composer");
             DropIndex("dbo.InvitationBgcRoles", new[] { "BgcRole_Id" });
             DropIndex("dbo.InvitationBgcRoles", new[] { "Invitation_Id" });
@@ -286,10 +298,11 @@ namespace BGC.Data.Migrations
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Invitations", new[] { "Sender_Id" });
             DropIndex("dbo.GlossaryDefinitions", new[] { "GlossaryEntry_Id" });
-            DropIndex("dbo.MediaTypeInfo", new[] { "ComposerRelationalDto_Id" });
             DropIndex("dbo.MediaTypeInfo", new[] { "StorageId" });
+            DropIndex("dbo.ComposerMediaRelationalDtoes", new[] { "MediaTypeInfo_Id" });
+            DropIndex("dbo.ComposerMediaRelationalDtoes", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerName", new[] { "Composer_Id" });
-            DropIndex("dbo.Composer", new[] { "ProfilPicture_Id" });
+            DropIndex("dbo.Composer", new[] { "ProfilePicture_Id" });
             DropIndex("dbo.ComposerArticle", new[] { "Composer_Id" });
             DropIndex("dbo.ComposerArticle", new[] { "StorageId" });
             DropIndex("dbo.ComposerArticle_MediaTypeInfo", new[] { "MediaEntry_Id" });
@@ -308,6 +321,7 @@ namespace BGC.Data.Migrations
             DropTable("dbo.GlossaryDefinitions");
             DropTable("dbo.GlossaryEntries");
             DropTable("dbo.MediaTypeInfo");
+            DropTable("dbo.ComposerMediaRelationalDtoes");
             DropTable("dbo.ComposerName");
             DropTable("dbo.Composer");
             DropTable("dbo.ComposerArticle");

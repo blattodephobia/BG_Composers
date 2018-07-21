@@ -60,6 +60,35 @@ namespace BGC.Data.Relational.Mappings
 
         private MediaTypeInfoRelationalDto GetMediaDto(MediaTypeInfo entity) => DtoFactory.GetDtoFor(entity, _mediaTypeInfoMapper);
 
+        private void UpdateMedia(Composer entity, ComposerRelationalDto composer)
+        {
+            var mediaDtos = from media in entity.Profile.Media
+                            let mediaDto = _mediaTypeInfoMapper.CopyData(media, GetMediaDto(media))
+                            select DtoFactory.GetIntermediateDto(composer, mediaDto) as ComposerMediaRelationalDto;
+            SyncCollection(mediaDtos, composer.Media);
+
+            if (entity.Profile.ProfilePicture != null)
+            {
+                composer.ProfilePicture = _mediaTypeInfoMapper.CopyData(entity.Profile.ProfilePicture, GetMediaDto(entity.Profile.ProfilePicture));
+            }
+        }
+
+        private void UpdateArticles(Composer entity, ComposerRelationalDto composer)
+        {
+            var articleDtos = from article in entity.GetArticles(includeArchived: true)
+                              let articleDto = GetArticleDto(composer, article)
+                              select _articleMapper.CopyData(article, articleDto);
+            composer.Articles.AddMissingRange(articleDtos);
+        }
+
+        private void UpdateNames(Composer entity, ComposerRelationalDto composer)
+        {
+            var nameDtos = from nameKvp in entity.Name.All()
+                           let nameDto = GetNameDto(composer, nameKvp.Value)
+                           select _nameMapper.CopyData(nameKvp.Value, nameDto);
+            SyncCollection(nameDtos, composer.LocalizedNames);
+        }
+
         protected override IEnumerable<RelationdalDtoBase> BreakdownInternal(Composer entity)
         {
             List<RelationdalDtoBase> dtos = new List<RelationdalDtoBase>();
@@ -101,27 +130,12 @@ namespace BGC.Data.Relational.Mappings
             ComposerRelationalDto composer = DtoFactory.GetDtoFor(entity, _composerMapper);
             _composerMapper.CopyData(entity, composer);
 
-            var nameDtos = from nameKvp in entity.Name.All()
-                           let nameDto = GetNameDto(composer, nameKvp.Value)
-                           select _nameMapper.CopyData(nameKvp.Value, nameDto);
-            SyncCollection(nameDtos, composer.LocalizedNames);
+            UpdateNames(entity, composer);
+            UpdateArticles(entity, composer);
 
-            var articleDtos = from article in entity.GetArticles(includeArchived: true)
-                              let articleDto = GetArticleDto(composer, article)
-                              select _articleMapper.CopyData(article, articleDto);
-            composer.Articles.AddMissingRange(articleDtos);
-            
             if (entity.Profile != null)
             {
-                var mediaDtos = from media in entity.Profile.Media
-                                let mediaDto = _mediaTypeInfoMapper.CopyData(media, GetMediaDto(media))
-                                select mediaDto;
-                SyncCollection(mediaDtos, composer.Media);                
-
-                if (entity.Profile.ProfilePicture != null)
-                {
-                    composer.ProfilePicture = _mediaTypeInfoMapper.CopyData(entity.Profile.ProfilePicture, GetMediaDto(entity.Profile.ProfilePicture));
-                }
+                UpdateMedia(entity, composer);
             }
 
             return composer;
@@ -144,9 +158,9 @@ namespace BGC.Data.Relational.Mappings
                 result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
             }
 
-            foreach (MediaTypeInfoRelationalDto media in dto.Media)
+            foreach (ComposerMediaRelationalDto media in dto.Media)
             {
-                result.Profile.Media.Add(_mediaTypeInfoMapper.CopyData(media, new MediaTypeInfo(media.MimeType)));
+                result.Profile.Media.Add(_mediaTypeInfoMapper.CopyData(media.MediaEntry, new MediaTypeInfo(media.MediaEntry.MimeType)));
             }
 
             return result;
