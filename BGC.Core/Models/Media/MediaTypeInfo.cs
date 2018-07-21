@@ -39,7 +39,11 @@ namespace BGC.Core
             }   
         }
 
-        public override Guid Id { get => StorageId; set => StorageId = value; }
+        public override Guid Id
+        {
+            get { return StorageId; }
+            set { StorageId = value; }
+        }
 
         [Index]
         public Guid StorageId { get; set; }
