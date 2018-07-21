@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
+using TestUtils;
 
 namespace BGC.Utilities.Tests
 {
@@ -275,6 +277,54 @@ namespace BGC.Utilities.Tests
 
             Assert.AreEqual(1, actual.Count());
             Assert.AreEqual(expected.Single(), actual.Single());
+        }
+    }
+
+    public class GetPropertiesTests : TestFixtureBase
+    {
+        internal class Base
+        {
+            public string ReferenceType { get; set; }
+
+            public int ValueType { get; set; }
+        }
+
+        internal class Derived : Base
+        {
+            public char ChildProperty { get; set; }
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullCollections()
+        {
+            Assert.Throws<ArgumentNullException>(() => Expressions.GetPropertiesAccessor<GetPropertiesTests>(null));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfPropertiesFromDifferentType()
+        {
+            Assert.Throws<AmbiguousMatchException>(() => Expressions.GetPropertiesAccessor<GetPropertiesTests>(typeof(List<>).GetProperties()));
+        }
+
+        [Test]
+        public void GetsPropertiesOfBasicType()
+        {
+            Base obj = new Base() { ReferenceType = "hi", ValueType = 7 };
+            object[] propertyValues = Expressions.GetPropertiesAccessor<Base>(typeof(Base).GetProperties()).Invoke(obj);
+
+            Assert.IsTrue(propertyValues.FirstOrDefault(o => o.Equals(obj.ValueType)) != null);
+            Assert.IsTrue(propertyValues.FirstOrDefault(o => o.Equals(obj.ReferenceType)) != null);
+        }
+
+        [Test]
+        public void GetsPropertiesOfDerivedType()
+        {
+            Derived obj = new Derived() { ReferenceType = "hi", ValueType = 7, ChildProperty = 'N' };
+            object[] propertyValues = Expressions.GetPropertiesAccessor<Derived>(typeof(Derived).GetProperties()).Invoke(obj);
+
+            Assert.IsTrue(propertyValues.FirstOrDefault(o => o.Equals(obj.ValueType)) != null);
+            Assert.IsTrue(propertyValues.FirstOrDefault(o => o.Equals(obj.ReferenceType)) != null);
+            Assert.IsTrue(propertyValues.FirstOrDefault(o => o.Equals(obj.ChildProperty)) != null);
         }
     }
 }

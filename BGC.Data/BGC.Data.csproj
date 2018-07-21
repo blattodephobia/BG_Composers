@@ -126,6 +126,7 @@
     <Compile Include="Relational\Repositories\ComposersRepository.cs" />
     <Compile Include="Relational\Repositories\EntityFrameworkRepository.cs" />
     <Compile Include="Relational\Repositories\MediaTypeInfoRepository.cs" />
+    <Compile Include="Utilities\DtoUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

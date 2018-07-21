@@ -88,6 +88,7 @@
     <Compile Include="Relational\Mappings\RelationalMapperTests.cs" />
     <Compile Include="Relational\Repositories\ComposersRepositoryTests.cs" />
     <Compile Include="Relational\Repositories\EntityFrameworkRepositoryTests.cs" />
+    <Compile Include="Utilities\DtoUtilsTests.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

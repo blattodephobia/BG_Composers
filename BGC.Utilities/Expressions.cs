@@ -249,6 +249,28 @@ namespace BGC.Utilities
             return lambda.Compile();
         }
 
+        public static Func<TDeclaringType, object[]> GetPropertiesAccessor<TDeclaringType>(IEnumerable<PropertyInfo> properties)
+        {
+            Shield.ArgumentNotNull(properties).ThrowOnError();
+            Shield.Assert(
+                properties, 
+                properties.All(p => p.ReflectedType == typeof(TDeclaringType)),
+                collection => new AmbiguousMatchException($"The properties to generate an accessor for are declared by different type(s) than the requested {typeof(TDeclaringType)}")).ThrowOnError();
+
+            ParameterExpression typeParam = Expression.Parameter(typeof(TDeclaringType));
+            var lambda = Expression.Lambda<Func<TDeclaringType, object[]>>
+                (
+                    parameters: typeParam,
+                    body: Expression.NewArrayInit
+                    (
+                        type: typeof(object),
+                        initializers: properties.Select(property => Expression.Convert(Expression.Property(typeParam, property), typeof(object)))
+                    )
+                );
+
+            return lambda.Compile();
+        }
+
         /// <summary>
         /// Dynamically generates a method that will select the values of all specified properties of type <typeparamref name="TPropertyType"/> in
         /// an <see cref="IEnumerable{TPropertyType}"/>.
