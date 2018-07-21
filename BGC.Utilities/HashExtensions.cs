@@ -12,10 +12,7 @@ namespace BGC.Utilities
 {
     public static class HashExtensions
     {
-        private static int CombineHashCodesImpl(int a, int b)
-        {
-            return (a << 5) + a ^ b;
-        }
+        private static int CombineHashCodesImpl(int a, int b) => (a << 5) + a ^ b;
 
         public static byte[] GetHashCode<THashAlgorithm>(this byte[] source, byte[] salt = null)
             where THashAlgorithm : HashAlgorithm, new()
@@ -72,6 +69,21 @@ namespace BGC.Utilities
             {
                 Shield.ArgumentNotNull(objects[i], $"{nameof(objects)}[{i}]").ThrowOnError();
                 result = CombineHashCodesImpl(result, objects[i].GetHashCode());
+            }
+
+            return result;
+        }
+
+        public static int CombineHashCodes(params int[] hashCodes)
+        {
+            Shield.ArgumentNotNullOrEmpty(hashCodes).ThrowOnError();
+
+            if (hashCodes.Length == 1) return hashCodes[0];
+
+            int result = hashCodes[0];
+            for (int i = 1; i < hashCodes.Length; i++)
+            {
+                result = CombineHashCodesImpl(result, hashCodes[i]);
             }
 
             return result;

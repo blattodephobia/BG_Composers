@@ -67,7 +67,7 @@ namespace BGC.Utilities.Tests.HashExtensionsTests
         public void CombineHashCode()
         {
             int a1 = 2, a2 = 3;
-            int hash = HashExtensions.CombineHashCodes(a1, a2);
+            int hash = HashExtensions.CombineHashCodes(hashCodes: new int[] { a1, a2 });
 
             Assert.AreNotEqual(a1, hash);
             Assert.AreNotEqual(a2, hash);
@@ -81,9 +81,15 @@ namespace BGC.Utilities.Tests.HashExtensionsTests
         }
 
         [Test]
-        public void CombineHashCodeThrowExceptionIfNullCollection()
+        public void CombineHashCodeThrowExceptionIfNullCollection1()
         {
-            Assert.Throws<ArgumentNullException>(() => HashExtensions.CombineHashCodes(null));
+            Assert.Throws<ArgumentNullException>(() => HashExtensions.CombineHashCodes(objects: null));
+        }
+
+        [Test]
+        public void CombineHashCodeThrowExceptionIfNullCollection2()
+        {
+            Assert.Throws<ArgumentNullException>(() => HashExtensions.CombineHashCodes(hashCodes: null));
         }
     }
 }
