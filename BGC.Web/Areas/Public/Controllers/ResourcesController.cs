@@ -17,11 +17,19 @@ namespace BGC.Web.Areas.Public.Controllers
     {
         public static Uri GetLocalResourceUri(UrlHelper helper, Guid id)
         {
-            return new UriBuilder()
+            var uriBuilder = new UriBuilder()
             {
                 Path = helper.Action(MVC.Public.Resources.ActionNames.Get, MVC.Public.Resources.Name),
                 Query = Expressions.GetQueryString((ResourcesController rc) => rc.Get(id)),
-            }.Uri;
+            };
+
+            Uri requestUrl = helper.RequestContext.HttpContext.Request.Url;
+            if (!requestUrl.IsDefaultPort)
+            {
+                uriBuilder.Port = requestUrl.Port;
+            }
+
+            return uriBuilder.Uri;
         }
 
         private IMediaService storageService;
@@ -44,7 +52,7 @@ namespace BGC.Web.Areas.Public.Controllers
         [HttpPost]
         public virtual ActionResult Upload(HttpPostedFileBase file)
         {
-            Guid id = storageService.AddMedia(new ContentType(file.ContentType), file.InputStream, file.FileName);
+            Guid id = storageService.AddMedia(new ContentType(file.ContentType), file.InputStream, file.FileName);            
             Uri resourceUri = GetLocalResourceUri(Url, id);
             return Content(resourceUri.AbsoluteUri);
         }

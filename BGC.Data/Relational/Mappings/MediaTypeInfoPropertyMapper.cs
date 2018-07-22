@@ -17,7 +17,7 @@ namespace BGC.Data.Relational.Mappings
         {
             target.ExternalLocation = source.ExternalLocation;
             target.StorageId = source.StorageId;
-            target.MimeType = source.MimeType.Name;
+            target.MimeType = source.MimeType.MediaType;
             target.OriginalFileName = source.OriginalFileName;
         }
 

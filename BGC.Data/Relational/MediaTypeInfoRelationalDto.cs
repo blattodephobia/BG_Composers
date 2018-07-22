@@ -16,6 +16,7 @@ namespace BGC.Data.Relational
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public string MimeType { get; set; }
 
         [Index]

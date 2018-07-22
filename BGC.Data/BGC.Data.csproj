@@ -98,6 +98,10 @@
     <Compile Include="Migrations\201807211941183_Initial.Designer.cs">
       <DependentUpon>201807211941183_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807212157143_Media_RequireContentType.cs" />
+    <Compile Include="Migrations\201807212157143_Media_RequireContentType.Designer.cs">
+      <DependentUpon>201807212157143_Media_RequireContentType.cs</DependentUpon>
+    </Compile>
     <Compile Include="Relational\ComposerMediaRelationalDto.cs" />
     <Compile Include="Relational\ComposersDbContext.cs" />
     <Compile Include="Relational\Conventions\UnicodeSupportConvention.cs" />
@@ -155,6 +159,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201807211941183_Initial.resx">
       <DependentUpon>201807211941183_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807212157143_Media_RequireContentType.resx">
+      <DependentUpon>201807212157143_Media_RequireContentType.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

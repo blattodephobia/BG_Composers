@@ -74,7 +74,7 @@ $(document).ready(function ()
                     var preferredCheckBoxHtml = '<input name="ImageSources[' + imageIndex + '].Preferred" type="checkbox" value="' + this.responseText + '"></input>';
                     $localDiv.append(locationHtml);
                     $localDiv.append(preferredCheckBoxHtml);
-                    $("#imgInputs").append($localDiv);
+                    $("#uploadedImages").append($localDiv);
                 }
             };
 
