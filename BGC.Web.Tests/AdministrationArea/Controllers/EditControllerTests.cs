@@ -151,8 +151,8 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
 
             IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
 
-            Assert.IsNotNull(images.FirstOrDefault(m => m.ExternalLocation == externalImageLocation));
-            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
+            Assert.IsNotNull(images.FirstOrDefault(m => m.ExternalLocation == externalImageLocation), "External image is not present.");
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId), "Local image is not present.");
         }
 
         [Test]
@@ -172,7 +172,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             });
 
             IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
-            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId), "Local image is not present.");
         }
 
         [Test]
@@ -192,7 +192,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             });
 
             IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
-            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId), "Local image is not present.");
         }
 
         [Test]
