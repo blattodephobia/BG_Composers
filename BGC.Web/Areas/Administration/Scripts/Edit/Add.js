@@ -69,11 +69,12 @@ $(document).ready(function ()
                     var img = document.createElement("img");
                     img.src = this.responseText;
                     $localDiv.append($(img));
-                    var imageIndex = $("#imgInputs > input[type='hidden']").length;
-                    var locationHtml = '<input name="ImageSources[' + imageIndex + '].Location" type="hidden" value="' + this.responseText + '"></input>';
-                    var preferredCheckBoxHtml = '<input name="ImageSources[' + imageIndex + '].Preferred" type="checkbox" value="' + this.responseText + '"></input>';
-                    $localDiv.append(locationHtml);
-                    $localDiv.append(preferredCheckBoxHtml);
+                    var $imgInputs = $("#imgInputs");
+                    var imageIndex = $("#imgInputs > input.img-location").length;
+                    var locationHtml = '<input name="Images[' + imageIndex + '].Location" type="hidden" value="' + this.responseText + '"></input>';
+                    var preferredCheckBoxHtml = '<input name="Images[' + imageIndex + '].Preferred" type="checkbox" value="False"></input>';
+                    $imgInputs.append(locationHtml);
+                    $imgInputs.append(preferredCheckBoxHtml);
                     $("#uploadedImages").append($localDiv);
                 }
             };

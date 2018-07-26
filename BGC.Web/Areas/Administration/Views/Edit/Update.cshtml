@@ -36,12 +36,6 @@
             </div>
         </div>
         <div>
-            <div id="imgInputs">
-                @for (int i = 0; i < Model.Images.Count; i++)
-                {
-                    @Html.HiddenFor(m => Model.Images[i])
-                }
-            </div>
             <div id="uploadedImages" class="image-container">
                 @foreach (ImageViewModel imgSource in Model.Images)
                 {
@@ -63,6 +57,13 @@
 
     @using (Html.BeginForm(MVC.Administration.Edit.Update_Post(), FormMethod.Post, new { id = "addComposerForm" }))
     {
+        <div id="imgInputs">
+            @for (int i = 0; i < Model.Images.Count; i++)
+            {
+                @Html.HiddenFor(m => Model.Images[i].Location, new { @class = "img-location" })
+                @Html.HiddenFor(m => Model.Images[i].Preferred)
+            }
+        </div>
         @Html.HiddenFor(m => m.ComposerId)
         <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
             <div class="panel panel-default">
@@ -80,16 +81,16 @@
                                         <img src="~/Resources/@(Model.Articles[i].Language.Name).png" />
                                     </span>
                                     @Html.TextBoxFor(
-                                        expression: m => Model.Articles[i].FullName,
-                                        htmlAttributes: new
-                                        {
-                                            tabindex = i + 1,
-                                            placeholder = string.Format(
-                                                format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
-                                                arg0: Model.Articles[i].Language.NativeName.Substring(
-                                                    startIndex: 0,
-                                                    length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
-                                        })
+                                             expression: m => Model.Articles[i].FullName,
+                                             htmlAttributes: new
+                                             {
+                                                 tabindex = i + 1,
+                                                 placeholder = string.Format(
+                                                     format: LocalizationService.Localize(Administration.Edit.Add.NamePromptFormat, Model.Articles[i].Language),
+                                                     arg0: Model.Articles[i].Language.NativeName.Substring(
+                                                         startIndex: 0,
+                                                         length: Model.Articles[i].Language.NativeName.IndexOf(' ')))
+                                             })
                                     @if (Model.Order != null)
                                     {
                                         <label class="badge" title="@Localize(Administration.Edit.Update.ExplainOrder)">

@@ -45,29 +45,36 @@ namespace BGC.Web.Areas.Administration.Controllers
             return result;
         }
 
-        private string GetImageUrl(MediaTypeInfo media)
+        private static string ExtractQueryString(Uri uri)
         {
-            return media.ExternalLocation ?? ResourcesController.GetLocalResourceUri(Url, media.StorageId).AbsolutePath;
+            if (uri.IsAbsoluteUri) return uri.Query;
+
+            string fullUri = uri.ToString();
+            return fullUri.Substring(fullUri.IndexOf('?') + 1);
         }
 
-        private List<MediaTypeInfo> IdentifyImages(AddComposerViewModel vm)
+        private string GetImageUrl(MediaTypeInfo media)
         {
-            return vm.Images.Select(s =>
+            return media.ExternalLocation ?? ResourcesController.GetLocalResourceUri(Url, media.StorageId).PathAndQuery;
+        }
+
+        private List<MediaTypeInfo> IdentifyImages(AddComposerViewModel vm) => vm.Images.Select(s => ToMediaTypeInfo(s)).ToList();
+
+        private MediaTypeInfo ToMediaTypeInfo(ImageViewModel s)
+        {
+            var uri = new Uri(s.Location, UriKind.RelativeOrAbsolute);
+            MediaTypeInfo result = null;
+            if (!uri.IsAbsoluteUri || uri.Host == Request.Url.Host)
             {
-                var uri = new Uri(s.Location);
-                MediaTypeInfo result = null;
-                if (uri.Host == Request.Url.Host)
-                {
-                    NameValueCollection query = HttpUtility.ParseQueryString(uri.Query);
-                    Guid id = Guid.Parse(query[MVC.Public.Resources.GetParams.resourceId]);
-                    result = _mediaService.GetMedia(id)?.Metadata;
-                }
-                else
-                {
-                    result = MediaTypeInfo.NewExternalMedia(uri.AbsoluteUri, new ContentType("image/*"));
-                }
-                return result;
-            }).ToList();
+                NameValueCollection query = HttpUtility.ParseQueryString(ExtractQueryString(uri));
+                Guid id = Guid.Parse(query[MVC.Public.Resources.GetParams.resourceId]);
+                result = _mediaService.GetMedia(id)?.Metadata;
+            }
+            else
+            {
+                result = MediaTypeInfo.NewExternalMedia(uri.AbsoluteUri, new ContentType("image/*"));
+            }
+            return result;
         }
 
         public EditController(IComposerDataService composersService, ISettingsService settingsService, IArticleContentService articleStorageService, IMediaService mediaService)
@@ -141,7 +148,6 @@ namespace BGC.Web.Areas.Administration.Controllers
             {
                 Order = composer.HasNamesakes ? (int?)composer.Order : null,
             };
-
             return View(model);
         }
 

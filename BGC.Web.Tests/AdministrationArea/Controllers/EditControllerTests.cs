@@ -19,15 +19,41 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
 {
     public class UpdateTests : TestFixtureBase
     {
-        private EditController _controller;
-        private Composer _composer;
-        private Dictionary<Guid, string> _articleStorage;
-        private List<MediaTypeInfo> _mediaStorage;
+        private readonly EditController _controller;
+        private readonly List<Composer> _composerStorage;
+        private readonly Dictionary<Guid, string> _articleStorage;
+        private readonly Mock<HttpRequestBase> _mockRequest;
+        private readonly List<MediaTypeInfo> _mediaStorage;
         private CultureInfo _language;
+
+        private Composer MainTestComposer => _composerStorage[0];
+
+        public UpdateTests()
+        {
+            _composerStorage = new List<Composer>();
+            _articleStorage = new Dictionary<Guid, string>();
+            _mediaStorage = new List<MediaTypeInfo>();
+
+            Mock<IArticleContentService> articleService = GetMockArticleService(_articleStorage);
+
+            _controller = new EditController(
+                composersService: GetMockComposerService(_composerStorage).Object,
+                settingsService: GetMockSettingsService().Object,
+                articleStorageService: articleService.Object,
+                mediaService: GetMockMediaService(_mediaStorage).Object);
+            _mockRequest = GetMockRequestBase(MockBehavior.Loose);
+            _mockRequest.Setup(x => x.Url).Returns(new Uri("http://localhost/"));
+
+            _controller.ControllerContext = new ControllerContext() { HttpContext = GetMockHttpContextBase(_mockRequest.Object).Object };
+        }
  
         public override void BeforeEachTest()
         {
-            _composer = new Composer();
+            _composerStorage.Clear();
+            _articleStorage.Clear();
+            _mockRequest.Setup(x => x.Url).Returns(new Uri("http://localhost/"));
+
+            var _composer = new Composer();
             _language = CultureInfo.GetCultureInfo("de-DE");
             _composer.Name[_language] = new ComposerName("Petar Stupel", _language);
             byte[] guid = new byte[16];
@@ -36,23 +62,9 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             {
                 new ComposerArticle(_composer, _composer.Name[_language], _language) { StorageId = new Guid(guid) }
             };
+            _articleStorage.Add(_composer.Articles.First().StorageId, "B");
 
-            _articleStorage = new Dictionary<Guid, string>()
-            {
-                { _composer.Articles.First().StorageId, "B" }
-            };
-            Mock<IArticleContentService> articleService = GetMockArticleService(_articleStorage);
-
-            _mediaStorage = new List<MediaTypeInfo>();
-            _controller = new EditController(
-                composersService: GetMockComposerService(new List<Composer>() { _composer }).Object,
-                settingsService: GetMockSettingsService().Object,
-                articleStorageService: articleService.Object,
-                mediaService: GetMockMediaService(_mediaStorage).Object);
-            Mock<HttpRequestBase> request = GetMockRequestBase(MockBehavior.Loose);
-            request.Setup(x => x.Url).Returns(new Uri("http://localhost/"));
-
-            _controller.ControllerContext = new ControllerContext() { HttpContext = GetMockHttpContextBase(request.Object).Object };
+            _composerStorage.Add(_composer);
         }
 
         [Test]
@@ -60,19 +72,19 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         {
             _controller.Update_Post(new UpdateComposerViewModel()
             {
-                ComposerId = _composer.Id,
+                ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
                 {
                     new AddArticleViewModel()
                     {
-                        FullName = _composer.Name[_language].FullName,
+                        FullName = MainTestComposer.Name[_language].FullName,
                         Content = "b",
                         Language = _language
                     }
                 }
             });
 
-            Guid newArticleId = _composer.GetArticle(_language).StorageId;
+            Guid newArticleId = MainTestComposer.GetArticle(_language).StorageId;
             Assert.AreEqual(2, _articleStorage.Keys.Count);
             Assert.AreEqual("b", _articleStorage[newArticleId]);
         }
@@ -80,22 +92,22 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         [Test]
         public void DoesntUpdateArticleIfContentIsSame()
         {
-            string sameContent = new string(_articleStorage[_composer.GetArticle(_language).StorageId].ToArray());
+            string sameContent = new string(_articleStorage[MainTestComposer.GetArticle(_language).StorageId].ToArray());
             _controller.Update_Post(new UpdateComposerViewModel()
             {
-                ComposerId = _composer.Id,
+                ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
                 {
                     new AddArticleViewModel()
                     {
-                        FullName = _composer.Name[_language].FullName,
+                        FullName = MainTestComposer.Name[_language].FullName,
                         Content = sameContent,
                         Language = _language
                     }
                 }
             });
 
-            Guid articleId = _composer.GetArticle(_language).StorageId;
+            Guid articleId = MainTestComposer.GetArticle(_language).StorageId;
             Assert.AreEqual(sameContent, _articleStorage[articleId]);
             Assert.AreNotSame(sameContent, _articleStorage[articleId]); // strings are equal, but the underlying references haven't been modified
         }
@@ -105,79 +117,116 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         {
             _controller.Update_Post(new UpdateComposerViewModel()
             {
-                ComposerId = _composer.Id,
+                ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
                 {
                     new AddArticleViewModel()
                     {
                         FullName = "John Smith",
-                        Content = _articleStorage[_composer.GetArticle(_language).StorageId],
+                        Content = _articleStorage[MainTestComposer.GetArticle(_language).StorageId],
                         Language = _language
                     }
                 }
             });
             
-            Assert.AreEqual("John Smith", _composer.Name[_language].FullName);
+            Assert.AreEqual("John Smith", MainTestComposer.Name[_language].FullName);
         }
 
         [Test]
         public void AssignsCorrectImageLocations()
         {
-            byte[] guidId1 = new byte[16];
-            guidId1[15] = 1;
-            Guid localId = new Guid(guidId1);
+            Guid localId = new Guid(1, 0, 0, new byte[8]);
             _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
             string externalImageLocation = $"http://google.com/someImage.jpg";
 
             _controller.Update_Post(new UpdateComposerViewModel()
             {
-                ComposerId = _composer.Id,
+                ComposerId = MainTestComposer.Id,
                 Images = new List<ImageViewModel>()
                 {
-                    new ImageViewModel($"http://localhost/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}"),
+                    new ImageViewModel($"/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}"),
                     new ImageViewModel(externalImageLocation)
                 }
             });
 
-            IEnumerable<MediaTypeInfo> images = _composer.Profile.Media;
+            IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
 
             Assert.IsNotNull(images.FirstOrDefault(m => m.ExternalLocation == externalImageLocation));
             Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
         }
 
         [Test]
-        public void DoesntUpdateNameIfSameFullName()
+        public void AssignsCorrectImageLocations_DefaultPort()
         {
-            string sameName = new string(_composer.Name[_language].FullName.ToArray());
+            _mockRequest.Setup(r => r.Url).Returns(new Uri("https://localhost:443/"));
+            Guid localId = new Guid(1, 0, 0, new byte[8]);
+            _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
+
             _controller.Update_Post(new UpdateComposerViewModel()
             {
-                ComposerId = _composer.Id,
+                ComposerId = MainTestComposer.Id,
+                Images = new List<ImageViewModel>()
+                {
+                    new ImageViewModel($"/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}")
+                }
+            });
+
+            IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
+        }
+
+        [Test]
+        public void AssignsCorrectImageLocations_NonDefaultPort()
+        {
+            _mockRequest.Setup(r => r.Url).Returns(new Uri("http://localhost:12000/"));
+            Guid localId = new Guid(1, 0, 0, new byte[8]);
+            _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
+
+            _controller.Update_Post(new UpdateComposerViewModel()
+            {
+                ComposerId = MainTestComposer.Id,
+                Images = new List<ImageViewModel>()
+                {
+                    new ImageViewModel($"/controller/action?{MVC.Public.Resources.GetParams.resourceId}={localId}")
+                }
+            });
+
+            IEnumerable<MediaTypeInfo> images = MainTestComposer.Profile.Media;
+            Assert.IsNotNull(images.FirstOrDefault(m => m.StorageId == localId));
+        }
+
+        [Test]
+        public void DoesntUpdateNameIfSameFullName()
+        {
+            string sameName = new string(MainTestComposer.Name[_language].FullName.ToArray());
+            _controller.Update_Post(new UpdateComposerViewModel()
+            {
+                ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
                 {
                     new AddArticleViewModel()
                     {
                         FullName = sameName,
-                        Content = _articleStorage[_composer.GetArticle(_language).StorageId],
+                        Content = _articleStorage[MainTestComposer.GetArticle(_language).StorageId],
                         Language = _language
                     }
                 }
             });
 
-            Guid articleId = _composer.GetArticle(_language).StorageId;
-            Assert.AreEqual(sameName, _composer.Name[_language].FullName);
-            Assert.AreNotSame(sameName, _composer.Name[_language].FullName); // strings are equal, but the underlying references haven't been modified
+            Assert.AreEqual(sameName, MainTestComposer.Name[_language].FullName);
+            Assert.AreNotSame(sameName, MainTestComposer.Name[_language].FullName); // strings are equal, but the underlying references haven't been modified
         }
 
         [Test]
         public void OverwritesOldMediaCollection()
         {
-            _composer.Profile.Media = new MediaTypeInfo[] { new MediaTypeInfo("image/jpeg") { ExternalLocation = "www.google.com" } };
+            MainTestComposer.Profile.Media = new MediaTypeInfo[] { new MediaTypeInfo("image/jpeg") { ExternalLocation = "www.google.com" } };
 
             string newImageLocation = "http://google.com/else";
             _controller.Update_Post(new UpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new[] { new ImageViewModel(newImageLocation) }));
 
-            Assert.AreEqual(1, _composer.Profile.Media.Count);
-            Assert.AreEqual(newImageLocation, _composer.Profile.Media.First().ExternalLocation);
+            Assert.AreEqual(1, MainTestComposer.Profile.Media.Count);
+            Assert.AreEqual(newImageLocation, MainTestComposer.Profile.Media.First().ExternalLocation);
         }
     }
 }

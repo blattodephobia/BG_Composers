@@ -10,5 +10,8 @@ namespace BGC.Data.Relational
         where TPrincipal : RelationdalDtoBase
         where TDependant : RelationdalDtoBase
     {
+        TPrincipal Principal { get; set; }
+
+        TDependant Dependant { get; set; }
     }
 }

@@ -11,6 +11,20 @@ namespace BGC.Data.Relational
 {
     public class ComposerMediaRelationalDto : RelationdalDtoBase, IIntermediateRelationalDto<ComposerRelationalDto, MediaTypeInfoRelationalDto>
     {
+        [NotMapped]
+        ComposerRelationalDto IIntermediateRelationalDto<ComposerRelationalDto, MediaTypeInfoRelationalDto>.Principal
+        {
+            get { return Composer; }
+            set { Composer = value;  }
+        }
+
+        [NotMapped]
+        MediaTypeInfoRelationalDto IIntermediateRelationalDto<ComposerRelationalDto, MediaTypeInfoRelationalDto>.Dependant
+        {
+            get { return MediaEntry; }
+            set { MediaEntry = value; }
+        }
+
         [Key]
         [Column(Order = 0)]
         [ForeignKey(nameof(Composer))]
@@ -21,9 +35,9 @@ namespace BGC.Data.Relational
         [ForeignKey(nameof(MediaEntry))]
         public int MediaTypeInfo_Id { get; set; }
 
-        public ComposerRelationalDto Composer { get; set; }
+        public virtual ComposerRelationalDto Composer { get; set; }
 
-        public MediaTypeInfoRelationalDto MediaEntry { get; set; }
+        public virtual MediaTypeInfoRelationalDto MediaEntry { get; set; }
 
         public string Purpose { get; set; }
 
