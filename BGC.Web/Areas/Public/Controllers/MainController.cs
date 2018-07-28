@@ -37,14 +37,14 @@ namespace BGC.Web.Areas.Public.Controllers
             group = char.ToUpper(group);
             bool getSpecificGroupOnly = char.IsLetter(group);
 
-            IEnumerable<ComposerArticle> articles = _composersService
+            IEnumerable<Composer> composers = _composersService
                 .GetAllComposers()
-                .Select(composer => composer.GetArticle(CurrentLocale.EffectiveValue));
+                .Where(composer => composer.FindArticle(CurrentLocale.EffectiveValue) != null);
 
             Dictionary<char, IList<ComposerArticle>> articlesIndex = new Dictionary<char, IList<ComposerArticle>>();
-            foreach (ComposerArticle article in articles)
+            foreach (Composer composer in composers)
             {
-                char currentLeadingChar = char.ToUpper(article.LocalizedName.GetEasternOrderFullName()[0]);
+                char currentLeadingChar = char.ToUpper(composer.Name[CurrentLocale.EffectiveValue].GetEasternOrderFullName()[0]);
                 if (!getSpecificGroupOnly || currentLeadingChar == group)
                 {
                     if (!articlesIndex.ContainsKey(currentLeadingChar))
@@ -52,13 +52,15 @@ namespace BGC.Web.Areas.Public.Controllers
                         articlesIndex.Add(currentLeadingChar, new List<ComposerArticle>());
                     }
 
-                    articlesIndex[currentLeadingChar].Add(article);
+                    articlesIndex[currentLeadingChar].Add(composer.GetArticle(CurrentLocale.EffectiveValue));
                 }
             }
 
             IndexViewModel model = new IndexViewModel()
             {
-                Alphabet = getSpecificGroupOnly ? new[] { group }  : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale.EffectiveValue),
+                Alphabet = getSpecificGroupOnly
+                    ? new[] { group }
+                    : LocalizationService.GetAlphabet(useUpperCase: true, culture: CurrentLocale.EffectiveValue),
                 Articles = articlesIndex,
             };
             

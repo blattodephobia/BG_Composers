@@ -1,4 +1,5 @@
-﻿using BGC.Utilities;
+﻿using BGC.Core.Exceptions;
+using BGC.Utilities;
 using CodeShield;
 using System;
 using System.Collections.Generic;
@@ -147,12 +148,7 @@ namespace BGC.Core
 
         public IEnumerable<ComposerArticle> GetArticles(bool includeArchived = false) => Articles?.Where(a => !a.IsArchived || (a.IsArchived && includeArchived)) ?? Enumerable.Empty<ComposerArticle>();
 
-        /// <summary>
-        /// Gets a <see cref="ComposerArticle"/> that hasn't been archived in the specified language.
-        /// </summary>
-        /// <param name="language"></param>
-        /// <returns></returns>
-        public ComposerArticle GetArticle(CultureInfo language)
+        public ComposerArticle FindArticle(CultureInfo language)
         {
             Shield.ArgumentNotNull(language, nameof(language)).ThrowOnError();
 
@@ -160,6 +156,22 @@ namespace BGC.Core
                                       where !article.IsArchived && article.Language.Equals(language)
                                       orderby article.CreatedUtc descending
                                       select article).FirstOrDefault();
+
+            return result;
+        }
+
+        /// <summary>
+        /// Gets a <see cref="ComposerArticle"/> that hasn't been archived in the specified language.
+        /// </summary>
+        /// <param name="language"></param>
+        /// <returns></returns>
+        [Obsolete("Wrap this in an indexer.")]
+        public ComposerArticle GetArticle(CultureInfo language)
+        {
+            ComposerArticle result = FindArticle(language);
+
+            Shield.Assert(this, result != null, c => new ArticleNotFoundException(language, Id)).ThrowOnError();
+
             return result;
         }
 

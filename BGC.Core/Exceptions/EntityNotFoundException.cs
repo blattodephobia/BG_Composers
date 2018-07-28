@@ -8,8 +8,8 @@ namespace BGC.Core
 {
     public class EntityNotFoundException : BgcException
     {
-        public EntityNotFoundException(object key, Type entityType) :
-            base($"Entity of type {entityType?.FullName ?? "<UnknownType>"} was not found using the key '{key?.ToString() ?? "null"}'")
+        public EntityNotFoundException(object key, Type entityType, string message = null) :
+            base(message ?? $"Entity of type {entityType?.FullName ?? "<UnknownType>"} was not found using the key '{key?.ToString() ?? "null"}'")
         {
             EntityKey = key;
             EntityType = entityType;

@@ -126,7 +126,6 @@ namespace BGC.Web.Tests.PublicArea.Controllers
 
             var result = mainCtrl.Index() as ViewResult;
             Assert.AreEqual(3, (result.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
-
         }
 
         [Test]
@@ -142,7 +141,6 @@ namespace BGC.Web.Tests.PublicArea.Controllers
 
             var result = mainCtrl.Index('\t') as ViewResult;
             Assert.AreEqual(3, (result.Model as IndexViewModel).Articles.Values.SelectMany(a => a).Count());
-
         }
     }
 }

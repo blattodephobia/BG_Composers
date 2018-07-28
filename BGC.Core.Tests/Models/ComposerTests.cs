@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using BGC.Core.Exceptions;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,14 +11,40 @@ using TestUtils;
 namespace BGC.Core.Tests.Models.ComposerTests
 {
     [TestFixture]
-    public class GetArticleTests
+    public class FindArticleTests : TestFixtureBase
     {
         [Test]
         public void ReturnsNullIfArticleNotFound()
         {
             var c = new Composer();
             c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
-            Assert.IsNull(c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
+            Assert.IsNull(c.FindArticle(CultureInfo.GetCultureInfo("en-US")));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullArticle()
+        {
+            var c = new Composer();
+            Assert.Throws<ArgumentNullException>(() => c.FindArticle(null));
+        }
+    }
+
+    [TestFixture]
+    public class GetArticleTests : TestFixtureBase
+    {
+        [Test]
+        public void ThrowsExceptionIfNullArticle()
+        {
+            var c = new Composer();
+            Assert.Throws<ArgumentNullException>(() => c.GetArticle(null));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfArticleNotFound()
+        {
+            var c = new Composer();
+            c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
+            Assert.Throws<ArticleNotFoundException>(() => c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
         }
 
         [Test]
@@ -56,11 +83,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
 
             Assert.AreSame(mostRecent, c.GetArticle(new CultureInfo("bg-BG")));
         }
-    }
 
-    [TestFixture]
-    public class GetArticlesTests
-    {
         [Test]
         public void GetsNonArchivedArticlesOnly()
         {
