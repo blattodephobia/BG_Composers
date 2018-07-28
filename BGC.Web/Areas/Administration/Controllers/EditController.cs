@@ -58,7 +58,7 @@ namespace BGC.Web.Areas.Administration.Controllers
             return media.ExternalLocation ?? ResourcesController.GetLocalResourceUri(Url, media.StorageId).PathAndQuery;
         }
 
-        private List<MediaTypeInfo> IdentifyImages(AddComposerViewModel vm) => vm.Images.Select(s => ToMediaTypeInfo(s)).ToList();
+        private List<MediaTypeInfo> IdentifyImages(AddOrUpdateComposerViewModel vm) => vm.Images.Select(s => ToMediaTypeInfo(s)).ToList();
 
         private MediaTypeInfo ToMediaTypeInfo(ImageViewModel s)
         {
@@ -101,14 +101,14 @@ namespace BGC.Web.Areas.Administration.Controllers
                                                                 orderby language.Name
                                                                 select new AddArticleViewModel() { Language = language };
 
-            var vm = new AddComposerViewModel(articlesRequired);
-            return View(vm);
+            var vm = new AddOrUpdateComposerViewModel(articlesRequired);
+            return View(MVC.Administration.Edit.Views.AddOrUpdate, vm);
         }
 
         [HttpPost]
         [ActionName(nameof(Add))]
         [Permissions(nameof(IArticleManagementPermission))]
-        public virtual ActionResult Add_Post(AddComposerViewModel editedData)
+        public virtual ActionResult Add_Post(AddOrUpdateComposerViewModel editedData)
         {
             Composer newComposer = new Composer();
             for (int i = 0; i < editedData.Articles.Count; i++)
@@ -144,17 +144,18 @@ namespace BGC.Web.Areas.Administration.Controllers
                 Language = a.Language,
             });
             IEnumerable<ImageViewModel> imageSources = composer.Profile?.Images().Select(m => new ImageViewModel(GetImageUrl(m))) ?? Enumerable.Empty<ImageViewModel>();
-            var model = new UpdateComposerViewModel(articles, imageSources)
+            var model = new AddOrUpdateComposerViewModel(articles, imageSources)
             {
+                ComposerId = composer.Id,
                 Order = composer.HasNamesakes ? (int?)composer.Order : null,
             };
-            return View(model);
+            return View(MVC.Administration.Edit.Views.AddOrUpdate, model);
         }
 
         [HttpPost]
         [ActionName(nameof(Update))]
         [Permissions(nameof(IArticleManagementPermission))]
-        public virtual ActionResult Update_Post(UpdateComposerViewModel editedData)
+        public virtual ActionResult Update_Post(AddOrUpdateComposerViewModel editedData)
         {
             Composer editingComposer = _composersService.FindComposer(editedData.ComposerId);
 
@@ -167,7 +168,7 @@ namespace BGC.Web.Areas.Administration.Controllers
                 }
 
                 ComposerArticle existingArticle = editingComposer.GetArticle(newArticle.Language);
-                if (newArticle.Content != _articleStorageService.GetEntry(existingArticle.StorageId))
+                if ((newArticle.Content ?? string.Empty) != (_articleStorageService.GetEntry(existingArticle.StorageId) ?? string.Empty))
                 {
                     editingComposer.AddArticle(new ComposerArticle(editingComposer, name, newArticle.Language)
                     {

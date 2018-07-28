@@ -141,13 +141,11 @@ namespace BGC.Web.Areas.Administration.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Add = "Add";
+                public readonly string AddOrUpdate = "AddOrUpdate";
                 public readonly string List = "List";
-                public readonly string Update = "Update";
             }
-            public readonly string Add = "~/Areas/Administration/Views/Edit/Add.cshtml";
+            public readonly string AddOrUpdate = "~/Areas/Administration/Views/Edit/AddOrUpdate.cshtml";
             public readonly string List = "~/Areas/Administration/Views/Edit/List.cshtml";
-            public readonly string Update = "~/Areas/Administration/Views/Edit/Update.cshtml";
         }
     }
 
@@ -179,10 +177,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel editedData);
+        partial void Add_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddOrUpdateComposerViewModel editedData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Add_Post(BGC.Web.Areas.Administration.ViewModels.AddComposerViewModel editedData)
+        public override System.Web.Mvc.ActionResult Add_Post(BGC.Web.Areas.Administration.ViewModels.AddOrUpdateComposerViewModel editedData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Add_Post);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "editedData", editedData);
@@ -203,10 +201,10 @@ namespace BGC.Web.Areas.Administration.Controllers
         }
 
         [NonAction]
-        partial void Update_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.UpdateComposerViewModel editedData);
+        partial void Update_PostOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, BGC.Web.Areas.Administration.ViewModels.AddOrUpdateComposerViewModel editedData);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Update_Post(BGC.Web.Areas.Administration.ViewModels.UpdateComposerViewModel editedData)
+        public override System.Web.Mvc.ActionResult Update_Post(BGC.Web.Areas.Administration.ViewModels.AddOrUpdateComposerViewModel editedData)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Update_Post);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "editedData", editedData);

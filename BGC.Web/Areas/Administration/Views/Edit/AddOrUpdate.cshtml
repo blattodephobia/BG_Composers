@@ -1,4 +1,4 @@
-﻿@model UpdateComposerViewModel
+﻿@model AddOrUpdateComposerViewModel
 
 @{
     ViewBag.Title = Localize(Administration.Edit.Update.UpdateArticle);
@@ -55,7 +55,10 @@
         <h1>@Localize(Administration.Edit.Update.UpdateArticle)</h1>
     </div>
 
-    @using (Html.BeginForm(MVC.Administration.Edit.Update_Post(), FormMethod.Post, new { id = "addComposerForm" }))
+    @using (Html.BeginForm(
+        result: Model.ComposerId == default(Guid) ? MVC.Administration.Edit.Add_Post() : MVC.Administration.Edit.Update_Post(),
+        formMethod: FormMethod.Post,
+        htmlAttributes: new { id = "addComposerForm" }))
     {
         <div id="imgInputs">
             @for (int i = 0; i < Model.Images.Count; i++)

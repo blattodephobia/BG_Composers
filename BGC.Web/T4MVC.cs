@@ -289,6 +289,14 @@ namespace Links
                     public static readonly string ListGlossary_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/ListGlossary.min.js") ? Url("ListGlossary.min.js") : Url("ListGlossary.js");
                 }
             
+                [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+                public static class Settings {
+                    private const string URLPATH = "~/Areas/Administration/Scripts/Settings";
+                    public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
+                    public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
+                    public static readonly string Settings_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Settings.min.js") ? Url("Settings.min.js") : Url("Settings.js");
+                }
+            
             }
         
         }

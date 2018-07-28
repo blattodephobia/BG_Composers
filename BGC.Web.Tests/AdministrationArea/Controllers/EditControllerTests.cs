@@ -70,7 +70,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         [Test]
         public void UpdatesMostRecentArticle()
         {
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
@@ -93,7 +93,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         public void DoesntUpdateArticleIfContentIsSame()
         {
             string sameContent = new string(_articleStorage[MainTestComposer.GetArticle(_language).StorageId].ToArray());
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
@@ -115,7 +115,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         [Test]
         public void UpdatesName()
         {
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
@@ -139,7 +139,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
             string externalImageLocation = $"http://google.com/someImage.jpg";
 
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Images = new List<ImageViewModel>()
@@ -163,7 +163,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             Guid localId = new Guid(1, 0, 0, new byte[8]);
             _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
 
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Images = new List<ImageViewModel>()
@@ -184,7 +184,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             Guid localId = new Guid(1, 0, 0, new byte[8]);
             _mediaStorage.Add(new MediaTypeInfo(@"any.jpg", "image/jpeg") { StorageId = localId });
 
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Images = new List<ImageViewModel>()
@@ -202,7 +202,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         public void DoesntUpdateNameIfSameFullName()
         {
             string sameName = new string(MainTestComposer.Name[_language].FullName.ToArray());
-            _controller.Update_Post(new UpdateComposerViewModel()
+            _controller.Update_Post(new AddOrUpdateComposerViewModel()
             {
                 ComposerId = MainTestComposer.Id,
                 Articles = new List<AddArticleViewModel>()
@@ -226,7 +226,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             MainTestComposer.Profile.Media = new MediaTypeInfo[] { new MediaTypeInfo("image/jpeg") { ExternalLocation = "www.google.com" } };
 
             string newImageLocation = "http://google.com/else";
-            _controller.Update_Post(new UpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new[] { new ImageViewModel(newImageLocation) }));
+            _controller.Update_Post(new AddOrUpdateComposerViewModel(Enumerable.Empty<AddArticleViewModel>(), new[] { new ImageViewModel(newImageLocation) }));
 
             Assert.AreEqual(1, MainTestComposer.Profile.Media.Count);
             Assert.AreEqual(newImageLocation, MainTestComposer.Profile.Media.First().ExternalLocation);
