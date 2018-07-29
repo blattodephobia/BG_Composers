@@ -44,6 +44,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
             _mockRequest = GetMockRequestBase(MockBehavior.Loose);
             _mockRequest.Setup(x => x.Url).Returns(new Uri("http://localhost/"));
 
+            _controller.Url = new UrlHelper(GetMockRequestContext(_mockRequest.Object).Object);
             _controller.ControllerContext = new ControllerContext() { HttpContext = GetMockHttpContextBase(_mockRequest.Object).Object };
         }
  
@@ -230,6 +231,19 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
 
             Assert.AreEqual(1, MainTestComposer.Profile.Media.Count);
             Assert.AreEqual(newImageLocation, MainTestComposer.Profile.Media.First().ExternalLocation);
+        }
+
+        [Test]
+        public void SetsIsProfilePropertyCorrectly()
+        {
+            Guid mediaId = new Guid(1, 2, 3, new byte[8]);
+            MainTestComposer.Profile.ProfilePicture = new MediaTypeInfo("image/jpeg") { StorageId = mediaId };
+
+            var vm = (_controller.Update(MainTestComposer.Id) as ViewResult).Model as AddOrUpdateComposerViewModel;
+
+            ImageViewModel profilePic = vm.Images.FirstOrDefault(x => x.Location.EndsWith(mediaId.ToString()));
+            Assert.IsNotNull(profilePic, "Profile picture ViewModel is not present in page.");
+            Assert.IsTrue(profilePic.IsProfilePicture, "Profile picture ViewModel doesn't reflect the image's status.");
         }
     }
 }

@@ -17,7 +17,12 @@
     <script src="~/Areas/Administration/Scripts/Edit/Add.js"></script>
 }
 
-@section sidebar_content
+<iframe id="postResult" hidden="hidden"></iframe>
+
+@using (Html.BeginForm(
+                    result: Model.ComposerId == default(Guid) ? MVC.Administration.Edit.Add_Post() : MVC.Administration.Edit.Update_Post(),
+                    formMethod: FormMethod.Post,
+                    htmlAttributes: new { id = "addComposerForm" }))
 {
     <div class="sidebar-actions-container">
         <div>
@@ -37,35 +42,21 @@
         </div>
         <div>
             <div id="uploadedImages" class="image-container">
-                @foreach (ImageViewModel imgSource in Model.Images)
+                @for (int i = 0; i < Model.Images.Count; i++)
                 {
                     <div>
-                        <img src="@imgSource.Location"/>
+                        <img src="@Model.Images[i].Location"/>
+                        @Html.CheckBoxFor(m => Model.Images[i].IsProfilePicture, new { @class = "profilepic-check" })
+                        @Html.HiddenFor(m => Model.Images[i].Location, new { @class = "img-location" })
                     </div>
                 }
             </div>
         </div>
     </div>
-}
 
-<iframe id="postResult" hidden="hidden"></iframe>
-
-<div class="page-content">
-    <div class="page-header">
-        <h1>@Localize(Administration.Edit.Update.UpdateArticle)</h1>
-    </div>
-
-    @using (Html.BeginForm(
-        result: Model.ComposerId == default(Guid) ? MVC.Administration.Edit.Add_Post() : MVC.Administration.Edit.Update_Post(),
-        formMethod: FormMethod.Post,
-        htmlAttributes: new { id = "addComposerForm" }))
-    {
-        <div id="imgInputs">
-            @for (int i = 0; i < Model.Images.Count; i++)
-            {
-                @Html.HiddenFor(m => Model.Images[i].Location, new { @class = "img-location" })
-                @Html.HiddenFor(m => Model.Images[i].Preferred)
-            }
+    <div class="page-content">
+        <div class="page-header">
+            <h1>@Localize(Administration.Edit.Update.UpdateArticle)</h1>
         </div>
         @Html.HiddenFor(m => m.ComposerId)
         <div id="accordion" class="mce-textareas-placeholder" role="tablist" aria-multiselectable="true">
@@ -110,5 +101,5 @@
                 }
             </div>
         </div>
-    }
-</div>
+    </div>
+}

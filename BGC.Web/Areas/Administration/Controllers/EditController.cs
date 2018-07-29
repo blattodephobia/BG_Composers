@@ -143,8 +143,12 @@ namespace BGC.Web.Areas.Administration.Controllers
                 FullName = composer.Name[a.Language].FullName,
                 Language = a.Language,
             });
-            IEnumerable<ImageViewModel> imageSources = composer.Profile?.Images().Select(m => new ImageViewModel(GetImageUrl(m))) ?? Enumerable.Empty<ImageViewModel>();
-            var model = new AddOrUpdateComposerViewModel(articles, imageSources)
+            IEnumerable<ImageViewModel> imageSources = composer.Profile?.Images().Select(m =>
+            {
+                return new ImageViewModel(GetImageUrl(m)) { IsProfilePicture = m.StorageId == composer?.Profile.ProfilePicture?.StorageId };
+            });
+            
+            var model = new AddOrUpdateComposerViewModel(articles, imageSources ?? Enumerable.Empty<ImageViewModel>())
             {
                 ComposerId = composer.Id,
                 Order = composer.HasNamesakes ? (int?)composer.Order : null,
@@ -178,6 +182,11 @@ namespace BGC.Web.Areas.Administration.Controllers
             }
 
             ComposerProfile profile = editingComposer.Profile ?? new ComposerProfile();
+            ImageViewModel profilePic = editedData.Images.FirstOrDefault(img => img.IsProfilePicture);
+            if (profilePic != null)
+            {
+                profile.ProfilePicture = ToMediaTypeInfo(profilePic);
+            }
             profile.Media = IdentifyImages(editedData);
 
             editingComposer.Profile = profile;

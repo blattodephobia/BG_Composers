@@ -158,9 +158,16 @@ namespace BGC.Data.Relational.Mappings
                 result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
             }
 
-            foreach (ComposerMediaRelationalDto media in dto.Media)
+            foreach (MediaTypeInfoRelationalDto media in dto.Media.Select(m => m.MediaEntry))
             {
-                result.Profile.Media.Add(_mediaTypeInfoMapper.CopyData(media.MediaEntry, new MediaTypeInfo(media.MediaEntry.MimeType)));
+                MediaTypeInfo currentMedia = _mediaTypeInfoMapper.CopyData(media, new MediaTypeInfo(media.MimeType));
+                bool idMatchesProfilePic = dto.ProfilePicture?.StorageId == media.StorageId;
+                if (idMatchesProfilePic && result.Profile.ProfilePicture == null)
+                {
+                    result.Profile.ProfilePicture = currentMedia;
+                }
+
+                result.Profile.Media.Add(currentMedia);
             }
 
             return result;

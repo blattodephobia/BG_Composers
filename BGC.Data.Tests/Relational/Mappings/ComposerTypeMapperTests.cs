@@ -245,12 +245,18 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
     public class BuildTests : TestFixtureBase
     {
         private readonly ComposerTypeMapper _mapper = new ComposerTypeMapper(new ComposerMappers(), new MockDtoFactory());
+        private readonly ComposerRelationalDto _testDto;
+        private Composer _entity;
 
-        [Test]
-        public void BuildsComposer()
+        public BuildTests()
         {
-            ComposerRelationalDto dto = new ComposerRelationalDto()
+            _testDto = new ComposerRelationalDto()
             {
+                ProfilePicture = new MediaTypeInfoRelationalDto()
+                {
+                    StorageId = new Guid(2, 2, 2, new byte[8]),
+                    MimeType = "image/jpeg"
+                },
                 Articles = new[]
                 {
                     new ArticleRelationalDto()
@@ -261,11 +267,53 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
                 },
                 LocalizedNames = new[] { new NameRelationalDto() { FullName = "John Smith", Language = "de-DE" } },
             };
+            _testDto.Media = new List<ComposerMediaRelationalDto>()
+            {
+                ComposerMediaRelationalDto.Create(_testDto, new MediaTypeInfoRelationalDto()
+                {
+                    StorageId =  _testDto.ProfilePicture.StorageId,
+                    MimeType = _testDto.ProfilePicture.MimeType
+                }),
+                ComposerMediaRelationalDto.Create(_testDto, new MediaTypeInfoRelationalDto()
+                {
+                    StorageId = new Guid(3, 3, 3, new byte[8]),
+                    MimeType = "image/jpeg"
+                })
+            };
+        }
 
-            Composer result = _mapper.Build(dto);
+        public override void OneTimeSetUp()
+        {
+            base.OneTimeSetUp();
+            _entity = _mapper.Build(_testDto);
+        }
 
-            Assert.AreEqual(result.GetArticle(CultureInfo.GetCultureInfo("de-DE")).StorageId, dto.Articles.First().StorageId);
-            Assert.AreEqual(result.Name[CultureInfo.GetCultureInfo("de-DE")].FullName, dto.LocalizedNames.First().FullName);
+        [Test]
+        public void MapsArticles()
+        {
+            Assert.AreEqual(_entity.GetArticle(CultureInfo.GetCultureInfo("de-DE")).StorageId, _testDto.Articles.First().StorageId);
+        }
+
+        [Test]
+        public void MapsNames()
+        {
+            Assert.AreEqual(_entity.Name[CultureInfo.GetCultureInfo("de-DE")].FullName, _testDto.LocalizedNames.First().FullName);
+        }
+
+        [Test]
+        public void MapsMedia()
+        {
+            IEnumerable<Guid> dtoMediaIds = _testDto.Media.Select(m => m.MediaEntry.StorageId).OrderBy(id => id);
+            IEnumerable<Guid> entityMediaIds = _entity.Profile.Media.Select(m => m.StorageId).OrderBy(id => id);
+
+            Assert.IsTrue(entityMediaIds.SequenceEqual(dtoMediaIds));
+        }
+
+        [Test]
+        public void MapsProfilePicture()
+        {
+            Assert.IsNotNull(_entity.Profile.ProfilePicture, "Profile picture wasn't copied.");
+            Assert.AreEqual(_entity.Profile.ProfilePicture.StorageId, _testDto.ProfilePicture.StorageId);
         }
     }
 }

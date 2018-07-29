@@ -1,23 +1,4 @@
-﻿$(document).ready(function ()
-{
-    tinymce.init({
-        selector: 'textarea.tinymce',
-        height: 500,
-        plugins: [
-          'advlist autolink lists link image charmap print preview anchor',
-          'searchreplace visualblocks code fullscreen paste',
-          'insertdatetime media table contextmenu paste code'
-        ],
-        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-        content_css: [
-          '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
-          '//www.tinymce.com/css/codepen.min.css'
-        ],
-        paste_data_images: true
-    });
-});
-
-function stopEvent(e)
+﻿function stopEvent(e)
 {
     if (e.preventDefault instanceof Function) e.preventDefault();
 
@@ -26,6 +7,21 @@ function stopEvent(e)
 
 $(document).ready(function ()
 {
+    $('#uploadedImages').on("change", ".profilepic-check", function (e)
+    {
+        if (this.checked)
+        {
+            var $actualProfileCheckBox = $(this);
+            $(".profilepic-check").filter(function (index, elem)
+            {
+                return elem != $actualProfileCheckBox[0];
+            }).each(function (index, elem)
+            {
+                elem.checked = false;
+            });
+        }
+    });
+
     $('#uploadArea').on("dragover", function (e)
     {
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
@@ -43,11 +39,11 @@ $(document).ready(function ()
     $('#uploadArea').on("drop", function (e)
     {
         var dt = e.dataTransfer || (e.originalEvent && e.originalEvent.dataTransfer);
-        var imagesArea = $("#uploadedImages");
+        var $imagesArea = $("#uploadedImages");
         for (var i = 0; i < dt.files.length; i++)
         {
             var div = document.createElement("div");
-            imagesArea.append(div);
+            $imagesArea.append(div);
             var formData = new FormData();
             formData.append("file", dt.files[i]);
 
@@ -69,13 +65,12 @@ $(document).ready(function ()
                     var img = document.createElement("img");
                     img.src = this.responseText;
                     $localDiv.append($(img));
-                    var $imgInputs = $("#imgInputs");
-                    var imageIndex = $("#imgInputs > input.img-location").length;
+                    var imageIndex = $imagesArea.find("input.img-location").length;
                     var locationHtml = '<input name="Images[' + imageIndex + '].Location" type="hidden" value="' + this.responseText + '"></input>';
-                    var preferredCheckBoxHtml = '<input name="Images[' + imageIndex + '].Preferred" type="checkbox" value="False"></input>';
-                    $imgInputs.append(locationHtml);
-                    $imgInputs.append(preferredCheckBoxHtml);
-                    $("#uploadedImages").append($localDiv);
+                    var preferredCheckBoxHtml = '<input name="Images[' + imageIndex + '].IsProfilePicture" class="profilepic-check" type="checkbox" value="False"></input>';
+                    $localDiv.append(locationHtml);
+                    $localDiv.append(preferredCheckBoxHtml);
+                    $imagesArea.append($localDiv);
                 }
             };
 
@@ -84,5 +79,24 @@ $(document).ready(function ()
             xhr.send(formData);
         }
         return stopEvent(e);
+    });
+});
+
+$(document).ready(function ()
+{
+    tinymce.init({
+        selector: 'textarea.tinymce',
+        height: 500,
+        plugins: [
+          'advlist autolink lists link image charmap print preview anchor',
+          'searchreplace visualblocks code fullscreen paste',
+          'insertdatetime media table contextmenu paste code'
+        ],
+        toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+        content_css: [
+          '//fast.fonts.net/cssapi/e6dc9b99-64fe-4292-ad98-6974f93cd2a2.css',
+          '//www.tinymce.com/css/codepen.min.css'
+        ],
+        paste_data_images: true
     });
 });

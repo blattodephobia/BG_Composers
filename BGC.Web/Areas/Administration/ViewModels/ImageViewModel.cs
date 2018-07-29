@@ -11,7 +11,7 @@ namespace BGC.Web.Areas.Administration.ViewModels
     {
         public string Location { get; set; }
 
-        public bool Preferred { get; set; }
+        public bool IsProfilePicture { get; set; }
 
         public ImageViewModel()
         {

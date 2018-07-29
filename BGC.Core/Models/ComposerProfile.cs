@@ -29,7 +29,16 @@ namespace BGC.Core
             }
         }
 
-        public IEnumerable<MediaTypeInfo> Images() => Media.Where(m => IsImage(m));
+        public IEnumerable<MediaTypeInfo> Images()
+        {
+            HashSet<MediaTypeInfo> result = new HashSet<MediaTypeInfo>(Media.Where(m => IsImage(m)));
+            if (ProfilePicture != null && !result.Contains(ProfilePicture))
+            {
+                result.Add(ProfilePicture);
+            }
+
+            return result;
+        }
 
         private ICollection<MediaTypeInfo> _media;
         [NotMapped]
