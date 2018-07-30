@@ -278,43 +278,76 @@ namespace BGC.Services.Tests.ComposerDataServiceTests
     [TestFixture]
     public class SearchComposerNameTests
     {
-        private static readonly List<Composer> ComposersRepo = new List<Composer>()
+        static SearchComposerNameTests()
         {
-            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
-            {
-                new ComposerName(@"John Stamos", "en-US"),
-                new ComposerName(@"John Stamos", "de-DE"),
-                new ComposerName(@"Джон Стамос", "bg-BG"),
-            }},
+            CultureInfo en = CultureInfo.GetCultureInfo("en-US");
+            CultureInfo de = CultureInfo.GetCultureInfo("de-DE");
+            CultureInfo bg = CultureInfo.GetCultureInfo("bg-BG");
 
-            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
+            var composer1 = new Composer() { Id = new Guid(0, 0, 1, new byte[8]) };
+            composer1.LocalizedNames = new List<ComposerName>()
+            {
+                new ComposerName(@"John Stamos", en),
+                new ComposerName(@"John Stamos", de),
+                new ComposerName(@"Джон Стамос", bg),
+            };
+            composer1.AddArticle(new ComposerArticle(composer1, composer1.Name[en], en));
+            composer1.AddArticle(new ComposerArticle(composer1, composer1.Name[de], de));
+            composer1.AddArticle(new ComposerArticle(composer1, composer1.Name[bg], bg));
+
+            var composer2 = new Composer() { Id = new Guid(0, 0, 2, new byte[8]) };
+            composer2.LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Petar Stupel", "en-US"),
                 new ComposerName(@"Petar Stupel", "de-DE"),
                 new ComposerName(@"Петър Ступел", "bg-BG"),
-            }},
+            };
+            composer2.AddArticle(new ComposerArticle(composer2, composer2.Name[en], en));
+            composer2.AddArticle(new ComposerArticle(composer2, composer2.Name[de], de));
+            composer2.AddArticle(new ComposerArticle(composer2, composer2.Name[bg], bg));
 
-            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
+            var composer3 = new Composer() { Id = new Guid(0, 0, 3, new byte[8]) };
+            composer3.LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Pancho Vladigerov", "en-US"),
                 new ComposerName(@"Pancho Vladigerov", "de-DE"),
                 new ComposerName(@"Панчо Владигеров", "bg-BG"),
-            }},
+            };
+            composer3.AddArticle(new ComposerArticle(composer3, composer3.Name[en], en));
+            composer3.AddArticle(new ComposerArticle(composer3, composer3.Name[de], de));
+            composer3.AddArticle(new ComposerArticle(composer3, composer3.Name[bg], bg));
 
-            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
+            var composer4 = new Composer() { Id = new Guid(0, 0, 4, new byte[8]) };
+            composer4.LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"John Atanasoff", "en-US"),
                 new ComposerName(@"John Atanasoff", "de-DE"),
                 new ComposerName(@"Джон Атанасов", "bg-BG"),
-            }},
+            };
+            composer4.AddArticle(new ComposerArticle(composer4, composer4.Name[en], en));
+            composer4.AddArticle(new ComposerArticle(composer4, composer4.Name[de], de));
+            composer4.AddArticle(new ComposerArticle(composer4, composer4.Name[bg], bg));
 
-            new Composer() { Id = Guid.NewGuid(), LocalizedNames = new List<ComposerName>()
+            var composer5 = new Composer() { Id = new Guid(0, 0, 5, new byte[8]) };
+            composer5.LocalizedNames = new List<ComposerName>()
             {
                 new ComposerName(@"Atanas Dalchev", "en-US"),
                 new ComposerName(@"Atanas Dalchev", "de-DE"),
                 new ComposerName(@"Атанас Далчев", "bg-BG"),
-            }},
-        };
+            };
+            composer5.AddArticle(new ComposerArticle(composer5, composer5.Name[en], en));
+            composer5.AddArticle(new ComposerArticle(composer5, composer5.Name[de], de));
+            composer5.AddArticle(new ComposerArticle(composer5, composer5.Name[bg], bg));
+
+            ComposersRepo = new List<Composer>(5);
+            ComposersRepo.Add(composer1);
+            ComposersRepo.Add(composer2);
+            ComposersRepo.Add(composer3);
+            ComposersRepo.Add(composer4);
+            ComposersRepo.Add(composer5);
+        }
+
+        private static readonly List<Composer> ComposersRepo;
 
         private readonly ComposerDataService _svc = new ComposerDataService(GetMockComposerRepository(ComposersRepo).Object);
 

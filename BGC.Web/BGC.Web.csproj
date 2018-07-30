@@ -297,7 +297,7 @@
     <Compile Include="Areas\Administration\ViewModels\GlossaryDefinitionViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\GlossaryEntryViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\GlossaryListViewModel.cs" />
-    <Compile Include="Areas\Administration\ViewModels\ImageViewModel.cs" />
+    <Compile Include="ViewModels\ImageViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\ListArticlesViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordResetViewModel.cs" />
     <Compile Include="Areas\Administration\ViewModels\PasswordViewModelBase.cs" />
@@ -321,6 +321,7 @@
     <Compile Include="Areas\Public\ViewModels\ArticleViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\ErrorViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\IndexViewModel.cs" />
+    <Compile Include="Areas\Public\ViewModels\SearchResultsViewModel.cs" />
     <Compile Include="Areas\Public\ViewModels\SearchResultViewModel.cs" />
     <Compile Include="Attributes\DefaultActionAttribute.cs" />
     <Compile Include="Controllers\BgcControllerBase.cs" />
@@ -496,6 +497,7 @@
     <Content Include="Resources\bg-BG.png" />
     <Content Include="Resources\de-DE.png" />
     <Content Include="Resources\en-US.png" />
+    <Content Include="Resources\unknown-person.png" />
     <Content Include="Scripts\common.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>

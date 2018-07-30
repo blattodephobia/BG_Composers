@@ -14,9 +14,9 @@ namespace BGC.Core
         /// <summary>
         /// An array that stores the ID of the entity or object that matched during in big-endian format.
         /// </summary>
-        public byte[] Id { get; set; }
+        public byte[] Id { get; private set; }
 
-        public string Header { get; set; }
+        public virtual string Header { get; set; }
 
         private string _resultXml;
         public string ResultXml
@@ -32,6 +32,8 @@ namespace BGC.Core
                 _parsedResultXml = null;
             }
         }
+
+        public MediaTypeInfo Preview { get; set; }
 
         private XmlDocument _parsedResultXml;
         public XmlDocument ParsedResultXml

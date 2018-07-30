@@ -192,3 +192,75 @@ a > table, button > table {
     position: static;
     margin: auto;
 }
+
+.search-thumbnail {
+    width: 150px;
+    height: 200px;
+}
+
+.search-result-link {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.search-result-link article {
+    color: #444444 !important;
+    font-size: medium;
+    overflow: hidden;
+}
+
+.search-result-link .ellipsis {
+    height: 200px;
+}
+
+.ellipsis {
+    overflow: hidden;
+	line-height: 25px;
+}
+
+.ellipsis:before {
+	content:"";
+	float: left;
+	width: 5px; height: 200px; }
+
+.ellipsis > *:first-child {
+	float: right;
+	width: 100%;
+	margin-left: -5px;
+}
+
+.ellipsis:after {
+    content: "\02026";
+    font-size: large;
+    box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    float: right;
+    position: relative;
+    top: -25px;
+    left: 100%;
+    width: 3em;
+    margin-left: -3em;
+    padding-right: 5px;
+    text-align: right;
+    background-size: 100% 100%;
+}
+
+.search-result-link .panel-body {
+    height: 230px;
+}
+
+.bg-white {
+    background-color: white;
+}
+
+.article-profile-image {
+    margin-right: 15px;
+    float: left;
+}
+
+.main-article {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

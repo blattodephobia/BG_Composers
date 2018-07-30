@@ -2,7 +2,7 @@
 @using System.Text.RegularExpressions;
 @using BGC.Web.Controllers;
 
-@model SearchResultViewModel
+@model SearchResultsViewModel
 
 @{
     ViewBag.Title = Localize(Public.Main.Search.SearchResults);
@@ -12,7 +12,7 @@
 {
     <div class="row">
         <nav class="navbar navbar-fixed-top">
-            <div class="container-fluid">
+            <div class="container-fluid bg-white">
                 <div class="navbar-header">
                     <a class="navbar-brand" href="~/">@Localize(Global.ApplicationName)</a>
                 </div>
@@ -47,18 +47,31 @@
     <h3>@Localize(Public.Main.Search.SearchResults)</h3>
 
     @if (Model.Results.Any())
-            {
+    {
         <div>
-            @foreach (KeyValuePair<Guid, string> kvp in Model.Results)
+            @foreach (SearchResultViewModel result in Model.Results)
             {
-                <div class="panel panel-success">
-                    <div class="panel-heading">
-                        <span class="panel-title">@Html.ActionLink(kvp.Value, MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.composerId, kvp.Key))</span>
+                <a href="@result.LinkLocation" target="_blank" class="search-result-link">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">@result.Header</h4>
+                        </div>
+                        <div class="panel-body search-result-body">
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <img class="search-thumbnail" src="@(result.PreviewImage != null ? result.PreviewImage.Location : "/Resources/unknown-person.png")"/>
+                                </div>
+                                <div class="col-lg-9">
+                                    <div class="ellipsis">
+                                        <article>
+                                            @Html.Raw(result.Content)
+                                        </article>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="panel-body search-result-body">
-
-                    </div>
-                </div>
+                </a>
             }
         </div>
     }
@@ -90,6 +103,6 @@
                 }
                 }
             </li>
-                    }
+        }
     </ul>
 }

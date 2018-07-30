@@ -68,28 +68,29 @@
                             <div>
                                 @{
                                     string languageName = Regex.Replace(language.NativeName, @"\s\([\w\d\s]+\)", ""); @* remove the region name and leave the language name only *@
-                                if (!language.Equals(CurrentLocale))
-                                {
-                                    RouteValueDictionary newRouteData = new RouteValueDictionary(ViewContext.RouteData.Values);
-                                    newRouteData[(ViewContext.Controller as BgcControllerBase).ApplicationProfile.LocaleRouteTokenName] = language.Name;
-                                    newRouteData.Add(MVC.Public.Main.ReadParams.composerId, composerId);
+                                    if (!language.Equals(CurrentLocale))
+                                    {
+                                        RouteValueDictionary newRouteData = new RouteValueDictionary(ViewContext.RouteData.Values);
+                                        newRouteData[(ViewContext.Controller as BgcControllerBase).ApplicationProfile.LocaleRouteTokenName] = language.Name;
+                                        newRouteData.Add(MVC.Public.Main.ReadParams.composerId, composerId);
 
-                                    @Html.ActionLink(languageName, MVC.Public.Main.ActionNames.Read, newRouteData)
-                                }
-                                else
-                                {
-                                    <span>@languageName</span>
-                                }
+                                        @Html.ActionLink(languageName, MVC.Public.Main.ActionNames.Read, newRouteData)
+                                    }
+                                    else
+                                    {
+                                        <span>@languageName</span>
+                                    }
                                 }
                             </div>
-                                    }
+                        }
                     }
                 </div>
             </div>
         </div>
 
         <div class="col-lg-6 panel panel-default">
-            <article class="panel-body">
+            <article class="panel-body main-article">
+                <img class="article-profile-image" src="@(Model.ProfilePicture != null ? Model.ProfilePicture.Location : "/Resources/unknown-person.png")" />
                 @Html.Raw(Model.Text)
             </article>
         </div>

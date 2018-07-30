@@ -75,6 +75,7 @@
     <Compile Include="Models\ComposerArticleTests.cs" />
     <Compile Include="Models\ComposerNameTests.cs" />
     <Compile Include="Models\ComposerProfileTests.cs" />
+    <Compile Include="Models\ComposerSearchResultTests.cs" />
     <Compile Include="Models\ComposerTests.cs" />
     <Compile Include="Models\CultureSupportSettingTests.cs" />
     <Compile Include="Models\DateTimeSettingTests.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Models\UserProfileTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryExtensionsTests.cs" />
+    <Compile Include="Services\ArticleContentServiceExtensionsTests.cs" />
     <Compile Include="Services\ServiceExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>

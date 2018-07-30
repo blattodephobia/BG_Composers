@@ -3,6 +3,7 @@ using BGC.Core.Services;
 using BGC.Web.Areas.Public.ViewModels;
 using BGC.Web.Attributes;
 using BGC.Web.Controllers;
+using BGC.Web.ViewModels;
 using CodeShield;
 using Microsoft.Practices.Unity;
 using System;
@@ -70,24 +71,40 @@ namespace BGC.Web.Areas.Public.Controllers
         public virtual ActionResult Read(Guid composerId)
         {
             Composer composer = _composersService.FindComposer(composerId);
-            return View(new ArticleViewModel()
+            var vm = new ArticleViewModel()
             {
+                Title = composer.Name[CurrentLocale.EffectiveValue].FullName,
                 Text = _articleStorageService.GetEntry(composer.GetArticle(CurrentLocale.EffectiveValue).StorageId),
-                Title = composer.Name[CurrentLocale.EffectiveValue].FullName
-            });
+            };
+
+            MediaTypeInfo profilePic = composer.Profile.ProfilePicture;
+            if (profilePic != null)
+            {
+                bool isExternal = profilePic.ExternalLocation != null;
+                string location = isExternal
+                    ? profilePic.ExternalLocation
+                    : ResourcesController.GetLocalResourceUri(Url, profilePic.StorageId).PathAndQuery;
+                vm.ProfilePicture = new ImageViewModel(location);
+            }
+
+            return View(vm);
         }
 
         public virtual ActionResult Search(string query)
         {
-            var vm = new SearchResultViewModel()
-            {
-                Results = (from result in _searchService.Search(query, CurrentLocale.EffectiveValue)
-                           let composer = _composersService.FindComposer(result.IdAsGuid())
-                           where composer != null
-                           select composer.GetArticle(CurrentLocale.EffectiveValue))
-                           .Distinct(ComposerArticle.Comparers.ByComposerEqualityComparer)
-                           .ToDictionary(a => a.Composer.Id, a => a.Composer.Name[CurrentLocale.EffectiveValue].FullName)
-            };
+            var vm = new SearchResultsViewModel();
+            vm.Results = (from result in _searchService.Search(query, CurrentLocale.EffectiveValue).OfType<ComposerSearchResult>()
+                          let preview = result.Preview
+                          select new SearchResultViewModel()
+                          {
+                              ResultId = result.IdAsGuid(),
+                              Header = result.Header,
+                              Content = _articleStorageService.GeneratePreview(result.ArticlePreview.StorageId)?.OuterXml ?? "",
+                              LinkLocation = Url.Action(MVC.Public.Main.Read().AddRouteValue(MVC.Public.Main.ReadParams.composerId, result.IdAsGuid())),
+                              PreviewImage = preview != null
+                                 ? new ImageViewModel(ResourcesController.GetLocalResourceUri(Url, preview.StorageId).PathAndQuery)
+                                 : null
+                          }).ToList();
             return View(vm);
         }
 

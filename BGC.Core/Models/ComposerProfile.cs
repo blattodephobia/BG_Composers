@@ -23,7 +23,7 @@ namespace BGC.Core
 
             set
             {
-                Shield.Assert(value, IsImage(value), (x) => new InvalidOperationException($"The new value for {nameof(ProfilePicture)} doesn't refer to a valid image.")).ThrowOnError();
+                Shield.Assert(value, value == null || IsImage(value), (x) => new InvalidOperationException($"The new value for {nameof(ProfilePicture)} doesn't refer to a valid image.")).ThrowOnError();
 
                 _profilePicture = value;
             }

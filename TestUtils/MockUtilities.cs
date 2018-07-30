@@ -510,7 +510,12 @@ namespace TestUtils
         public static Mock<ISearchService> GetMockComposerSearchService(IList<Composer> composers)
         {
             var mockService = new Mock<ISearchService>();
-            mockService.Setup(s => s.Search(It.IsAny<string>(), It.IsAny<CultureInfo>())).Returns<string>(q => composers?.Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q))).Select(name => new SearchResult() { Header = name.Id.ToString() }));
+            mockService.Setup(s => s.Search(It.IsAny<string>(), It.IsAny<CultureInfo>())).Returns<string, CultureInfo>((q, locale) =>
+            {
+                return composers?
+                    .Where(c => c.LocalizedNames.Any(name => name.FullName.Contains(q)))
+                    .Select(c => new ComposerSearchResult(c, locale));
+            });
 
             return mockService;
         }

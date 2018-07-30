@@ -8,21 +8,14 @@ namespace BGC.Web.Areas.Public.ViewModels
 {
     public class SearchResultViewModel : ViewModelBase
     {
-        private Dictionary<Guid, string> _results;
-        /// <summary>
-        /// Contains the IDs of found articles and the names of the composers.
-        /// </summary>
-        public Dictionary<Guid, string> Results
-        {
-            get
-            {
-                return _results ?? (_results = new Dictionary<Guid, string>());
-            }
+        public Guid ResultId { get; set; }
 
-            set
-            {
-                _results = value;
-            }
-        }
+        public string Header { get; set; }
+
+        public ImageViewModel PreviewImage { get; set; }
+        
+        public string LinkLocation { get; set; }
+
+        public string Content { get; set; }
     }
 }

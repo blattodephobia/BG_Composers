@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BGC.Web.Areas.Administration.ViewModels
+namespace BGC.Web.ViewModels
 {
     public class ImageViewModel : ViewModelBase
     {

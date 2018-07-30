@@ -2,6 +2,7 @@
 using BGC.Core.Services;
 using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.Areas.Public.Controllers;
+using BGC.Web.ViewModels;
 using CodeShield;
 using System;
 using System.Collections.Generic;

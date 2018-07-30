@@ -2,6 +2,7 @@
 using BGC.Core.Services;
 using BGC.Web.Areas.Administration.Controllers;
 using BGC.Web.Areas.Administration.ViewModels;
+using BGC.Web.ViewModels;
 using Moq;
 using NUnit.Framework;
 using System;

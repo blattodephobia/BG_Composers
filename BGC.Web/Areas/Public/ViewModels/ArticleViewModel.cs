@@ -11,5 +11,7 @@ namespace BGC.Web.Areas.Public.ViewModels
         public string Text { get; set; }
 
         public string Title { get; set; }
+
+        public ImageViewModel ProfilePicture { get; set; }
     }
 }

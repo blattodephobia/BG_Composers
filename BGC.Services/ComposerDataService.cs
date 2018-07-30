@@ -17,12 +17,12 @@ namespace BGC.Services
 
         private IEnumerable<SearchResult> SearchInternal(IEnumerable<string> keywords, CultureInfo locale)
         {
-            IEnumerable<Composer> results = _composersRepo.Find(name => keywords.Any(keyword => name.FullName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())));
-            return results.Select(composer => new SearchResult(composer.Id)
-            {
-                Header = composer.Name[locale].FullName,
-                ParsedResultXml = null
-            });
+            IEnumerable<Composer> results =
+                from result in _composersRepo.Find(name => keywords.Any(keyword => name.FullName.ToUpper().Contains(keyword.ToUpper())))
+                where result.FindArticle(locale) != null
+                select result;
+
+            return results.GroupBy(c => c.FindArticle(locale), ComposerArticle.Comparers.ByComposerEqualityComparer).Select(group => new ComposerSearchResult(group.First(), locale));
         }
 
         public ComposerDataService(IComposerRepository repo)
