@@ -1,5 +1,6 @@
 ﻿using BGC.Core;
 using BGC.Core.Services;
+using BGC.Utilities;
 using BGC.Web.Areas.Administration.ViewModels;
 using BGC.Web.Areas.Public.Controllers;
 using BGC.Web.ViewModels;
@@ -63,7 +64,7 @@ namespace BGC.Web.Areas.Administration.Controllers
 
         private MediaTypeInfo ToMediaTypeInfo(ImageViewModel s)
         {
-            var uri = new Uri(s.Location, UriKind.RelativeOrAbsolute);
+            var uri = new Uri(s.Location, EnvironmentUtilities.DotNetRelativeOrAbsolute);
             MediaTypeInfo result = null;
             if (!uri.IsAbsoluteUri || uri.Host == Request.Url.Host)
             {
