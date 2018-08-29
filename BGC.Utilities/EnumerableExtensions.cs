@@ -56,5 +56,43 @@ namespace BGC.Utilities
                 }
             }
         }
+
+        public static int IndexOf<T>(this IEnumerable<T> collection, T item)
+        {
+            return IndexOf(collection, (T x) => EqualityComparer<T>.Default.Equals(x, item));
+        }
+
+        public static int IndexOf<T>(this IEnumerable<T> collection, Func<T, bool> predicate)
+        {
+            Shield.ArgumentNotNull(collection).ThrowOnError();
+            Shield.ArgumentNotNull(predicate).ThrowOnError();
+
+            int result = -1;
+
+            var list = collection as IList<T>;
+            if (list?.Count > 0)
+            {
+                for (result = 0; result < list.Count; result++)
+                {
+                    if (predicate.Invoke(list[result]))
+                    {
+                        return result;
+                    }
+                }
+            }
+            else
+            {
+                foreach (T elem in collection)
+                {
+                    result++;
+                    if (predicate.Invoke(elem))
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return -1;
+        }
     }
 }

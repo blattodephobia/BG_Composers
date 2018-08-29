@@ -88,4 +88,67 @@ namespace BGC.Utilities.Tests.EnumerableExtensionsTests
             Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.AddRange(coll, null));
         }
     }
+
+    public class IndexOfTests : TestFixtureBase
+    {
+        [Test]
+        public void ThrowsExceptionIfNullCollection()
+        {
+            Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.IndexOf<object>(null, x => true));
+        }
+
+        [Test]
+        public void ThrowsExceptionIfNullPredicate()
+        {
+            Assert.Throws<ArgumentNullException>(() => EnumerableExtensions.IndexOf(new object[1], null));
+        }
+
+        [Test]
+        public void ReturnsNegativeOneIfNoMatch_EmptyCollection()
+        {
+            int index = EnumerableExtensions.IndexOf(new object[0], x => true);
+
+            Assert.AreEqual(-1, index);
+        }
+
+        [Test]
+        public void ReturnsNegativeOneIfNoMatch_EmptyEnumerable()
+        {
+            int index = EnumerableExtensions.IndexOf(new int[0].Select(x => x), x => true);
+
+            Assert.AreEqual(-1, index);
+        }
+
+        [Test]
+        public void ReturnsNegativeOneIfNoMatch_NonEmptyCollection()
+        {
+            int index = EnumerableExtensions.IndexOf(new int[] { 1, 2, 3 }, x => x == 0);
+
+            Assert.AreEqual(-1, index);
+        }
+
+        [Test]
+        public void ReturnsNegativeOneIfNoMatch_NonEmptyEnumerable()
+        {
+            int index = EnumerableExtensions.IndexOf(new int[] { 1, 2, 3 }.Select(x => x), x => x == 0);
+
+            Assert.AreEqual(-1, index);
+        }
+
+        [Test]
+        public void FindsIndex_List()
+        {
+            var list = new List<int>() { 2, 3, 4 };
+
+            Assert.AreEqual(1, list.IndexOf(x => x == 3));
+        }
+
+        [Test]
+        public void FindsIndex_Enumerable()
+        {
+            IEnumerable<int> list = new List<int>() { 2, 3, 4 }.Select(x => x);
+
+            Assert.AreEqual(1, list.IndexOf(x => x == 3));
+        }
+    }
 }

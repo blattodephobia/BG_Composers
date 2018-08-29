@@ -38,9 +38,10 @@ namespace BGC.Utilities
             protected override Expression VisitMember(MemberExpression node)
             {
                 Expression result = null;
-                if (node.Member.DeclaringType == _sourceType)
+                var param = node.Expression as ParameterExpression;
+                if (param?.Type == _sourceType)
                 {
-                    MemberInfo targetMember = _destinationType.GetMember(node.Member.Name, MemberLookupFlags)[0];
+                    MemberInfo targetMember = FindTargetMember(node);
                     result = Expression.MakeMemberAccess(Visit(node.Expression), targetMember);
                 }
                 else
@@ -51,12 +52,35 @@ namespace BGC.Utilities
                 return result;
             }
 
+            private MemberInfo FindTargetMember(MemberExpression node)
+            {
+                string memberName = node.Member.Name;
+                if (_sourceType.IsInterface)
+                {
+                    InterfaceMapping iMap = _destinationType.GetInterfaceMap(_sourceType);
+                    PropertyInfo property = node.Member as PropertyInfo;
+                    if (property != null)
+                    {
+                        int targetIndex = iMap.InterfaceMethods.IndexOf(m => m.Name == property.GetMethod.Name);
+                        MemberInfo target = _destinationType.GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance).Where(p => p.GetMethod == iMap.TargetMethods[targetIndex]).First();
+                        return target;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException("At the moment, type substitution for lambdas is only supported for properties");
+                    }
+                }
+                else
+                {
+                    return _destinationType.GetMember(memberName, MemberLookupFlags).FirstOrDefault();
+                }
+            }
+
             public Visitor(Type sourceType, Type destinationType, params ParameterExpression[] parameters)
             {
-            _sourceType = sourceType;
-            _destinationType = destinationType;
-            _paramsDictionary = parameters.ToDictionary(pe => pe.Name);
-
+                _sourceType = sourceType;
+                _destinationType = destinationType;
+                _paramsDictionary = parameters.ToDictionary(pe => pe.Name);
             }
         }
         
