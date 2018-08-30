@@ -33,6 +33,8 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<Composer> ExecuteAndMapQueryProxy(IQueryable<ComposerRelationalDto> query) => ExecuteAndMapQuery(query);
     }
 
     internal class BreakdownProxy : DomainTypeMapperBase<Composer, ComposerRelationalDto>
@@ -248,6 +250,31 @@ namespace BGC.Data.EntityFrameworkRepositoryTests
             repo.SaveChanges();
 
             ctx.Verify(c => c.SaveChanges());
+        }
+    }
+
+    public class ExecuteAndMapQueryTests : TestFixtureBase
+    {
+        private readonly DbContext _mockCtx = GetMockDbContext().Object;
+
+        [Test]
+        public void ThrowsExceptionIfNullQuery()
+        {
+            var repo = new EFRepoProxy(new BreakdownProxy(), _mockCtx);
+
+            Assert.Throws<ArgumentNullException>(() => repo.ExecuteAndMapQueryProxy(null));
+        }
+
+        [Test]
+        public void ReturnsEmptyCollectionIfNoQueryResult()
+        {
+            var repo = new EFRepoProxy(new BreakdownProxy(), _mockCtx);
+
+            ComposerRelationalDto[] pseudoDb = new ComposerRelationalDto[0];
+            IEnumerable<Composer> result = repo.ExecuteAndMapQueryProxy(pseudoDb.AsQueryable().Where(x => false));
+
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.Any());
         }
     }
 }

@@ -80,6 +80,20 @@ namespace BGC.Data.Relational.Repositories
             return result;
         }
 
+        protected IEnumerable<TEntity> ExecuteAndMapQuery(IQueryable<TRelationalDto> query)
+        {
+            Shield.ArgumentNotNull(query).ThrowOnError();
+
+            List<TRelationalDto> queryResult = query.ToList();
+            List<TEntity> result = new List<TEntity>(queryResult.Count);
+            for (int i = 0; i < queryResult.Count; i++)
+            {
+                result.Add(TypeMapper.Build(queryResult[i]));
+            }
+
+            return result;
+        }
+
         public EntityFrameworkRepository(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, DbContext context)
         {
             Shield.ArgumentNotNull(typeMapper).ThrowOnError();

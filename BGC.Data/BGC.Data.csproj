@@ -108,11 +108,16 @@
     <Compile Include="Relational\ArticleMediaRelationalDto.cs" />
     <Compile Include="Relational\ArticleRelationalDto.cs" />
     <Compile Include="Relational\ComposerRelationalDto.cs" />
+    <Compile Include="Relational\GlossaryDefinitionRelationalDto.cs" />
+    <Compile Include="Relational\GlossaryEntryRelationalDto.cs" />
     <Compile Include="Relational\Mappings\ArticlePropertyMapper.cs" />
     <Compile Include="Relational\Mappings\ComposerTypeMapper.cs" />
     <Compile Include="Relational\Mappings\ComposerMappers.cs" />
     <Compile Include="Relational\Mappings\ComposerPropertyMapper.cs" />
     <Compile Include="Relational\Mappings\DomainTypeMapperBase.cs" />
+    <Compile Include="Relational\Mappings\GlossaryDefinitionPropertyMapper.cs" />
+    <Compile Include="Relational\Mappings\GlossaryEntryPropertyMapper.cs" />
+    <Compile Include="Relational\Mappings\GlossaryEntryTypeMapper.cs" />
     <Compile Include="Relational\Mappings\IDtoFactory.cs" />
     <Compile Include="Relational\Mappings\MediaTypeInfoPropertyMapper.cs" />
     <Compile Include="Relational\Mappings\NamePropertyMapper.cs" />
@@ -124,6 +129,7 @@
     <Compile Include="Relational\RelationdalDtoBase.cs" />
     <Compile Include="Relational\Repositories\ComposersRepository.cs" />
     <Compile Include="Relational\Repositories\EntityFrameworkRepository.cs" />
+    <Compile Include="Relational\Repositories\GlossaryRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

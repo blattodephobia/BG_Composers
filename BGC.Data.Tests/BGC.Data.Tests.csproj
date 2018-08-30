@@ -83,10 +83,13 @@
     <Compile Include="Relational\Mappings\ComposerTypeMapperTests.cs" />
     <Compile Include="Relational\Mappings\ComposerPropertyMapperTests.cs" />
     <Compile Include="Relational\Mappings\DomainTypeMapperBaseTests.cs" />
+    <Compile Include="Relational\Mappings\GlossaryEntryPropertyMapperTests.cs" />
+    <Compile Include="Relational\Mappings\GlossaryEntryTypeMapperTests.cs" />
     <Compile Include="Relational\Mappings\NameMapperTests.cs" />
     <Compile Include="Relational\Mappings\RelationalMapperTests.cs" />
     <Compile Include="Relational\Repositories\ComposersRepositoryTests.cs" />
     <Compile Include="Relational\Repositories\EntityFrameworkRepositoryTests.cs" />
+    <Compile Include="Relational\Repositories\GlossaryRepositoryTests.cs" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">

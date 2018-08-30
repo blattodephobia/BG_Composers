@@ -7,7 +7,7 @@
     <ProjectGuid>{E3CB843A-3420-4A76-91C8-E4DB0688FEF5}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>BGC.Core</RootNamespace>
+    <RootNamespace>BGC</RootNamespace>
     <AssemblyName>BGC.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -60,6 +60,8 @@
     <Compile Include="Data\IDbConnect.cs" />
     <Compile Include="Data\IDbPersist.cs" />
     <Compile Include="Data\IdentityAttribute.cs" />
+    <Compile Include="Data\IGlossaryEntryDto.cs" />
+    <Compile Include="Data\IGlossaryRepository.cs" />
     <Compile Include="Data\INonQueryableRepository.cs" />
     <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IUnitOfWork.cs" />
