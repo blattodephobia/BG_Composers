@@ -17,7 +17,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
         {
             var c = new Composer();
             c.Articles = new List<ComposerArticle>() { new ComposerArticle() { LanguageInternal = "bg-BG" } };
-            Assert.IsNull(c.GetArticle(CultureInfo.GetCultureInfo("en-US")));
+            Assert.IsNull(c.GetArticle("en-US".ToCultureInfo()));
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
             var bgArticle = new ComposerArticle() { LanguageInternal = "bg-BG" };
             c.Articles = new List<ComposerArticle>() { bgArticle };
 
-            Assert.AreEqual(bgArticle, c.GetArticle(CultureInfo.GetCultureInfo("bg-BG")));
+            Assert.AreEqual(bgArticle, c.GetArticle("bg-BG".ToCultureInfo()));
         }
 
         [Test]
@@ -65,13 +65,13 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void GetsNonArchivedArticlesOnly()
         {
             var c = new Composer();
-            c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+            c.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "en-US".ToCultureInfo());
             c.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = false },
-                new ComposerArticle(c, c.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) { IsArchived = true },
+                new ComposerArticle(c, c.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()) { IsArchived = true },
+                new ComposerArticle(c, c.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()) { IsArchived = true },
+                new ComposerArticle(c, c.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()) { IsArchived = false },
+                new ComposerArticle(c, c.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()) { IsArchived = true },
             };
 
             Assert.AreSame(c.Articles.ElementAt(2), c.GetArticles().Single());
@@ -85,7 +85,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void SetsPrincipalEntityToSelf()
         {
             var c = new Composer();
-            c.LocalizedNames = new List<ComposerName>() { new ComposerName("John", "en-US") };
+            c.LocalizedNames = new List<ComposerName>() { new ComposerName("John", "en-US".ToCultureInfo()) };
 
             Assert.AreEqual(c, c.LocalizedNames.First().Composer);
         }
@@ -96,7 +96,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
             var c = new Composer();
             Assert.Throws<InvalidOperationException>(() =>
             {
-                c.LocalizedNames = new List<ComposerName>() { new ComposerName("John", "en-US") { Composer = new Composer() } };
+                c.LocalizedNames = new List<ComposerName>() { new ComposerName("John", "en-US".ToCultureInfo()) { Composer = new Composer() } };
             });
         }
     }
@@ -111,7 +111,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
             var germanName = new ComposerName("John", "de-DE");
             c.LocalizedNames = new List<ComposerName>() { germanName };
 
-            ComposerName actualName = c.Name[CultureInfo.GetCultureInfo("de-DE")];
+            ComposerName actualName = c.Name["de-DE".ToCultureInfo()];
 
             Assert.AreEqual(germanName, actualName);
         }
@@ -120,7 +120,7 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void FindsCorrectName_AnyCultureInfoInstance()
         {
             var c = new Composer();
-            var germanName = new ComposerName("John", "de-DE");
+            var germanName = new ComposerName("John", "de-DE".ToCultureInfo());
             c.LocalizedNames = new List<ComposerName>() { germanName };
 
             ComposerName actualName = c.Name[new CultureInfo("de-DE")];
@@ -135,30 +135,30 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void ThrowsExceptionIfNullLocale()
         {
             var c = new Composer();
-            Assert.Throws<ArgumentNullException>(() => c.Name[null] = new ComposerName("J.J. Abrams", "en-US"));
+            Assert.Throws<ArgumentNullException>(() => c.Name[null] = new ComposerName("J.J. Abrams", "en-US".ToCultureInfo()));
         }
 
         [Test]
         public void ThrowsExceptionIfNullName()
         {
             var c = new Composer();
-            Assert.Throws<ArgumentNullException>(() => c.Name[CultureInfo.GetCultureInfo("en-US")] = null);
+            Assert.Throws<ArgumentNullException>(() => c.Name["en-US".ToCultureInfo()] = null);
         }
 
         [Test]
         public void ThrowsExceptionIfNameLocaleMismatch()
         {
             var c = new Composer();
-            Assert.Throws<InvalidOperationException>(() => c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "fr-FR"));
+            Assert.Throws<InvalidOperationException>(() => c.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "fr-FR"));
         }
 
         [Test]
         public void AcceptsNameWithMatchingLocale()
         {
             var c = new Composer();
-            c.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
+            c.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "en-US".ToCultureInfo());
 
-            Assert.AreEqual("John Smith", c.Name[CultureInfo.GetCultureInfo("en-US")].FullName);
+            Assert.AreEqual("John Smith", c.Name["en-US".ToCultureInfo()].FullName);
         }
     }
 
@@ -195,14 +195,14 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void ArchivesSimilarArticles()
         {
             var composer = new Composer();
-            var englishArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("en-US") };
-            var oldBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            var englishArticle = new ComposerArticle() { Language = "en-US".ToCultureInfo() };
+            var oldBulgarianArticle = new ComposerArticle() { Language = "bg-BG".ToCultureInfo() };
             composer.Articles.Add(englishArticle);
             composer.Articles.Add(oldBulgarianArticle);
 
             Assert.IsTrue(composer.Articles.All(a => !a.IsArchived));
 
-            var newBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            var newBulgarianArticle = new ComposerArticle() { Language = "bg-BG".ToCultureInfo() };
             composer.AddArticle(newBulgarianArticle);
             
             Assert.IsTrue(oldBulgarianArticle.IsArchived);
@@ -213,14 +213,14 @@ namespace BGC.Core.Tests.Models.ComposerTests
         public void DoesntModifyDissimilarArticles()
         {
             var composer = new Composer();
-            var englishArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("en-US") };
-            var oldBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            var englishArticle = new ComposerArticle() { Language = "en-US".ToCultureInfo() };
+            var oldBulgarianArticle = new ComposerArticle() { Language = "bg-BG".ToCultureInfo() };
             composer.Articles.Add(englishArticle);
             composer.Articles.Add(oldBulgarianArticle);
 
             Assert.IsTrue(composer.Articles.All(a => !a.IsArchived));
 
-            var newBulgarianArticle = new ComposerArticle() { Language = CultureInfo.GetCultureInfo("bg-BG") };
+            var newBulgarianArticle = new ComposerArticle() { Language = "bg-BG".ToCultureInfo() };
             composer.AddArticle(newBulgarianArticle);
 
             Assert.IsFalse(englishArticle.IsArchived);

@@ -522,7 +522,7 @@ namespace TestUtils
                 LocaleCookieName = "localeCookie",
                 LocaleRouteTokenName = "locale",
                 LocaleKey = "locale",
-                SupportedLanguages = new List<CultureInfo>() { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("de-DE") }
+                SupportedLanguages = new List<CultureInfo>() { "en-US".ToCultureInfo(), "de-DE".ToCultureInfo() }
             };
         }
     }

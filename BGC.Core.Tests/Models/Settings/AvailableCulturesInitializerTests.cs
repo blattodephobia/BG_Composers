@@ -16,31 +16,31 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_ConsistentDb()
         {
             Composer first = new Composer();
-            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
-            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
+            first.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "en-US".ToCultureInfo());
+            first.Name["bg-BG".ToCultureInfo()] = new ComposerName("John Smith", "bg-BG".ToCultureInfo());
 
             first.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG"))
+                new ComposerArticle(first, first.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()),
+                new ComposerArticle(first, first.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo())
             };
 
             Composer second = new Composer();
-            second.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("Jake Smith", "en-US");
-            second.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("Jake Smith", "bg-BG");
+            second.Name["en-US".ToCultureInfo()] = new ComposerName("Jake Smith", "en-US".ToCultureInfo());
+            second.Name["bg-BG".ToCultureInfo()] = new ComposerName("Jake Smith", "bg-BG".ToCultureInfo());
             second.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US"))
+                new ComposerArticle(second, second.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(second, second.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo())
             };
 
             Composer third = new Composer();
-            third.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("Jim Smith", "en-US");
-            third.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("Jim Smith", "bg-BG");
+            third.Name["en-US".ToCultureInfo()] = new ComposerName("Jim Smith", "en-US".ToCultureInfo());
+            third.Name["bg-BG".ToCultureInfo()] = new ComposerName("Jim Smith", "bg-BG".ToCultureInfo());
             third.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US"))
+                new ComposerArticle(third, third.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(third, third.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo())
             };
 
             var composerRepo = new List<Composer>() { first, second, third };
@@ -55,40 +55,40 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_SomeCulturesMissing()
         {
             Composer first = new Composer();
-            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
-            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
-            first.Name[CultureInfo.GetCultureInfo("de-DE")] = new ComposerName("John Smith", "de-DE");
-            first.Name[CultureInfo.GetCultureInfo("fr-FR")] = new ComposerName("John Smith", "fr-FR");
-            first.Name[CultureInfo.GetCultureInfo("en-GB")] = new ComposerName("John Smith", "en-GB");
-            first.Name[CultureInfo.GetCultureInfo("ja-JP")] = new ComposerName("John Smith", "ja-JP");
+            first.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "en-US".ToCultureInfo());
+            first.Name["bg-BG".ToCultureInfo()] = new ComposerName("John Smith", "bg-BG".ToCultureInfo());
+            first.Name["de-DE".ToCultureInfo()] = new ComposerName("John Smith", "de-DE".ToCultureInfo());
+            first.Name["fr-FR".ToCultureInfo()] = new ComposerName("John Smith", "fr-FR".ToCultureInfo());
+            first.Name["en-GB".ToCultureInfo()] = new ComposerName("John Smith", "en-GB".ToCultureInfo());
+            first.Name["ja-JP".ToCultureInfo()] = new ComposerName("John Smith", "ja-JP".ToCultureInfo());
 
             first.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("fr-FR")], CultureInfo.GetCultureInfo("fr-FR")),
+                new ComposerArticle(first, first.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()),
+                new ComposerArticle(first, first.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(first, first.Name["fr-FR".ToCultureInfo()], "fr-FR".ToCultureInfo()),
             };                                                                
 
             Composer second = new Composer();
-            second.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("Jake Smith", "bg-BG");
-            second.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("Jake Smith", "en-US");
-            second.Name[CultureInfo.GetCultureInfo("ja-JP")] = new ComposerName("Jake Smith", "ja-JP");
+            second.Name["bg-BG".ToCultureInfo()] = new ComposerName("Jake Smith", "bg-BG".ToCultureInfo());
+            second.Name["en-US".ToCultureInfo()] = new ComposerName("Jake Smith", "en-US".ToCultureInfo());
+            second.Name["ja-JP".ToCultureInfo()] = new ComposerName("Jake Smith", "ja-JP".ToCultureInfo());
             second.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("ja-JP")], CultureInfo.GetCultureInfo("ja-JP"))
+                new ComposerArticle(second, second.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(second, second.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()),
+                new ComposerArticle(second, second.Name["ja-JP".ToCultureInfo()], "ja-JP".ToCultureInfo())
             };
 
             Composer third = new Composer();
-            third.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("Jim Smith", "bg-BG");
-            third.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("Jim Smith", "en-US");
-            third.Name[CultureInfo.GetCultureInfo("en-GB")] = new ComposerName("Jim Smith", "en-GB");
+            third.Name["bg-BG".ToCultureInfo()] = new ComposerName("Jim Smith", "bg-BG".ToCultureInfo());
+            third.Name["en-US".ToCultureInfo()] = new ComposerName("Jim Smith", "en-US".ToCultureInfo());
+            third.Name["en-GB".ToCultureInfo()] = new ComposerName("Jim Smith", "en-GB".ToCultureInfo());
             third.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")),
-                new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("en-GB")], CultureInfo.GetCultureInfo("en-GB")),
+                new ComposerArticle(third, third.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(third, third.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()),
+                new ComposerArticle(third, third.Name["en-GB".ToCultureInfo()], "en-GB".ToCultureInfo()),
             };
 
             var composerRepo = new List<Composer>() { first, second, third };
@@ -103,24 +103,24 @@ namespace BGC.Core.Tests.Models.Settings.AvailableCulturesInitializerTests
         public void IdentifiesCorrectCultures_AllCulturesInconsistent()
         {
             Composer first = new Composer();
-            first.Name[CultureInfo.GetCultureInfo("en-US")] = new ComposerName("John Smith", "en-US");
-            first.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("John Smith", "bg-BG");
-            first.Name[CultureInfo.GetCultureInfo("de-DE")] = new ComposerName("John Smith", "de-DE");
-            first.Name[CultureInfo.GetCultureInfo("fr-FR")] = new ComposerName("John Smith", "fr-FR");
-            first.Articles = new List<ComposerArticle>() { new ComposerArticle(first, first.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US")) };
+            first.Name["en-US".ToCultureInfo()] = new ComposerName("John Smith", "en-US".ToCultureInfo());
+            first.Name["bg-BG".ToCultureInfo()] = new ComposerName("John Smith", "bg-BG".ToCultureInfo());
+            first.Name["de-DE".ToCultureInfo()] = new ComposerName("John Smith", "de-DE".ToCultureInfo());
+            first.Name["fr-FR".ToCultureInfo()] = new ComposerName("John Smith", "fr-FR".ToCultureInfo());
+            first.Articles = new List<ComposerArticle>() { new ComposerArticle(first, first.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo()) };
 
             Composer second = new Composer();
-            second.Name[CultureInfo.GetCultureInfo("bg-BG")] = new ComposerName("Jack Smith", "bg-BG");
-            second.Name[CultureInfo.GetCultureInfo("fr-FR")] = new ComposerName("Jack Smith", "fr-FR");
+            second.Name["bg-BG".ToCultureInfo()] = new ComposerName("Jack Smith", "bg-BG".ToCultureInfo());
+            second.Name["fr-FR".ToCultureInfo()] = new ComposerName("Jack Smith", "fr-FR".ToCultureInfo());
             second.Articles = new List<ComposerArticle>()
             {
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("bg-BG")], CultureInfo.GetCultureInfo("bg-BG")),
-                new ComposerArticle(second, second.Name[CultureInfo.GetCultureInfo("fr-FR")], CultureInfo.GetCultureInfo("fr-FR"))
+                new ComposerArticle(second, second.Name["bg-BG".ToCultureInfo()], "bg-BG".ToCultureInfo()),
+                new ComposerArticle(second, second.Name["fr-FR".ToCultureInfo()], "fr-FR".ToCultureInfo())
             };
 
             Composer third = new Composer();
-            third.Name[CultureInfo.GetCultureInfo("de-DE")] = new ComposerName("Jim Smith", "de-DE");
-            third.Articles = new List<ComposerArticle>() { new ComposerArticle(third, third.Name[CultureInfo.GetCultureInfo("de-DE")], CultureInfo.GetCultureInfo("de-DE")) };
+            third.Name["de-DE".ToCultureInfo()] = new ComposerName("Jim Smith", "de-DE".ToCultureInfo());
+            third.Articles = new List<ComposerArticle>() { new ComposerArticle(third, third.Name["de-DE".ToCultureInfo()], "de-DE".ToCultureInfo()) };
 
             var composerRepo = new List<Composer>() { first, second, third };
 

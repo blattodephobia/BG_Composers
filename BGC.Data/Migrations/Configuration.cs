@@ -90,9 +90,9 @@ namespace BGC.Data.Migrations
                     {
                         Cultures = new[]
                         {
-                            CultureInfo.GetCultureInfo("bg-BG"),
-                            CultureInfo.GetCultureInfo("en-US"),
-                            CultureInfo.GetCultureInfo("de-DE"),
+                            "bg-BG".ToCultureInfo(),
+                            "en-US".ToCultureInfo(),
+                            "de-DE".ToCultureInfo(),
                         }
                     });
 

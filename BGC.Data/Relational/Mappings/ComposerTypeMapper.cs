@@ -139,7 +139,7 @@ namespace BGC.Data.Relational.Mappings
 
             foreach (ArticleRelationalDto article in dto.Articles)
             {
-                var culture = CultureInfo.GetCultureInfo(article.Language);
+                CultureInfo culture = article.Language.ToCultureInfo();
                 result.AddArticle(_articleMapper.CopyData(article, new ComposerArticle(result, result.Name[culture], culture)));
             }
 

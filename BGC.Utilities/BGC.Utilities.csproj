@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitStream.cs" />
+    <Compile Include="CultureInfoExtensions.cs" />
     <Compile Include="EnumerableIndexer.cs" />
     <Compile Include="LambdaTypeSubstitution.cs" />
     <Compile Include="HashExtensions.cs" />

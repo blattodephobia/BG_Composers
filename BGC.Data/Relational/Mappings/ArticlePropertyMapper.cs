@@ -31,7 +31,7 @@ namespace BGC.Data.Relational.Mappings
             target.CreatedUtc = source.CreatedUtc;
             target.IsArchived = source.IsArchived;
             target.StorageId = source.StorageId;
-            target.Language = CultureInfo.GetCultureInfo(source.Language);
+            target.Language = source.Language.ToCultureInfo();
         }
     }
 }

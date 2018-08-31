@@ -40,8 +40,8 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         public void MapNames()
         {
             Composer c = new Composer();
-            var name1 = new ComposerName("John Smith", "en-US");
-            var name2 = new ComposerName("John Smith", "de-DE");
+            var name1 = new ComposerName("John Smith", "en-US".ToCultureInfo());
+            var name2 = new ComposerName("John Smith", "de-DE".ToCultureInfo());
             c.Name[name1.Language] = name1;
             c.Name[name2.Language] = name2;
 
@@ -63,8 +63,8 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         public void MapArticles()
         {
             Composer c = new Composer();
-            var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US"), CultureInfo.GetCultureInfo("en-US"));
-            var article2 = new ComposerArticle(c, new ComposerName("John Smith", "de-DE"), CultureInfo.GetCultureInfo("de-DE"));
+            var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US".ToCultureInfo()), "en-US".ToCultureInfo());
+            var article2 = new ComposerArticle(c, new ComposerName("John Smith", "de-DE".ToCultureInfo()), "de-DE".ToCultureInfo());
             c.AddArticle(article1);
             c.AddArticle(article2);
 
@@ -109,8 +109,8 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
         public void SetsComposerPrincipalOnArticles()
         {
             Composer c = new Composer() { Id = new Guid(2, 2, 2, new byte[8]) };
-            var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US"), CultureInfo.GetCultureInfo("en-US"));
-            var article2 = new ComposerArticle(c, new ComposerName("John Smith", "de-DE"), CultureInfo.GetCultureInfo("de-DE"));
+            var article1 = new ComposerArticle(c, new ComposerName("John Smith", "en-US"), "en-US".ToCultureInfo());
+            var article2 = new ComposerArticle(c, new ComposerName("John Smith", "de-DE"), "de-DE".ToCultureInfo());
             c.AddArticle(article1);
             c.AddArticle(article2);
 
@@ -212,8 +212,8 @@ namespace BGC.Data.Relational.Mappings.ComposerTypeMapperTests
 
             Composer result = _mapper.Build(dto);
 
-            Assert.AreEqual(result.GetArticle(CultureInfo.GetCultureInfo("de-DE")).StorageId, dto.Articles.First().StorageId);
-            Assert.AreEqual(result.Name[CultureInfo.GetCultureInfo("de-DE")].FullName, dto.LocalizedNames.First().FullName);
+            Assert.AreEqual(result.GetArticle("de-DE".ToCultureInfo()).StorageId, dto.Articles.First().StorageId);
+            Assert.AreEqual(result.Name["de-DE".ToCultureInfo()].FullName, dto.LocalizedNames.First().FullName);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace BGC.Data.Relational.Mappings
             _glossaryPropertyMapper.CopyData(dto, result);
             foreach (GlossaryDefinitionRelationalDto definition in dto.Translations)
             {
-                var entityDef = new GlossaryDefinition(CultureInfo.GetCultureInfo(definition.Language), definition.DefinitionTranslation, definition.TermTranslation);
+                var entityDef = new GlossaryDefinition(definition.Language.ToCultureInfo(), definition.DefinitionTranslation, definition.TermTranslation);
                 result.Definitions.Add(entityDef);
             }
 

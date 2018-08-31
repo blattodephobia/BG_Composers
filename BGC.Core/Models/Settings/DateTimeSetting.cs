@@ -21,7 +21,7 @@ namespace BGC.Core
         /// The culture used during string conversion for the <see cref="StringValue"/> property.
         /// It's set to en-US.
         /// </summary>
-        public static readonly IFormatProvider FormatProvider = CultureInfo.GetCultureInfo("en-US");
+        public static readonly IFormatProvider FormatProvider = "en-US".ToCultureInfo();
 
         public override Type ValueType => typeof(DateTime);
 

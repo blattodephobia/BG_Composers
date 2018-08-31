@@ -21,7 +21,7 @@ namespace BGC.Data.Relational.Mappings
 
         protected override void CopyDataInternal(GlossaryDefinitionRelationalDto source, GlossaryDefinition target)
         {
-            target.Language = CultureInfo.GetCultureInfo(source.Language);
+            target.Language = source.Language.ToCultureInfo();
             target.Term = source.TermTranslation;
             target.Definition = source.DefinitionTranslation;
         }

@@ -52,17 +52,17 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             {
                 new Composer()
                 {
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US") },
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Smith", "en-US".ToCultureInfo()) },
                     Articles = new List<ComposerArticle>()
                 },
                 new Composer()
                 {
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("Peter Samuel", "en-US") },
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("Peter Samuel", "en-US".ToCultureInfo()) },
                     Articles = new List<ComposerArticle>()
                 },
                 new Composer()
                 {
-                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Nappa", "en-US") },
+                    LocalizedNames = new List<ComposerName>() { new ComposerName("John Nappa", "en-US".ToCultureInfo()) },
                     Articles = new List<ComposerArticle>()
                 },
             };
@@ -70,7 +70,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
             for (int i = 0; i < composers.Count; i++)
             {
                 Composer cmp = composers[i];
-                cmp.AddArticle(new ComposerArticle(cmp, cmp.Name[CultureInfo.GetCultureInfo("en-US")], CultureInfo.GetCultureInfo("en-US"))
+                cmp.AddArticle(new ComposerArticle(cmp, cmp.Name["en-US".ToCultureInfo()], "en-US".ToCultureInfo())
                 {
                     LocalizedName = cmp.LocalizedNames.First(),
                     StorageId = new Guid(Enumerable.Range(0, 16).Select((_byte, index) => index == 15 ? (byte)(i) : (byte)0).ToArray())
@@ -88,7 +88,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
                 composersService: GetMockComposerService(composers).Object,
                 articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
-            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
+            mainCtrl.SetCurrentLocale("en-US".ToCultureInfo());
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
@@ -103,7 +103,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
                 composersService: GetMockComposerService(composers).Object,
                 articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
-            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
+            mainCtrl.SetCurrentLocale("en-US".ToCultureInfo());
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
 
             var resultUpperCase = mainCtrl.Index('S') as ViewResult;
@@ -121,7 +121,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
                 composersService: GetMockComposerService(composers).Object,
                 articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
-            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
+            mainCtrl.SetCurrentLocale("en-US".ToCultureInfo());
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
 
             var result = mainCtrl.Index() as ViewResult;
@@ -137,7 +137,7 @@ namespace BGC.Web.Tests.PublicArea.Controllers
                 composersService: GetMockComposerService(composers).Object,
                 articleStorageService: GetMockArticleService(composers.SelectMany(c => c.Articles).ToDictionary(a => a.StorageId, a => "")).Object,
                 composerSearchService: GetMockComposerSearchService(composers).Object);
-            mainCtrl.SetCurrentLocale(CultureInfo.GetCultureInfo("en-US"));
+            mainCtrl.SetCurrentLocale("en-US".ToCultureInfo());
             mainCtrl.LocalizationService = new LocalizationService(SampleLocalization);
 
             var result = mainCtrl.Index('\t') as ViewResult;

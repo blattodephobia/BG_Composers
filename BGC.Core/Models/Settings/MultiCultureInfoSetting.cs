@@ -64,6 +64,7 @@ namespace BGC.Core
         {
         }
 
+        [Obsolete("This should be replaced with a constructor taking an array and/or IEnumerable of type "+ nameof(CultureInfo) + ".")]
         public MultiCultureInfoSetting(string name, string culturesList = null) :
             base(name)
         {

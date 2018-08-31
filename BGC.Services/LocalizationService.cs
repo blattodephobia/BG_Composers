@@ -18,9 +18,9 @@ namespace BGC.Services
         private static readonly string CultureAttributeName = "culture";
         private static readonly IReadOnlyDictionary<CultureInfo, char[]> Alphabets = new Dictionary<CultureInfo, char[]>()
         {
-            { CultureInfo.GetCultureInfo("bg-BG"), "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ".ToCharArray() },
-            { CultureInfo.GetCultureInfo("en-US"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
-            { CultureInfo.GetCultureInfo("de-DE"), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
+            { "bg-BG".ToCultureInfo(), "АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯ".ToCharArray() },
+            { "en-US".ToCultureInfo(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
+            { "de-DE".ToCultureInfo(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray() },
         };
 
         protected LocalizationService()

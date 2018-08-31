@@ -45,7 +45,7 @@ namespace BGC.Core.Tests.Models
         public void IsSetFromSupportedCulturesProperty1()
         {
             MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
-            s.Cultures = new[] { CultureInfo.GetCultureInfo("en-US"), CultureInfo.GetCultureInfo("tr-TR") };
+            s.Cultures = new[] { "en-US".ToCultureInfo(), "tr-TR".ToCultureInfo() };
             Assert.AreEqual("en-US, tr-TR", s.StringValue);
         }
 
@@ -53,7 +53,7 @@ namespace BGC.Core.Tests.Models
         public void IsSetFromSupportedCulturesProperty2()
         {
             MultiCultureInfoSetting s = new MultiCultureInfoSetting("Any");
-            s.Cultures = new[] { CultureInfo.GetCultureInfo("en-US") };
+            s.Cultures = new[] { "en-US".ToCultureInfo() };
             Assert.AreEqual("en-US", s.StringValue);
         }
 

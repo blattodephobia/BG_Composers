@@ -28,7 +28,7 @@ namespace BGC.Web.Tests.AdministrationArea.Controllers.EditControllerTests
         public override void BeforeEachTest()
         {
             _composer = new Composer();
-            _language = CultureInfo.GetCultureInfo("de-DE");
+            _language = "de-DE".ToCultureInfo();
             _composer.Name[_language] = new ComposerName("Petar Stupel", _language);
             byte[] guid = new byte[16];
             guid[15] = 1;

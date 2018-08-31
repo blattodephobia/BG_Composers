@@ -66,7 +66,7 @@ namespace BGC.Core.Tests.Models.ComposerNameTests
         public void SetsInternalPropertyCorrectly()
         {
             ComposerNameProxy name = new ComposerNameProxy();
-            name.Language = CultureInfo.GetCultureInfo("en-US");
+            name.Language = "en-US".ToCultureInfo();
             Assert.AreEqual("en-US", name.LocalizationCultureNameProxy);
         }
 

@@ -26,7 +26,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), null, "term");
+                new GlossaryDefinition("en-US".ToCultureInfo(), null, "term");
             });
 
         }
@@ -36,7 +36,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), "", "term");
+                new GlossaryDefinition("en-US".ToCultureInfo(), "", "term");
             });
         }
 
@@ -45,7 +45,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), "definition", null);
+                new GlossaryDefinition("en-US".ToCultureInfo(), "definition", null);
             });
 
         }
@@ -55,17 +55,17 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         {
             Assert.Throws<InvalidOperationException>(() =>
             {
-                new GlossaryDefinition(new CultureInfo("en-US"), "definition", "");
+                new GlossaryDefinition("en-US".ToCultureInfo(), "definition", "");
             });
         }
 
         [Test]
         public void SetsPropertiesCorrectly()
         {
-            var def = new GlossaryDefinition(CultureInfo.GetCultureInfo("en-US"), "Hello world", "Welcoming");
+            var def = new GlossaryDefinition("en-US".ToCultureInfo(), "Hello world", "Welcoming");
 
             Assert.AreEqual("en-US", def.LanguageInternal);
-            Assert.AreEqual(CultureInfo.GetCultureInfo("en-US"), def.Language);
+            Assert.AreEqual("en-US".ToCultureInfo(), def.Language);
             Assert.AreEqual("Hello world", def.Definition);
             Assert.AreEqual("Welcoming", def.Term);
         }
@@ -77,7 +77,7 @@ namespace BGC.Core.Tests.Models.GlossaryDefinitionTests
         [Test]
         public void ThrowsExceptionIfLanguageNotSupported()
         {
-            var def = new GlossaryDefinition(new CultureInfo("de-DE"), "Deutsch", "term");
+            var def = new GlossaryDefinition("de-DE".ToCultureInfo(), "Deutsch", "term");
 
             Assert.Throws<CultureNotFoundException>(() => def.LanguageInternal = "z3-45");
         }

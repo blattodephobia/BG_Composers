@@ -33,14 +33,14 @@ namespace BGC.Services.Tests.GlossaryServiceTests
 
             var oldDefinitions = new List<GlossaryDefinition>()
             {
-                new GlossaryDefinition(CultureInfo.GetCultureInfo("en-US"), "OLD", "term"),
-                new GlossaryDefinition(CultureInfo.GetCultureInfo("de-DE"), "ALT", "term"),
+                new GlossaryDefinition("en-US".ToCultureInfo(), "OLD", "term"),
+                new GlossaryDefinition("de-DE".ToCultureInfo(), "ALT", "term"),
             };
 
             var newDefinitions = new List<GlossaryDefinition>()
             {
-                new GlossaryDefinition(CultureInfo.GetCultureInfo("en-US"), "NEW", "term"),
-                new GlossaryDefinition(CultureInfo.GetCultureInfo("de-DE"), "NEU", "term"),
+                new GlossaryDefinition("en-US".ToCultureInfo(), "NEW", "term"),
+                new GlossaryDefinition("de-DE".ToCultureInfo(), "NEU", "term"),
             };
 
             var commonId = new Guid("01234567-0004-0004-0004-123456789ABC");

@@ -32,7 +32,7 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
         [Test]
         public void ThrowsExceptionIfCultureMismatch()
         {
-            var name = new ComposerName("John Smith", "en-US");
+            var name = new ComposerName("John Smith", "en-US".ToCultureInfo());
             var culture = new CultureInfo("de-DE");
 
             Assert.Throws<InvalidOperationException>(() => new ComposerArticle(new Composer(), name, culture));
@@ -54,7 +54,7 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
         {
             var article = new ComposerArticle() { Language = new CultureInfo("en-US") };
 
-            Assert.Throws<InvalidOperationException>(() => article.LocalizedName = new ComposerName("Jake Gyllenhaal", CultureInfo.GetCultureInfo("de-DE")));
+            Assert.Throws<InvalidOperationException>(() => article.LocalizedName = new ComposerName("Jake Gyllenhaal", "de-DE".ToCultureInfo()));
         }
 
         [Test]
@@ -76,13 +76,13 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
             var id1 = new Guid(1, 0, 0, new byte[8]);
             var id2 = new Guid(id1.ToByteArray());
 
-            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id1,
                 CreatedUtc = new DateTime(2001, 1, 2),
             };
-            var article2 = new ComposerArticle(new Composer() { Id = id2 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article2 = new ComposerArticle(new Composer() { Id = id2 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id2,
@@ -97,7 +97,7 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
         {
             var id1 = new Guid(1, 0, 0, new byte[8]);
 
-            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id1,
@@ -113,7 +113,7 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
         {
             var id1 = new Guid(1, 0, 0, new byte[8]);
 
-            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id1,
@@ -129,13 +129,13 @@ namespace BGC.Core.Tests.Models.ComposerArticleTests
             var id1 = new Guid(1, 0, 0, new byte[8]);
             var id2 = new Guid(2, 2, 2, new byte[8]);
 
-            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article1 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id1,
                 CreatedUtc = new DateTime(2001, 1, 2),
             };
-            var article2 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US"), CultureInfo.GetCultureInfo("en-US"))
+            var article2 = new ComposerArticle(new Composer() { Id = id1 }, new ComposerName("Sun Yu", "en-US".ToCultureInfo()), "en-US".ToCultureInfo())
             {
                 IsArchived = true,
                 StorageId = id1,
