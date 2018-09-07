@@ -8,20 +8,20 @@ namespace BGC.Data.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.ComposerArticle_MediaTypeInfo",
+                "ComposerArticle_MediaTypeInfo",
                 c => new
                     {
                         Article_Id = c.Long(nullable: false),
                         MediaEntry_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Article_Id, t.MediaEntry_Id })
-                .ForeignKey("dbo.ComposerArticle", t => t.Article_Id, cascadeDelete: true)
-                .ForeignKey("dbo.MediaTypeInfo", t => t.MediaEntry_Id, cascadeDelete: true)
+                .ForeignKey("ComposerArticle", t => t.Article_Id, cascadeDelete: true, name: "FK_888D210D:ComposerArticle_MediaTypeInfo.Article_Id")
+                .ForeignKey("MediaTypeInfo", t => t.MediaEntry_Id, cascadeDelete: true, name: "FK_942D5AEA:ComposerArticle_MediaTypeInfo.MediaEntry_Id")
                 .Index(t => t.Article_Id)
                 .Index(t => t.MediaEntry_Id);
             
             CreateTable(
-                "dbo.ComposerArticle",
+                "ComposerArticle",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -32,12 +32,12 @@ namespace BGC.Data.Migrations
                         IsArchived = c.Boolean(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composer", t => t.Composer_Id, cascadeDelete: true)
+                .ForeignKey("Composer", t => t.Composer_Id, cascadeDelete: true, name: "FK_24F084A:ComposerArticle.Composer_Id")
                 .Index(t => t.StorageId)
                 .Index(t => t.Composer_Id);
             
             CreateTable(
-                "dbo.Composer",
+                "Composer",
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
@@ -48,11 +48,11 @@ namespace BGC.Data.Migrations
                         ProfilePicture_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.MediaTypeInfo", t => t.ProfilePicture_Id)
+                .ForeignKey("MediaTypeInfo", t => t.ProfilePicture_Id, name: "FK_942D5AEA:Composer.ProfilePicture_Id")
                 .Index(t => t.ProfilePicture_Id);
             
             CreateTable(
-                "dbo.ComposerName",
+                "ComposerName",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -61,11 +61,11 @@ namespace BGC.Data.Migrations
                         FullName = c.String(nullable: false, maxLength: 128, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Composer", t => t.Composer_Id, cascadeDelete: true)
+                .ForeignKey("Composer", t => t.Composer_Id, cascadeDelete: true, name: "FK_24F084A:ComposerName.Composer_Id")
                 .Index(t => t.Composer_Id);
             
             CreateTable(
-                "dbo.ComposerMediaRelationalDtoes",
+                "ComposerMediaRelationalDtoes",
                 c => new
                     {
                         Composer_Id = c.Guid(nullable: false),
@@ -73,17 +73,17 @@ namespace BGC.Data.Migrations
                         Purpose = c.String(unicode: false),
                     })
                 .PrimaryKey(t => new { t.Composer_Id, t.MediaTypeInfo_Id })
-                .ForeignKey("dbo.Composer", t => t.Composer_Id, cascadeDelete: true)
-                .ForeignKey("dbo.MediaTypeInfo", t => t.MediaTypeInfo_Id, cascadeDelete: true)
+                .ForeignKey("Composer", t => t.Composer_Id, cascadeDelete: true, name: "FK_24F084A:ComposerMediaRelationalDtoes.Composer_Id")
+                .ForeignKey("MediaTypeInfo", t => t.MediaTypeInfo_Id, cascadeDelete: true, name: "FK_942D5AEA:ComposerMediaRelationalDtoes.MediaTypeInfo_Id")
                 .Index(t => t.Composer_Id)
                 .Index(t => t.MediaTypeInfo_Id);
             
             CreateTable(
-                "dbo.MediaTypeInfo",
+                "MediaTypeInfo",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        MimeType = c.String(unicode: false),
+                        MimeType = c.String(nullable: false, unicode: false),
                         StorageId = c.Guid(nullable: false),
                         OriginalFileName = c.String(unicode: false),
                         ExternalLocation = c.String(unicode: false),
@@ -92,7 +92,7 @@ namespace BGC.Data.Migrations
                 .Index(t => t.StorageId);
             
             CreateTable(
-                "dbo.GlossaryEntries",
+                "GlossaryEntries",
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
@@ -100,7 +100,7 @@ namespace BGC.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.GlossaryDefinitions",
+                "GlossaryDefinitions",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -110,11 +110,11 @@ namespace BGC.Data.Migrations
                         GlossaryEntry_Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.GlossaryEntries", t => t.GlossaryEntry_Id, cascadeDelete: true)
+                .ForeignKey("GlossaryEntries", t => t.GlossaryEntry_Id, cascadeDelete: true, name: "FK_29564CE6:GlossaryDefinitions.GlossaryEntry_Id")
                 .Index(t => t.GlossaryEntry_Id);
             
             CreateTable(
-                "dbo.Invitations",
+                "Invitations",
                 c => new
                     {
                         Id = c.Guid(nullable: false, identity: true),
@@ -124,11 +124,11 @@ namespace BGC.Data.Migrations
                         Sender_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.Sender_Id, cascadeDelete: true)
+                .ForeignKey("AspNetUsers", t => t.Sender_Id, cascadeDelete: true, name: "FK_62BA4819:Invitations.Sender_Id")
                 .Index(t => t.Sender_Id);
             
             CreateTable(
-                "dbo.AspNetRoles",
+                "AspNetRoles",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -139,7 +139,7 @@ namespace BGC.Data.Migrations
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
             CreateTable(
-                "dbo.Permissions",
+                "Permissions",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -148,20 +148,20 @@ namespace BGC.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.AspNetUserRoles",
+                "AspNetUserRoles",
                 c => new
                     {
                         UserId = c.Long(nullable: false),
                         RoleId = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
-                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("AspNetRoles", t => t.RoleId, cascadeDelete: true, name: "FK_A238FC95:AspNetUserRoles.RoleId")
+                .ForeignKey("AspNetUsers", t => t.UserId, cascadeDelete: true, name: "FK_62BA4819:AspNetUserRoles.UserId")
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.AspNetUsers",
+                "AspNetUsers",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -183,7 +183,7 @@ namespace BGC.Data.Migrations
                 .Index(t => t.UserName, unique: true, name: "UserNameIndex");
             
             CreateTable(
-                "dbo.AspNetUserClaims",
+                "AspNetUserClaims",
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
@@ -192,11 +192,11 @@ namespace BGC.Data.Migrations
                         ClaimValue = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("AspNetUsers", t => t.UserId, cascadeDelete: true, name: "FK_62BA4819:AspNetUserClaims.UserId")
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.AspNetUserLogins",
+                "AspNetUserLogins",
                 c => new
                     {
                         UserId = c.Long(nullable: false),
@@ -204,11 +204,11 @@ namespace BGC.Data.Migrations
                         LoginProvider = c.String(unicode: false),
                     })
                 .PrimaryKey(t => new { t.UserId, t.ProviderKey })
-                .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
+                .ForeignKey("AspNetUsers", t => t.UserId, cascadeDelete: true, name: "FK_62BA4819:AspNetUserLogins.UserId")
                 .Index(t => t.UserId);
             
             CreateTable(
-                "dbo.Settings",
+                "Settings",
                 c => new
                     {
                         Id = c.Long(nullable: false, identity: true),
@@ -223,41 +223,41 @@ namespace BGC.Data.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.BgcRolePermission",
+                "BgcRolePermission",
                 c => new
                     {
                         BgcRole_Id = c.Long(nullable: false),
                         Permission_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.BgcRole_Id, t.Permission_Id })
-                .ForeignKey("dbo.AspNetRoles", t => t.BgcRole_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Permissions", t => t.Permission_Id, cascadeDelete: true)
+                .ForeignKey("AspNetRoles", t => t.BgcRole_Id, cascadeDelete: true, name: "FK_A238FC95:BgcRolePermission.BgcRole_Id")
+                .ForeignKey("Permissions", t => t.Permission_Id, cascadeDelete: true, name: "FK_881C002F:BgcRolePermission.Permission_Id")
                 .Index(t => t.BgcRole_Id)
                 .Index(t => t.Permission_Id);
             
             CreateTable(
-                "dbo.BgcUserSettings",
+                "BgcUserSettings",
                 c => new
                     {
                         BgcUser_Id = c.Long(nullable: false),
                         Setting_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.BgcUser_Id, t.Setting_Id })
-                .ForeignKey("dbo.AspNetUsers", t => t.BgcUser_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Settings", t => t.Setting_Id, cascadeDelete: true)
+                .ForeignKey("AspNetUsers", t => t.BgcUser_Id, cascadeDelete: true, name: "FK_62BA4819:BgcUserSettings.BgcUser_Id")
+                .ForeignKey("Settings", t => t.Setting_Id, cascadeDelete: true, name: "FK_BC82793:BgcUserSettings.Setting_Id")
                 .Index(t => t.BgcUser_Id)
                 .Index(t => t.Setting_Id);
             
             CreateTable(
-                "dbo.InvitationBgcRoles",
+                "InvitationBgcRoles",
                 c => new
                     {
                         Invitation_Id = c.Guid(nullable: false),
                         BgcRole_Id = c.Long(nullable: false),
                     })
                 .PrimaryKey(t => new { t.Invitation_Id, t.BgcRole_Id })
-                .ForeignKey("dbo.Invitations", t => t.Invitation_Id, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetRoles", t => t.BgcRole_Id, cascadeDelete: true)
+                .ForeignKey("Invitations", t => t.Invitation_Id, cascadeDelete: true, name: "FK_6FCF3C4:InvitationBgcRoles.Invitation_Id")
+                .ForeignKey("AspNetRoles", t => t.BgcRole_Id, cascadeDelete: true, name: "FK_A238FC95:InvitationBgcRoles.BgcRole_Id")
                 .Index(t => t.Invitation_Id)
                 .Index(t => t.BgcRole_Id);
             
@@ -265,67 +265,67 @@ namespace BGC.Data.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Invitations", "Sender_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.InvitationBgcRoles", "BgcRole_Id", "dbo.AspNetRoles");
-            DropForeignKey("dbo.InvitationBgcRoles", "Invitation_Id", "dbo.Invitations");
-            DropForeignKey("dbo.BgcUserSettings", "Setting_Id", "dbo.Settings");
-            DropForeignKey("dbo.BgcUserSettings", "BgcUser_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserLogins", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.BgcRolePermission", "Permission_Id", "dbo.Permissions");
-            DropForeignKey("dbo.BgcRolePermission", "BgcRole_Id", "dbo.AspNetRoles");
-            DropForeignKey("dbo.GlossaryDefinitions", "GlossaryEntry_Id", "dbo.GlossaryEntries");
-            DropForeignKey("dbo.ComposerArticle_MediaTypeInfo", "MediaEntry_Id", "dbo.MediaTypeInfo");
-            DropForeignKey("dbo.ComposerArticle_MediaTypeInfo", "Article_Id", "dbo.ComposerArticle");
-            DropForeignKey("dbo.ComposerArticle", "Composer_Id", "dbo.Composer");
-            DropForeignKey("dbo.Composer", "ProfilePicture_Id", "dbo.MediaTypeInfo");
-            DropForeignKey("dbo.ComposerMediaRelationalDtoes", "MediaTypeInfo_Id", "dbo.MediaTypeInfo");
-            DropForeignKey("dbo.ComposerMediaRelationalDtoes", "Composer_Id", "dbo.Composer");
-            DropForeignKey("dbo.ComposerName", "Composer_Id", "dbo.Composer");
-            DropIndex("dbo.InvitationBgcRoles", new[] { "BgcRole_Id" });
-            DropIndex("dbo.InvitationBgcRoles", new[] { "Invitation_Id" });
-            DropIndex("dbo.BgcUserSettings", new[] { "Setting_Id" });
-            DropIndex("dbo.BgcUserSettings", new[] { "BgcUser_Id" });
-            DropIndex("dbo.BgcRolePermission", new[] { "Permission_Id" });
-            DropIndex("dbo.BgcRolePermission", new[] { "BgcRole_Id" });
-            DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
-            DropIndex("dbo.AspNetUsers", "UserNameIndex");
-            DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
-            DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
-            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.Invitations", new[] { "Sender_Id" });
-            DropIndex("dbo.GlossaryDefinitions", new[] { "GlossaryEntry_Id" });
-            DropIndex("dbo.MediaTypeInfo", new[] { "StorageId" });
-            DropIndex("dbo.ComposerMediaRelationalDtoes", new[] { "MediaTypeInfo_Id" });
-            DropIndex("dbo.ComposerMediaRelationalDtoes", new[] { "Composer_Id" });
-            DropIndex("dbo.ComposerName", new[] { "Composer_Id" });
-            DropIndex("dbo.Composer", new[] { "ProfilePicture_Id" });
-            DropIndex("dbo.ComposerArticle", new[] { "Composer_Id" });
-            DropIndex("dbo.ComposerArticle", new[] { "StorageId" });
-            DropIndex("dbo.ComposerArticle_MediaTypeInfo", new[] { "MediaEntry_Id" });
-            DropIndex("dbo.ComposerArticle_MediaTypeInfo", new[] { "Article_Id" });
-            DropTable("dbo.InvitationBgcRoles");
-            DropTable("dbo.BgcUserSettings");
-            DropTable("dbo.BgcRolePermission");
-            DropTable("dbo.Settings");
-            DropTable("dbo.AspNetUserLogins");
-            DropTable("dbo.AspNetUserClaims");
-            DropTable("dbo.AspNetUsers");
-            DropTable("dbo.AspNetUserRoles");
-            DropTable("dbo.Permissions");
-            DropTable("dbo.AspNetRoles");
-            DropTable("dbo.Invitations");
-            DropTable("dbo.GlossaryDefinitions");
-            DropTable("dbo.GlossaryEntries");
-            DropTable("dbo.MediaTypeInfo");
-            DropTable("dbo.ComposerMediaRelationalDtoes");
-            DropTable("dbo.ComposerName");
-            DropTable("dbo.Composer");
-            DropTable("dbo.ComposerArticle");
-            DropTable("dbo.ComposerArticle_MediaTypeInfo");
+            DropForeignKey("Invitations", "FK_62BA4819:Invitations.Sender_Id");
+            DropForeignKey("InvitationBgcRoles", "FK_A238FC95:InvitationBgcRoles.BgcRole_Id");
+            DropForeignKey("InvitationBgcRoles", "FK_6FCF3C4:InvitationBgcRoles.Invitation_Id");
+            DropForeignKey("BgcUserSettings", "FK_BC82793:BgcUserSettings.Setting_Id");
+            DropForeignKey("BgcUserSettings", "FK_62BA4819:BgcUserSettings.BgcUser_Id");
+            DropForeignKey("AspNetUserRoles", "FK_62BA4819:AspNetUserRoles.UserId");
+            DropForeignKey("AspNetUserLogins", "FK_62BA4819:AspNetUserLogins.UserId");
+            DropForeignKey("AspNetUserClaims", "FK_62BA4819:AspNetUserClaims.UserId");
+            DropForeignKey("AspNetUserRoles", "FK_A238FC95:AspNetUserRoles.RoleId");
+            DropForeignKey("BgcRolePermission", "FK_881C002F:BgcRolePermission.Permission_Id");
+            DropForeignKey("BgcRolePermission", "FK_A238FC95:BgcRolePermission.BgcRole_Id");
+            DropForeignKey("GlossaryDefinitions", "FK_29564CE6:GlossaryDefinitions.GlossaryEntry_Id");
+            DropForeignKey("ComposerArticle_MediaTypeInfo", "FK_942D5AEA:ComposerArticle_MediaTypeInfo.MediaEntry_Id");
+            DropForeignKey("ComposerArticle_MediaTypeInfo", "FK_888D210D:ComposerArticle_MediaTypeInfo.Article_Id");
+            DropForeignKey("ComposerArticle", "FK_24F084A:ComposerArticle.Composer_Id");
+            DropForeignKey("Composer", "FK_942D5AEA:Composer.ProfilePicture_Id");
+            DropForeignKey("ComposerMediaRelationalDtoes", "FK_942D5AEA:ComposerMediaRelationalDtoes.MediaTypeInfo_Id");
+            DropForeignKey("ComposerMediaRelationalDtoes", "FK_24F084A:ComposerMediaRelationalDtoes.Composer_Id");
+            DropForeignKey("ComposerName", "FK_24F084A:ComposerName.Composer_Id");
+            DropIndex("InvitationBgcRoles", new[] { "BgcRole_Id" });
+            DropIndex("InvitationBgcRoles", new[] { "Invitation_Id" });
+            DropIndex("BgcUserSettings", new[] { "Setting_Id" });
+            DropIndex("BgcUserSettings", new[] { "BgcUser_Id" });
+            DropIndex("BgcRolePermission", new[] { "Permission_Id" });
+            DropIndex("BgcRolePermission", new[] { "BgcRole_Id" });
+            DropIndex("AspNetUserLogins", new[] { "UserId" });
+            DropIndex("AspNetUserClaims", new[] { "UserId" });
+            DropIndex("AspNetUsers", "UserNameIndex");
+            DropIndex("AspNetUserRoles", new[] { "RoleId" });
+            DropIndex("AspNetUserRoles", new[] { "UserId" });
+            DropIndex("AspNetRoles", "RoleNameIndex");
+            DropIndex("Invitations", new[] { "Sender_Id" });
+            DropIndex("GlossaryDefinitions", new[] { "GlossaryEntry_Id" });
+            DropIndex("MediaTypeInfo", new[] { "StorageId" });
+            DropIndex("ComposerMediaRelationalDtoes", new[] { "MediaTypeInfo_Id" });
+            DropIndex("ComposerMediaRelationalDtoes", new[] { "Composer_Id" });
+            DropIndex("ComposerName", new[] { "Composer_Id" });
+            DropIndex("Composer", new[] { "ProfilePicture_Id" });
+            DropIndex("ComposerArticle", new[] { "Composer_Id" });
+            DropIndex("ComposerArticle", new[] { "StorageId" });
+            DropIndex("ComposerArticle_MediaTypeInfo", new[] { "MediaEntry_Id" });
+            DropIndex("ComposerArticle_MediaTypeInfo", new[] { "Article_Id" });
+            DropTable("InvitationBgcRoles");
+            DropTable("BgcUserSettings");
+            DropTable("BgcRolePermission");
+            DropTable("Settings");
+            DropTable("AspNetUserLogins");
+            DropTable("AspNetUserClaims");
+            DropTable("AspNetUsers");
+            DropTable("AspNetUserRoles");
+            DropTable("Permissions");
+            DropTable("AspNetRoles");
+            DropTable("Invitations");
+            DropTable("GlossaryDefinitions");
+            DropTable("GlossaryEntries");
+            DropTable("MediaTypeInfo");
+            DropTable("ComposerMediaRelationalDtoes");
+            DropTable("ComposerName");
+            DropTable("Composer");
+            DropTable("ComposerArticle");
+            DropTable("ComposerArticle_MediaTypeInfo");
         }
     }
 }
