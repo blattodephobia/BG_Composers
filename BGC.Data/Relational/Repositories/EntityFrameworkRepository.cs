@@ -21,7 +21,7 @@ namespace BGC.Data.Relational.Repositories
         where TRelationalDto : RelationdalDtoBase
     {
         private readonly DbContext _dbContext;
-        private readonly DomainTypeMapperBase<TEntity, TRelationalDto> _typeMapper;
+        private readonly ITypeMapper<TEntity, TRelationalDto> _typeMapper;
 
         private TRelationalDto FindFromContext(TKey key)
         {
@@ -66,7 +66,7 @@ namespace BGC.Data.Relational.Repositories
         }
 
         protected DbContext DbContext => _dbContext;
-        protected DomainTypeMapperBase<TEntity, TRelationalDto> TypeMapper => _typeMapper;
+        protected ITypeMapper<TEntity, TRelationalDto> TypeMapper => _typeMapper;
 
         private PropertyInfo _identityProperty;
         protected virtual PropertyInfo IdentityProperty => _identityProperty ?? (_identityProperty = GetIdentityProperty());
@@ -88,13 +88,13 @@ namespace BGC.Data.Relational.Repositories
             List<TEntity> result = new List<TEntity>(queryResult.Count);
             for (int i = 0; i < queryResult.Count; i++)
             {
-                result.Add(TypeMapper.Build(queryResult[i]));
+                result.Add(TypeMapper.BuildEntity(queryResult[i]));
             }
 
             return result;
         }
 
-        public EntityFrameworkRepository(DomainTypeMapperBase<TEntity, TRelationalDto> typeMapper, DbContext context)
+        public EntityFrameworkRepository(ITypeMapper<TEntity, TRelationalDto> typeMapper, DbContext context)
         {
             Shield.ArgumentNotNull(typeMapper).ThrowOnError();
             Shield.ArgumentNotNull(context).ThrowOnError();
@@ -149,7 +149,7 @@ namespace BGC.Data.Relational.Repositories
             TRelationalDto dto = FindFromContext(key);
             if (dto != null)
             {
-                return TypeMapper.Build(dto);
+                return TypeMapper.BuildEntity(dto);
             }
 
             return null;

@@ -119,6 +119,8 @@
     <Compile Include="Relational\Mappings\GlossaryEntryPropertyMapper.cs" />
     <Compile Include="Relational\Mappings\GlossaryEntryTypeMapper.cs" />
     <Compile Include="Relational\Mappings\IDtoFactory.cs" />
+    <Compile Include="Relational\Mappings\IPropertyMapper.cs" />
+    <Compile Include="Relational\Mappings\ITypeMapper.cs" />
     <Compile Include="Relational\Mappings\MediaTypeInfoPropertyMapper.cs" />
     <Compile Include="Relational\Mappings\NamePropertyMapper.cs" />
     <Compile Include="Relational\Mappings\RelationalPropertyMapper.cs" />

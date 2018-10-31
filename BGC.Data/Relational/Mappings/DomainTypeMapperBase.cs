@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal abstract class DomainTypeMapperBase<TEntity, TDto>
+    internal abstract class DomainTypeMapperBase<TEntity, TDto> : ITypeMapper<TEntity, TDto>
         where TDto : RelationdalDtoBase
     {
         protected DomainTypeMapperBase(IDtoFactory dtoFactory)
@@ -33,6 +33,8 @@ namespace BGC.Data.Relational.Mappings
 
             return BuildInternal(dto);
         }
+
+        TEntity ITypeMapper<TEntity, TDto>.BuildEntity(TDto dto) => Build(dto);
 
         public TDto BuildDto(TEntity entity)
         {

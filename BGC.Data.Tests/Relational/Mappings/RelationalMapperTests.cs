@@ -61,7 +61,7 @@ namespace BGC.Data.Relational.Mappings.RelationalMapperTests
         {
             var mock = new Mock<RelationalPropertyMapper<Composer, ComposerRelationalDto>>();
 
-            Assert.Throws<ArgumentNullException>(() => mock.Object.GetPredicateFor(null));
+            Assert.Throws<ArgumentNullException>(() => mock.Object.GetKeyPredicateFor(null));
         }
     }
 }

@@ -17,6 +17,6 @@ namespace BGC.Data.Relational
         /// <param name="entity">The entity whose DTO should be created or looked up. Can be null.</param>
         /// <param name="mapper"></param>
         /// <returns></returns>
-        TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, RelationalPropertyMapper<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase;
+        TRelationalDto GetDtoFor<TRelationalDto, TEntity>(TEntity entity, IPropertyMapper<TEntity, TRelationalDto> mapper) where TRelationalDto : RelationdalDtoBase;
     }
 }

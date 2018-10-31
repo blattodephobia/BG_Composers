@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BGC.Data.Relational.Mappings
 {
-    internal abstract class RelationalPropertyMapper<TEntity, TDto>
+    internal abstract class RelationalPropertyMapper<TEntity, TDto> : IPropertyMapper<TEntity, TDto>
         where TDto : RelationdalDtoBase
     {
         protected abstract void CopyDataInternal(TEntity source, TDto target);
@@ -18,7 +18,7 @@ namespace BGC.Data.Relational.Mappings
 
         protected abstract Expression<Func<TDto, bool>> GetComparisonInternal(TEntity entity);
 
-        public Expression<Func<TDto, bool>> GetPredicateFor(TEntity entity)
+        public Expression<Func<TDto, bool>> GetKeyPredicateFor(TEntity entity)
         {
             Shield.ArgumentNotNull(entity).ThrowOnError();
 
